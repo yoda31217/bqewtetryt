@@ -35,7 +35,7 @@ public class MarathonAdapterTest {
     Date adaptedDate = new Date();
     whenNew(Date.class).withNoArguments().thenReturn(adaptedDate);
 
-    ParsedEvent event = new ParsedEvent("Flipkens / Kirsten", "Hercog, Polona", "17:30", "1.45", "2.92");
+    ParsedEvent event = new ParsedEvent("Flipkens, Kirsten", "Hercog, Polona", "17:30", "1.45", "2.92");
     AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
