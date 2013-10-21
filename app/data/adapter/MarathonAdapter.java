@@ -33,6 +33,17 @@ public class MarathonAdapter
     Player secondPlayer = adoptPlayer(parsedEvent.secondPlayer);
     double firstKof = Double.parseDouble(parsedEvent.firstKof);
     double secondKof = Double.parseDouble(parsedEvent.secondKof);
+
+    if (firstKof > secondKof) {
+      double swapKof = firstKof;
+      firstKof = secondKof;
+      secondKof = swapKof;
+
+      Player swapPlayer = firstPlayer;
+      firstPlayer = secondPlayer;
+      secondPlayer = swapPlayer;
+    }
+
     Date date = adoptDate(parsedEvent.date);
 
     return new AdaptedEvent(firstPlayer, secondPlayer, firstKof, secondKof, MARATHON, date);

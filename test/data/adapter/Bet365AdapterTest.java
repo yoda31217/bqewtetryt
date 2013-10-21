@@ -54,6 +54,20 @@ public class Bet365AdapterTest {
   }
 
   @Test
+  public void order()
+    throws Exception {
+    ParsedEvent event = new ParsedEvent("Kristina Mladenovic", "Florian Mayer", "11 Oct 07:30", "3.28", "1.50");
+    AdaptedEvent adaptedEvent = new Bet365Adapter().adapt(event);
+
+    assertThat(adaptedEvent.firstPlayer.firstName).isEqualTo("Florian");
+    assertThat(adaptedEvent.firstPlayer.secondName).isEqualTo("Mayer");
+    assertThat(adaptedEvent.secondPlayer.firstName).isEqualTo("Kristina");
+    assertThat(adaptedEvent.secondPlayer.secondName).isEqualTo("Mladenovic");
+    assertThat(adaptedEvent.firstKof).isEqualTo(1.5);
+    assertThat(adaptedEvent.secondKof).isEqualTo(3.28);
+  }
+
+  @Test
   public void andInNames()
     throws Exception {
     Date adaptedDate = new Date();

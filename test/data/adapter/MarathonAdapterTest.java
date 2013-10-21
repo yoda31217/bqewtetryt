@@ -56,6 +56,20 @@ public class MarathonAdapterTest {
   }
 
   @Test
+  public void order()
+    throws Exception {
+    ParsedEvent event = new ParsedEvent("Hercog, Polona", "Flipkens, Kirsten", "17:30", "2.92", "1.45");
+    AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
+
+    assertThat(adaptedEvent.firstPlayer.firstName).isEqualTo("Flipkens");
+    assertThat(adaptedEvent.firstPlayer.secondName).isEqualTo("Kirsten");
+    assertThat(adaptedEvent.secondPlayer.firstName).isEqualTo("Hercog");
+    assertThat(adaptedEvent.secondPlayer.secondName).isEqualTo("Polona");
+    assertThat(adaptedEvent.firstKof).isEqualTo(1.45);
+    assertThat(adaptedEvent.secondKof).isEqualTo(2.92);
+  }
+
+  @Test
   public void slashInName()
     throws InterruptedException, IOException {
     ParsedEvent event = new ParsedEvent("Flipkens / Kirsten", "Hercog, Polona", "11 Sep 17:30", "1.45", "2.92");
