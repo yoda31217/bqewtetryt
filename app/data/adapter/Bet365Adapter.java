@@ -43,8 +43,8 @@ public class Bet365Adapter
 
     Date date = adoptDate(parsedEvent.date);
 
-    String firstPlayerCode = adoptPlayerCode(parsedEvent.firstPlayer);
-    String secondPlayerCode = adoptPlayerCode(parsedEvent.secondPlayer);
+    String firstPlayerCode = adoptPlayerCode(firstPlayer);
+    String secondPlayerCode = adoptPlayerCode(secondPlayer);
 
     return new AdaptedEvent(firstPlayer, secondPlayer, firstKof, secondKof, BET365, date, firstPlayerCode, secondPlayerCode);
   }

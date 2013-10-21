@@ -46,8 +46,8 @@ public class MarathonAdapter
 
     Date date = adoptDate(parsedEvent.date);
 
-    String firstPlayerCode = adoptPlayerCode(parsedEvent.firstPlayer);
-    String secondPlayerCode = adoptPlayerCode(parsedEvent.secondPlayer);
+    String firstPlayerCode = adoptPlayerCode(firstPlayer);
+    String secondPlayerCode = adoptPlayerCode(secondPlayer);
 
     return new AdaptedEvent(firstPlayer, secondPlayer, firstKof, secondKof, MARATHON, date, firstPlayerCode, secondPlayerCode);
   }

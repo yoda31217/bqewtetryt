@@ -55,9 +55,9 @@ public class MarathonAdapterTest {
   }
 
   @Test
-  public void codes()
+  public void codeAndOrder()
     throws Exception {
-    ParsedEvent event = new ParsedEvent("Flipkens, Kirsten", "J.Murray / J.Peers", "11 Sep 17:30", "1.45", "2.92");
+    ParsedEvent event = new ParsedEvent("Flipkens, Kirsten", "J.Murray / J.Peers", "11 Sep 17:30", "2.92", "1.45");
     AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
@@ -68,7 +68,7 @@ public class MarathonAdapterTest {
     calendar.set(SECOND, 0);
     calendar.set(MILLISECOND, 0);
 
-    String eventCode = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(calendar.getTime()) + "_flipkens_murray,peers";
+    String eventCode = new SimpleDateFormat("yyyy-MM-dd mm").format(calendar.getTime()) + "_murray,peers_flipkens";
 
     assertThat(adaptedEvent.code).isEqualTo(eventCode);
   }

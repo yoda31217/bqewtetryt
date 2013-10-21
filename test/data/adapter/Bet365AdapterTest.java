@@ -53,9 +53,9 @@ public class Bet365AdapterTest {
   }
 
   @Test
-  public void codes()
+  public void codeAndOrder()
     throws Exception {
-    ParsedEvent event = new ParsedEvent("Florian Del Mayer", "Aisam-Ul Haq Qureshi & Jean-Julien Rojer", "11 Oct 07:30", "1.50", "3.28");
+    ParsedEvent event = new ParsedEvent("Florian Del Mayer", "Aisam-Ul Haq Qureshi & Jean-Julien Rojer", "11 Oct 07:30", "3.28", "1.50");
     AdaptedEvent adaptedEvent = new Bet365Adapter().adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
@@ -66,7 +66,7 @@ public class Bet365AdapterTest {
     calendar.set(SECOND, 0);
     calendar.set(MILLISECOND, 0);
 
-    String eventCode = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(calendar.getTime()) + "_mayer_qureshi,rojer";
+    String eventCode = new SimpleDateFormat("yyyy-MM-dd mm").format(calendar.getTime()) + "_qureshi,rojer_mayer";
 
     assertThat(adaptedEvent.code).isEqualTo(eventCode);
   }

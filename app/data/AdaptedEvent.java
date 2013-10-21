@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class AdaptedEvent {
 
-  static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+  static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd mm");
   public final String firstPlayer;
   public final String secondPlayer;
   public final double firstKof;

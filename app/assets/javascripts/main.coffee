@@ -14,11 +14,11 @@ $ ->
       #      table = $('<table class=\"table table-bordered\">')
       #      $('body').append table
       #
-      firstPlayerStr = event.firstPlayer.firstName + ', ' + event.firstPlayer.secondName
-      secondPlayerStr = event.secondPlayer.firstName + ', ' + event.secondPlayer.secondName
+      #      firstPlayerStr = event.firstPlayer.firstName + ', ' + event.firstPlayer.secondName
+      #      secondPlayerStr = event.secondPlayer.firstName + ', ' + event.secondPlayer.secondName
       dateStr = new Date(event.date).toLocaleString()
 
-      captionStr = "#{firstPlayerStr} - #{secondPlayerStr}(#{dateStr})"
+      captionStr = "#{event.firstPlayer} - #{event.secondPlayer}(#{dateStr})"
 
       eventHeader.text captionStr
 
