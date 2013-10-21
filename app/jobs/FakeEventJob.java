@@ -1,7 +1,5 @@
 package jobs;
 
-import models.store.Player;
-
 import java.util.Date;
 
 import static models.store.EventStore.createOrGetEvent;
@@ -11,6 +9,6 @@ public class FakeEventJob
 
   @Override
   public void run() {
-    createOrGetEvent(new Date(), new Player("first1", "second1"), new Player("first2", "second2"));
+    createOrGetEvent(new Date(), "first1, second1", "first2, second2", new Date().toString() + "_code");
   }
 }

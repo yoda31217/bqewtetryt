@@ -8,7 +8,6 @@ import data.parser.ParsedEvent;
 import models.store.Event;
 import models.store.EventStore;
 import models.store.HistoryRecord;
-import models.store.Player;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,14 +42,14 @@ public class EventJobTest {
   @Mock
   private ParsedEvent parsedEvent = new ParsedEvent("fp", "sp", "DATE_STRING", "1.1", "2.2");
   @Mock
-  private AdaptedEvent adaptedEvent = new AdaptedEvent(new Player("fn1", "sn1"), new Player("fn2", "sn2"), 1.1, 2.2, BET365, new Date(), null, null);
+  private AdaptedEvent adaptedEvent = new AdaptedEvent("player1", "player2", 1.1, 2.2, BET365, new Date(), "player1_code", "player2_code");
   @Mock
   private Event event;
 
   @Test
   public void run() {
     PowerMockito.mockStatic(EventStore.class);
-    PowerMockito.when(EventStore.createOrGetEvent(any(Date.class), any(Player.class), any(Player.class))).thenReturn(event);
+    PowerMockito.when(EventStore.createOrGetEvent(any(Date.class), any(String.class), any(String.class), any(String.class))).thenReturn(event);
 
     when(fetcher.fetch()).thenReturn(FetchResult);
     when(parser.parse(same(FetchResult))).thenReturn(newArrayList(parsedEvent));
@@ -64,7 +63,7 @@ public class EventJobTest {
     verify(adapter).adapt(same(parsedEvent));
 
     verifyStatic();
-    createOrGetEvent(adaptedEvent.date, adaptedEvent.firstPlayer, adaptedEvent.secondPlayer);
+    createOrGetEvent(adaptedEvent.date, adaptedEvent.firstPlayer, adaptedEvent.secondPlayer, adaptedEvent.code);
 
     verify(event).addHistory(refEq(new HistoryRecord(adaptedEvent.adaptedDate, adaptedEvent.organisation, adaptedEvent.firstKof, adaptedEvent.secondKof)));
   }

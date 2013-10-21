@@ -32,7 +32,7 @@ public class EventJob
     for (ParsedEvent parsedEvent : parsedEvents) {
       AdaptedEvent adaptedEvent = adapter.adapt(parsedEvent);
 
-      Event event = EventStore.createOrGetEvent(adaptedEvent.date, adaptedEvent.firstPlayer, adaptedEvent.secondPlayer);
+      Event event = EventStore.createOrGetEvent(adaptedEvent.date, adaptedEvent.firstPlayer, adaptedEvent.secondPlayer, adaptedEvent.code);
       event.addHistory(new HistoryRecord(adaptedEvent.adaptedDate, adaptedEvent.organisation, adaptedEvent.firstKof, adaptedEvent.secondKof));
     }
   }

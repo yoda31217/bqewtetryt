@@ -16,7 +16,7 @@ public class EventTest {
   @Before
   public void before()
     throws Exception {
-    event = new Event(new Date(), randomPlayer(), randomPlayer());
+    event = new Event(new Date(), randomPlayer(), randomPlayer(), "event_code");
   }
 
   @Test

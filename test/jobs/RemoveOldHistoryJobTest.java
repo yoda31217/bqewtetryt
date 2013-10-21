@@ -19,16 +19,16 @@ public class RemoveOldHistoryJobTest {
     HistoryRecord secondRecord = randomHistoryRecord();
     HistoryRecord thirdRecord = randomHistoryRecord();
 
-    Event firstEvent = createOrGetEvent(new Date(), randomPlayer(), randomPlayer());
+    Event firstEvent = createOrGetEvent(new Date(), randomPlayer(), randomPlayer(), "code_1");
     firstEvent.addHistory(firstRecord);
     firstEvent.addHistory(secondRecord);
 
-    Event secondEvent = createOrGetEvent(new Date(), randomPlayer(), randomPlayer());
+    Event secondEvent = createOrGetEvent(new Date(), randomPlayer(), randomPlayer(), "code_2");
     secondEvent.addHistory(firstRecord);
     secondEvent.addHistory(secondRecord);
     secondEvent.addHistory(thirdRecord);
 
-    Event thirdEvent = createOrGetEvent(new Date(), randomPlayer(), randomPlayer());
+    Event thirdEvent = createOrGetEvent(new Date(), randomPlayer(), randomPlayer(), "code_3");
     thirdEvent.addHistory(firstRecord);
 
     new RemoveOldHistoryJob(2).run();

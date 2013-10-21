@@ -2,17 +2,14 @@ package models.store;
 
 import java.util.Date;
 
+import static java.lang.Math.random;
 import static models.store.EventStore.EVENTS;
 import static models.store.Organisation.MARATHON;
 
 public final class Events {
 
-  public static Player randomPlayer() {
-    return new Player(String.valueOf(Math.random()), String.valueOf(Math.random()));
-  }
-
-  public static Event randomEvent() {
-    return new Event(new Date(), randomPlayer(), randomPlayer());
+  public static String randomPlayer() {
+    return "player_" + random();
   }
 
   public static HistoryRecord randomHistoryRecord() {

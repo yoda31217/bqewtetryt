@@ -12,14 +12,16 @@ import static java.util.Collections.unmodifiableList;
 public class Event {
 
   final Date date;
-  final Player firstPlayer;
-  final Player secondPlayer;
+  final String firstPlayer;
+  final String secondPlayer;
+  final String code;
   final List<HistoryRecord> history = new CopyOnWriteArrayList<HistoryRecord>();
 
-  Event(Date date, Player firstPlayer, Player secondPlayer) {
+  Event(Date date, String firstPlayer, String secondPlayer, String code) {
     this.date = date;
     this.firstPlayer = firstPlayer;
     this.secondPlayer = secondPlayer;
+    this.code = code;
   }
 
   @Override
@@ -29,19 +31,13 @@ public class Event {
 
     Event event = (Event) o;
 
-    if (!date.equals(event.date)) return false;
-    if (!firstPlayer.equals(event.firstPlayer)) return false;
-    if (!secondPlayer.equals(event.secondPlayer)) return false;
+    return code.equals(event.code);
 
-    return true;
   }
 
   @Override
   public int hashCode() {
-    int result = date.hashCode();
-    result = 31 * result + firstPlayer.hashCode();
-    result = 31 * result + secondPlayer.hashCode();
-    return result;
+    return code.hashCode();
   }
 
   public List<HistoryRecord> history() {
@@ -60,11 +56,11 @@ public class Event {
     return date;
   }
 
-  public Player firstPlayer() {
+  public String firstPlayer() {
     return firstPlayer;
   }
 
-  public Player secondPlayer() {
+  public String secondPlayer() {
     return secondPlayer;
   }
 }

@@ -3,7 +3,6 @@ package data.adapter;
 import com.google.common.base.Splitter;
 import data.AdaptedEvent;
 import data.parser.ParsedEvent;
-import models.store.Player;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,14 +24,13 @@ public class MarathonAdapter
   implements BAdapter {
 
   static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat("yyyy dd MMM HH:mm Z");
-  private static final Splitter PLAYER_NAME_SPLITTER = on(anyOf(",/")).omitEmptyStrings().trimResults();
   private static final Splitter ONE_PLAYER_NAME_SPLITTER = on(",").omitEmptyStrings().trimResults();
   private static final Splitter TWO_PLAYERS_NAME_SPLITTER = on(anyOf("./")).omitEmptyStrings().trimResults();
 
   @Override
   public AdaptedEvent adapt(ParsedEvent parsedEvent) {
-    Player firstPlayer = adoptPlayer(parsedEvent.firstPlayer);
-    Player secondPlayer = adoptPlayer(parsedEvent.secondPlayer);
+    String firstPlayer = parsedEvent.firstPlayer;
+    String secondPlayer = parsedEvent.secondPlayer;
     double firstKof = Double.parseDouble(parsedEvent.firstKof);
     double secondKof = Double.parseDouble(parsedEvent.secondKof);
 
@@ -41,7 +39,7 @@ public class MarathonAdapter
       firstKof = secondKof;
       secondKof = swapKof;
 
-      Player swapPlayer = firstPlayer;
+      String swapPlayer = firstPlayer;
       firstPlayer = secondPlayer;
       secondPlayer = swapPlayer;
     }
@@ -65,13 +63,6 @@ public class MarathonAdapter
     code += "," + playerParts.next().toLowerCase();
 
     return code;
-  }
-
-  private Player adoptPlayer(String playerStr) {
-    Iterator<String> playerNames = PLAYER_NAME_SPLITTER.split(playerStr).iterator();
-    String firstName = playerNames.next();
-    String secondName = playerNames.next();
-    return new Player(firstName, secondName);
   }
 
   private Date adoptDate(String date) {

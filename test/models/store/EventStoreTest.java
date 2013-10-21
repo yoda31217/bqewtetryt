@@ -32,10 +32,10 @@ public class EventStoreTest {
 
   @Test
   public void create2events() {
-    Event firstEvent = createOrGetEvent(new Date(), randomPlayer(), randomPlayer());
+    Event firstEvent = createOrGetEvent(new Date(), randomPlayer(), randomPlayer(), "code_1");
     assertThat(firstEvent).isNotNull();
     assertThat(events()).containsOnly(firstEvent);
-    Event secondEvent = createOrGetEvent(new Date(), randomPlayer(), randomPlayer());
+    Event secondEvent = createOrGetEvent(new Date(), randomPlayer(), randomPlayer(), "code_2");
     assertThat(secondEvent).isNotNull();
     assertThat(events()).containsOnly(firstEvent, secondEvent);
   }
@@ -43,14 +43,14 @@ public class EventStoreTest {
   @Test
   public void createAndGetEvent() {
     Date date = new Date();
-    Player firstPlayer = randomPlayer();
-    Player secondPlayer = randomPlayer();
+    String firstPlayer = randomPlayer();
+    String secondPlayer = randomPlayer();
 
-    Event firstEvent = createOrGetEvent(date, firstPlayer, secondPlayer);
+    Event firstEvent = createOrGetEvent(date, firstPlayer, secondPlayer, "code_1");
     assertThat(firstEvent).isNotNull();
     assertThat(events()).containsOnly(firstEvent);
 
-    Event secondEvent = createOrGetEvent(date, firstPlayer, secondPlayer);
+    Event secondEvent = createOrGetEvent(date, firstPlayer, secondPlayer, "code_1");
     assertThat(secondEvent).isSameAs(firstEvent);
     assertThat(events()).containsOnly(firstEvent);
   }
@@ -58,10 +58,10 @@ public class EventStoreTest {
   @Test
   public void checkFieldsAfterCreate() {
     Date date = new Date();
-    Player firstPlayer = randomPlayer();
-    Player secondPlayer = randomPlayer();
+    String firstPlayer = randomPlayer();
+    String secondPlayer = randomPlayer();
 
-    Event event = createOrGetEvent(date, firstPlayer, secondPlayer);
+    Event event = createOrGetEvent(date, firstPlayer, secondPlayer, "code_1");
     assertThat(event).isNotNull();
     assertThat(event.date()).isEqualTo(date);
     assertThat(event.firstPlayer()).isEqualTo(firstPlayer);
@@ -71,7 +71,7 @@ public class EventStoreTest {
 
   @Test
   public void checkClear() {
-    createOrGetEvent(new Date(new Date().getTime() - 200L), randomPlayer(), randomPlayer());
+    createOrGetEvent(new Date(new Date().getTime() - 200L), randomPlayer(), randomPlayer(), "code_1");
     removeEventsOlderThan(100L);
 
     assertThat(events()).isEmpty();

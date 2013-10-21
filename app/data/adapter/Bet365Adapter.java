@@ -3,7 +3,6 @@ package data.adapter;
 import com.google.common.base.Splitter;
 import data.AdaptedEvent;
 import data.parser.ParsedEvent;
-import models.store.Player;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,8 +26,8 @@ public class Bet365Adapter
 
   @Override
   public AdaptedEvent adapt(ParsedEvent parsedEvent) {
-    Player firstPlayer = adoptPlayer(parsedEvent.firstPlayer);
-    Player secondPlayer = adoptPlayer(parsedEvent.secondPlayer);
+    String firstPlayer = parsedEvent.firstPlayer;
+    String secondPlayer = parsedEvent.secondPlayer;
     double firstKof = Double.parseDouble(parsedEvent.firstKof);
     double secondKof = Double.parseDouble(parsedEvent.secondKof);
 
@@ -37,7 +36,7 @@ public class Bet365Adapter
       firstKof = secondKof;
       secondKof = swapKof;
 
-      Player swapPlayer = firstPlayer;
+      String swapPlayer = firstPlayer;
       firstPlayer = secondPlayer;
       secondPlayer = swapPlayer;
     }
@@ -64,15 +63,6 @@ public class Bet365Adapter
     ArrayList<String> secondPlayerParts = newArrayList(ONE_PLAYER_NAME_SPLITTER.split(secondPlayerPart));
 
     return firstPlayerParts.get(firstPlayerParts.size() - 1).toLowerCase() + "," + secondPlayerParts.get(secondPlayerParts.size() - 1).toLowerCase();
-  }
-
-  private Player adoptPlayer(String playerStr) {
-    Splitter nameSplitter = playerStr.contains("&") ? TWO_PLAYERS_NAME_SPLITTER : ONE_PLAYER_NAME_SPLITTER;
-
-    Iterator<String> playerNames = nameSplitter.split(playerStr).iterator();
-    String firstName = playerNames.next();
-    String secondName = playerNames.next();
-    return new Player(firstName, secondName);
   }
 
   private Date adoptDate(String dateStr) {

@@ -47,10 +47,8 @@ public class MarathonAdapterTest {
     assertThat(adaptedEvent.date).isEqualTo(calendar.getTime());
 
     assertThat(adaptedEvent.organisation).isEqualTo(MARATHON);
-    assertThat(adaptedEvent.firstPlayer.firstName).isEqualTo("Flipkens");
-    assertThat(adaptedEvent.firstPlayer.secondName).isEqualTo("Kirsten");
-    assertThat(adaptedEvent.secondPlayer.firstName).isEqualTo("Hercog");
-    assertThat(adaptedEvent.secondPlayer.secondName).isEqualTo("Polona");
+    assertThat(adaptedEvent.firstPlayer).isEqualTo("Flipkens, Kirsten");
+    assertThat(adaptedEvent.secondPlayer).isEqualTo("Hercog, Polona");
     assertThat(adaptedEvent.firstKof).isEqualTo(1.45);
     assertThat(adaptedEvent.secondKof).isEqualTo(2.92);
     assertThat(adaptedEvent.adaptedDate).isSameAs(adaptedDate);
@@ -81,22 +79,10 @@ public class MarathonAdapterTest {
     ParsedEvent event = new ParsedEvent("Hercog, Polona", "Flipkens, Kirsten", "17:30", "2.92", "1.45");
     AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
 
-    assertThat(adaptedEvent.firstPlayer.firstName).isEqualTo("Flipkens");
-    assertThat(adaptedEvent.firstPlayer.secondName).isEqualTo("Kirsten");
-    assertThat(adaptedEvent.secondPlayer.firstName).isEqualTo("Hercog");
-    assertThat(adaptedEvent.secondPlayer.secondName).isEqualTo("Polona");
+    assertThat(adaptedEvent.firstPlayer).isEqualTo("Flipkens, Kirsten");
+    assertThat(adaptedEvent.secondPlayer).isEqualTo("Hercog, Polona");
     assertThat(adaptedEvent.firstKof).isEqualTo(1.45);
     assertThat(adaptedEvent.secondKof).isEqualTo(2.92);
-  }
-
-  @Test
-  public void slashInName()
-    throws InterruptedException, IOException {
-    ParsedEvent event = new ParsedEvent("B.Flipkens / F.Kirsten", "Hercog, Polona", "11 Sep 17:30", "1.45", "2.92");
-    AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
-
-    assertThat(adaptedEvent.firstPlayer.firstName).isEqualTo("B.Flipkens");
-    assertThat(adaptedEvent.firstPlayer.secondName).isEqualTo("F.Kirsten");
   }
 
   @Test

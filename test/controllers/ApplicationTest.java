@@ -3,7 +3,6 @@ package controllers;
 import models.store.Event;
 import models.store.HistoryRecord;
 import models.store.Organisation;
-import models.store.Player;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +43,7 @@ public class ApplicationTest {
 
     date = new Date();
 
-    Event event = createOrGetEvent(date, new Player("qwe", "asd"), new Player("zxc", "rty"));
+    Event event = createOrGetEvent(date, "firstPlayer", "secondPlayer", "eventCode");
     HistoryRecord record = new HistoryRecord(date, Organisation.MARATHON, 1.1, 2.1);
     event.addHistory(record);
   }
@@ -79,8 +78,7 @@ public class ApplicationTest {
     assertThat(charset(result)).isEqualTo("utf-8");
     assertThat(contentType(result)).isEqualTo("application/json");
     assertThat(contentAsString(result)).isEqualTo("[{\"date\":" + date.getTime() +
-      ",\"firstPlayer\":{\"firstName\":\"qwe\",\"secondName\":\"asd\"},\"secondPlayer\":{\"firstName\":" +
-      "\"zxc\",\"secondName\":\"rty\"},\"history\":[{\"date\":" + date.getTime() +
+      ",\"firstPlayer\":\"firstPlayer\",\"secondPlayer\":\"secondPlayer\",\"code\":\"eventCode\",\"history\":[{\"date\":" + date.getTime() +
       ",\"organisation\":\"MARATHON\",\"firstKof\":1.1,\"secondKof\":2.1}]}]");
   }
 }

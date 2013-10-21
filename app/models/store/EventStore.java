@@ -21,8 +21,8 @@ public class EventStore {
     return unmodifiableSet(EVENTS.keySet());
   }
 
-  public static Event createOrGetEvent(Date date, Player firstPlayer, Player secondPlayer) {
-    Event newEvent = new Event(date, firstPlayer, secondPlayer);
+  public static Event createOrGetEvent(Date date, String firstPlayer, String secondPlayer, String code) {
+    Event newEvent = new Event(date, firstPlayer, secondPlayer, code);
     Event event = EVENTS.putIfAbsent(newEvent, newEvent);
     return firstNonNull(event, newEvent);
   }
