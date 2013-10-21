@@ -31,7 +31,7 @@ public class Bet365AdapterTest {
     Date adaptedDate = new Date();
     PowerMockito.whenNew(Date.class).withNoArguments().thenReturn(adaptedDate);
 
-    ParsedEvent event = new ParsedEvent("Florian Mayer", "Kristina Mladenovic & Flavia Pennetta", "11 Oct 07:30", "3.50", "1.28");
+    ParsedEvent event = new ParsedEvent("Florian Mayer", "Kristina Mladenovic", "11 Oct 07:30", "1.50", "3.28");
     AdaptedEvent adaptedEvent = new Bet365Adapter().adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
@@ -46,11 +46,24 @@ public class Bet365AdapterTest {
     assertThat(adaptedEvent.organisation).isEqualTo(BET365);
     assertThat(adaptedEvent.firstPlayer.firstName).isEqualTo("Florian");
     assertThat(adaptedEvent.firstPlayer.secondName).isEqualTo("Mayer");
+    assertThat(adaptedEvent.secondPlayer.firstName).isEqualTo("Kristina");
+    assertThat(adaptedEvent.secondPlayer.secondName).isEqualTo("Mladenovic");
+    assertThat(adaptedEvent.firstKof).isEqualTo(1.5);
+    assertThat(adaptedEvent.secondKof).isEqualTo(3.28);
+    assertThat(adaptedEvent.adaptedDate).isSameAs(adaptedDate);
+  }
+
+  @Test
+  public void andInNames()
+    throws Exception {
+    Date adaptedDate = new Date();
+    PowerMockito.whenNew(Date.class).withNoArguments().thenReturn(adaptedDate);
+
+    ParsedEvent event = new ParsedEvent("Florian Mayer", "Kristina Mladenovic & Flavia Pennetta", "11 Oct 07:30", "1.50", "3.28");
+    AdaptedEvent adaptedEvent = new Bet365Adapter().adapt(event);
+
     assertThat(adaptedEvent.secondPlayer.firstName).isEqualTo("Kristina Mladenovic");
     assertThat(adaptedEvent.secondPlayer.secondName).isEqualTo("Flavia Pennetta");
-    assertThat(adaptedEvent.firstKof).isEqualTo(3.5);
-    assertThat(adaptedEvent.secondKof).isEqualTo(1.28);
-    assertThat(adaptedEvent.adaptedDate).isSameAs(adaptedDate);
   }
 
   @Test
