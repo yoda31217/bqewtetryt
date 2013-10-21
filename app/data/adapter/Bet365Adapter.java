@@ -21,7 +21,7 @@ public class Bet365Adapter
 
   private static final Splitter ONE_PLAYER_NAME_SPLITTER = on(" ").omitEmptyStrings().trimResults();
   private static final Splitter TWO_PLAYER_NAME_SPLITTER = on("&").omitEmptyStrings().trimResults();
-  static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat("yyyy dd MMM hh:mm Z");
+  static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat("yyyy dd MMM HH:mm Z");
 
   @Override
   public AdaptedEvent adapt(ParsedEvent parsedEvent) {

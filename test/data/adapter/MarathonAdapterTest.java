@@ -56,15 +56,25 @@ public class MarathonAdapterTest {
   }
 
   @Test
-  public void longDate()
+  public void slashInName()
     throws InterruptedException, IOException {
-    ParsedEvent event = new ParsedEvent("Flipkens, Kirsten", "Hercog, Polona", "11 Sep 17:30", "1.45", "2.92");
+    ParsedEvent event = new ParsedEvent("Flipkens / Kirsten", "Hercog, Polona", "11 Sep 17:30", "1.45", "2.92");
     AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
 
-    Calendar calendar = Calendar.getInstance(getTimeZone("GMT"));
+    assertThat(adaptedEvent.firstPlayer.firstName).isEqualTo("Flipkens");
+    assertThat(adaptedEvent.firstPlayer.secondName).isEqualTo("Kirsten");
+  }
+
+  @Test
+  public void date24hours()
+    throws InterruptedException, IOException {
+    ParsedEvent event = new ParsedEvent("Flipkens / Kirsten", "Hercog, Polona", "11 Sep 12:30", "1.45", "2.92");
+    AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
+
+    Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
     calendar.set(MONTH, SEPTEMBER);
     calendar.set(DAY_OF_MONTH, 11);
-    calendar.set(HOUR_OF_DAY, 16);
+    calendar.set(HOUR_OF_DAY, 12);
     calendar.set(MINUTE, 30);
     calendar.set(SECOND, 0);
     calendar.set(MILLISECOND, 0);
@@ -72,7 +82,23 @@ public class MarathonAdapterTest {
   }
 
   @Test
-  public void adaptLongDateParseException()
+  public void longDate()
+    throws InterruptedException, IOException {
+    ParsedEvent event = new ParsedEvent("Flipkens, Kirsten", "Hercog, Polona", "11 Sep 17:30", "1.45", "2.92");
+    AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
+
+    Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
+    calendar.set(MONTH, SEPTEMBER);
+    calendar.set(DAY_OF_MONTH, 11);
+    calendar.set(HOUR_OF_DAY, 17);
+    calendar.set(MINUTE, 30);
+    calendar.set(SECOND, 0);
+    calendar.set(MILLISECOND, 0);
+    assertThat(adaptedEvent.date).isEqualTo(calendar.getTime());
+  }
+
+  @Test
+  public void adoptLongDateParseException()
     throws Exception {
     try {
       invokeMethod(new MarathonAdapter(), "adaptLongDate", "WRONG_DATE_STRING");

@@ -52,4 +52,20 @@ public class Bet365AdapterTest {
     assertThat(adaptedEvent.secondKof).isEqualTo(1.28);
     assertThat(adaptedEvent.adaptedDate).isSameAs(adaptedDate);
   }
+
+  @Test
+  public void date24hours()
+    throws Exception {
+    ParsedEvent event = new ParsedEvent("Florian Mayer", "Kristina Mladenovic & Flavia Pennetta", "11 Oct 12:30", "3.50", "1.28");
+    AdaptedEvent adaptedEvent = new Bet365Adapter().adapt(event);
+
+    Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
+    calendar.set(OCTOBER, 11);
+    calendar.set(DAY_OF_MONTH, 11);
+    calendar.set(HOUR_OF_DAY, 12);
+    calendar.set(MINUTE, 30);
+    calendar.set(SECOND, 0);
+    calendar.set(MILLISECOND, 0);
+    assertThat(adaptedEvent.date).isEqualTo(calendar.getTime());
+  }
 }

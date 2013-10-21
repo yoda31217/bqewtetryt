@@ -25,7 +25,7 @@ public class MarathonAdapter
   implements BAdapter {
 
   private static final Splitter PLAYER_NAME_SPLITTER = on(anyOf(",/")).omitEmptyStrings().trimResults();
-  static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat("yyyy dd MMM hh:mm Z");
+  static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat("yyyy dd MMM HH:mm Z");
 
   @Override
   public AdaptedEvent adapt(ParsedEvent parsedEvent) {
