@@ -8,6 +8,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -51,6 +52,25 @@ public class Bet365AdapterTest {
     assertThat(adaptedEvent.firstKof).isEqualTo(1.5);
     assertThat(adaptedEvent.secondKof).isEqualTo(3.28);
     assertThat(adaptedEvent.adaptedDate).isSameAs(adaptedDate);
+  }
+
+  @Test
+  public void codes()
+    throws Exception {
+    ParsedEvent event = new ParsedEvent("Florian Del Mayer", "Aisam-Ul Haq Qureshi & Jean-Julien Rojer", "11 Oct 07:30", "1.50", "3.28");
+    AdaptedEvent adaptedEvent = new Bet365Adapter().adapt(event);
+
+    Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
+    calendar.set(OCTOBER, 11);
+    calendar.set(DAY_OF_MONTH, 11);
+    calendar.set(HOUR_OF_DAY, 7);
+    calendar.set(MINUTE, 30);
+    calendar.set(SECOND, 0);
+    calendar.set(MILLISECOND, 0);
+
+    String eventCode = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(calendar.getTime()) + "_mayer_qureshi,rojer";
+
+    assertThat(adaptedEvent.code).isEqualTo(eventCode);
   }
 
   @Test

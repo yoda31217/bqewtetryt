@@ -24,8 +24,10 @@ import static models.store.Organisation.MARATHON;
 public class MarathonAdapter
   implements BAdapter {
 
-  private static final Splitter PLAYER_NAME_SPLITTER = on(anyOf(",/")).omitEmptyStrings().trimResults();
   static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat("yyyy dd MMM HH:mm Z");
+  private static final Splitter PLAYER_NAME_SPLITTER = on(anyOf(",/")).omitEmptyStrings().trimResults();
+  private static final Splitter ONE_PLAYER_NAME_SPLITTER = on(",").omitEmptyStrings().trimResults();
+  private static final Splitter TWO_PLAYERS_NAME_SPLITTER = on(anyOf("./")).omitEmptyStrings().trimResults();
 
   @Override
   public AdaptedEvent adapt(ParsedEvent parsedEvent) {
@@ -46,7 +48,23 @@ public class MarathonAdapter
 
     Date date = adoptDate(parsedEvent.date);
 
-    return new AdaptedEvent(firstPlayer, secondPlayer, firstKof, secondKof, MARATHON, date);
+    String firstPlayerCode = adoptPlayerCode(parsedEvent.firstPlayer);
+    String secondPlayerCode = adoptPlayerCode(parsedEvent.secondPlayer);
+
+    return new AdaptedEvent(firstPlayer, secondPlayer, firstKof, secondKof, MARATHON, date, firstPlayerCode, secondPlayerCode);
+  }
+
+  private String adoptPlayerCode(String playerStr) {
+    if (!playerStr.contains("/")) return ONE_PLAYER_NAME_SPLITTER.split(playerStr).iterator().next().toLowerCase();
+
+    Iterator<String> playerParts = TWO_PLAYERS_NAME_SPLITTER.split(playerStr).iterator();
+
+    playerParts.next();
+    String code = playerParts.next().toLowerCase();
+    playerParts.next();
+    code += "," + playerParts.next().toLowerCase();
+
+    return code;
   }
 
   private Player adoptPlayer(String playerStr) {

@@ -9,6 +9,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -56,6 +57,25 @@ public class MarathonAdapterTest {
   }
 
   @Test
+  public void codes()
+    throws Exception {
+    ParsedEvent event = new ParsedEvent("Flipkens, Kirsten", "J.Murray / J.Peers", "11 Sep 17:30", "1.45", "2.92");
+    AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
+
+    Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
+    calendar.set(MONTH, SEPTEMBER);
+    calendar.set(DAY_OF_MONTH, 11);
+    calendar.set(HOUR_OF_DAY, 17);
+    calendar.set(MINUTE, 30);
+    calendar.set(SECOND, 0);
+    calendar.set(MILLISECOND, 0);
+
+    String eventCode = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(calendar.getTime()) + "_flipkens_murray,peers";
+
+    assertThat(adaptedEvent.code).isEqualTo(eventCode);
+  }
+
+  @Test
   public void order()
     throws Exception {
     ParsedEvent event = new ParsedEvent("Hercog, Polona", "Flipkens, Kirsten", "17:30", "2.92", "1.45");
@@ -72,17 +92,17 @@ public class MarathonAdapterTest {
   @Test
   public void slashInName()
     throws InterruptedException, IOException {
-    ParsedEvent event = new ParsedEvent("Flipkens / Kirsten", "Hercog, Polona", "11 Sep 17:30", "1.45", "2.92");
+    ParsedEvent event = new ParsedEvent("B.Flipkens / F.Kirsten", "Hercog, Polona", "11 Sep 17:30", "1.45", "2.92");
     AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
 
-    assertThat(adaptedEvent.firstPlayer.firstName).isEqualTo("Flipkens");
-    assertThat(adaptedEvent.firstPlayer.secondName).isEqualTo("Kirsten");
+    assertThat(adaptedEvent.firstPlayer.firstName).isEqualTo("B.Flipkens");
+    assertThat(adaptedEvent.firstPlayer.secondName).isEqualTo("F.Kirsten");
   }
 
   @Test
   public void date24hours()
     throws InterruptedException, IOException {
-    ParsedEvent event = new ParsedEvent("Flipkens / Kirsten", "Hercog, Polona", "11 Sep 12:30", "1.45", "2.92");
+    ParsedEvent event = new ParsedEvent("Flipkens, Kirsten", "Hercog, Polona", "11 Sep 12:30", "1.45", "2.92");
     AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));

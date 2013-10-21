@@ -43,7 +43,7 @@ public class EventJobTest {
   @Mock
   private ParsedEvent parsedEvent = new ParsedEvent("fp", "sp", "DATE_STRING", "1.1", "2.2");
   @Mock
-  private AdaptedEvent adaptedEvent = new AdaptedEvent(new Player("fn1", "sn1"), new Player("fn2", "sn2"), 1.1, 2.2, BET365, new Date());
+  private AdaptedEvent adaptedEvent = new AdaptedEvent(new Player("fn1", "sn1"), new Player("fn2", "sn2"), 1.1, 2.2, BET365, new Date(), null, null);
   @Mock
   private Event event;
 
@@ -72,18 +72,19 @@ public class EventJobTest {
   @Test
   @Ignore
   public void realMarathonRun() {
-//    EventJob job = new EventJob(new MarathonFetcher("htp://www.marathonbet.com/en/betting/Tennis/"), new MarathonParser(), new MarathonAdapter());
-//    job.run();
-//    job.run();
+    //    EventJob job = new EventJob(new MarathonFetcher("htp://www.marathonbet.com/en/betting/Tennis/"), new MarathonParser(), new MarathonAdapter());
+    //    job.run();
+    //    job.run();
   }
 
   @Test
   @Ignore
   public void realBet365Run() {
-//    EventJob job = new EventJob(new Bet365Fetcher(
-//      "http://www.bet365.com/Lite/cache/api/?clt=9994&op=4&cid=13&cpid=13-1-50-2-163-0-0-0-1-0-0-4505-0-0-1-0-0-0-0&cf=N&lng=1&cty=195&fm=1&tzi=1&oty=2&hd=N"),
-//      new Bet365Parser(), new Bet365Adapter());
-//    job.run();
-//    job.run();
+    //    EventJob job = new EventJob(new Bet365Fetcher(
+    //      "http://www.bet365.com/Lite/cache/api/?clt=9994&op=4&cid=13&cpid=13-1-50-2-163-0-0-0-1-0-0-4505-0-0-1-0-0-0-0&cf=N&lng=1&cty=195&fm=1&tzi=1&oty=2
+    // &hd=N"),
+    //      new Bet365Parser(), new Bet365Adapter());
+    //    job.run();
+    //    job.run();
   }
 }
