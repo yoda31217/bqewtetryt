@@ -22,16 +22,16 @@ public class Bet365Adapter
   implements BAdapter {
 
   static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat("yyyy dd MMM HH:mm Z");
-  private static final Splitter ONE_PLAYER_NAME_SPLITTER = on(" ").omitEmptyStrings().trimResults();
-  private static final Splitter TWO_PLAYERS_NAME_SPLITTER = on("&").omitEmptyStrings().trimResults();
+  private static final Splitter ONE_PLAYER_ON_SIDE_NAME_SPLITTER = on(" ").omitEmptyStrings().trimResults();
+  private static final Splitter TWO_PLAYERS_ON_SIDE_NAME_SPLITTER = on("&").omitEmptyStrings().trimResults();
 
   @Override
   public AdaptedEvent adapt(ParsedEvent parsedEvent) {
-    String firstPlayer = parsedEvent.firstPlayer;
-    String secondPlayer = parsedEvent.secondPlayer;
+    String firstSide = parsedEvent.firstSide;
+    String secondSide = parsedEvent.secondSide;
 
-    firstPlayer = stripAccents(firstPlayer);
-    secondPlayer = stripAccents(secondPlayer);
+    firstSide = stripAccents(firstSide);
+    secondSide = stripAccents(secondSide);
 
     double firstKof = Double.parseDouble(parsedEvent.firstKof);
     double secondKof = Double.parseDouble(parsedEvent.secondKof);
@@ -41,33 +41,33 @@ public class Bet365Adapter
       firstKof = secondKof;
       secondKof = swapKof;
 
-      String swapPlayer = firstPlayer;
-      firstPlayer = secondPlayer;
-      secondPlayer = swapPlayer;
+      String swapSide = firstSide;
+      firstSide = secondSide;
+      secondSide = swapSide;
     }
 
     Date date = adoptDate(parsedEvent.date);
 
-    String firstPlayerCode = adoptPlayerCode(firstPlayer);
-    String secondPlayerCode = adoptPlayerCode(secondPlayer);
+    String firstSideCode = adoptSideCode(firstSide);
+    String secondSideCode = adoptSideCode(secondSide);
 
-    return new AdaptedEvent(firstPlayer, secondPlayer, firstKof, secondKof, BET365, date, firstPlayerCode, secondPlayerCode);
+    return new AdaptedEvent(firstSide, secondSide, firstKof, secondKof, BET365, date, firstSideCode, secondSideCode);
   }
 
-  private String adoptPlayerCode(String playerStr) {
-    if (!playerStr.contains("&")) {
-      ArrayList<String> playerParts = newArrayList(ONE_PLAYER_NAME_SPLITTER.split(playerStr));
-      return playerParts.get(playerParts.size() - 1).toLowerCase();
+  private String adoptSideCode(String sideStr) {
+    if (!sideStr.contains("&")) {
+      ArrayList<String> sideParts = newArrayList(ONE_PLAYER_ON_SIDE_NAME_SPLITTER.split(sideStr));
+      return sideParts.get(sideParts.size() - 1).toLowerCase();
     }
 
-    Iterator<String> playerParts = TWO_PLAYERS_NAME_SPLITTER.split(playerStr).iterator();
-    String firstPlayerPart = playerParts.next();
-    String secondPlayerPart = playerParts.next();
+    Iterator<String> sideParts = TWO_PLAYERS_ON_SIDE_NAME_SPLITTER.split(sideStr).iterator();
+    String firstSidePart = sideParts.next();
+    String secondSidePart = sideParts.next();
 
-    ArrayList<String> firstPlayerParts = newArrayList(ONE_PLAYER_NAME_SPLITTER.split(firstPlayerPart));
-    ArrayList<String> secondPlayerParts = newArrayList(ONE_PLAYER_NAME_SPLITTER.split(secondPlayerPart));
+    ArrayList<String> firstSideParts = newArrayList(ONE_PLAYER_ON_SIDE_NAME_SPLITTER.split(firstSidePart));
+    ArrayList<String> secondSideParts = newArrayList(ONE_PLAYER_ON_SIDE_NAME_SPLITTER.split(secondSidePart));
 
-    return firstPlayerParts.get(firstPlayerParts.size() - 1).toLowerCase() + "," + secondPlayerParts.get(secondPlayerParts.size() - 1).toLowerCase();
+    return firstSideParts.get(firstSideParts.size() - 1).toLowerCase() + "," + secondSideParts.get(secondSideParts.size() - 1).toLowerCase();
   }
 
   private Date adoptDate(String dateStr) {

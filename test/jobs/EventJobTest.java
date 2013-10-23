@@ -42,7 +42,7 @@ public class EventJobTest {
   @Mock
   private ParsedEvent parsedEvent = new ParsedEvent("fp", "sp", "DATE_STRING", "1.1", "2.2");
   @Mock
-  private AdaptedEvent adaptedEvent = new AdaptedEvent("player1", "player2", 1.1, 2.2, BET365, new Date(), "player1_code", "player2_code");
+  private AdaptedEvent adaptedEvent = new AdaptedEvent("side1", "side", 1.1, 2.2, BET365, new Date(), "side1_code", "side2_code");
   @Mock
   private Event event;
 
@@ -63,7 +63,7 @@ public class EventJobTest {
     verify(adapter).adapt(same(parsedEvent));
 
     verifyStatic();
-    createOrGetEvent(adaptedEvent.date, adaptedEvent.firstPlayer, adaptedEvent.secondPlayer, adaptedEvent.code);
+    createOrGetEvent(adaptedEvent.date, adaptedEvent.firstSide, adaptedEvent.secondSide, adaptedEvent.code);
 
     verify(event).addHistory(refEq(new HistoryRecord(adaptedEvent.adaptedDate, adaptedEvent.organisation, adaptedEvent.firstKof, adaptedEvent.secondKof)));
   }

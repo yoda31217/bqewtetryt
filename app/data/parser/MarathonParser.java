@@ -37,15 +37,15 @@ public class MarathonParser
 
     String date = decodeCollapseWhiteSpace(nameEl.getFirstElementByClass("date").getContent());
 
-    List<Element> playerNameEls = nameEl.getAllElementsByClass("today-member-name");
-    if (0 == playerNameEls.size()) playerNameEls = nameEl.getAllElementsByClass("member-name");
+    List<Element> sideNameEls = nameEl.getAllElementsByClass("today-member-name");
+    if (0 == sideNameEls.size()) sideNameEls = nameEl.getAllElementsByClass("member-name");
 
-    String firstPlayer = decodeCollapseWhiteSpace(playerNameEls.get(0).getContent());
-    String secondPlayer = decodeCollapseWhiteSpace(playerNameEls.get(1).getContent());
+    String firstSide = decodeCollapseWhiteSpace(sideNameEls.get(0).getContent());
+    String secondSide = decodeCollapseWhiteSpace(sideNameEls.get(1).getContent());
 
     String firstKof = decodeCollapseWhiteSpace(eventElChildren.get(1).getChildElements().get(0).getContent());
     String secondKof = decodeCollapseWhiteSpace(eventElChildren.get(2).getChildElements().get(0).getContent());
 
-    return new ParsedEvent(firstPlayer, secondPlayer, date, firstKof, secondKof);
+    return new ParsedEvent(firstSide, secondSide, date, firstKof, secondKof);
   }
 }

@@ -31,8 +31,8 @@ public class EventStore {
     return events;
   }
 
-  public static Event createOrGetEvent(Date date, String firstPlayer, String secondPlayer, String code) {
-    Event newEvent = new Event(date, firstPlayer, secondPlayer, code);
+  public static Event createOrGetEvent(Date date, String firstSide, String secondSide, String code) {
+    Event newEvent = new Event(date, firstSide, secondSide, code);
     Event event = EVENTS.putIfAbsent(newEvent, newEvent);
     return firstNonNull(event, newEvent);
   }

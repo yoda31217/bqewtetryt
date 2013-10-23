@@ -6,7 +6,7 @@ import org.junit.Test;
 import java.util.Date;
 
 import static models.store.Events.randomHistoryRecord;
-import static models.store.Events.randomPlayer;
+import static models.store.Events.randomSide;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class EventTest {
@@ -16,7 +16,7 @@ public class EventTest {
   @Before
   public void before()
     throws Exception {
-    event = new Event(new Date(), randomPlayer(), randomPlayer(), "event_code");
+    event = new Event(new Date(), randomSide(), randomSide(), "event_code");
   }
 
   @Test

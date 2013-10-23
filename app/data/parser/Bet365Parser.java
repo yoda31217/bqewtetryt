@@ -53,14 +53,14 @@ public class Bet365Parser
 
     String eventTitle = decodeCollapseWhiteSpace(eventElChildren.get(1).getChildElements().get(0).getChildElements().get(0).getContent());
 
-    Iterator<String> playerNames = EVENT_TITLE_SPLITTER.split(eventTitle).iterator();
+    Iterator<String> sideNames = EVENT_TITLE_SPLITTER.split(eventTitle).iterator();
 
-    String firstPlayer = playerNames.next();
-    String secondPlayer = playerNames.next();
+    String firstSide = sideNames.next();
+    String secondSide = sideNames.next();
 
     String firstKof = decodeCollapseWhiteSpace(eventElChildren.get(3).getChildElements().get(0).getContent());
     String secondKof = decodeCollapseWhiteSpace(eventElChildren.get(4).getChildElements().get(0).getContent());
 
-    return new ParsedEvent(firstPlayer, secondPlayer, date, firstKof, secondKof);
+    return new ParsedEvent(firstSide, secondSide, date, firstKof, secondKof);
   }
 }

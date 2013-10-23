@@ -12,15 +12,15 @@ import static java.util.Collections.unmodifiableList;
 public class Event {
 
   final Date date;
-  final String firstPlayer;
-  final String secondPlayer;
+  final String firstSide;
+  final String secondSide;
   final String code;
   final List<HistoryRecord> history = new CopyOnWriteArrayList<HistoryRecord>();
 
-  Event(Date date, String firstPlayer, String secondPlayer, String code) {
+  Event(Date date, String firstSide, String secondSide, String code) {
     this.date = date;
-    this.firstPlayer = firstPlayer;
-    this.secondPlayer = secondPlayer;
+    this.firstSide = firstSide;
+    this.secondSide = secondSide;
     this.code = code;
   }
 
@@ -56,11 +56,11 @@ public class Event {
     return date;
   }
 
-  public String firstPlayer() {
-    return firstPlayer;
+  public String firstSide() {
+    return firstSide;
   }
 
-  public String secondPlayer() {
-    return secondPlayer;
+  public String secondSide() {
+    return secondSide;
   }
 }

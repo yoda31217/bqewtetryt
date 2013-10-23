@@ -43,7 +43,7 @@ public class ApplicationTest {
 
     date = new Date();
 
-    Event event = createOrGetEvent(date, "firstPlayer", "secondPlayer", "eventCode");
+    Event event = createOrGetEvent(date, "firstSide", "secondSide", "eventCode");
     HistoryRecord record = new HistoryRecord(date, Organisation.MARATHON, 1.1, 2.1);
     event.addHistory(record);
   }
@@ -78,7 +78,7 @@ public class ApplicationTest {
     assertThat(charset(result)).isEqualTo("utf-8");
     assertThat(contentType(result)).isEqualTo("application/json");
     assertThat(contentAsString(result)).isEqualTo("[{\"date\":" + date.getTime() +
-      ",\"firstPlayer\":\"firstPlayer\",\"secondPlayer\":\"secondPlayer\",\"code\":\"eventCode\",\"history\":[{\"date\":" + date.getTime() +
+      ",\"firstSide\":\"firstSide\",\"secondSide\":\"secondSide\",\"code\":\"eventCode\",\"history\":[{\"date\":" + date.getTime() +
       ",\"organisation\":\"MARATHON\",\"firstKof\":1.1,\"secondKof\":2.1}]}]");
   }
 }

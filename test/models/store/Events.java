@@ -8,8 +8,8 @@ import static models.store.Organisation.MARATHON;
 
 public final class Events {
 
-  public static String randomPlayer() {
-    return "player_" + random();
+  public static String randomSide() {
+    return "side_" + random();
   }
 
   public static HistoryRecord randomHistoryRecord() {

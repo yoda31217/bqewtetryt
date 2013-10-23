@@ -8,8 +8,8 @@ import java.util.Date;
 public class AdaptedEvent {
 
   static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd mm");
-  public final String firstPlayer;
-  public final String secondPlayer;
+  public final String firstSide;
+  public final String secondSide;
   public final double firstKof;
   public final double secondKof;
   public final Organisation organisation;
@@ -17,15 +17,15 @@ public class AdaptedEvent {
   public final Date adaptedDate;
   public final String code;
 
-  public AdaptedEvent(String firstPlayer, String secondPlayer, double firstKof, double secondKof, Organisation organisation, Date date, Object firstPlayerCode,
-                      String secondPlayerCode) {
-    this.firstPlayer = firstPlayer;
-    this.secondPlayer = secondPlayer;
+  public AdaptedEvent(String firstSide, String secondSide, double firstKof, double secondKof, Organisation organisation, Date date, Object firstSideCode,
+                      String secondSideCode) {
+    this.firstSide = firstSide;
+    this.secondSide = secondSide;
     this.firstKof = firstKof;
     this.secondKof = secondKof;
     this.organisation = organisation;
     this.date = date;
     this.adaptedDate = new Date();
-    this.code = firstPlayerCode + "_" + secondPlayerCode + "_" + DATE_FORMAT.format(date);
+    this.code = firstSideCode + "_" + secondSideCode + "_" + DATE_FORMAT.format(date);
   }
 }

@@ -45,8 +45,8 @@ public class Bet365AdapterTest {
     assertThat(adaptedEvent.date).isEqualTo(calendar.getTime());
 
     assertThat(adaptedEvent.organisation).isEqualTo(BET365);
-    assertThat(adaptedEvent.firstPlayer).isEqualTo("Florian Mayer");
-    assertThat(adaptedEvent.secondPlayer).isEqualTo("Kristina Mladenovic");
+    assertThat(adaptedEvent.firstSide).isEqualTo("Florian Mayer");
+    assertThat(adaptedEvent.secondSide).isEqualTo("Kristina Mladenovic");
     assertThat(adaptedEvent.firstKof).isEqualTo(1.5);
     assertThat(adaptedEvent.secondKof).isEqualTo(3.28);
     assertThat(adaptedEvent.adaptedDate).isSameAs(adaptedDate);
@@ -77,8 +77,8 @@ public class Bet365AdapterTest {
     ParsedEvent event = new ParsedEvent("Kristina Mladenovic", "Florian Mayer", "11 Oct 07:30", "3.28", "1.50");
     AdaptedEvent adaptedEvent = new Bet365Adapter().adapt(event);
 
-    assertThat(adaptedEvent.firstPlayer).isEqualTo("Florian Mayer");
-    assertThat(adaptedEvent.secondPlayer).isEqualTo("Kristina Mladenovic");
+    assertThat(adaptedEvent.firstSide).isEqualTo("Florian Mayer");
+    assertThat(adaptedEvent.secondSide).isEqualTo("Kristina Mladenovic");
     assertThat(adaptedEvent.firstKof).isEqualTo(1.5);
     assertThat(adaptedEvent.secondKof).isEqualTo(3.28);
   }
@@ -89,8 +89,8 @@ public class Bet365AdapterTest {
     ParsedEvent event = new ParsedEvent("Florian Hradečka", "Kristina Hradečka", "11 Oct 07:30", "1.50", "3.28");
     AdaptedEvent adaptedEvent = new Bet365Adapter().adapt(event);
 
-    assertThat(adaptedEvent.firstPlayer).isEqualTo("Florian Hradecka");
-    assertThat(adaptedEvent.secondPlayer).isEqualTo("Kristina Hradecka");
+    assertThat(adaptedEvent.firstSide).isEqualTo("Florian Hradecka");
+    assertThat(adaptedEvent.secondSide).isEqualTo("Kristina Hradecka");
   }
 
   @Test

@@ -20,7 +20,7 @@ render = () ->
       eventDate = new Date(event.date)
 
       dateStr = (eventDate.getMonth() + 1) + '-' + eventDate.getDate() + ' ' + eventDate.getHours() + ':' + eventDate.getMinutes()
-      captionStr = "#{event.firstPlayer} - #{event.secondPlayer}"
+      captionStr = "#{event.firstSide} - #{event.secondSide}"
 
       eventHeader.append $('<div class="col-md-1">').append $('<small>').text dateStr
       eventHeader.append $('<div class="col-md-4">').append $('<small>').text captionStr

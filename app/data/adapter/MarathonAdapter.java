@@ -25,16 +25,16 @@ public class MarathonAdapter
   implements BAdapter {
 
   static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat("yyyy dd MMM HH:mm Z");
-  private static final Splitter ONE_PLAYER_NAME_SPLITTER = on(",").omitEmptyStrings().trimResults();
-  private static final Splitter TWO_PLAYERS_NAME_SPLITTER = on(anyOf("./")).omitEmptyStrings().trimResults();
+  private static final Splitter ONE_PLAYER_ON_SIDE_NAME_SPLITTER = on(",").omitEmptyStrings().trimResults();
+  private static final Splitter TWO_PLAYERS_ON_SIDE_NAME_SPLITTER = on(anyOf("./")).omitEmptyStrings().trimResults();
 
   @Override
   public AdaptedEvent adapt(ParsedEvent parsedEvent) {
-    String firstPlayer = parsedEvent.firstPlayer;
-    String secondPlayer = parsedEvent.secondPlayer;
+    String firstSide = parsedEvent.firstSide;
+    String secondSide = parsedEvent.secondSide;
 
-    firstPlayer = stripAccents(firstPlayer);
-    secondPlayer = stripAccents(secondPlayer);
+    firstSide = stripAccents(firstSide);
+    secondSide = stripAccents(secondSide);
 
     double firstKof = Double.parseDouble(parsedEvent.firstKof);
     double secondKof = Double.parseDouble(parsedEvent.secondKof);
@@ -44,28 +44,28 @@ public class MarathonAdapter
       firstKof = secondKof;
       secondKof = swapKof;
 
-      String swapPlayer = firstPlayer;
-      firstPlayer = secondPlayer;
-      secondPlayer = swapPlayer;
+      String swapSide = firstSide;
+      firstSide = secondSide;
+      secondSide = swapSide;
     }
 
     Date date = adoptDate(parsedEvent.date);
 
-    String firstPlayerCode = adoptPlayerCode(firstPlayer);
-    String secondPlayerCode = adoptPlayerCode(secondPlayer);
+    String firstSideCode = adoptSideCode(firstSide);
+    String secondSIdeCode = adoptSideCode(secondSide);
 
-    return new AdaptedEvent(firstPlayer, secondPlayer, firstKof, secondKof, MARATHON, date, firstPlayerCode, secondPlayerCode);
+    return new AdaptedEvent(firstSide, secondSide, firstKof, secondKof, MARATHON, date, firstSideCode, secondSIdeCode);
   }
 
-  private String adoptPlayerCode(String playerStr) {
-    if (!playerStr.contains("/")) return ONE_PLAYER_NAME_SPLITTER.split(playerStr).iterator().next().toLowerCase();
+  private String adoptSideCode(String sideStr) {
+    if (!sideStr.contains("/")) return ONE_PLAYER_ON_SIDE_NAME_SPLITTER.split(sideStr).iterator().next().toLowerCase();
 
-    Iterator<String> playerParts = TWO_PLAYERS_NAME_SPLITTER.split(playerStr).iterator();
+    Iterator<String> sideParts = TWO_PLAYERS_ON_SIDE_NAME_SPLITTER.split(sideStr).iterator();
 
-    playerParts.next();
-    String code = playerParts.next().toLowerCase();
-    playerParts.next();
-    code += "," + playerParts.next().toLowerCase();
+    sideParts.next();
+    String code = sideParts.next().toLowerCase();
+    sideParts.next();
+    code += "," + sideParts.next().toLowerCase();
 
     return code;
   }

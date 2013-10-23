@@ -20,13 +20,13 @@ public class Bet365ParserTest {
     assertThat(events).hasSize(58);
 
     ParsedEvent firstEvent = events.get(0);
-    assertThat(firstEvent.firstPlayer).isEqualTo("Flovian Mayer");
-    assertThat(firstEvent.secondPlayer).isEqualTo("Jo-Wilfried Tsonga");
+    assertThat(firstEvent.firstSide).isEqualTo("Flovian Mayer");
+    assertThat(firstEvent.secondSide).isEqualTo("Jo-Wilfried Tsonga");
     assertThat(firstEvent.date).isEqualTo("11 Oct 07:00");
     assertThat(firstEvent.firstKof).isEqualTo("3.50");
     assertThat(firstEvent.secondKof).isEqualTo("1.28");
 
-//    ParsedEvent seventhEvent = events.get(6);
-//    assertThat(seventhEvent.date).isEqualTo("11 Sep 14:00");
+    //    ParsedEvent seventhEvent = events.get(6);
+    //    assertThat(seventhEvent.date).isEqualTo("11 Sep 14:00");
   }
 }

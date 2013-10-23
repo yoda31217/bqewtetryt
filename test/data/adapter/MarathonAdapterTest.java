@@ -47,8 +47,8 @@ public class MarathonAdapterTest {
     assertThat(adaptedEvent.date).isEqualTo(calendar.getTime());
 
     assertThat(adaptedEvent.organisation).isEqualTo(MARATHON);
-    assertThat(adaptedEvent.firstPlayer).isEqualTo("Flipkens, Kirsten");
-    assertThat(adaptedEvent.secondPlayer).isEqualTo("Hercog, Polona");
+    assertThat(adaptedEvent.firstSide).isEqualTo("Flipkens, Kirsten");
+    assertThat(adaptedEvent.secondSide).isEqualTo("Hercog, Polona");
     assertThat(adaptedEvent.firstKof).isEqualTo(1.45);
     assertThat(adaptedEvent.secondKof).isEqualTo(2.92);
     assertThat(adaptedEvent.adaptedDate).isSameAs(adaptedDate);
@@ -60,8 +60,8 @@ public class MarathonAdapterTest {
     ParsedEvent event = new ParsedEvent("Florian Hradečka", "Kristina Hradečka", "11 Oct 07:30", "1.50", "3.28");
     AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
 
-    assertThat(adaptedEvent.firstPlayer).isEqualTo("Florian Hradecka");
-    assertThat(adaptedEvent.secondPlayer).isEqualTo("Kristina Hradecka");
+    assertThat(adaptedEvent.firstSide).isEqualTo("Florian Hradecka");
+    assertThat(adaptedEvent.secondSide).isEqualTo("Kristina Hradecka");
   }
 
   @Test
@@ -89,8 +89,8 @@ public class MarathonAdapterTest {
     ParsedEvent event = new ParsedEvent("Hercog, Polona", "Flipkens, Kirsten", "17:30", "2.92", "1.45");
     AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
 
-    assertThat(adaptedEvent.firstPlayer).isEqualTo("Flipkens, Kirsten");
-    assertThat(adaptedEvent.secondPlayer).isEqualTo("Hercog, Polona");
+    assertThat(adaptedEvent.firstSide).isEqualTo("Flipkens, Kirsten");
+    assertThat(adaptedEvent.secondSide).isEqualTo("Hercog, Polona");
     assertThat(adaptedEvent.firstKof).isEqualTo(1.45);
     assertThat(adaptedEvent.secondKof).isEqualTo(2.92);
   }

@@ -23,8 +23,8 @@ public class FakeEventJobTest {
   public void createFakeEvent()
     throws Exception {
     Date date = new Date();
-    String firstPlayer = "first1, second1";
-    String secondPlayer = "first2, second2";
+    String firstSide = "first1, second1";
+    String secondSide = "first2, second2";
 
     whenNew(Date.class).withNoArguments().thenReturn(date);
 
@@ -33,6 +33,6 @@ public class FakeEventJobTest {
     new FakeEventJob().run();
 
     verifyStatic();
-    createOrGetEvent(same(date), eq(firstPlayer), eq(secondPlayer), eq(date.toString() + "_code"));
+    createOrGetEvent(same(date), eq(firstSide), eq(secondSide), eq(date.toString() + "_code"));
   }
 }
