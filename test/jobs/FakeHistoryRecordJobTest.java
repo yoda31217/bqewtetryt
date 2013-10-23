@@ -1,7 +1,7 @@
 package jobs;
 
 import models.store.Event;
-import models.store.Events;
+import models.store.EventStore;
 import models.store.HistoryRecord;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +10,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Date;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static models.store.EventStore.events;
 import static models.store.Organisation.BET365;
 import static models.store.Organisation.MARATHON;
 import static org.mockito.Matchers.refEq;
@@ -20,7 +22,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({FakeHistoryRecordJob.class, Date.class, Math.class})
+@PrepareForTest({FakeHistoryRecordJob.class, Date.class, Math.class, EventStore.class})
 public class FakeHistoryRecordJobTest {
 
   @Test
@@ -28,8 +30,9 @@ public class FakeHistoryRecordJobTest {
     throws Exception {
     Event firstEventMock = mock(Event.class);
     Event secondEventMock = mock(Event.class);
-    Events.addEvent(firstEventMock);
-    Events.addEvent(secondEventMock);
+
+    mockStatic(EventStore.class);
+    when(events()).thenReturn(newArrayList(firstEventMock, secondEventMock));
 
     Date firstDate = new Date();
     Date secondDate = new Date();
@@ -49,7 +52,9 @@ public class FakeHistoryRecordJobTest {
   public void createRecordsWithOtherValues()
     throws Exception {
     Event eventMock = mock(Event.class);
-    Events.addEvent(eventMock);
+
+    mockStatic(EventStore.class);
+    when(events()).thenReturn(newArrayList(eventMock));
 
     Date date = new Date();
 

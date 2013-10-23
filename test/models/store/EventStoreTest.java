@@ -26,18 +26,16 @@ public class EventStoreTest {
   }
 
   @Test
-  public void eventsCollectionCopyCheck() {
-    assertThat(events()).isNotSameAs(EVENTS.keySet());
-  }
-
-  @Test
-  public void create2events() {
-    Event firstEvent = createOrGetEvent(new Date(), randomPlayer(), randomPlayer(), "code_1");
+  public void create3events() {
+    Event firstEvent = createOrGetEvent(new Date(), randomPlayer(), randomPlayer(), "code_2");
     assertThat(firstEvent).isNotNull();
     assertThat(events()).containsOnly(firstEvent);
-    Event secondEvent = createOrGetEvent(new Date(), randomPlayer(), randomPlayer(), "code_2");
+    Event secondEvent = createOrGetEvent(new Date(), randomPlayer(), randomPlayer(), "code_1");
     assertThat(secondEvent).isNotNull();
-    assertThat(events()).containsOnly(firstEvent, secondEvent);
+    assertThat(events()).containsExactly(secondEvent, firstEvent);
+    Event thirdEvent = createOrGetEvent(new Date(), randomPlayer(), randomPlayer(), "code_3");
+    assertThat(thirdEvent).isNotNull();
+    assertThat(events()).containsExactly(secondEvent, firstEvent, thirdEvent);
   }
 
   @Test

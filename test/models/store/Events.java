@@ -19,8 +19,4 @@ public final class Events {
   public static void clearEvents() {
     EVENTS.clear();
   }
-
-  public static void addEvent(Event event) {
-    EVENTS.put(event, event);
-  }
 }
