@@ -78,7 +78,7 @@ public class MarathonAdapterTest {
     calendar.set(SECOND, 0);
     calendar.set(MILLISECOND, 0);
 
-    String eventCode = new SimpleDateFormat("yyyy-MM-dd mm").format(calendar.getTime()) + "_murray,peers_flipkens";
+    String eventCode = "murray,peers_flipkens_" + new SimpleDateFormat("yyyy-MM-dd mm").format(calendar.getTime());
 
     assertThat(adaptedEvent.code).isEqualTo(eventCode);
   }

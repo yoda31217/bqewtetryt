@@ -26,6 +26,6 @@ public class AdaptedEvent {
     this.organisation = organisation;
     this.date = date;
     this.adaptedDate = new Date();
-    this.code = DATE_FORMAT.format(date) + "_" + firstPlayerCode + "_" + secondPlayerCode;
+    this.code = firstPlayerCode + "_" + secondPlayerCode + "_" + DATE_FORMAT.format(date);
   }
 }

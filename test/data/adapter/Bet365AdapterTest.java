@@ -66,7 +66,7 @@ public class Bet365AdapterTest {
     calendar.set(SECOND, 0);
     calendar.set(MILLISECOND, 0);
 
-    String eventCode = new SimpleDateFormat("yyyy-MM-dd mm").format(calendar.getTime()) + "_qureshi,rojer_mayer";
+    String eventCode = "qureshi,rojer_mayer_" + new SimpleDateFormat("yyyy-MM-dd mm").format(calendar.getTime());
 
     assertThat(adaptedEvent.code).isEqualTo(eventCode);
   }
