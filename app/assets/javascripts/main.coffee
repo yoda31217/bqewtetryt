@@ -1,10 +1,14 @@
 ORGANISATIONS = ['MARATHON', 'BET365']
 
 $ ->
-  #  window.setInterval(render, 10000)
-  render()
+  $('#refreshBtn').click(refresh)
+  window.setInterval(() ->
+    if (0 < $('#autoRefreshChk:checked').length)
+      refresh()
+  , 10 * 1000)
+  refresh()
 
-render = () ->
+refresh = () ->
   $('#tennis-panel').empty()
   $('#tennis-panel').append $('<div id="events" class=\"panel panel-default\">').append $('<div class=\"panel-heading\">').text 'Tennis'
   $('#events').append eventContainer = $('<div class=\"panel-body\">')
