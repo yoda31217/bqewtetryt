@@ -1,12 +1,12 @@
 ORGANISATIONS = ['MARATHON', 'BET365']
 
 $ ->
-  window.setInterval(render, 10000)
+  #  window.setInterval(render, 10000)
   render()
 
 render = () ->
-  $('.container').empty()
-  $('.container').append $('<div id="events" class=\"panel panel-default\">').append $('<div class=\"panel-heading\">').text 'Tennis'
+  $('#tennis-panel').empty()
+  $('#tennis-panel').append $('<div id="events" class=\"panel panel-default\">').append $('<div class=\"panel-heading\">').text 'Tennis'
   $('#events').append eventContainer = $('<div class=\"panel-body\">')
 
   eventContainer.append winningEventContainer = $("<div>")
@@ -15,21 +15,22 @@ render = () ->
 
   $.get '/get_kofs', (events) ->
     $.each events, (eventIndex, event) ->
-      eventHeader = $('<div class="row">')
+      eventHeader = $('<div class="row-fluid">')
 
       eventDate = new Date(event.date)
 
       dateStr = (eventDate.getMonth() + 1) + '-' + eventDate.getDate() + ' ' + eventDate.getHours() + ':' + eventDate.getMinutes()
       captionStr = "#{event.firstPlayer} - #{event.secondPlayer}"
 
-      eventHeader.append $('<small>').append $('<div class="col-md-2">').text dateStr
-      eventHeader.append $('<small>').append $('<div class="col-md-4">').text captionStr
+      eventHeader.append $('<div class="col-md-1">').append $('<small>').text dateStr
+      eventHeader.append $('<div class="col-md-4">').append $('<small>').text captionStr
+      eventHeader.append $('<div class="col-md-4">').append $('<small>').text event.code
 
       historyAggregator = {}
 
-      eventHistoryContainer = $("<div>").hide()
+      eventHistoryContainer = $('<div class="row-fluid">').hide()
       $.each event.history, (recordIndex, record) ->
-        row = $('<div class="row text-info">')
+        row = $('<div class="row-fluid text-info">')
         eventHistoryContainer.prepend row
 
         historyAggregator[record.organisation] = record
@@ -50,13 +51,14 @@ render = () ->
           if (recordToShow.secondKof > secondKof)
             secondKof = recordToShow.secondKof
 
-          cell = $('<div class="col-md-3">').text recordToShow.organisation.substr(0, 1) + ': ' + intervalText new Date().getTime() - recordToShow.date
-          row.append $('<small>').append cell
+          cell = $('<div class="col-md-3">').append $('<small>').text recordToShow.organisation.substr(0,
+            1) + ': ' + intervalText new Date().getTime() - recordToShow.date
+          row.append cell
 
-          cell = $('<div class="col-md-2">').text "#{recordToShow.firstKof.toFixed(3)} / #{recordToShow.secondKof.toFixed(3)}"
-          row.append $('<small>').append cell
+          cell = $('<div class="col-md-2">').append $('<small>').text "#{recordToShow.firstKof.toFixed(3)} / #{recordToShow.secondKof.toFixed(3)}"
+          row.append cell
 
-        row.append $('<small>').append $('<div class="col-md-2">').text "#{firstKof.toFixed(3)} / #{secondKof.toFixed(3)}"
+        row.append $('<div class="col-md-2">').append $('<small>').text "#{firstKof.toFixed(3)} / #{secondKof.toFixed(3)}"
 
         if (firstKof > 1.0 + 1.0 / (secondKof - 1.0))
           row.addClass('text-danger')
@@ -80,13 +82,13 @@ render = () ->
         if (1.0 == recordToShow.firstKof)
           eventHeader.addClass('text-muted')
 
-        eventHeader.append $('<small>').append $('<div class="col-md-2">').text recordToShow.organisation.substr(0,
+        eventHeader.append $('<div class="col-md-1">').append $('<small>').text recordToShow.organisation.substr(0,
           1) + ': ' + "#{recordToShow.firstKof.toFixed(3)} / #{recordToShow.secondKof.toFixed(3)}"
 
       if (firstKof > 1.0 + 1.0 / (secondKof - 1.0))
         eventHeader.addClass('text-danger')
 
-      eventHeader.append $('<small>').append $('<div class="col-md-2">').text "#{firstKof.toFixed(3)} / #{secondKof.toFixed(3)}"
+      eventHeader.append $('<div class="col-md-1">').append $('<small>').text "#{firstKof.toFixed(3)} / #{secondKof.toFixed(3)}"
 
       eventHeader.click () ->
         eventHistoryContainer.toggle()
