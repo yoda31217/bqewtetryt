@@ -84,6 +84,16 @@ public class Bet365AdapterTest {
   }
 
   @Test
+  public void nunUnicodeCharacters()
+    throws Exception {
+    ParsedEvent event = new ParsedEvent("Florian Hradečka", "Kristina Hradečka", "11 Oct 07:30", "1.50", "3.28");
+    AdaptedEvent adaptedEvent = new Bet365Adapter().adapt(event);
+
+    assertThat(adaptedEvent.firstPlayer).isEqualTo("Florian Hradecka");
+    assertThat(adaptedEvent.secondPlayer).isEqualTo("Kristina Hradecka");
+  }
+
+  @Test
   public void date24hours()
     throws Exception {
     ParsedEvent event = new ParsedEvent("Florian Mayer", "Kristina Mladenovic & Flavia Pennetta", "11 Oct 12:30", "3.50", "1.28");

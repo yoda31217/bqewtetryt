@@ -16,6 +16,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Calendar.YEAR;
 import static java.util.TimeZone.getTimeZone;
 import static models.store.Organisation.BET365;
+import static org.apache.commons.lang3.StringUtils.stripAccents;
 
 public class Bet365Adapter
   implements BAdapter {
@@ -28,6 +29,10 @@ public class Bet365Adapter
   public AdaptedEvent adapt(ParsedEvent parsedEvent) {
     String firstPlayer = parsedEvent.firstPlayer;
     String secondPlayer = parsedEvent.secondPlayer;
+
+    firstPlayer = stripAccents(firstPlayer);
+    secondPlayer = stripAccents(secondPlayer);
+
     double firstKof = Double.parseDouble(parsedEvent.firstKof);
     double secondKof = Double.parseDouble(parsedEvent.secondKof);
 

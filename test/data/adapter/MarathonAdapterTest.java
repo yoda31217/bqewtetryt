@@ -55,6 +55,16 @@ public class MarathonAdapterTest {
   }
 
   @Test
+  public void nunUnicodeCharacters()
+    throws Exception {
+    ParsedEvent event = new ParsedEvent("Florian Hradečka", "Kristina Hradečka", "11 Oct 07:30", "1.50", "3.28");
+    AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
+
+    assertThat(adaptedEvent.firstPlayer).isEqualTo("Florian Hradecka");
+    assertThat(adaptedEvent.secondPlayer).isEqualTo("Kristina Hradecka");
+  }
+
+  @Test
   public void codeAndOrder()
     throws Exception {
     ParsedEvent event = new ParsedEvent("Flipkens, Kirsten", "J.Murray / J.Peers", "11 Sep 17:30", "2.92", "1.45");
