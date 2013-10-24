@@ -5,7 +5,7 @@ $ ->
   window.setInterval(() ->
     if (0 < $('#autoRefreshChk:checked').length)
       refresh()
-  , 10 * 1000)
+  , 4 * 1000)
   refresh()
 
 refresh = () ->

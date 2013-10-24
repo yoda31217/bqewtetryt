@@ -25,8 +25,5 @@ public class Bet365ParserTest {
     assertThat(firstEvent.date).isEqualTo("11 Oct 07:00");
     assertThat(firstEvent.firstKof).isEqualTo("3.50");
     assertThat(firstEvent.secondKof).isEqualTo("1.28");
-
-    //    ParsedEvent seventhEvent = events.get(6);
-    //    assertThat(seventhEvent.date).isEqualTo("11 Sep 14:00");
   }
 }

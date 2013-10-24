@@ -2,9 +2,9 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET     /                           controllers.Application.index()
-GET     /get_kofs                   controllers.Application.getKofs()
+GET        /                    controllers.Application.mainPage()
+GET        /get_kofs            controllers.Application.getKofs()
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET        /assets/*file        controllers.Assets.at(path="/public", file)
 #GET     /webjars/*file              controllers.WebJarAssets.at(file)

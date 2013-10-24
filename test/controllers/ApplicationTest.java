@@ -9,7 +9,7 @@ import org.junit.Test;
 import play.GlobalSettings;
 import play.mvc.Result;
 import play.test.FakeApplication;
-import views.html.index;
+import views.html.main;
 
 import java.util.Date;
 
@@ -60,9 +60,9 @@ public class ApplicationTest {
   }
 
   @Test
-  public void index() {
+  public void mainPage() {
     Result result = route(fakeRequest(GET, "/"));
-    String expectedResultBody = index.render().body();
+    String expectedResultBody = main.render().body();
 
     assertThat(status(result)).isEqualTo(OK);
     assertThat(charset(result)).isEqualTo("utf-8");
