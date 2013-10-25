@@ -17,6 +17,6 @@ public class FakeEventJob
   public void run() {
     Event newEvent = createOrGetEvent(new Date(), "first1, second1", "first2, second2", new Date().toString() + "_code");
 
-    LOG.debug("Adding fake Event: {}", newEvent);
+    LOG.debug("Adding fake Event with Code: {}", newEvent.code());
   }
 }

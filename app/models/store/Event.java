@@ -70,4 +70,8 @@ public class Event {
       "code='" + code + '\'' +
       '}';
   }
+
+  public String code() {
+    return code;
+  }
 }

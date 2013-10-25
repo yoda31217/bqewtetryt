@@ -14,6 +14,7 @@ public abstract class UrlFetcher {
 
   protected final long minRequestDelayInMillis;
   protected final String url;
+  //  private final Logger.ALogger LOG = of("qweqwe");
   volatile long lastFetchTimeInMillis = 0L;
 
   protected UrlFetcher(String url, FiniteDuration minRequestDelayInMillis) {
@@ -27,6 +28,8 @@ public abstract class UrlFetcher {
     URLConnection conn;
     InputStream input = null;
     try {
+      //      LOG.debug("Fetching Url: {}", url);
+
       conn = new URL(url).openConnection();
 
       beforeRequest(conn);
@@ -35,6 +38,8 @@ public abstract class UrlFetcher {
       byte[] result = toByteArray(input);
 
       afterRequest(conn);
+
+      //      LOG.debug("Fetched: {}b", result.length);
 
       return result;
 
@@ -57,7 +62,10 @@ public abstract class UrlFetcher {
       long now = new Date().getTime();
       long delay = now - lastFetchTimeInMillis;
 
-      if (minRequestDelayInMillis > delay) Thread.sleep(minRequestDelayInMillis - delay);
+      if (minRequestDelayInMillis > delay) {
+        //        LOG.debug("Sleeping for: {}", delay);
+        Thread.sleep(minRequestDelayInMillis - delay);
+      }
 
     } catch (InterruptedException skipped) {
     }

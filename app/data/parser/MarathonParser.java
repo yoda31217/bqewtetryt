@@ -1,19 +1,22 @@
 package data.parser;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
+import play.Logger;
 
 import javax.annotation.Nullable;
 import java.nio.charset.Charset;
 import java.util.List;
 
+import static com.google.common.collect.Lists.transform;
 import static net.htmlparser.jericho.CharacterReference.decodeCollapseWhiteSpace;
+import static play.Logger.of;
 
 public class MarathonParser
   implements BParser {
 
+  private static final Logger.ALogger LOG = of(MarathonParser.class);
   private static final Charset UTF8 = Charset.forName("UTF-8");
 
   @Override
@@ -22,7 +25,7 @@ public class MarathonParser
     Source doc = new Source(documentPayload);
     List<Element> eventEls = doc.getAllElementsByClass("event-header");
 
-    return Lists.transform(eventEls, new Function<Element, ParsedEvent>() {
+    List<ParsedEvent> parsedEvents = transform(eventEls, new Function<Element, ParsedEvent>() {
 
       @Nullable
       @Override
@@ -30,6 +33,10 @@ public class MarathonParser
         return buildEvent(eventEl.getChildElements());
       }
     });
+
+    LOG.debug("Parsed Events: {}", parsedEvents.size());
+
+    return parsedEvents;
   }
 
   private ParsedEvent buildEvent(List<Element> eventElChildren) {

@@ -12,4 +12,6 @@ libraryDependencies ++= Seq(
 	"org.webjars" %% "webjars-play" % "2.2.0",
 	"org.webjars" % "bootstrap" % "2.3.1")
 
+javaOptions in (Test) += "-XX:MaxPermSize=1000M"
+
 playJavaSettings

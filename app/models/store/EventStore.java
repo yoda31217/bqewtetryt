@@ -1,5 +1,7 @@
 package models.store;
 
+import play.Logger;
+
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
@@ -10,10 +12,12 @@ import java.util.concurrent.ConcurrentMap;
 import static com.google.common.base.Objects.firstNonNull;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Collections.sort;
+import static play.Logger.of;
 
 public class EventStore {
 
   static final ConcurrentMap<Event, Event> EVENTS = new ConcurrentHashMap<Event, Event>();
+  private static final Logger.ALogger LOG = of(EventStore.class);
   private static final Comparator<Event> EVENT_COMPARATOR = new Comparator<Event>() {
     @Override
     public int compare(Event event1, Event event2) {
@@ -34,7 +38,12 @@ public class EventStore {
   public static Event createOrGetEvent(Date date, String firstSide, String secondSide, String code) {
     Event newEvent = new Event(date, firstSide, secondSide, code);
     Event event = EVENTS.putIfAbsent(newEvent, newEvent);
-    return firstNonNull(event, newEvent);
+
+    if (null == event) {
+      LOG.debug("Adding new Event with Code: {}", newEvent.code());
+      return firstNonNull(event, newEvent);
+
+    } else return event;
   }
 
   public static void removeEventsOlderThan(long ageInMillis) {
@@ -43,7 +52,10 @@ public class EventStore {
     for (Iterator<Event> iterator = EVENTS.keySet().iterator(); iterator.hasNext(); ) {
       Event event = iterator.next();
 
-      if (now - event.date().getTime() > ageInMillis) iterator.remove();
+      if (now - event.date().getTime() > ageInMillis) {
+        LOG.debug("Removing old Event with Code: {}", event.code());
+        iterator.remove();
+      }
     }
   }
 }

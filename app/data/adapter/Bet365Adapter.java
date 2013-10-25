@@ -3,6 +3,7 @@ package data.adapter;
 import com.google.common.base.Splitter;
 import data.AdaptedEvent;
 import data.parser.ParsedEvent;
+import play.Logger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,9 +18,12 @@ import static java.util.Calendar.YEAR;
 import static java.util.TimeZone.getTimeZone;
 import static models.store.Organisation.BET365;
 import static org.apache.commons.lang3.StringUtils.stripAccents;
+import static play.Logger.of;
 
 public class Bet365Adapter
   implements BAdapter {
+
+  private static final Logger.ALogger LOG = of(Bet365Adapter.class);
 
   static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat("yyyy dd MMM HH:mm Z");
   private static final Splitter ONE_PLAYER_ON_SIDE_NAME_SPLITTER = on(" ").omitEmptyStrings().trimResults();
@@ -51,7 +55,11 @@ public class Bet365Adapter
     String firstSideCode = adoptSideCode(firstSide);
     String secondSideCode = adoptSideCode(secondSide);
 
-    return new AdaptedEvent(firstSide, secondSide, firstKof, secondKof, BET365, date, firstSideCode, secondSideCode);
+    AdaptedEvent adoptedEvent = new AdaptedEvent(firstSide, secondSide, firstKof, secondKof, BET365, date, firstSideCode, secondSideCode);
+
+    LOG.trace("Adapted Event with Code: {}", adoptedEvent.code);
+
+    return adoptedEvent;
   }
 
   private String adoptSideCode(String sideStr) {

@@ -64,6 +64,7 @@ public class EventStoreTest {
     assertThat(event.date()).isEqualTo(date);
     assertThat(event.firstSide()).isEqualTo(firstSide);
     assertThat(event.secondSide()).isEqualTo(secondSide);
+    assertThat(event.code()).isEqualTo("code_1");
     assertThat(event.history()).isEmpty();
   }
 

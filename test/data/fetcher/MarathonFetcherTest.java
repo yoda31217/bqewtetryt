@@ -36,7 +36,7 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 import static org.powermock.reflect.Whitebox.invokeMethod;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({URL.class, MarathonFetcher.class, MarathonFetcherTest.class, Date.class, UrlFetcher.class})
+@PrepareForTest({URL.class, MarathonFetcher.class, MarathonFetcherTest.class, Date.class})
 public class MarathonFetcherTest {
 
   @Mock

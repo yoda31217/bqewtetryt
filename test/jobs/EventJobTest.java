@@ -21,6 +21,7 @@ import java.util.Date;
 import static com.google.common.collect.Lists.newArrayList;
 import static models.store.EventStore.createOrGetEvent;
 import static models.store.Organisation.BET365;
+import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.refEq;
 import static org.mockito.Matchers.same;
@@ -55,8 +56,10 @@ public class EventJobTest {
     when(parser.parse(same(FetchResult))).thenReturn(newArrayList(parsedEvent));
     when(adapter.adapt(parsedEvent)).thenReturn(adaptedEvent);
 
-    EventJob job = new EventJob(fetcher, parser, adapter);
+    EventJob job = new EventJob(fetcher, parser, adapter, "JOB_NAME");
     job.run();
+
+    assertThat(job.name).isEqualTo("JOB_NAME");
 
     verify(fetcher).fetch();
     verify(parser).parse(same(FetchResult));

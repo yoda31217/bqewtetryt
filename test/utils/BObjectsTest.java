@@ -62,7 +62,7 @@ public class BObjectsTest {
       }
     }).run();
 
-    verify(logMock).error(eq("Unknown exception wrapped and stoped."), same(exception));
+    verify(logMock).error(eq("Unknown exception wrapped and stopped."), same(exception));
   }
 
   @Test

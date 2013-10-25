@@ -1,5 +1,6 @@
 package jobs;
 
+import models.store.Event;
 import models.store.EventStore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,10 +10,14 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.util.Date;
 
 import static models.store.EventStore.createOrGetEvent;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.same;
+import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
+import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
@@ -29,6 +34,7 @@ public class FakeEventJobTest {
     whenNew(Date.class).withNoArguments().thenReturn(date);
 
     mockStatic(EventStore.class);
+    when(createOrGetEvent(any(Date.class), anyString(), anyString(), anyString())).thenReturn(mock(Event.class));
 
     new FakeEventJob().run();
 

@@ -24,7 +24,7 @@ public class FakeHistoryRecordJob
   @Override
   public void run() {
     for (Event event : events()) {
-      LOG.debug("Adding fake History to Event: {}", event);
+      LOG.debug("Adding fake History to Event with Code: {}", event.code());
       event.addHistory(new HistoryRecord(new Date(), organisation, 1 + Math.random(), 2 + Math.random() * 4));
     }
   }
