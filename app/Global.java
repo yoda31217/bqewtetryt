@@ -6,6 +6,7 @@ import jobs.RemoveOldEventJob;
 import play.Application;
 import play.Configuration;
 import play.GlobalSettings;
+import play.Logger;
 import scala.concurrent.ExecutionContext;
 import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
@@ -19,12 +20,15 @@ import static jobs.Jobs.MARATHON_JOB;
 import static jobs.Jobs.REMOVE_OLD_HISTORY_JOB;
 import static models.store.Organisation.BET365;
 import static models.store.Organisation.MARATHON;
+import static play.Logger.of;
 import static play.Play.isProd;
 import static play.libs.Akka.system;
 import static utils.BObjects.logAndStopExceptions;
 
 public class Global
   extends GlobalSettings {
+
+  private static Logger.ALogger LOG = of(GlobalSettings.class);
 
   private List<Cancellable> schedules = new LinkedList<Cancellable>();
 
