@@ -18,7 +18,12 @@
   <logger name="play" level="INFO"/>
   <logger name="application" level="INFO"/>
 
-  <logger name="application" level="INFO"/>
+  <logger name="controllers" level="ALL"/>
+  <logger name="data" level="ALL"/>
+  <logger name="jobs" level="ALL"/>
+  <logger name="models" level="ALL"/>
+  <logger name="utils" level="ALL"/>
+  <logger name="Global" level="ALL"/>
 
   <root level="INFO">
     <appender-ref ref="STDOUT"/>

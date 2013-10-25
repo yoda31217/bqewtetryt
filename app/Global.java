@@ -28,7 +28,7 @@ import static utils.BObjects.logAndStopExceptions;
 public class Global
   extends GlobalSettings {
 
-  private static Logger.ALogger LOG = of(GlobalSettings.class);
+  private static final Logger.ALogger LOG = of(GlobalSettings.class);
 
   private List<Cancellable> schedules = new LinkedList<Cancellable>();
 
@@ -40,6 +40,8 @@ public class Global
     ExecutionContext dispatcher = (ExecutionContext) system().dispatcher();
 
     if (isProd()) {
+      LOG.info("Starting real Jobs.");
+
       FiniteDuration oldEventOffset = Duration.create(0, "sec");
       FiniteDuration oldEventDelay = Duration.create(1, "min");
       long oldEventAge = Duration.create(1, "day").toMillis();
@@ -58,6 +60,8 @@ public class Global
       schedules.add(scheduler.schedule(bet365Offset, bet365Delay, logAndStopExceptions(BET365_JOB), dispatcher));
 
     } else {
+      LOG.info("Starting fake Jobs.");
+
       FiniteDuration offset = Duration.create(0, "ms");
       FiniteDuration delay = Duration.create(30, "sec");
       long oldEventAge = Duration.create(5, "min").toMillis();

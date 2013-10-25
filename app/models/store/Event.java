@@ -63,4 +63,11 @@ public class Event {
   public String secondSide() {
     return secondSide;
   }
+
+  @Override
+  public String toString() {
+    return "Event{" +
+      "code='" + code + '\'' +
+      '}';
+  }
 }

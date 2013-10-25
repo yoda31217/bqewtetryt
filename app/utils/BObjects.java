@@ -39,7 +39,7 @@ public final class BObjects {
         try {
           runnable.run();
         } catch (RuntimeException e) {
-          LOG.error("Unknown exception wrapped and stoped.", e);
+          LOG.error("Unknown exception wrapped and stopped.", e);
         }
       }
     };
