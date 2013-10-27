@@ -54,12 +54,12 @@ public class Global
 
       FiniteDuration marathonOffset = Duration.create(20, "sec");
       FiniteDuration marathonDelay = Duration.create(1, "min");
-      MessageDispatcher marathonFetchingDispatcher = system().dispatchers().lookup("fetch-marathon");
+      MessageDispatcher marathonFetchingDispatcher = system().dispatchers().lookup("contexts.fetch-marathon");
       schedules.add(scheduler.schedule(marathonOffset, marathonDelay, logAndStopExceptions(MARATHON_JOB), marathonFetchingDispatcher));
 
       FiniteDuration bet365Offset = Duration.create(30, "sec");
       FiniteDuration bet365Delay = Duration.create(1, "min");
-      MessageDispatcher bet365FetchingDispatcher = system().dispatchers().lookup("fetch-bet365");
+      MessageDispatcher bet365FetchingDispatcher = system().dispatchers().lookup("contexts.fetch-bet365");
       schedules.add(scheduler.schedule(bet365Offset, bet365Delay, logAndStopExceptions(BET365_JOB), bet365FetchingDispatcher));
 
     } else {

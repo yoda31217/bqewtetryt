@@ -80,8 +80,8 @@ public class GlobalTest {
     when(actorSystemMock.dispatchers()).thenReturn(dispatchersMock);
 
     when(actorSystemMock.dispatcher()).thenReturn(defaultDispatcherMock);
-    when(dispatchersMock.lookup("fetch-bet365")).thenReturn(bet365FetchingDispatcherMock);
-    when(dispatchersMock.lookup("fetch-marathon")).thenReturn(marathonFetchingDispatcherMock);
+    when(dispatchersMock.lookup("contexts.fetch-bet365")).thenReturn(bet365FetchingDispatcherMock);
+    when(dispatchersMock.lookup("contexts.fetch-marathon")).thenReturn(marathonFetchingDispatcherMock);
 
     when(schedulerMock.schedule(any(FiniteDuration.class), any(FiniteDuration.class), any(Runnable.class), any(ExecutionContext.class))).thenReturn(
       scheduleMock);
