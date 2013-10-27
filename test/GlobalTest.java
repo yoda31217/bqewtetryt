@@ -1,6 +1,8 @@
 import akka.actor.ActorSystem;
 import akka.actor.Cancellable;
 import akka.actor.Scheduler;
+import akka.dispatch.Dispatchers;
+import akka.dispatch.MessageDispatcher;
 import jobs.FakeEventJob;
 import jobs.FakeHistoryRecordJob;
 import jobs.RemoveOldEventJob;
@@ -54,7 +56,13 @@ public class GlobalTest {
   @Mock
   private Scheduler schedulerMock;
   @Mock
-  private ExecutionContextExecutor executionContextMock;
+  private Dispatchers dispatchersMock;
+  @Mock
+  private ExecutionContextExecutor defaultDispatcherMock;
+  @Mock
+  private MessageDispatcher bet365FetchingDispatcherMock;
+  @Mock
+  private MessageDispatcher marathonFetchingDispatcherMock;
   @Mock
   private Cancellable scheduleMock;
   private FakeApplication fakeApplication;
@@ -66,8 +74,15 @@ public class GlobalTest {
     throws Exception {
     mockStatic(Akka.class);
     when(Akka.system()).thenReturn(actorSystemMock);
+
     when(actorSystemMock.scheduler()).thenReturn(schedulerMock);
-    when(actorSystemMock.dispatcher()).thenReturn(executionContextMock);
+
+    when(actorSystemMock.dispatchers()).thenReturn(dispatchersMock);
+
+    when(actorSystemMock.dispatcher()).thenReturn(defaultDispatcherMock);
+    when(dispatchersMock.lookup("fetch-bet365")).thenReturn(bet365FetchingDispatcherMock);
+    when(dispatchersMock.lookup("fetch-marathon")).thenReturn(marathonFetchingDispatcherMock);
+
     when(schedulerMock.schedule(any(FiniteDuration.class), any(FiniteDuration.class), any(Runnable.class), any(ExecutionContext.class))).thenReturn(
       scheduleMock);
 
@@ -102,7 +117,7 @@ public class GlobalTest {
     assertThat(args.get(2)).satisfies(reflectionEq(new FakeHistoryRecordJob(BET365)));
     assertThat(args.get(3)).satisfies(reflectionEq(new FakeHistoryRecordJob(MARATHON)));
 
-    verify(schedulerMock, times(4)).schedule(refEq(offset), refEq(delay), same(wrappedRunnable), same(executionContextMock));
+    verify(schedulerMock, times(4)).schedule(refEq(offset), refEq(delay), same(wrappedRunnable), same(defaultDispatcherMock));
 
     stop(fakeApplication);
 
@@ -129,7 +144,11 @@ public class GlobalTest {
     assertThat(jobs.get(3)).isSameAs(BET365_JOB);
 
     ArgumentCaptor<FiniteDuration> durationArgsCaptor = forClass(FiniteDuration.class);
-    verify(schedulerMock, times(4)).schedule(durationArgsCaptor.capture(), durationArgsCaptor.capture(), same(wrappedRunnable), same(executionContextMock));
+    ArgumentCaptor<ExecutionContext> executionContextArgsCaptor = forClass(ExecutionContext.class);
+
+    verify(schedulerMock, times(4)).schedule(durationArgsCaptor.capture(), durationArgsCaptor.capture(), same(wrappedRunnable),
+      executionContextArgsCaptor.capture());
+
     List<FiniteDuration> durations = durationArgsCaptor.getAllValues();
 
     assertThat(durations).hasSize(8);
@@ -144,5 +163,9 @@ public class GlobalTest {
 
     assertThat(durations.get(6)).satisfies(reflectionEq(Duration.create(30, "sec")));
     assertThat(durations.get(7)).satisfies(reflectionEq(Duration.create(1, "min")));
+
+    List<ExecutionContext> executionContexts = executionContextArgsCaptor.getAllValues();
+    assertThat(executionContexts).hasSize(4).containsExactly(defaultDispatcherMock, defaultDispatcherMock, marathonFetchingDispatcherMock,
+      bet365FetchingDispatcherMock);
   }
 }

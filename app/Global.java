@@ -1,5 +1,6 @@
 import akka.actor.Cancellable;
 import akka.actor.Scheduler;
+import akka.dispatch.MessageDispatcher;
 import jobs.FakeEventJob;
 import jobs.FakeHistoryRecordJob;
 import jobs.RemoveOldEventJob;
@@ -37,7 +38,7 @@ public class Global
     super.onStart(app);
 
     Scheduler scheduler = system().scheduler();
-    ExecutionContext dispatcher = (ExecutionContext) system().dispatcher();
+    ExecutionContext defaultDispatcher = (ExecutionContext) system().dispatcher();
 
     if (isProd()) {
       LOG.info("Starting real Jobs.");
@@ -45,19 +46,21 @@ public class Global
       FiniteDuration oldEventOffset = Duration.create(0, "sec");
       FiniteDuration oldEventDelay = Duration.create(1, "min");
       long oldEventAge = Duration.create(1, "day").toMillis();
-      schedules.add(scheduler.schedule(oldEventOffset, oldEventDelay, logAndStopExceptions(new RemoveOldEventJob(oldEventAge)), dispatcher));
+      schedules.add(scheduler.schedule(oldEventOffset, oldEventDelay, logAndStopExceptions(new RemoveOldEventJob(oldEventAge)), defaultDispatcher));
 
       FiniteDuration oldHistoryOffset = Duration.create(10, "sec");
       FiniteDuration oldHistoryDelay = Duration.create(1, "min");
-      schedules.add(scheduler.schedule(oldHistoryOffset, oldHistoryDelay, logAndStopExceptions(REMOVE_OLD_HISTORY_JOB), dispatcher));
+      schedules.add(scheduler.schedule(oldHistoryOffset, oldHistoryDelay, logAndStopExceptions(REMOVE_OLD_HISTORY_JOB), defaultDispatcher));
 
       FiniteDuration marathonOffset = Duration.create(20, "sec");
       FiniteDuration marathonDelay = Duration.create(1, "min");
-      schedules.add(scheduler.schedule(marathonOffset, marathonDelay, logAndStopExceptions(MARATHON_JOB), dispatcher));
+      MessageDispatcher marathonFetchingDispatcher = system().dispatchers().lookup("fetch-marathon");
+      schedules.add(scheduler.schedule(marathonOffset, marathonDelay, logAndStopExceptions(MARATHON_JOB), marathonFetchingDispatcher));
 
       FiniteDuration bet365Offset = Duration.create(30, "sec");
       FiniteDuration bet365Delay = Duration.create(1, "min");
-      schedules.add(scheduler.schedule(bet365Offset, bet365Delay, logAndStopExceptions(BET365_JOB), dispatcher));
+      MessageDispatcher bet365FetchingDispatcher = system().dispatchers().lookup("fetch-bet365");
+      schedules.add(scheduler.schedule(bet365Offset, bet365Delay, logAndStopExceptions(BET365_JOB), bet365FetchingDispatcher));
 
     } else {
       LOG.info("Starting fake Jobs.");
@@ -66,10 +69,10 @@ public class Global
       FiniteDuration delay = Duration.create(30, "sec");
       long oldEventAge = Duration.create(5, "min").toMillis();
 
-      schedules.add(scheduler.schedule(offset, delay, logAndStopExceptions(new RemoveOldEventJob(oldEventAge)), dispatcher));
-      schedules.add(scheduler.schedule(offset, delay, logAndStopExceptions(new FakeEventJob()), dispatcher));
-      schedules.add(scheduler.schedule(offset, delay, logAndStopExceptions(new FakeHistoryRecordJob(BET365)), dispatcher));
-      schedules.add(scheduler.schedule(offset, delay, logAndStopExceptions(new FakeHistoryRecordJob(MARATHON)), dispatcher));
+      schedules.add(scheduler.schedule(offset, delay, logAndStopExceptions(new RemoveOldEventJob(oldEventAge)), defaultDispatcher));
+      schedules.add(scheduler.schedule(offset, delay, logAndStopExceptions(new FakeEventJob()), defaultDispatcher));
+      schedules.add(scheduler.schedule(offset, delay, logAndStopExceptions(new FakeHistoryRecordJob(BET365)), defaultDispatcher));
+      schedules.add(scheduler.schedule(offset, delay, logAndStopExceptions(new FakeHistoryRecordJob(MARATHON)), defaultDispatcher));
     }
 
   }
