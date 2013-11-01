@@ -2,7 +2,7 @@ package jobs;
 
 import data.AdaptedEvent;
 import data.adapter.BAdapter;
-import data.fetcher.UrlFetcher;
+import data.fetcher.BFetcher;
 import data.parser.BParser;
 import data.parser.ParsedEvent;
 import models.store.Event;
@@ -34,7 +34,7 @@ import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 public class EventJobTest {
 
   @Mock
-  private UrlFetcher fetcher;
+  private BFetcher fetcher;
   @Mock
   private BParser parser;
   @Mock
@@ -68,7 +68,7 @@ public class EventJobTest {
     verifyStatic();
     createOrGetEvent(adaptedEvent.date, adaptedEvent.firstSide, adaptedEvent.secondSide, adaptedEvent.code);
 
-    verify(event).addHistory(refEq(new HistoryRecord(adaptedEvent.adaptedDate, adaptedEvent.organisation, adaptedEvent.firstKof, adaptedEvent.secondKof)));
+    verify(event).addHistory(refEq(new HistoryRecord(adaptedEvent.adoptedDate, adaptedEvent.organisation, adaptedEvent.firstKof, adaptedEvent.secondKof)));
   }
 
   @Test

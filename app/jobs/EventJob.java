@@ -2,7 +2,7 @@ package jobs;
 
 import data.AdaptedEvent;
 import data.adapter.BAdapter;
-import data.fetcher.UrlFetcher;
+import data.fetcher.BFetcher;
 import data.parser.BParser;
 import data.parser.ParsedEvent;
 import models.store.Event;
@@ -20,10 +20,10 @@ public class EventJob
   private static final Logger.ALogger LOG = of(EventJob.class);
   final BAdapter adapter;
   final String name;
-  final UrlFetcher fetcher;
+  final BFetcher fetcher;
   final BParser parser;
 
-  public EventJob(UrlFetcher fetcher, BParser parser, BAdapter adapter, String name) {
+  public EventJob(BFetcher fetcher, BParser parser, BAdapter adapter, String name) {
     this.fetcher = fetcher;
     this.parser = parser;
     this.adapter = adapter;
@@ -41,7 +41,7 @@ public class EventJob
       AdaptedEvent adaptedEvent = adapter.adapt(parsedEvent);
 
       Event event = createOrGetEvent(adaptedEvent.date, adaptedEvent.firstSide, adaptedEvent.secondSide, adaptedEvent.code);
-      event.addHistory(new HistoryRecord(adaptedEvent.adaptedDate, adaptedEvent.organisation, adaptedEvent.firstKof, adaptedEvent.secondKof));
+      event.addHistory(new HistoryRecord(adaptedEvent.adoptedDate, adaptedEvent.organisation, adaptedEvent.firstKof, adaptedEvent.secondKof));
     }
   }
 }

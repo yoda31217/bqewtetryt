@@ -161,7 +161,7 @@ public class MarathonFetcherTest {
     invokeMethod(fetcher, "waitIfNeeded");
 
     verifyStatic();
-    Thread.sleep(geq(90L));
+    Thread.sleep(geq(50L));
   }
 
   @Test

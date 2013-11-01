@@ -10,7 +10,8 @@ import java.util.Date;
 
 import static com.google.common.io.ByteStreams.toByteArray;
 
-public abstract class UrlFetcher {
+public abstract class UrlFetcher
+  implements BFetcher {
 
   protected final long minRequestDelayInMillis;
   protected final String url;
@@ -22,6 +23,7 @@ public abstract class UrlFetcher {
     this.url = url;
   }
 
+  @Override
   public byte[] fetch() {
     waitIfNeeded();
 
