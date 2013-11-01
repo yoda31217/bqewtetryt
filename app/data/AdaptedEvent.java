@@ -14,7 +14,7 @@ public class AdaptedEvent {
   public final double secondKof;
   public final Organisation organisation;
   public final Date date;
-  public final Date adaptedDate;
+  public final Date adoptedDate;
   public final String code;
 
   public AdaptedEvent(String firstSide, String secondSide, double firstKof, double secondKof, Organisation organisation, Date date, Object firstSideCode,
@@ -25,7 +25,7 @@ public class AdaptedEvent {
     this.secondKof = secondKof;
     this.organisation = organisation;
     this.date = date;
-    this.adaptedDate = new Date();
+    this.adoptedDate = new Date();
     this.code = firstSideCode + "_" + secondSideCode + "_" + DATE_FORMAT.format(date);
   }
 }
