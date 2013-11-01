@@ -16,6 +16,7 @@ import static java.util.Calendar.DAY_OF_MONTH;
 import static java.util.Calendar.HOUR_OF_DAY;
 import static java.util.Calendar.MILLISECOND;
 import static java.util.Calendar.MINUTE;
+import static java.util.Calendar.MONTH;
 import static java.util.Calendar.OCTOBER;
 import static java.util.Calendar.SECOND;
 import static java.util.TimeZone.getTimeZone;
@@ -29,14 +30,14 @@ public class Bet365AdapterTest {
   @Test
   public void parse()
     throws Exception {
-    Date adaptedDate = new Date();
-    PowerMockito.whenNew(Date.class).withNoArguments().thenReturn(adaptedDate);
+    Date adoptedDate = new Date();
+    PowerMockito.whenNew(Date.class).withNoArguments().thenReturn(adoptedDate);
 
     ParsedEvent event = new ParsedEvent("Florian Mayer", "Kristina Mladenovic", "11 Oct 07:30", "1.50", "3.28");
     AdaptedEvent adaptedEvent = new Bet365Adapter().adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
-    calendar.set(OCTOBER, 11);
+    calendar.set(MONTH, OCTOBER);
     calendar.set(DAY_OF_MONTH, 11);
     calendar.set(HOUR_OF_DAY, 7);
     calendar.set(MINUTE, 30);
@@ -49,7 +50,7 @@ public class Bet365AdapterTest {
     assertThat(adaptedEvent.secondSide).isEqualTo("Kristina Mladenovic");
     assertThat(adaptedEvent.firstKof).isEqualTo(1.5);
     assertThat(adaptedEvent.secondKof).isEqualTo(3.28);
-    assertThat(adaptedEvent.adaptedDate).isSameAs(adaptedDate);
+    assertThat(adaptedEvent.adoptedDate).isSameAs(adoptedDate);
   }
 
   @Test
@@ -59,7 +60,7 @@ public class Bet365AdapterTest {
     AdaptedEvent adaptedEvent = new Bet365Adapter().adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
-    calendar.set(OCTOBER, 11);
+    calendar.set(MONTH, OCTOBER);
     calendar.set(DAY_OF_MONTH, 11);
     calendar.set(HOUR_OF_DAY, 7);
     calendar.set(MINUTE, 30);
@@ -100,7 +101,7 @@ public class Bet365AdapterTest {
     AdaptedEvent adaptedEvent = new Bet365Adapter().adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
-    calendar.set(OCTOBER, 11);
+    calendar.set(MONTH, OCTOBER);
     calendar.set(DAY_OF_MONTH, 11);
     calendar.set(HOUR_OF_DAY, 12);
     calendar.set(MINUTE, 30);

@@ -51,7 +51,7 @@ public class MarathonAdapterTest {
     assertThat(adaptedEvent.secondSide).isEqualTo("Hercog, Polona");
     assertThat(adaptedEvent.firstKof).isEqualTo(1.45);
     assertThat(adaptedEvent.secondKof).isEqualTo(2.92);
-    assertThat(adaptedEvent.adaptedDate).isSameAs(adaptedDate);
+    assertThat(adaptedEvent.adoptedDate).isSameAs(adaptedDate);
   }
 
   @Test
