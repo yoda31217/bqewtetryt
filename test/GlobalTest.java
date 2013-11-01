@@ -24,8 +24,6 @@ import utils.BObjects;
 
 import java.util.List;
 
-import static jobs.Jobs.BET365_JOB;
-import static jobs.Jobs.MARATHON_JOB;
 import static jobs.Jobs.REMOVE_OLD_HISTORY_JOB;
 import static models.store.Organisation.BET365;
 import static models.store.Organisation.MARATHON;
@@ -133,39 +131,40 @@ public class GlobalTest {
     start(fakeApplication);
 
     ArgumentCaptor<Runnable> jobArgsCaptor = forClass(Runnable.class);
-    verifyStatic(times(4));
+    verifyStatic(times(2));
     logAndStopExceptions(jobArgsCaptor.capture());
     List jobs = jobArgsCaptor.getAllValues();
 
-    assertThat(jobs).hasSize(4);
+    assertThat(jobs).hasSize(2);
     assertThat(jobs.get(0)).satisfies(reflectionEq(new RemoveOldEventJob(Duration.create(1, "day").toMillis())));
     assertThat(jobs.get(1)).isSameAs(REMOVE_OLD_HISTORY_JOB);
-    assertThat(jobs.get(2)).isSameAs(MARATHON_JOB);
-    assertThat(jobs.get(3)).isSameAs(BET365_JOB);
+    //    assertThat(jobs.get(2)).isSameAs(MARATHON_JOB);
+    //    assertThat(jobs.get(3)).isSameAs(BET365_JOB);
 
     ArgumentCaptor<FiniteDuration> durationArgsCaptor = forClass(FiniteDuration.class);
     ArgumentCaptor<ExecutionContext> executionContextArgsCaptor = forClass(ExecutionContext.class);
 
-    verify(schedulerMock, times(4)).schedule(durationArgsCaptor.capture(), durationArgsCaptor.capture(), same(wrappedRunnable),
+    verify(schedulerMock, times(2)).schedule(durationArgsCaptor.capture(), durationArgsCaptor.capture(), same(wrappedRunnable),
       executionContextArgsCaptor.capture());
 
     List<FiniteDuration> durations = durationArgsCaptor.getAllValues();
 
-    assertThat(durations).hasSize(8);
+    assertThat(durations).hasSize(4);
     assertThat(durations.get(0)).satisfies(reflectionEq(Duration.create(0, "sec")));
     assertThat(durations.get(1)).satisfies(reflectionEq(Duration.create(1, "min")));
 
     assertThat(durations.get(2)).satisfies(reflectionEq(Duration.create(10, "sec")));
     assertThat(durations.get(3)).satisfies(reflectionEq(Duration.create(1, "min")));
 
-    assertThat(durations.get(4)).satisfies(reflectionEq(Duration.create(20, "sec")));
-    assertThat(durations.get(5)).satisfies(reflectionEq(Duration.create(1, "min")));
-
-    assertThat(durations.get(6)).satisfies(reflectionEq(Duration.create(30, "sec")));
-    assertThat(durations.get(7)).satisfies(reflectionEq(Duration.create(1, "min")));
+    //    assertThat(durations.get(4)).satisfies(reflectionEq(Duration.create(20, "sec")));
+    //    assertThat(durations.get(5)).satisfies(reflectionEq(Duration.create(1, "min")));
+    //
+    //    assertThat(durations.get(6)).satisfies(reflectionEq(Duration.create(30, "sec")));
+    //    assertThat(durations.get(7)).satisfies(reflectionEq(Duration.create(1, "min")));
 
     List<ExecutionContext> executionContexts = executionContextArgsCaptor.getAllValues();
-    assertThat(executionContexts).hasSize(4).containsExactly(defaultDispatcherMock, defaultDispatcherMock, marathonFetchingDispatcherMock,
-      bet365FetchingDispatcherMock);
+    assertThat(executionContexts).hasSize(2).containsExactly(defaultDispatcherMock, defaultDispatcherMock
+      //      , marathonFetchingDispatcherMock, bet365FetchingDispatcherMock
+    );
   }
 }

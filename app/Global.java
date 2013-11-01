@@ -16,8 +16,6 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
-import static jobs.Jobs.BET365_JOB;
-import static jobs.Jobs.MARATHON_JOB;
 import static jobs.Jobs.REMOVE_OLD_HISTORY_JOB;
 import static models.store.Organisation.BET365;
 import static models.store.Organisation.MARATHON;
@@ -55,12 +53,12 @@ public class Global
       FiniteDuration marathonOffset = Duration.create(20, "sec");
       FiniteDuration marathonDelay = Duration.create(1, "min");
       MessageDispatcher marathonFetchingDispatcher = system().dispatchers().lookup("contexts.fetch-marathon");
-      schedules.add(scheduler.schedule(marathonOffset, marathonDelay, logAndStopExceptions(MARATHON_JOB), marathonFetchingDispatcher));
+      //      schedules.add(scheduler.schedule(marathonOffset, marathonDelay, logAndStopExceptions(MARATHON_JOB), marathonFetchingDispatcher));
 
       FiniteDuration bet365Offset = Duration.create(30, "sec");
       FiniteDuration bet365Delay = Duration.create(1, "min");
       MessageDispatcher bet365FetchingDispatcher = system().dispatchers().lookup("contexts.fetch-bet365");
-      schedules.add(scheduler.schedule(bet365Offset, bet365Delay, logAndStopExceptions(BET365_JOB), bet365FetchingDispatcher));
+      //      schedules.add(scheduler.schedule(bet365Offset, bet365Delay, logAndStopExceptions(BET365_JOB), bet365FetchingDispatcher));
 
     } else {
       LOG.info("Starting fake Jobs.");
