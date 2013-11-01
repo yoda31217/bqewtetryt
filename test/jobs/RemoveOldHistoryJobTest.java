@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.util.Date;
 
 import static models.store.EventStore.createOrGetEvent;
+import static models.store.EventType.REGULAR;
 import static models.store.Events.randomHistoryRecord;
 import static models.store.Events.randomSide;
 import static org.fest.assertions.Assertions.assertThat;
@@ -19,16 +20,16 @@ public class RemoveOldHistoryJobTest {
     HistoryRecord secondRecord = randomHistoryRecord();
     HistoryRecord thirdRecord = randomHistoryRecord();
 
-    Event firstEvent = createOrGetEvent(new Date(), randomSide(), randomSide(), "code_1");
+    Event firstEvent = createOrGetEvent(REGULAR, new Date(), randomSide(), randomSide(), "code_1");
     firstEvent.addHistory(firstRecord);
     firstEvent.addHistory(secondRecord);
 
-    Event secondEvent = createOrGetEvent(new Date(), randomSide(), randomSide(), "code_2");
+    Event secondEvent = createOrGetEvent(REGULAR, new Date(), randomSide(), randomSide(), "code_2");
     secondEvent.addHistory(firstRecord);
     secondEvent.addHistory(secondRecord);
     secondEvent.addHistory(thirdRecord);
 
-    Event thirdEvent = createOrGetEvent(new Date(), randomSide(), randomSide(), "code_3");
+    Event thirdEvent = createOrGetEvent(REGULAR, new Date(), randomSide(), randomSide(), "code_3");
     thirdEvent.addHistory(firstRecord);
 
     new RemoveOldHistoryJob(2).run();

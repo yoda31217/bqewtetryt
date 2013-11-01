@@ -40,7 +40,7 @@ public class EventJob
     for (ParsedEvent parsedEvent : parsedEvents) {
       AdaptedEvent adaptedEvent = adapter.adapt(parsedEvent);
 
-      Event event = createOrGetEvent(adaptedEvent.date, adaptedEvent.firstSide, adaptedEvent.secondSide, adaptedEvent.code);
+      Event event = createOrGetEvent(adaptedEvent.type, adaptedEvent.date, adaptedEvent.firstSide, adaptedEvent.secondSide, adaptedEvent.code);
       event.addHistory(new HistoryRecord(adaptedEvent.adoptedDate, adaptedEvent.organisation, adaptedEvent.firstKof, adaptedEvent.secondKof));
     }
   }

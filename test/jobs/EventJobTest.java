@@ -7,12 +7,12 @@ import data.parser.BParser;
 import data.parser.ParsedEvent;
 import models.store.Event;
 import models.store.EventStore;
+import models.store.EventType;
 import models.store.HistoryRecord;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -26,8 +26,9 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.refEq;
 import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
+import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({EventStore.class})
@@ -49,8 +50,8 @@ public class EventJobTest {
 
   @Test
   public void run() {
-    PowerMockito.mockStatic(EventStore.class);
-    PowerMockito.when(EventStore.createOrGetEvent(any(Date.class), any(String.class), any(String.class), any(String.class))).thenReturn(event);
+    mockStatic(EventStore.class);
+    when(EventStore.createOrGetEvent(any(EventType.class), any(Date.class), any(String.class), any(String.class), any(String.class))).thenReturn(event);
 
     when(fetcher.fetch()).thenReturn(FetchResult);
     when(parser.parse(same(FetchResult))).thenReturn(newArrayList(parsedEvent));
@@ -66,7 +67,7 @@ public class EventJobTest {
     verify(adapter).adapt(same(parsedEvent));
 
     verifyStatic();
-    createOrGetEvent(adaptedEvent.date, adaptedEvent.firstSide, adaptedEvent.secondSide, adaptedEvent.code);
+    createOrGetEvent(adaptedEvent.type, adaptedEvent.date, adaptedEvent.firstSide, adaptedEvent.secondSide, adaptedEvent.code);
 
     verify(event).addHistory(refEq(new HistoryRecord(adaptedEvent.adoptedDate, adaptedEvent.organisation, adaptedEvent.firstKof, adaptedEvent.secondKof)));
   }

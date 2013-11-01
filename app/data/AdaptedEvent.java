@@ -1,9 +1,12 @@
 package data;
 
+import models.store.EventType;
 import models.store.Organisation;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static models.store.EventType.REGULAR;
 
 public class AdaptedEvent {
 
@@ -16,6 +19,7 @@ public class AdaptedEvent {
   public final Date date;
   public final Date adoptedDate;
   public final String code;
+  public final EventType type = REGULAR;
 
   public AdaptedEvent(String firstSide, String secondSide, double firstKof, double secondKof, Organisation organisation, Date date, Object firstSideCode,
                       String secondSideCode) {

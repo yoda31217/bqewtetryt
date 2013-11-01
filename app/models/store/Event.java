@@ -6,9 +6,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
 import static java.util.Collections.unmodifiableList;
 
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@JsonAutoDetect(fieldVisibility = ANY)
 public class Event {
 
   final Date date;
@@ -16,12 +17,14 @@ public class Event {
   final String secondSide;
   final String code;
   final List<HistoryRecord> history = new CopyOnWriteArrayList<HistoryRecord>();
+  final EventType type;
 
-  Event(Date date, String firstSide, String secondSide, String code) {
+  Event(EventType type, Date date, String firstSide, String secondSide, String code) {
     this.date = date;
     this.firstSide = firstSide;
     this.secondSide = secondSide;
     this.code = code;
+    this.type = type;
   }
 
   @Override
@@ -31,13 +34,17 @@ public class Event {
 
     Event event = (Event) o;
 
-    return code.equals(event.code);
+    if (!code.equals(event.code)) return false;
+    if (type != event.type) return false;
 
+    return true;
   }
 
   @Override
   public int hashCode() {
-    return code.hashCode();
+    int result = code.hashCode();
+    result = 31 * result + type.hashCode();
+    return result;
   }
 
   public List<HistoryRecord> history() {
@@ -66,5 +73,9 @@ public class Event {
 
   public String code() {
     return code;
+  }
+
+  public EventType type() {
+    return type;
   }
 }
