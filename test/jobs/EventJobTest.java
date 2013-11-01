@@ -20,6 +20,7 @@ import java.util.Date;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static models.store.EventStore.createOrGetEvent;
+import static models.store.EventType.REGULAR;
 import static models.store.Organisation.BET365;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -44,7 +45,7 @@ public class EventJobTest {
   @Mock
   private ParsedEvent parsedEvent = new ParsedEvent("TENNIS", "fp", "sp", "DATE_STRING", "1.1", "2.2");
   @Mock
-  private AdaptedEvent adaptedEvent = new AdaptedEvent("side1", "side", 1.1, 2.2, BET365, new Date(), "side1_code", "side2_code");
+  private AdaptedEvent adaptedEvent = new AdaptedEvent(REGULAR, "side1", "side", 1.1, 2.2, BET365, new Date(), "side1_code", "side2_code");
   @Mock
   private Event event;
 

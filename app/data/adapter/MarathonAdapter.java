@@ -19,6 +19,7 @@ import static java.util.Calendar.MINUTE;
 import static java.util.Calendar.SECOND;
 import static java.util.Calendar.YEAR;
 import static java.util.TimeZone.getTimeZone;
+import static models.store.EventType.REGULAR;
 import static models.store.Organisation.MARATHON;
 import static org.apache.commons.lang3.StringUtils.stripAccents;
 import static play.Logger.of;
@@ -57,7 +58,7 @@ public class MarathonAdapter
     String firstSideCode = adoptSideCode(firstSide);
     String secondSIdeCode = adoptSideCode(secondSide);
 
-    AdaptedEvent adoptedEvent = new AdaptedEvent(firstSide, secondSide, firstKof, secondKof, MARATHON, date, firstSideCode, secondSIdeCode);
+    AdaptedEvent adoptedEvent = new AdaptedEvent(REGULAR, firstSide, secondSide, firstKof, secondKof, MARATHON, date, firstSideCode, secondSIdeCode);
 
     LOG.trace("Adapted Event with Code: {}", adoptedEvent.code);
 

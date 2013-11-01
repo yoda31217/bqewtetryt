@@ -6,8 +6,6 @@ import models.store.Organisation;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static models.store.EventType.REGULAR;
-
 public class AdaptedEvent {
 
   static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd mm");
@@ -19,10 +17,10 @@ public class AdaptedEvent {
   public final Date date;
   public final Date adoptedDate;
   public final String code;
-  public final EventType type = REGULAR;
+  public final EventType type;
 
-  public AdaptedEvent(String firstSide, String secondSide, double firstKof, double secondKof, Organisation organisation, Date date, Object firstSideCode,
-                      String secondSideCode) {
+  public AdaptedEvent(EventType type, String firstSide, String secondSide, double firstKof, double secondKof, Organisation organisation, Date date,
+                      Object firstSideCode, String secondSideCode) {
     this.firstSide = firstSide;
     this.secondSide = secondSide;
     this.firstKof = firstKof;
@@ -31,5 +29,6 @@ public class AdaptedEvent {
     this.date = date;
     this.adoptedDate = new Date();
     this.code = firstSideCode + "_" + secondSideCode + "_" + DATE_FORMAT.format(date);
+    this.type = type;
   }
 }

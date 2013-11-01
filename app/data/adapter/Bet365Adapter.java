@@ -16,6 +16,7 @@ import static com.google.common.base.Splitter.on;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Calendar.YEAR;
 import static java.util.TimeZone.getTimeZone;
+import static models.store.EventType.REGULAR;
 import static models.store.Organisation.BET365;
 import static org.apache.commons.lang3.StringUtils.stripAccents;
 import static play.Logger.of;
@@ -55,7 +56,7 @@ public class Bet365Adapter
     String firstSideCode = adoptSideCode(firstSide);
     String secondSideCode = adoptSideCode(secondSide);
 
-    AdaptedEvent adoptedEvent = new AdaptedEvent(firstSide, secondSide, firstKof, secondKof, BET365, date, firstSideCode, secondSideCode);
+    AdaptedEvent adoptedEvent = new AdaptedEvent(REGULAR, firstSide, secondSide, firstKof, secondKof, BET365, date, firstSideCode, secondSideCode);
 
     LOG.trace("Adapted Event with Code: {}", adoptedEvent.code);
 
