@@ -66,6 +66,6 @@ public class Bet365Parser
     String firstKof = decodeCollapseWhiteSpace(eventElChildren.get(3).getChildElements().get(0).getContent());
     String secondKof = decodeCollapseWhiteSpace(eventElChildren.get(4).getChildElements().get(0).getContent());
 
-    return new ParsedEvent(firstSide, secondSide, date, firstKof, secondKof);
+    return new ParsedEvent("TENNIS", firstSide, secondSide, date, firstKof, secondKof);
   }
 }

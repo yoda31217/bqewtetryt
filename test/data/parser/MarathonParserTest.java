@@ -20,6 +20,7 @@ public class MarathonParserTest {
     assertThat(events).hasSize(109);
 
     ParsedEvent firstEvent = events.get(0);
+    assertThat(firstEvent.sportDescr).isEqualTo("TENNIS");
     assertThat(firstEvent.firstSide).isEqualTo("Flipkens, Kirsten");
     assertThat(firstEvent.secondSide).isEqualTo("Hercog, Polona");
     assertThat(firstEvent.date).isEqualTo("17:30");

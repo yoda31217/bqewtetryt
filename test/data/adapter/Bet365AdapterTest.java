@@ -33,7 +33,7 @@ public class Bet365AdapterTest {
     Date adoptedDate = new Date();
     PowerMockito.whenNew(Date.class).withNoArguments().thenReturn(adoptedDate);
 
-    ParsedEvent event = new ParsedEvent("Florian Mayer", "Kristina Mladenovic", "11 Oct 07:30", "1.50", "3.28");
+    ParsedEvent event = new ParsedEvent("TENNIS", "Florian Mayer", "Kristina Mladenovic", "11 Oct 07:30", "1.50", "3.28");
     AdaptedEvent adaptedEvent = new Bet365Adapter().adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
@@ -56,7 +56,7 @@ public class Bet365AdapterTest {
   @Test
   public void codeAndOrder()
     throws Exception {
-    ParsedEvent event = new ParsedEvent("Florian Del Mayer", "Aisam-Ul Haq Qureshi & Jean-Julien Rojer", "11 Oct 07:30", "3.28", "1.50");
+    ParsedEvent event = new ParsedEvent("TENNIS", "Florian Del Mayer", "Aisam-Ul Haq Qureshi & Jean-Julien Rojer", "11 Oct 07:30", "3.28", "1.50");
     AdaptedEvent adaptedEvent = new Bet365Adapter().adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
@@ -75,7 +75,7 @@ public class Bet365AdapterTest {
   @Test
   public void order()
     throws Exception {
-    ParsedEvent event = new ParsedEvent("Kristina Mladenovic", "Florian Mayer", "11 Oct 07:30", "3.28", "1.50");
+    ParsedEvent event = new ParsedEvent("TENNIS", "Kristina Mladenovic", "Florian Mayer", "11 Oct 07:30", "3.28", "1.50");
     AdaptedEvent adaptedEvent = new Bet365Adapter().adapt(event);
 
     assertThat(adaptedEvent.firstSide).isEqualTo("Florian Mayer");
@@ -87,7 +87,7 @@ public class Bet365AdapterTest {
   @Test
   public void nunUnicodeCharacters()
     throws Exception {
-    ParsedEvent event = new ParsedEvent("Florian Hradečka", "Kristina Hradečka", "11 Oct 07:30", "1.50", "3.28");
+    ParsedEvent event = new ParsedEvent("TENNIS", "Florian Hradečka", "Kristina Hradečka", "11 Oct 07:30", "1.50", "3.28");
     AdaptedEvent adaptedEvent = new Bet365Adapter().adapt(event);
 
     assertThat(adaptedEvent.firstSide).isEqualTo("Florian Hradecka");
@@ -97,7 +97,7 @@ public class Bet365AdapterTest {
   @Test
   public void date24hours()
     throws Exception {
-    ParsedEvent event = new ParsedEvent("Florian Mayer", "Kristina Mladenovic & Flavia Pennetta", "11 Oct 12:30", "3.50", "1.28");
+    ParsedEvent event = new ParsedEvent("TENNIS", "Florian Mayer", "Kristina Mladenovic & Flavia Pennetta", "11 Oct 12:30", "3.50", "1.28");
     AdaptedEvent adaptedEvent = new Bet365Adapter().adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));

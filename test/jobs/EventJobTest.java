@@ -41,7 +41,7 @@ public class EventJobTest {
   private BAdapter adapter;
   private byte[] FetchResult = new byte[0];
   @Mock
-  private ParsedEvent parsedEvent = new ParsedEvent("fp", "sp", "DATE_STRING", "1.1", "2.2");
+  private ParsedEvent parsedEvent = new ParsedEvent("TENNIS", "fp", "sp", "DATE_STRING", "1.1", "2.2");
   @Mock
   private AdaptedEvent adaptedEvent = new AdaptedEvent("side1", "side", 1.1, 2.2, BET365, new Date(), "side1_code", "side2_code");
   @Mock

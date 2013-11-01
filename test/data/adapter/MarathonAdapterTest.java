@@ -36,7 +36,7 @@ public class MarathonAdapterTest {
     Date adaptedDate = new Date();
     whenNew(Date.class).withNoArguments().thenReturn(adaptedDate);
 
-    ParsedEvent event = new ParsedEvent("Flipkens, Kirsten", "Hercog, Polona", "17:30", "1.45", "2.92");
+    ParsedEvent event = new ParsedEvent("TENNIS", "Flipkens, Kirsten", "Hercog, Polona", "17:30", "1.45", "2.92");
     AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
@@ -57,7 +57,7 @@ public class MarathonAdapterTest {
   @Test
   public void nunUnicodeCharacters()
     throws Exception {
-    ParsedEvent event = new ParsedEvent("Florian Hradečka", "Kristina Hradečka", "11 Oct 07:30", "1.50", "3.28");
+    ParsedEvent event = new ParsedEvent("TENNIS", "Florian Hradečka", "Kristina Hradečka", "11 Oct 07:30", "1.50", "3.28");
     AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
 
     assertThat(adaptedEvent.firstSide).isEqualTo("Florian Hradecka");
@@ -67,7 +67,7 @@ public class MarathonAdapterTest {
   @Test
   public void codeAndOrder()
     throws Exception {
-    ParsedEvent event = new ParsedEvent("Flipkens, Kirsten", "J.Murray / J.Peers", "11 Sep 17:30", "2.92", "1.45");
+    ParsedEvent event = new ParsedEvent("TENNIS", "Flipkens, Kirsten", "J.Murray / J.Peers", "11 Sep 17:30", "2.92", "1.45");
     AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
@@ -86,7 +86,7 @@ public class MarathonAdapterTest {
   @Test
   public void order()
     throws Exception {
-    ParsedEvent event = new ParsedEvent("Hercog, Polona", "Flipkens, Kirsten", "17:30", "2.92", "1.45");
+    ParsedEvent event = new ParsedEvent("TENNIS", "Hercog, Polona", "Flipkens, Kirsten", "17:30", "2.92", "1.45");
     AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
 
     assertThat(adaptedEvent.firstSide).isEqualTo("Flipkens, Kirsten");
@@ -98,7 +98,7 @@ public class MarathonAdapterTest {
   @Test
   public void date24hours()
     throws InterruptedException, IOException {
-    ParsedEvent event = new ParsedEvent("Flipkens, Kirsten", "Hercog, Polona", "11 Sep 12:30", "1.45", "2.92");
+    ParsedEvent event = new ParsedEvent("TENNIS", "Flipkens, Kirsten", "Hercog, Polona", "11 Sep 12:30", "1.45", "2.92");
     AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
@@ -114,7 +114,7 @@ public class MarathonAdapterTest {
   @Test
   public void longDate()
     throws InterruptedException, IOException {
-    ParsedEvent event = new ParsedEvent("Flipkens, Kirsten", "Hercog, Polona", "11 Sep 17:30", "1.45", "2.92");
+    ParsedEvent event = new ParsedEvent("TENNIS", "Flipkens, Kirsten", "Hercog, Polona", "11 Sep 17:30", "1.45", "2.92");
     AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));

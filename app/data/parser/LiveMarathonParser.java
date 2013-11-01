@@ -7,13 +7,14 @@ import play.Logger;
 
 import javax.annotation.Nullable;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.collect.Lists.transform;
 import static net.htmlparser.jericho.CharacterReference.decodeCollapseWhiteSpace;
 import static play.Logger.of;
 
-public class MarathonParser
+public class LiveMarathonParser
   implements BParser {
 
   private static final Logger.ALogger LOG = of(MarathonParser.class);
@@ -23,29 +24,38 @@ public class MarathonParser
   public List<ParsedEvent> parse(byte[] input) {
     String documentPayload = new String(input, UTF8);
     Source doc = new Source(documentPayload);
-    List<Element> eventEls = doc.getAllElementsByClass("event-header");
+    doc.fullSequentialParse();
 
-    List<ParsedEvent> parsedEvents = transform(eventEls, new Function<Element, ParsedEvent>() {
+    List<ParsedEvent> parsedEvents = new ArrayList<ParsedEvent>();
 
-      @Nullable
-      @Override
-      public ParsedEvent apply(@Nullable Element eventEl) {
-        return buildEvent(eventEl.getChildElements());
-      }
-    });
+    Element rootEl = doc.getElementById("container_EVENTS");
+    for (Element eventBlockSportDescrEl : rootEl.getAllElementsByClass("opened-live-event")) {
+
+      final String sportDescr = decodeCollapseWhiteSpace(eventBlockSportDescrEl.getContent()).trim();
+      Element eventBlockEl = eventBlockSportDescrEl.getParentElement();
+      List<Element> eventEls = eventBlockEl.getAllElementsByClass("event-header");
+
+      parsedEvents.addAll(transform(eventEls, new Function<Element, ParsedEvent>() {
+
+        @Nullable
+        @Override
+        public ParsedEvent apply(@Nullable Element eventEl) {
+          return buildEvent(sportDescr, eventEl.getChildElements());
+        }
+      }));
+    }
 
     LOG.debug("Parsed Events: {}", parsedEvents.size());
 
     return parsedEvents;
   }
 
-  private ParsedEvent buildEvent(List<Element> eventElChildren) {
+  private ParsedEvent buildEvent(String sportDescr, List<Element> eventElChildren) {
     Element nameEl = eventElChildren.get(0);
 
     String date = decodeCollapseWhiteSpace(nameEl.getFirstElementByClass("date").getContent());
 
-    List<Element> sideNameEls = nameEl.getAllElementsByClass("today-member-name");
-    if (0 == sideNameEls.size()) sideNameEls = nameEl.getAllElementsByClass("member-name");
+    List<Element> sideNameEls = nameEl.getAllElementsByClass("live-today-member-name");
 
     String firstSide = decodeCollapseWhiteSpace(sideNameEls.get(0).getContent());
     String secondSide = decodeCollapseWhiteSpace(sideNameEls.get(1).getContent());
@@ -53,6 +63,6 @@ public class MarathonParser
     String firstKof = decodeCollapseWhiteSpace(eventElChildren.get(1).getChildElements().get(0).getContent());
     String secondKof = decodeCollapseWhiteSpace(eventElChildren.get(2).getChildElements().get(0).getContent());
 
-    return new ParsedEvent("TENNIS", firstSide, secondSide, date, firstKof, secondKof);
+    return new ParsedEvent(sportDescr, firstSide, secondSide, date, firstKof, secondKof);
   }
 }
