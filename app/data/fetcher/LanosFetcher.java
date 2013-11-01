@@ -13,13 +13,13 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Maps.newConcurrentMap;
 import static utils.BObjects.emptyStringList;
 
-public class MarathonFetcher
+public class LanosFetcher
   extends GzipUrlFetcher {
 
   private static final MapJoiner COOKIE_JOINER = Joiner.on("; ").withKeyValueSeparator("=");
   final Map<String, String> cookies = newConcurrentMap();
 
-  public MarathonFetcher(String url) {
+  public LanosFetcher(String url) {
     super(url, Duration.create(5, "sec"));
     cookies.put("panbet.oddstype", "Decimal");
   }
@@ -54,8 +54,8 @@ public class MarathonFetcher
     conn.setRequestProperty("Cache-Control", "no-cache");
     conn.setRequestProperty("Pragma", "no-cache");
 
-    conn.setRequestProperty("Host", "www.marathonbet.com");
-    conn.setRequestProperty("Referer", "http://www.marathonbet.com/en/betting/Tennis/");
+    conn.setRequestProperty("Host", "www.lanosbet.com");
+    conn.setRequestProperty("Referer", "http://www.lanosbet.com/en/betting/Tennis/");
 
     conn.setRequestProperty("Cookie", COOKIE_JOINER.join(cookies));
   }

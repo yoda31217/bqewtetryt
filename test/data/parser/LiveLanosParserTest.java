@@ -8,14 +8,14 @@ import java.util.List;
 import static org.apache.commons.io.IOUtils.toByteArray;
 import static org.fest.assertions.Assertions.assertThat;
 
-public class LiveMarathonParserTest {
+public class LiveLanosParserTest {
 
   @Test
   public void parse()
     throws IOException {
-    byte[] input = toByteArray(this.getClass().getResourceAsStream("/data/parser/LiveMarathonParserTest.html"));
+    byte[] input = toByteArray(this.getClass().getResourceAsStream("/data/parser/LiveLanosParserTest.html"));
 
-    List<ParsedEvent> events = new LiveMarathonParser().parse(input);
+    List<ParsedEvent> events = new LiveLanosParser().parse(input);
 
     assertThat(events).hasSize(6);
 

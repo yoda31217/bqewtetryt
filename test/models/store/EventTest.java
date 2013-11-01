@@ -28,7 +28,7 @@ public class EventTest {
   @Test
   public void addHistory() {
     Date date = new Date();
-    Organisation organisation = Organisation.MARATHON;
+    Organisation organisation = Organisation.LANOS;
     double firstKof = 1.0;
     double secondKof = 1.0;
 

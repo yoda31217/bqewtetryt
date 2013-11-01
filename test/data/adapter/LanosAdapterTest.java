@@ -21,14 +21,14 @@ import static java.util.Calendar.MONTH;
 import static java.util.Calendar.SECOND;
 import static java.util.Calendar.SEPTEMBER;
 import static java.util.TimeZone.getTimeZone;
-import static models.store.Organisation.MARATHON;
+import static models.store.Organisation.LANOS;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 import static org.powermock.reflect.Whitebox.invokeMethod;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Date.class, AdaptedEvent.class})
-public class MarathonAdapterTest {
+public class LanosAdapterTest {
 
   @Test
   public void parse()
@@ -37,7 +37,7 @@ public class MarathonAdapterTest {
     whenNew(Date.class).withNoArguments().thenReturn(adaptedDate);
 
     ParsedEvent event = new ParsedEvent("TENNIS", "Flipkens, Kirsten", "Hercog, Polona", "17:30", "1.45", "2.92");
-    AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
+    AdaptedEvent adaptedEvent = new LanosAdapter().adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
     calendar.set(HOUR_OF_DAY, 17);
@@ -46,7 +46,7 @@ public class MarathonAdapterTest {
     calendar.set(MILLISECOND, 0);
     assertThat(adaptedEvent.date).isEqualTo(calendar.getTime());
 
-    assertThat(adaptedEvent.organisation).isEqualTo(MARATHON);
+    assertThat(adaptedEvent.organisation).isEqualTo(LANOS);
     assertThat(adaptedEvent.firstSide).isEqualTo("Flipkens, Kirsten");
     assertThat(adaptedEvent.secondSide).isEqualTo("Hercog, Polona");
     assertThat(adaptedEvent.firstKof).isEqualTo(1.45);
@@ -58,7 +58,7 @@ public class MarathonAdapterTest {
   public void nunUnicodeCharacters()
     throws Exception {
     ParsedEvent event = new ParsedEvent("TENNIS", "Florian Hradečka", "Kristina Hradečka", "11 Oct 07:30", "1.50", "3.28");
-    AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
+    AdaptedEvent adaptedEvent = new LanosAdapter().adapt(event);
 
     assertThat(adaptedEvent.firstSide).isEqualTo("Florian Hradecka");
     assertThat(adaptedEvent.secondSide).isEqualTo("Kristina Hradecka");
@@ -68,7 +68,7 @@ public class MarathonAdapterTest {
   public void codeAndOrder()
     throws Exception {
     ParsedEvent event = new ParsedEvent("TENNIS", "Flipkens, Kirsten", "J.Murray / J.Peers", "11 Sep 17:30", "2.92", "1.45");
-    AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
+    AdaptedEvent adaptedEvent = new LanosAdapter().adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
     calendar.set(MONTH, SEPTEMBER);
@@ -87,7 +87,7 @@ public class MarathonAdapterTest {
   public void order()
     throws Exception {
     ParsedEvent event = new ParsedEvent("TENNIS", "Hercog, Polona", "Flipkens, Kirsten", "17:30", "2.92", "1.45");
-    AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
+    AdaptedEvent adaptedEvent = new LanosAdapter().adapt(event);
 
     assertThat(adaptedEvent.firstSide).isEqualTo("Flipkens, Kirsten");
     assertThat(adaptedEvent.secondSide).isEqualTo("Hercog, Polona");
@@ -99,7 +99,7 @@ public class MarathonAdapterTest {
   public void date24hours()
     throws InterruptedException, IOException {
     ParsedEvent event = new ParsedEvent("TENNIS", "Flipkens, Kirsten", "Hercog, Polona", "11 Sep 12:30", "1.45", "2.92");
-    AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
+    AdaptedEvent adaptedEvent = new LanosAdapter().adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
     calendar.set(MONTH, SEPTEMBER);
@@ -115,7 +115,7 @@ public class MarathonAdapterTest {
   public void longDate()
     throws InterruptedException, IOException {
     ParsedEvent event = new ParsedEvent("TENNIS", "Flipkens, Kirsten", "Hercog, Polona", "11 Sep 17:30", "1.45", "2.92");
-    AdaptedEvent adaptedEvent = new MarathonAdapter().adapt(event);
+    AdaptedEvent adaptedEvent = new LanosAdapter().adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
     calendar.set(MONTH, SEPTEMBER);
@@ -131,7 +131,7 @@ public class MarathonAdapterTest {
   public void adoptLongDateParseException()
     throws Exception {
     try {
-      invokeMethod(new MarathonAdapter(), "adaptLongDate", "WRONG_DATE_STRING");
+      invokeMethod(new LanosAdapter(), "adaptLongDate", "WRONG_DATE_STRING");
 
     } catch (RuntimeException ex) {
       assertThat(ex.getCause()).isInstanceOf(ParseException.class);

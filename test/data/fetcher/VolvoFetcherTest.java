@@ -17,9 +17,9 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({})
-public class Bet365FetcherTest {
+public class VolvoFetcherTest {
 
-  Bet365Fetcher fetcher = new Bet365Fetcher("URL");
+  VolvoFetcher fetcher = new VolvoFetcher("URL");
   @Mock
   private URLConnection urlConnectionMock;
 
@@ -32,8 +32,8 @@ public class Bet365FetcherTest {
     List args = argsCaptor.getAllValues();
 
     assertThat(args).containsExactly("User-Agent",
-      "Mozilla/5.0 (iPad; CPU OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25", "Host",
-      "www.bet365.com", "Connection", "keep-alive", "Accept", "*/*", "X-Requested-With", "XMLHttpRequest", "Referer", "http://www.bet365.com/lite/",
-      "Accept-Encoding", "gzip,deflate,sdch", "Accept-Language", "en-US,en;q=0.8");
+      "Mozilla/5.0 (iPad; CPU OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25", "Host", "www.volvo.com",
+      "Connection", "keep-alive", "Accept", "*/*", "X-Requested-With", "XMLHttpRequest", "Referer", "http://www.volvo.com/lite/", "Accept-Encoding",
+      "gzip,deflate,sdch", "Accept-Language", "en-US,en;q=0.8");
   }
 }

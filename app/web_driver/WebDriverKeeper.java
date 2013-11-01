@@ -8,31 +8,31 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class WebDriverKeeper {
 
-  private final Semaphore marathonDriverSemaphore = new Semaphore(1, true);
+  private final Semaphore lanosDriverSemaphore = new Semaphore(1, true);
   private final long timeoutInMillis;
-  private final FirefoxDriver marathonDriver;
+  private final FirefoxDriver lanosDriver;
 
   public WebDriverKeeper(long timeoutInMillis) {
     this.timeoutInMillis = timeoutInMillis;
 
-    marathonDriver = new FirefoxDriver();
-    marathonDriver.get("http://www.marathonbet.com/en/live.htm");
+    lanosDriver = new FirefoxDriver();
+    lanosDriver.get("http://www.lanosbet.com/en/live.htm");
   }
 
-  public FirefoxDriver acquireMarathonDriver() {
+  public FirefoxDriver acquireLanosDriver() {
     try {
-      boolean wasAcquired = marathonDriverSemaphore.tryAcquire(timeoutInMillis, MILLISECONDS);
+      boolean wasAcquired = lanosDriverSemaphore.tryAcquire(timeoutInMillis, MILLISECONDS);
       if (wasAcquired) {
-        return marathonDriver;
+        return lanosDriver;
       }
 
     } catch (InterruptedException skipped) {
     }
 
-    throw new IllegalStateException("Failed to acquire Marathon Web Driver.");
+    throw new IllegalStateException("Failed to acquire Lanos Web Driver.");
   }
 
-  public void releaseMarathonDriver() {
-    marathonDriverSemaphore.release();
+  public void releaseLanosDriver() {
+    lanosDriverSemaphore.release();
   }
 }

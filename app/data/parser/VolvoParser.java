@@ -19,10 +19,10 @@ import static com.google.common.collect.Lists.newArrayList;
 import static net.htmlparser.jericho.CharacterReference.decodeCollapseWhiteSpace;
 import static play.Logger.of;
 
-public class Bet365Parser
+public class VolvoParser
   implements BParser {
 
-  private static final Logger.ALogger LOG = of(Bet365Parser.class);
+  private static final Logger.ALogger LOG = of(VolvoParser.class);
   private static final Charset UTF8 = Charset.forName("UTF-8");
   private static final Splitter EVENT_TITLE_SPLITTER = Splitter.on(" v ").trimResults();
 

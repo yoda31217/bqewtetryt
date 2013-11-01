@@ -1,4 +1,4 @@
-ORGANISATIONS = ['MARATHON', 'BET365']
+ORGANISATIONS = ['LANOS', 'VOLVO']
 
 $ ->
   $('#refreshBtn').click(refresh)

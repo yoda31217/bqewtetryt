@@ -8,14 +8,14 @@ import java.util.List;
 import static org.apache.commons.io.IOUtils.toByteArray;
 import static org.fest.assertions.Assertions.assertThat;
 
-public class Bet365ParserTest {
+public class VolvoParserTest {
 
   @Test
   public void parse()
     throws IOException {
-    byte[] input = toByteArray(this.getClass().getResourceAsStream("/data/parser/Bet365ParserTest.html"));
+    byte[] input = toByteArray(this.getClass().getResourceAsStream("/data/parser/VolvoParserTest.html"));
 
-    List<ParsedEvent> events = new Bet365Parser().parse(input);
+    List<ParsedEvent> events = new VolvoParser().parse(input);
 
     assertThat(events).hasSize(58);
 

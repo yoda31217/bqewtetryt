@@ -36,8 +36,8 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 import static org.powermock.reflect.Whitebox.invokeMethod;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({URL.class, MarathonFetcher.class, MarathonFetcherTest.class, Date.class})
-public class MarathonFetcherTest {
+@PrepareForTest({URL.class, LanosFetcher.class, LanosFetcherTest.class, Date.class})
+public class LanosFetcherTest {
 
   @Mock
   private URL urlMock;
@@ -48,9 +48,9 @@ public class MarathonFetcherTest {
     put("Set-Cookie", newArrayList("COOKIE_1=COOKIE_1_VALUE", "COOKIE_2=COOKIE_2_VALUE; _NOISE_; _NOISE_AGAIN_"));
   }};
   @Spy
-  private MarathonFetcher fetcher = new MarathonFetcher("FETCH_URL");
+  private LanosFetcher fetcher = new LanosFetcher("FETCH_URL");
   @Spy
-  private InputStream inputStream = MarathonFetcher.class.getResourceAsStream("/data/fetcher/fakeResponse.txt.gz");
+  private InputStream inputStream = LanosFetcher.class.getResourceAsStream("/data/fetcher/fakeResponse.txt.gz");
 
   @Before
   public void before()
@@ -78,8 +78,8 @@ public class MarathonFetcherTest {
     assertThat(argsCaptor.getAllValues()).isEqualTo(newArrayList("User-Agent",
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.66 Safari/537.36", "Accept",
       "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp, */*;q=0.8", "Accept-Encoding", "gzip,deflate,sdch", "Accept-Language",
-      "en-US,en;q=0.8", "Connection", "keep-alive", "Cache-Control", "no-cache", "Pragma", "no-cache", "Host", "www.marathonbet.com", "Referer",
-      "http://www.marathonbet.com/en/betting/Tennis/", "Cookie", "COOKIE_1=COOKIE_1_VALUE; COOKIE_2=COOKIE_2_VALUE; panbet.oddstype=Decimal"));
+      "en-US,en;q=0.8", "Connection", "keep-alive", "Cache-Control", "no-cache", "Pragma", "no-cache", "Host", "www.lanosbet.com", "Referer",
+      "http://www.lanosbet.com/en/betting/Tennis/", "Cookie", "COOKIE_1=COOKIE_1_VALUE; COOKIE_2=COOKIE_2_VALUE; panbet.oddstype=Decimal"));
 
     assertThat(response).isEqualTo(fakeResponse);
 

@@ -20,12 +20,12 @@ import static java.util.Calendar.MONTH;
 import static java.util.Calendar.OCTOBER;
 import static java.util.Calendar.SECOND;
 import static java.util.TimeZone.getTimeZone;
-import static models.store.Organisation.BET365;
+import static models.store.Organisation.VOLVO;
 import static org.fest.assertions.Assertions.assertThat;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Date.class, AdaptedEvent.class})
-public class Bet365AdapterTest {
+public class VolvoAdapterTest {
 
   @Test
   public void parse()
@@ -34,7 +34,7 @@ public class Bet365AdapterTest {
     PowerMockito.whenNew(Date.class).withNoArguments().thenReturn(adoptedDate);
 
     ParsedEvent event = new ParsedEvent("TENNIS", "Florian Mayer", "Kristina Mladenovic", "11 Oct 07:30", "1.50", "3.28");
-    AdaptedEvent adaptedEvent = new Bet365Adapter().adapt(event);
+    AdaptedEvent adaptedEvent = new VolvoAdapter().adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
     calendar.set(MONTH, OCTOBER);
@@ -45,7 +45,7 @@ public class Bet365AdapterTest {
     calendar.set(MILLISECOND, 0);
     assertThat(adaptedEvent.date).isEqualTo(calendar.getTime());
 
-    assertThat(adaptedEvent.organisation).isEqualTo(BET365);
+    assertThat(adaptedEvent.organisation).isEqualTo(VOLVO);
     assertThat(adaptedEvent.firstSide).isEqualTo("Florian Mayer");
     assertThat(adaptedEvent.secondSide).isEqualTo("Kristina Mladenovic");
     assertThat(adaptedEvent.firstKof).isEqualTo(1.5);
@@ -57,7 +57,7 @@ public class Bet365AdapterTest {
   public void codeAndOrder()
     throws Exception {
     ParsedEvent event = new ParsedEvent("TENNIS", "Florian Del Mayer", "Aisam-Ul Haq Qureshi & Jean-Julien Rojer", "11 Oct 07:30", "3.28", "1.50");
-    AdaptedEvent adaptedEvent = new Bet365Adapter().adapt(event);
+    AdaptedEvent adaptedEvent = new VolvoAdapter().adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
     calendar.set(MONTH, OCTOBER);
@@ -76,7 +76,7 @@ public class Bet365AdapterTest {
   public void order()
     throws Exception {
     ParsedEvent event = new ParsedEvent("TENNIS", "Kristina Mladenovic", "Florian Mayer", "11 Oct 07:30", "3.28", "1.50");
-    AdaptedEvent adaptedEvent = new Bet365Adapter().adapt(event);
+    AdaptedEvent adaptedEvent = new VolvoAdapter().adapt(event);
 
     assertThat(adaptedEvent.firstSide).isEqualTo("Florian Mayer");
     assertThat(adaptedEvent.secondSide).isEqualTo("Kristina Mladenovic");
@@ -88,7 +88,7 @@ public class Bet365AdapterTest {
   public void nunUnicodeCharacters()
     throws Exception {
     ParsedEvent event = new ParsedEvent("TENNIS", "Florian Hradečka", "Kristina Hradečka", "11 Oct 07:30", "1.50", "3.28");
-    AdaptedEvent adaptedEvent = new Bet365Adapter().adapt(event);
+    AdaptedEvent adaptedEvent = new VolvoAdapter().adapt(event);
 
     assertThat(adaptedEvent.firstSide).isEqualTo("Florian Hradecka");
     assertThat(adaptedEvent.secondSide).isEqualTo("Kristina Hradecka");
@@ -98,7 +98,7 @@ public class Bet365AdapterTest {
   public void date24hours()
     throws Exception {
     ParsedEvent event = new ParsedEvent("TENNIS", "Florian Mayer", "Kristina Mladenovic & Flavia Pennetta", "11 Oct 12:30", "3.50", "1.28");
-    AdaptedEvent adaptedEvent = new Bet365Adapter().adapt(event);
+    AdaptedEvent adaptedEvent = new VolvoAdapter().adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
     calendar.set(MONTH, OCTOBER);

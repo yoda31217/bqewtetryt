@@ -20,14 +20,14 @@ import static java.util.Calendar.SECOND;
 import static java.util.Calendar.YEAR;
 import static java.util.TimeZone.getTimeZone;
 import static models.store.EventType.REGULAR;
-import static models.store.Organisation.MARATHON;
+import static models.store.Organisation.LANOS;
 import static org.apache.commons.lang3.StringUtils.stripAccents;
 import static play.Logger.of;
 
-public class MarathonAdapter
+public class LanosAdapter
   implements BAdapter {
 
-  private static final Logger.ALogger LOG = of(MarathonAdapter.class);
+  private static final Logger.ALogger LOG = of(LanosAdapter.class);
   static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat("yyyy dd MMM HH:mm Z");
   private static final Splitter ONE_PLAYER_ON_SIDE_NAME_SPLITTER = on(",").omitEmptyStrings().trimResults();
   private static final Splitter TWO_PLAYERS_ON_SIDE_NAME_SPLITTER = on(anyOf("./")).omitEmptyStrings().trimResults();
@@ -58,7 +58,7 @@ public class MarathonAdapter
     String firstSideCode = adoptSideCode(firstSide);
     String secondSIdeCode = adoptSideCode(secondSide);
 
-    AdaptedEvent adoptedEvent = new AdaptedEvent(REGULAR, firstSide, secondSide, firstKof, secondKof, MARATHON, date, firstSideCode, secondSIdeCode);
+    AdaptedEvent adoptedEvent = new AdaptedEvent(REGULAR, firstSide, secondSide, firstKof, secondKof, LANOS, date, firstSideCode, secondSIdeCode);
 
     LOG.trace("Adapted Event with Code: {}", adoptedEvent.code);
 

@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({})
-public class LiveMarathonFetcherTest {
+public class LiveLanosFetcherTest {
 
   public static final String OUTER_HTML_TEXT = "OUTER_HTML_TEXT";
   public static final Charset UTF8 = Charset.forName("UTF-8");
@@ -33,7 +33,7 @@ public class LiveMarathonFetcherTest {
   @Before
   public void before()
     throws Exception {
-    when(webDriverKeeperMock.acquireMarathonDriver()).thenReturn(webDriverMock);
+    when(webDriverKeeperMock.acquireLanosDriver()).thenReturn(webDriverMock);
     when(webDriverMock.findElementByTagName("html")).thenReturn(webElementMock);
     when(webElementMock.getAttribute("outerHTML")).thenReturn(OUTER_HTML_TEXT);
   }
@@ -41,21 +41,21 @@ public class LiveMarathonFetcherTest {
   @Test
   public void fetch()
     throws Exception {
-    LiveMarathonFetcher fetcher = new LiveMarathonFetcher(webDriverKeeperMock);
+    LiveLanosFetcher fetcher = new LiveLanosFetcher(webDriverKeeperMock);
 
     byte[] fetchResult = fetcher.fetch();
 
     assertThat(fetchResult).isEqualTo(OUTER_HTML_TEXT.getBytes(UTF8));
 
-    verify(webDriverKeeperMock).acquireMarathonDriver();
-    verify(webDriverKeeperMock).releaseMarathonDriver();
+    verify(webDriverKeeperMock).acquireLanosDriver();
+    verify(webDriverKeeperMock).releaseLanosDriver();
   }
 
   @Test
   @Ignore
   public void fetchRealData()
     throws Exception {
-    LiveMarathonFetcher fetcher = new LiveMarathonFetcher(new WebDriverKeeper(10L));
+    LiveLanosFetcher fetcher = new LiveLanosFetcher(new WebDriverKeeper(10L));
     fetcher.fetch();
   }
 }

@@ -25,8 +25,8 @@ import utils.BObjects;
 import java.util.List;
 
 import static jobs.Jobs.REMOVE_OLD_HISTORY_JOB;
-import static models.store.Organisation.BET365;
-import static models.store.Organisation.MARATHON;
+import static models.store.Organisation.LANOS;
+import static models.store.Organisation.VOLVO;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Matchers.any;
@@ -58,9 +58,9 @@ public class GlobalTest {
   @Mock
   private ExecutionContextExecutor defaultDispatcherMock;
   @Mock
-  private MessageDispatcher bet365FetchingDispatcherMock;
+  private MessageDispatcher volvoFetchingDispatcherMock;
   @Mock
-  private MessageDispatcher marathonFetchingDispatcherMock;
+  private MessageDispatcher lanosFetchingDispatcherMock;
   @Mock
   private Cancellable scheduleMock;
   private FakeApplication fakeApplication;
@@ -78,8 +78,8 @@ public class GlobalTest {
     when(actorSystemMock.dispatchers()).thenReturn(dispatchersMock);
 
     when(actorSystemMock.dispatcher()).thenReturn(defaultDispatcherMock);
-    when(dispatchersMock.lookup("contexts.fetch-bet365")).thenReturn(bet365FetchingDispatcherMock);
-    when(dispatchersMock.lookup("contexts.fetch-marathon")).thenReturn(marathonFetchingDispatcherMock);
+    when(dispatchersMock.lookup("contexts.fetch-volvo")).thenReturn(volvoFetchingDispatcherMock);
+    when(dispatchersMock.lookup("contexts.fetch-lanos")).thenReturn(lanosFetchingDispatcherMock);
 
     when(schedulerMock.schedule(any(FiniteDuration.class), any(FiniteDuration.class), any(Runnable.class), any(ExecutionContext.class))).thenReturn(
       scheduleMock);
@@ -112,8 +112,8 @@ public class GlobalTest {
 
     assertThat(args.get(0)).satisfies(reflectionEq(new RemoveOldEventJob(oldEventAge)));
     assertThat(args.get(1)).satisfies(reflectionEq(new FakeEventJob()));
-    assertThat(args.get(2)).satisfies(reflectionEq(new FakeHistoryRecordJob(BET365)));
-    assertThat(args.get(3)).satisfies(reflectionEq(new FakeHistoryRecordJob(MARATHON)));
+    assertThat(args.get(2)).satisfies(reflectionEq(new FakeHistoryRecordJob(VOLVO)));
+    assertThat(args.get(3)).satisfies(reflectionEq(new FakeHistoryRecordJob(LANOS)));
 
     verify(schedulerMock, times(4)).schedule(refEq(offset), refEq(delay), same(wrappedRunnable), same(defaultDispatcherMock));
 
@@ -138,8 +138,8 @@ public class GlobalTest {
     assertThat(jobs).hasSize(2);
     assertThat(jobs.get(0)).satisfies(reflectionEq(new RemoveOldEventJob(Duration.create(1, "day").toMillis())));
     assertThat(jobs.get(1)).isSameAs(REMOVE_OLD_HISTORY_JOB);
-    //    assertThat(jobs.get(2)).isSameAs(MARATHON_JOB);
-    //    assertThat(jobs.get(3)).isSameAs(BET365_JOB);
+    //    assertThat(jobs.get(2)).isSameAs(LANOS_JOB);
+    //    assertThat(jobs.get(3)).isSameAs(VOLVO_JOB);
 
     ArgumentCaptor<FiniteDuration> durationArgsCaptor = forClass(FiniteDuration.class);
     ArgumentCaptor<ExecutionContext> executionContextArgsCaptor = forClass(ExecutionContext.class);
@@ -164,7 +164,7 @@ public class GlobalTest {
 
     List<ExecutionContext> executionContexts = executionContextArgsCaptor.getAllValues();
     assertThat(executionContexts).hasSize(2).containsExactly(defaultDispatcherMock, defaultDispatcherMock
-      //      , marathonFetchingDispatcherMock, bet365FetchingDispatcherMock
+      //      , lanosFetchingDispatcherMock, volvoFetchingDispatcherMock
     );
   }
 }

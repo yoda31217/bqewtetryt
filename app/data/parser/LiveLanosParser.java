@@ -14,10 +14,10 @@ import static com.google.common.collect.Lists.transform;
 import static net.htmlparser.jericho.CharacterReference.decodeCollapseWhiteSpace;
 import static play.Logger.of;
 
-public class LiveMarathonParser
+public class LiveLanosParser
   implements BParser {
 
-  private static final Logger.ALogger LOG = of(MarathonParser.class);
+  private static final Logger.ALogger LOG = of(LanosParser.class);
   private static final Charset UTF8 = Charset.forName("UTF-8");
 
   @Override

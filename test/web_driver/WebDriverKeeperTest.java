@@ -30,7 +30,7 @@ public class WebDriverKeeperTest {
 
     keeper = new WebDriverKeeper(10);
 
-    verify(webDriverMock).get("http://www.marathonbet.com/en/live.htm");
+    verify(webDriverMock).get("http://www.lanosbet.com/en/live.htm");
   }
 
   @After
@@ -40,9 +40,9 @@ public class WebDriverKeeperTest {
   }
 
   @Test
-  public void acquireMarathonDriver()
+  public void acquireLanosDriver()
     throws Exception {
-    WebDriver driver = keeper.acquireMarathonDriver();
+    WebDriver driver = keeper.acquireLanosDriver();
 
     assertThat(driver).isEqualTo(webDriverMock);
   }
@@ -50,22 +50,22 @@ public class WebDriverKeeperTest {
   @Test
   public void secondAcquireTimeoutException()
     throws Exception {
-    keeper.acquireMarathonDriver();
+    keeper.acquireLanosDriver();
 
     try {
-      keeper.acquireMarathonDriver();
+      keeper.acquireLanosDriver();
       fail("Web Driver should be locked.");
 
     } catch (IllegalStateException e) {
-      assertThat(e).hasMessage("Failed to acquire Marathon Web Driver.");
+      assertThat(e).hasMessage("Failed to acquire Lanos Web Driver.");
     }
   }
 
   @Test
   public void acquireReleaseAcquireTimeoutException()
     throws Exception {
-    keeper.acquireMarathonDriver();
-    keeper.releaseMarathonDriver();
-    keeper.acquireMarathonDriver();
+    keeper.acquireLanosDriver();
+    keeper.releaseLanosDriver();
+    keeper.acquireLanosDriver();
   }
 }

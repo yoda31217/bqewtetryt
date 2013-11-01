@@ -17,8 +17,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static jobs.Jobs.REMOVE_OLD_HISTORY_JOB;
-import static models.store.Organisation.BET365;
-import static models.store.Organisation.MARATHON;
+import static models.store.Organisation.LANOS;
+import static models.store.Organisation.VOLVO;
 import static play.Logger.of;
 import static play.Play.isProd;
 import static play.libs.Akka.system;
@@ -50,15 +50,15 @@ public class Global
       FiniteDuration oldHistoryDelay = Duration.create(1, "min");
       schedules.add(scheduler.schedule(oldHistoryOffset, oldHistoryDelay, logAndStopExceptions(REMOVE_OLD_HISTORY_JOB), defaultDispatcher));
 
-      FiniteDuration marathonOffset = Duration.create(20, "sec");
-      FiniteDuration marathonDelay = Duration.create(1, "min");
-      MessageDispatcher marathonFetchingDispatcher = system().dispatchers().lookup("contexts.fetch-marathon");
-      //      schedules.add(scheduler.schedule(marathonOffset, marathonDelay, logAndStopExceptions(MARATHON_JOB), marathonFetchingDispatcher));
+      FiniteDuration lanosOffset = Duration.create(20, "sec");
+      FiniteDuration lanosDelay = Duration.create(1, "min");
+      MessageDispatcher lanosFetchingDispatcher = system().dispatchers().lookup("contexts.fetch-lanos");
+      //      schedules.add(scheduler.schedule(lanosOffset, lanosDelay, logAndStopExceptions(LANOS_JOB), lanosFetchingDispatcher));
 
-      FiniteDuration bet365Offset = Duration.create(30, "sec");
-      FiniteDuration bet365Delay = Duration.create(1, "min");
-      MessageDispatcher bet365FetchingDispatcher = system().dispatchers().lookup("contexts.fetch-bet365");
-      //      schedules.add(scheduler.schedule(bet365Offset, bet365Delay, logAndStopExceptions(BET365_JOB), bet365FetchingDispatcher));
+      FiniteDuration volvoOffset = Duration.create(30, "sec");
+      FiniteDuration volvoDelay = Duration.create(1, "min");
+      MessageDispatcher volvoFetchingDispatcher = system().dispatchers().lookup("contexts.fetch-volvo");
+      //      schedules.add(scheduler.schedule(volvoOffset, volvoDelay, logAndStopExceptions(VOLVO_JOB), volvoFetchingDispatcher));
 
     } else {
       LOG.info("Starting fake Jobs.");
@@ -69,8 +69,8 @@ public class Global
 
       schedules.add(scheduler.schedule(offset, delay, logAndStopExceptions(new RemoveOldEventJob(oldEventAge)), defaultDispatcher));
       schedules.add(scheduler.schedule(offset, delay, logAndStopExceptions(new FakeEventJob()), defaultDispatcher));
-      schedules.add(scheduler.schedule(offset, delay, logAndStopExceptions(new FakeHistoryRecordJob(BET365)), defaultDispatcher));
-      schedules.add(scheduler.schedule(offset, delay, logAndStopExceptions(new FakeHistoryRecordJob(MARATHON)), defaultDispatcher));
+      schedules.add(scheduler.schedule(offset, delay, logAndStopExceptions(new FakeHistoryRecordJob(VOLVO)), defaultDispatcher));
+      schedules.add(scheduler.schedule(offset, delay, logAndStopExceptions(new FakeHistoryRecordJob(LANOS)), defaultDispatcher));
     }
 
   }

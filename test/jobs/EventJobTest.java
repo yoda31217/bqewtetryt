@@ -21,7 +21,7 @@ import java.util.Date;
 import static com.google.common.collect.Lists.newArrayList;
 import static models.store.EventStore.createOrGetEvent;
 import static models.store.EventType.REGULAR;
-import static models.store.Organisation.BET365;
+import static models.store.Organisation.VOLVO;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.refEq;
@@ -45,7 +45,7 @@ public class EventJobTest {
   @Mock
   private ParsedEvent parsedEvent = new ParsedEvent("TENNIS", "fp", "sp", "DATE_STRING", "1.1", "2.2");
   @Mock
-  private AdaptedEvent adaptedEvent = new AdaptedEvent(REGULAR, "side1", "side", 1.1, 2.2, BET365, new Date(), "side1_code", "side2_code");
+  private AdaptedEvent adaptedEvent = new AdaptedEvent(REGULAR, "side1", "side", 1.1, 2.2, VOLVO, new Date(), "side1_code", "side2_code");
   @Mock
   private Event event;
 
@@ -75,19 +75,19 @@ public class EventJobTest {
 
   @Test
   @Ignore
-  public void realMarathonRun() {
-    //    EventJob job = new EventJob(new MarathonFetcher("htp://www.marathonbet.com/en/betting/Tennis/"), new MarathonParser(), new MarathonAdapter());
+  public void realLanosRun() {
+    //    EventJob job = new EventJob(new LanosFetcher("htp://www.lanosbet.com/en/betting/Tennis/"), new LanosParser(), new LanosAdapter());
     //    job.run();
     //    job.run();
   }
 
   @Test
   @Ignore
-  public void realBet365Run() {
-    //    EventJob job = new EventJob(new Bet365Fetcher(
-    //      "http://www.bet365.com/Lite/cache/api/?clt=9994&op=4&cid=13&cpid=13-1-50-2-163-0-0-0-1-0-0-4505-0-0-1-0-0-0-0&cf=N&lng=1&cty=195&fm=1&tzi=1&oty=2
+  public void realVolvoRun() {
+    //    EventJob job = new EventJob(new VolvoFetcher(
+    //      "http://www.volvo.com/Lite/cache/api/?clt=9994&op=4&cid=13&cpid=13-1-50-2-163-0-0-0-1-0-0-4505-0-0-1-0-0-0-0&cf=N&lng=1&cty=195&fm=1&tzi=1&oty=2
     // &hd=N"),
-    //      new Bet365Parser(), new Bet365Adapter());
+    //      new VolvoParser(), new VolvoAdapter());
     //    job.run();
     //    job.run();
   }

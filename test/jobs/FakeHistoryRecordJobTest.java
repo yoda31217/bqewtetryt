@@ -12,8 +12,8 @@ import java.util.Date;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static models.store.EventStore.events;
-import static models.store.Organisation.BET365;
-import static models.store.Organisation.MARATHON;
+import static models.store.Organisation.LANOS;
+import static models.store.Organisation.VOLVO;
 import static org.mockito.Matchers.refEq;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mock;
@@ -42,10 +42,10 @@ public class FakeHistoryRecordJobTest {
     mockStatic(Math.class);
     when(Math.random()).thenReturn(0.5);
 
-    new FakeHistoryRecordJob(MARATHON).run();
+    new FakeHistoryRecordJob(LANOS).run();
 
-    verify(firstEventMock).addHistory(refEq(new HistoryRecord(firstDate, MARATHON, 1.5, 4.0)));
-    verify(secondEventMock).addHistory(refEq(new HistoryRecord(secondDate, MARATHON, 1.5, 4.0)));
+    verify(firstEventMock).addHistory(refEq(new HistoryRecord(firstDate, LANOS, 1.5, 4.0)));
+    verify(secondEventMock).addHistory(refEq(new HistoryRecord(secondDate, LANOS, 1.5, 4.0)));
   }
 
   @Test
@@ -63,8 +63,8 @@ public class FakeHistoryRecordJobTest {
     mockStatic(Math.class);
     when(Math.random()).thenReturn(0.1);
 
-    new FakeHistoryRecordJob(BET365).run();
+    new FakeHistoryRecordJob(VOLVO).run();
 
-    verify(eventMock).addHistory(refEq(new HistoryRecord(date, BET365, 1.1, 2.4)));
+    verify(eventMock).addHistory(refEq(new HistoryRecord(date, VOLVO, 1.1, 2.4)));
   }
 }

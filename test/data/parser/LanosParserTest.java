@@ -8,14 +8,14 @@ import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-public class MarathonParserTest {
+public class LanosParserTest {
 
   @Test
   public void parse()
     throws InterruptedException, IOException {
-    byte[] input = IOUtils.toByteArray(this.getClass().getResourceAsStream("/data/parser/MarathonParserTest.html"));
+    byte[] input = IOUtils.toByteArray(this.getClass().getResourceAsStream("/data/parser/LanosParserTest.html"));
 
-    List<ParsedEvent> events = new MarathonParser().parse(input);
+    List<ParsedEvent> events = new LanosParser().parse(input);
 
     assertThat(events).hasSize(109);
 

@@ -5,25 +5,25 @@ import web_driver.WebDriverKeeper;
 
 import java.nio.charset.Charset;
 
-public class LiveMarathonFetcher
+public class LiveLanosFetcher
   implements BFetcher {
 
   public static final Charset UTF8 = Charset.forName("UTF-8");
   private final WebDriverKeeper webDriverKeeper;
 
-  public LiveMarathonFetcher(WebDriverKeeper webDriverKeeper) {
+  public LiveLanosFetcher(WebDriverKeeper webDriverKeeper) {
     this.webDriverKeeper = webDriverKeeper;
   }
 
   @Override
   public byte[] fetch() {
-    FirefoxDriver webDriver = webDriverKeeper.acquireMarathonDriver();
+    FirefoxDriver webDriver = webDriverKeeper.acquireLanosDriver();
     try {
       String contentStr = webDriver.findElementByTagName("html").getAttribute("outerHTML");
       return contentStr.getBytes(UTF8);
 
     } finally {
-      webDriverKeeper.releaseMarathonDriver();
+      webDriverKeeper.releaseLanosDriver();
     }
   }
 }
