@@ -1,4 +1,4 @@
-package data;
+package data.adapter;
 
 import models.store.EventType;
 import models.store.Organisation;

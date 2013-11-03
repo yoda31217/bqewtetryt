@@ -1,6 +1,6 @@
 package jobs;
 
-import data.AdaptedEvent;
+import data.adapter.AdaptedEvent;
 import data.adapter.BAdapter;
 import data.fetcher.BFetcher;
 import data.parser.BParser;

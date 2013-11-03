@@ -1,6 +1,5 @@
 package data.adapter;
 
-import data.AdaptedEvent;
 import data.parser.ParsedEvent;
 import org.junit.Test;
 import org.junit.runner.RunWith;

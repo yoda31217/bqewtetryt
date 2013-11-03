@@ -1,7 +1,6 @@
 package data.adapter;
 
 import com.google.common.base.Splitter;
-import data.AdaptedEvent;
 import data.parser.ParsedEvent;
 import play.Logger;
 
