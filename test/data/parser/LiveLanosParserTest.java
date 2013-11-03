@@ -27,4 +27,15 @@ public class LiveLanosParserTest {
     assertThat(firstEvent.firstKof).isEqualTo("1.59");
     assertThat(firstEvent.secondKof).isEqualTo("2.375");
   }
+
+  @Test
+  public void dateWithInjectedtag()
+    throws IOException {
+    byte[] input = toByteArray(this.getClass().getResourceAsStream("/data/parser/LiveLanosParserTest.html"));
+
+    List<ParsedEvent> events = new LiveLanosParser().parse(input);
+
+    ParsedEvent secondEvent = events.get(1);
+    assertThat(secondEvent.date).isEqualTo("02:05");
+  }
 }

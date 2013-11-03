@@ -54,6 +54,8 @@ public class LiveLanosParser
     Element nameEl = eventElChildren.get(0);
 
     String date = decodeCollapseWhiteSpace(nameEl.getFirstElementByClass("date").getContent());
+    int injectedTagIntoDateIdx = date.indexOf('<');
+    if (-1 < injectedTagIntoDateIdx) date = date.substring(0, injectedTagIntoDateIdx).trim();
 
     List<Element> sideNameEls = nameEl.getAllElementsByClass("live-today-member-name");
 
