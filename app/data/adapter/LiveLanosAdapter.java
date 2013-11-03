@@ -1,36 +1,29 @@
 package data.adapter;
 
-import com.google.common.base.Splitter;
 import data.parser.ParsedEvent;
-import play.Logger;
+import models.store.Sport;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 
-import static com.google.common.base.CharMatcher.anyOf;
-import static com.google.common.base.Splitter.on;
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static java.util.Calendar.HOUR_OF_DAY;
 import static java.util.Calendar.MILLISECOND;
 import static java.util.Calendar.MINUTE;
 import static java.util.Calendar.SECOND;
-import static java.util.Calendar.YEAR;
 import static java.util.TimeZone.getTimeZone;
-import static models.store.EventType.REGULAR;
+import static models.store.EventType.LIVE;
 import static models.store.Organisation.LANOS;
 import static models.store.Sport.TENNIS;
+import static models.store.Sport.UNKNOWN;
 import static org.apache.commons.lang3.StringUtils.stripAccents;
-import static play.Logger.of;
 
-public class LanosAdapter
+public class LiveLanosAdapter
   implements BAdapter {
 
-  private static final Logger.ALogger LOG = of(LanosAdapter.class);
   static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat("yyyy dd MMM HH:mm Z");
-  private static final Splitter ONE_PLAYER_ON_SIDE_NAME_SPLITTER = on(",").omitEmptyStrings().trimResults();
-  private static final Splitter TWO_PLAYERS_ON_SIDE_NAME_SPLITTER = on(anyOf("./")).omitEmptyStrings().trimResults();
 
   @Override
   public AdaptedEvent adapt(ParsedEvent parsedEvent) {
@@ -56,26 +49,25 @@ public class LanosAdapter
     Date date = adoptDate(parsedEvent.date);
 
     String firstSideCode = adoptSideCode(firstSide);
-    String secondSideCode = adoptSideCode(secondSide);
+    String secondSIdeCode = adoptSideCode(secondSide);
 
-    AdaptedEvent adoptedEvent = new AdaptedEvent(REGULAR, TENNIS, firstSide, secondSide, firstKof, secondKof, LANOS, date, firstSideCode, secondSideCode);
+    Sport sport = adoptSport(parsedEvent.sportDescr);
 
-    LOG.trace("Adapted Event with Code: {}", adoptedEvent.code);
+    AdaptedEvent adoptedEvent = new AdaptedEvent(LIVE, sport, firstSide, secondSide, firstKof, secondKof, LANOS, date, firstSideCode, secondSIdeCode);
 
     return adoptedEvent;
   }
 
+  private Sport adoptSport(String descr) {
+    if (isNullOrEmpty(descr)) return UNKNOWN;
+
+    if (descr.startsWith("Tennis. ")) return TENNIS;
+
+    return UNKNOWN;
+  }
+
   private String adoptSideCode(String sideStr) {
-    if (!sideStr.contains("/")) return ONE_PLAYER_ON_SIDE_NAME_SPLITTER.split(sideStr).iterator().next().toLowerCase();
-
-    Iterator<String> sideParts = TWO_PLAYERS_ON_SIDE_NAME_SPLITTER.split(sideStr).iterator();
-
-    sideParts.next();
-    String code = sideParts.next().toLowerCase();
-    sideParts.next();
-    code += "," + sideParts.next().toLowerCase();
-
-    return code;
+    return sideStr;
   }
 
   private Date adoptDate(String date) {
@@ -93,7 +85,7 @@ public class LanosAdapter
   }
 
   private Date adaptLongDate(String date) {
-    String normalizedDateStr = Calendar.getInstance(getTimeZone("GMT")).get(YEAR) + " " + date + " +0100";
+    String normalizedDateStr = Calendar.getInstance(getTimeZone("GMT")).get(Calendar.YEAR) + " " + date + " +0100";
 
     try {
       return LONG_DATE_FORMAT.parse(normalizedDateStr);

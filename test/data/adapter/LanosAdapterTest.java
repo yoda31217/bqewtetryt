@@ -43,7 +43,7 @@ public class LanosAdapterTest {
     calendar.set(MINUTE, 30);
     calendar.set(SECOND, 0);
     calendar.set(MILLISECOND, 0);
-    assertThat(adaptedEvent.date).isEqualTo(calendar.getTime());
+    assertThat(adaptedEvent.eventDate).isEqualTo(calendar.getTime());
 
     assertThat(adaptedEvent.organisation).isEqualTo(LANOS);
     assertThat(adaptedEvent.firstSide).isEqualTo("Flipkens, Kirsten");
@@ -107,7 +107,7 @@ public class LanosAdapterTest {
     calendar.set(MINUTE, 30);
     calendar.set(SECOND, 0);
     calendar.set(MILLISECOND, 0);
-    assertThat(adaptedEvent.date).isEqualTo(calendar.getTime());
+    assertThat(adaptedEvent.eventDate).isEqualTo(calendar.getTime());
   }
 
   @Test
@@ -123,7 +123,7 @@ public class LanosAdapterTest {
     calendar.set(MINUTE, 30);
     calendar.set(SECOND, 0);
     calendar.set(MILLISECOND, 0);
-    assertThat(adaptedEvent.date).isEqualTo(calendar.getTime());
+    assertThat(adaptedEvent.eventDate).isEqualTo(calendar.getTime());
   }
 
   @Test

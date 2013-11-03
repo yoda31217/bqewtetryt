@@ -42,7 +42,7 @@ public class VolvoAdapterTest {
     calendar.set(MINUTE, 30);
     calendar.set(SECOND, 0);
     calendar.set(MILLISECOND, 0);
-    assertThat(adaptedEvent.date).isEqualTo(calendar.getTime());
+    assertThat(adaptedEvent.eventDate).isEqualTo(calendar.getTime());
 
     assertThat(adaptedEvent.organisation).isEqualTo(VOLVO);
     assertThat(adaptedEvent.firstSide).isEqualTo("Florian Mayer");
@@ -106,6 +106,6 @@ public class VolvoAdapterTest {
     calendar.set(MINUTE, 30);
     calendar.set(SECOND, 0);
     calendar.set(MILLISECOND, 0);
-    assertThat(adaptedEvent.date).isEqualTo(calendar.getTime());
+    assertThat(adaptedEvent.eventDate).isEqualTo(calendar.getTime());
   }
 }

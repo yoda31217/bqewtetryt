@@ -15,14 +15,14 @@ public class AdaptedEvent {
   public final double firstKof;
   public final double secondKof;
   public final Organisation organisation;
-  public final Date date;
+  public final Date eventDate;
   public final Date adoptedDate;
   public final String code;
   public final EventType type;
   public final Sport sport;
 
-  public AdaptedEvent(EventType type, Sport sport, String firstSide, String secondSide, double firstKof, double secondKof, Organisation organisation, Date date,
-                      Object firstSideCode, String secondSideCode) {
+  public AdaptedEvent(EventType type, Sport sport, String firstSide, String secondSide, double firstKof, double secondKof, Organisation organisation,
+                      Date eventDate, Object firstSideCode, String secondSideCode) {
     this.type = type;
     this.sport = sport;
     this.firstSide = firstSide;
@@ -30,8 +30,8 @@ public class AdaptedEvent {
     this.firstKof = firstKof;
     this.secondKof = secondKof;
     this.organisation = organisation;
-    this.date = date;
+    this.eventDate = eventDate;
     this.adoptedDate = new Date();
-    this.code = firstSideCode + "_" + secondSideCode + "_" + DATE_FORMAT.format(date);
+    this.code = firstSideCode + "_" + secondSideCode + "_" + DATE_FORMAT.format(eventDate);
   }
 }
