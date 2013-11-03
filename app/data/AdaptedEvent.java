@@ -2,6 +2,7 @@ package data;
 
 import models.store.EventType;
 import models.store.Organisation;
+import models.store.Sport;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,9 +19,12 @@ public class AdaptedEvent {
   public final Date adoptedDate;
   public final String code;
   public final EventType type;
+  public final Sport sport;
 
-  public AdaptedEvent(EventType type, String firstSide, String secondSide, double firstKof, double secondKof, Organisation organisation, Date date,
+  public AdaptedEvent(EventType type, Sport sport, String firstSide, String secondSide, double firstKof, double secondKof, Organisation organisation, Date date,
                       Object firstSideCode, String secondSideCode) {
+    this.type = type;
+    this.sport = sport;
     this.firstSide = firstSide;
     this.secondSide = secondSide;
     this.firstKof = firstKof;
@@ -29,6 +33,5 @@ public class AdaptedEvent {
     this.date = date;
     this.adoptedDate = new Date();
     this.code = firstSideCode + "_" + secondSideCode + "_" + DATE_FORMAT.format(date);
-    this.type = type;
   }
 }

@@ -5,6 +5,7 @@ import akka.dispatch.Dispatchers;
 import akka.dispatch.MessageDispatcher;
 import jobs.FakeEventJob;
 import jobs.FakeHistoryRecordJob;
+import jobs.Jobs;
 import jobs.RemoveOldEventJob;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +22,7 @@ import scala.concurrent.ExecutionContextExecutor;
 import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
 import utils.BObjects;
+import web_driver.LanosWebDriverKeeper;
 
 import java.util.List;
 
@@ -37,6 +39,7 @@ import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
+import static org.powermock.api.mockito.PowerMockito.whenNew;
 import static play.Play.isProd;
 import static play.test.Helpers.fakeApplication;
 import static play.test.Helpers.start;
@@ -46,7 +49,7 @@ import static utils.BObjects.logAndStopExceptions;
 
 // TODO: logic of this class is too complex.
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({GlobalTest.class, Akka.class, ExecutionContext.class, BObjects.class, Play.class})
+@PrepareForTest({GlobalTest.class, Global.class, Akka.class, ExecutionContext.class, BObjects.class, Play.class, LanosWebDriverKeeper.class, Jobs.class})
 public class GlobalTest {
 
   @Mock
@@ -63,9 +66,11 @@ public class GlobalTest {
   private MessageDispatcher lanosFetchingDispatcherMock;
   @Mock
   private Cancellable scheduleMock;
-  private FakeApplication fakeApplication;
   @Mock
-  private Runnable wrappedRunnable;
+  private Runnable wrappedRunnableMock;
+  @Mock
+  private LanosWebDriverKeeper lanosWebDriverKeeperMock;
+  private FakeApplication fakeApplication;
 
   @Before
   public void before()
@@ -85,7 +90,9 @@ public class GlobalTest {
       scheduleMock);
 
     mockStatic(BObjects.class);
-    when(BObjects.logAndStopExceptions(any(Runnable.class))).thenReturn(wrappedRunnable);
+    when(BObjects.logAndStopExceptions(any(Runnable.class))).thenReturn(wrappedRunnableMock);
+
+    whenNew(LanosWebDriverKeeper.class).withAnyArguments().thenReturn(lanosWebDriverKeeperMock);
 
     fakeApplication = fakeApplication(new Global());
   }
@@ -115,7 +122,7 @@ public class GlobalTest {
     assertThat(args.get(2)).satisfies(reflectionEq(new FakeHistoryRecordJob(VOLVO)));
     assertThat(args.get(3)).satisfies(reflectionEq(new FakeHistoryRecordJob(LANOS)));
 
-    verify(schedulerMock, times(4)).schedule(refEq(offset), refEq(delay), same(wrappedRunnable), same(defaultDispatcherMock));
+    verify(schedulerMock, times(4)).schedule(refEq(offset), refEq(delay), same(wrappedRunnableMock), same(defaultDispatcherMock));
 
     stop(fakeApplication);
 
@@ -144,7 +151,7 @@ public class GlobalTest {
     ArgumentCaptor<FiniteDuration> durationArgsCaptor = forClass(FiniteDuration.class);
     ArgumentCaptor<ExecutionContext> executionContextArgsCaptor = forClass(ExecutionContext.class);
 
-    verify(schedulerMock, times(2)).schedule(durationArgsCaptor.capture(), durationArgsCaptor.capture(), same(wrappedRunnable),
+    verify(schedulerMock, times(2)).schedule(durationArgsCaptor.capture(), durationArgsCaptor.capture(), same(wrappedRunnableMock),
       executionContextArgsCaptor.capture());
 
     List<FiniteDuration> durations = durationArgsCaptor.getAllValues();

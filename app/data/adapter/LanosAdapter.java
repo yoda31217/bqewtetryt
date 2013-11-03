@@ -21,6 +21,7 @@ import static java.util.Calendar.YEAR;
 import static java.util.TimeZone.getTimeZone;
 import static models.store.EventType.REGULAR;
 import static models.store.Organisation.LANOS;
+import static models.store.Sport.TENNIS;
 import static org.apache.commons.lang3.StringUtils.stripAccents;
 import static play.Logger.of;
 
@@ -58,7 +59,7 @@ public class LanosAdapter
     String firstSideCode = adoptSideCode(firstSide);
     String secondSIdeCode = adoptSideCode(secondSide);
 
-    AdaptedEvent adoptedEvent = new AdaptedEvent(REGULAR, firstSide, secondSide, firstKof, secondKof, LANOS, date, firstSideCode, secondSIdeCode);
+    AdaptedEvent adoptedEvent = new AdaptedEvent(REGULAR, TENNIS, firstSide, secondSide, firstKof, secondKof, LANOS, date, firstSideCode, secondSIdeCode);
 
     LOG.trace("Adapted Event with Code: {}", adoptedEvent.code);
 

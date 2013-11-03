@@ -3,6 +3,7 @@ package jobs;
 import models.store.Event;
 import models.store.EventStore;
 import models.store.EventType;
+import models.store.Sport;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -12,6 +13,7 @@ import java.util.Date;
 
 import static models.store.EventStore.createOrGetEvent;
 import static models.store.EventType.REGULAR;
+import static models.store.Sport.TENNIS;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
@@ -36,11 +38,11 @@ public class FakeEventJobTest {
     whenNew(Date.class).withNoArguments().thenReturn(date);
 
     mockStatic(EventStore.class);
-    when(createOrGetEvent(any(EventType.class), any(Date.class), anyString(), anyString(), anyString())).thenReturn(mock(Event.class));
+    when(createOrGetEvent(any(EventType.class), any(Sport.class), any(Date.class), anyString(), anyString(), anyString())).thenReturn(mock(Event.class));
 
     new FakeEventJob().run();
 
     verifyStatic();
-    createOrGetEvent(same(REGULAR), same(date), eq(firstSide), eq(secondSide), eq(date.toString() + "_code"));
+    createOrGetEvent(same(REGULAR), same(TENNIS), same(date), eq(firstSide), eq(secondSide), eq(date.toString() + "_code"));
   }
 }

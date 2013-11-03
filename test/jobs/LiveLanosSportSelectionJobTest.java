@@ -24,27 +24,27 @@ import static org.powermock.api.mockito.PowerMockito.when;
 public class LiveLanosSportSelectionJobTest {
 
   @Mock
-  private FirefoxDriver webDriver;
+  private FirefoxDriver webDriverMock;
   @Mock
-  private LanosWebDriverKeeper webDriverKeeper;
+  private LanosWebDriverKeeper webDriverKeeperMock;
   @Mock
-  private WebElement selectedSportElement;
+  private WebElement selectedSportElementMock;
   @Mock
-  private WebElement unselectedSportElement;
+  private WebElement unselectedSportElementMock;
   @Mock
-  private WebElement anotherSelectedSportElement;
+  private WebElement anotherSelectedSportElementMock;
   @Mock
-  private WebElement showSelectionsButtonElement;
+  private WebElement showSelectionsButtonElementMock;
 
   @Before
   public void before() {
-    when(webDriverKeeper.acquire()).thenReturn(webDriver);
+    when(webDriverKeeperMock.acquire()).thenReturn(webDriverMock);
 
-    when(selectedSportElement.isSelected()).thenReturn(true);
-    when(unselectedSportElement.isSelected()).thenReturn(false);
-    when(anotherSelectedSportElement.isSelected()).thenReturn(true);
+    when(selectedSportElementMock.isSelected()).thenReturn(true);
+    when(unselectedSportElementMock.isSelected()).thenReturn(false);
+    when(anotherSelectedSportElementMock.isSelected()).thenReturn(true);
 
-    when(webDriver.findElementByClassName("but-show")).thenReturn(showSelectionsButtonElement);
+    when(webDriverMock.findElementByClassName("but-show")).thenReturn(showSelectionsButtonElementMock);
   }
 
   @After
@@ -53,60 +53,60 @@ public class LiveLanosSportSelectionJobTest {
 
   @Test
   public void runWithOneUnselectedSport() {
-    when(webDriver.findElementsByClassName("group-selection")).thenReturn(newArrayList(selectedSportElement, unselectedSportElement,
-      anotherSelectedSportElement));
+    when(webDriverMock.findElementsByClassName("group-selection")).thenReturn(newArrayList(selectedSportElementMock, unselectedSportElementMock,
+      anotherSelectedSportElementMock));
 
-    new LiveLanosSportSelectionJob(webDriverKeeper).run();
+    new LiveLanosSportSelectionJob(webDriverKeeperMock).run();
 
-    verify(selectedSportElement, never()).click();
-    verify(unselectedSportElement).click();
-    verify(anotherSelectedSportElement, never()).click();
+    verify(selectedSportElementMock, never()).click();
+    verify(unselectedSportElementMock).click();
+    verify(anotherSelectedSportElementMock, never()).click();
 
-    verify(showSelectionsButtonElement).click();
+    verify(showSelectionsButtonElementMock).click();
   }
 
   @Test
   public void runWithAllSelectedSports() {
-    when(webDriver.findElementsByClassName("group-selection")).thenReturn(newArrayList(selectedSportElement, anotherSelectedSportElement));
+    when(webDriverMock.findElementsByClassName("group-selection")).thenReturn(newArrayList(selectedSportElementMock, anotherSelectedSportElementMock));
 
-    new LiveLanosSportSelectionJob(webDriverKeeper).run();
+    new LiveLanosSportSelectionJob(webDriverKeeperMock).run();
 
-    verify(selectedSportElement, never()).click();
-    verify(anotherSelectedSportElement, never()).click();
+    verify(selectedSportElementMock, never()).click();
+    verify(anotherSelectedSportElementMock, never()).click();
 
-    verify(showSelectionsButtonElement, never()).click();
+    verify(showSelectionsButtonElementMock, never()).click();
   }
 
   @Test
   public void acquireAndRelease() {
-    InOrder inOrder = inOrder(webDriverKeeper);
-    when(webDriver.findElementsByClassName("group-selection")).thenThrow(new RuntimeException("Somme inner exception for testing purposes."));
+    InOrder inOrder = inOrder(webDriverKeeperMock);
+    when(webDriverMock.findElementsByClassName("group-selection")).thenThrow(new RuntimeException("Somme inner exception for testing purposes."));
 
     try {
-      new LiveLanosSportSelectionJob(webDriverKeeper).run();
+      new LiveLanosSportSelectionJob(webDriverKeeperMock).run();
       fail("Should not get here. Should throw exception.");
 
     } catch (Exception skipped) {} finally {
-      inOrder.verify(webDriverKeeper).acquire();
-      inOrder.verify(webDriverKeeper).release();
-      verifyNoMoreInteractions(webDriverKeeper);
+      inOrder.verify(webDriverKeeperMock).acquire();
+      inOrder.verify(webDriverKeeperMock).release();
+      verifyNoMoreInteractions(webDriverKeeperMock);
     }
   }
 
   @Ignore
   @Test
   public void realRun() {
-    //    FirefoxDriver webDriver = new WebDriverKeeper(100).acquireLanosDriver();
+    //    FirefoxDriver webDriverMock = new WebDriverKeeper(100).acquireLanosDriver();
     //
     //    boolean uncheckedEventsFound = false;
     //
-    //    for (WebElement element : webDriver.findElementsByClassName("group-selection")) {
+    //    for (WebElement element : webDriverMock.findElementsByClassName("group-selection")) {
     //      if (!element.isSelected()) {
     //        element.click();
     //        uncheckedEventsFound = true;
     //      }
     //    }
     //
-    //    if (uncheckedEventsFound) webDriver.findElementByClassName("but-show").click();
+    //    if (uncheckedEventsFound) webDriverMock.findElementByClassName("but-show").click();
   }
 }

@@ -9,6 +9,7 @@ import models.store.Event;
 import models.store.EventStore;
 import models.store.EventType;
 import models.store.HistoryRecord;
+import models.store.Sport;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +23,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static models.store.EventStore.createOrGetEvent;
 import static models.store.EventType.REGULAR;
 import static models.store.Organisation.VOLVO;
+import static models.store.Sport.TENNIS;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.refEq;
@@ -45,14 +47,15 @@ public class EventJobTest {
   @Mock
   private ParsedEvent parsedEvent = new ParsedEvent("TENNIS", "fp", "sp", "DATE_STRING", "1.1", "2.2");
   @Mock
-  private AdaptedEvent adaptedEvent = new AdaptedEvent(REGULAR, "side1", "side", 1.1, 2.2, VOLVO, new Date(), "side1_code", "side2_code");
+  private AdaptedEvent adaptedEvent = new AdaptedEvent(REGULAR, TENNIS, "side1", "side", 1.1, 2.2, VOLVO, new Date(), "side1_code", "side2_code");
   @Mock
   private Event event;
 
   @Test
   public void run() {
     mockStatic(EventStore.class);
-    when(EventStore.createOrGetEvent(any(EventType.class), any(Date.class), any(String.class), any(String.class), any(String.class))).thenReturn(event);
+    when(EventStore.createOrGetEvent(any(EventType.class), any(Sport.class), any(Date.class), any(String.class), any(String.class), any(String.class)))
+      .thenReturn(event);
 
     when(fetcher.fetch()).thenReturn(FetchResult);
     when(parser.parse(same(FetchResult))).thenReturn(newArrayList(parsedEvent));
@@ -68,7 +71,7 @@ public class EventJobTest {
     verify(adapter).adapt(same(parsedEvent));
 
     verifyStatic();
-    createOrGetEvent(adaptedEvent.type, adaptedEvent.date, adaptedEvent.firstSide, adaptedEvent.secondSide, adaptedEvent.code);
+    createOrGetEvent(adaptedEvent.type, adaptedEvent.sport, adaptedEvent.date, adaptedEvent.firstSide, adaptedEvent.secondSide, adaptedEvent.code);
 
     verify(event).addHistory(refEq(new HistoryRecord(adaptedEvent.adoptedDate, adaptedEvent.organisation, adaptedEvent.firstKof, adaptedEvent.secondKof)));
   }

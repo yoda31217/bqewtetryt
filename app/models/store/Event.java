@@ -18,13 +18,15 @@ public class Event {
   final String code;
   final List<HistoryRecord> history = new CopyOnWriteArrayList<HistoryRecord>();
   final EventType type;
+  final Sport sport;
 
-  Event(EventType type, Date date, String firstSide, String secondSide, String code) {
+  Event(EventType type, Sport sport, Date date, String firstSide, String secondSide, String code) {
+    this.type = type;
+    this.sport = sport;
     this.date = date;
     this.firstSide = firstSide;
     this.secondSide = secondSide;
     this.code = code;
-    this.type = type;
   }
 
   @Override
@@ -35,6 +37,7 @@ public class Event {
     Event event = (Event) o;
 
     if (!code.equals(event.code)) return false;
+    if (!sport.equals(event.sport)) return false;
     if (type != event.type) return false;
 
     return true;
@@ -44,6 +47,7 @@ public class Event {
   public int hashCode() {
     int result = code.hashCode();
     result = 31 * result + type.hashCode();
+    result = 31 * result + sport.hashCode();
     return result;
   }
 

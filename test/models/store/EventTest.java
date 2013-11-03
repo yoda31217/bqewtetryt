@@ -8,6 +8,7 @@ import java.util.Date;
 import static models.store.EventType.REGULAR;
 import static models.store.Events.randomHistoryRecord;
 import static models.store.Events.randomSide;
+import static models.store.Sport.TENNIS;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class EventTest {
@@ -17,7 +18,7 @@ public class EventTest {
   @Before
   public void before()
     throws Exception {
-    event = new Event(REGULAR, new Date(), randomSide(), randomSide(), "event_code");
+    event = new Event(REGULAR, TENNIS, new Date(), randomSide(), randomSide(), "event_code");
   }
 
   @Test

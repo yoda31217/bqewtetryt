@@ -18,6 +18,7 @@ import static java.util.Calendar.YEAR;
 import static java.util.TimeZone.getTimeZone;
 import static models.store.EventType.REGULAR;
 import static models.store.Organisation.VOLVO;
+import static models.store.Sport.TENNIS;
 import static org.apache.commons.lang3.StringUtils.stripAccents;
 import static play.Logger.of;
 
@@ -56,7 +57,7 @@ public class VolvoAdapter
     String firstSideCode = adoptSideCode(firstSide);
     String secondSideCode = adoptSideCode(secondSide);
 
-    AdaptedEvent adoptedEvent = new AdaptedEvent(REGULAR, firstSide, secondSide, firstKof, secondKof, VOLVO, date, firstSideCode, secondSideCode);
+    AdaptedEvent adoptedEvent = new AdaptedEvent(REGULAR, TENNIS, firstSide, secondSide, firstKof, secondKof, VOLVO, date, firstSideCode, secondSideCode);
 
     LOG.trace("Adapted Event with Code: {}", adoptedEvent.code);
 

@@ -12,6 +12,8 @@ import static models.store.EventStore.removeEventsOlderThan;
 import static models.store.EventType.LIVE;
 import static models.store.EventType.REGULAR;
 import static models.store.Events.randomSide;
+import static models.store.Sport.BASKETBALL;
+import static models.store.Sport.TENNIS;
 import static org.fest.assertions.Assertions.assertThat;
 import static utils.BObjects.callConstructor;
 
@@ -29,13 +31,13 @@ public class EventStoreTest {
 
   @Test
   public void create3events() {
-    Event firstEvent = createOrGetEvent(REGULAR, new Date(), randomSide(), randomSide(), "code_2");
+    Event firstEvent = createOrGetEvent(REGULAR, TENNIS, new Date(), randomSide(), randomSide(), "code_2");
     assertThat(firstEvent).isNotNull();
     assertThat(events()).containsOnly(firstEvent);
-    Event secondEvent = createOrGetEvent(REGULAR, new Date(), randomSide(), randomSide(), "code_1");
+    Event secondEvent = createOrGetEvent(REGULAR, TENNIS, new Date(), randomSide(), randomSide(), "code_1");
     assertThat(secondEvent).isNotNull();
     assertThat(events()).containsExactly(secondEvent, firstEvent);
-    Event thirdEvent = createOrGetEvent(REGULAR, new Date(), randomSide(), randomSide(), "code_3");
+    Event thirdEvent = createOrGetEvent(REGULAR, TENNIS, new Date(), randomSide(), randomSide(), "code_3");
     assertThat(thirdEvent).isNotNull();
     assertThat(events()).containsExactly(secondEvent, firstEvent, thirdEvent);
   }
@@ -46,11 +48,11 @@ public class EventStoreTest {
     String firstSide = randomSide();
     String secondSide = randomSide();
 
-    Event firstEvent = createOrGetEvent(REGULAR, date, firstSide, secondSide, "code_1");
+    Event firstEvent = createOrGetEvent(REGULAR, TENNIS, date, firstSide, secondSide, "code_1");
     assertThat(firstEvent).isNotNull();
     assertThat(events()).containsOnly(firstEvent);
 
-    Event secondEvent = createOrGetEvent(REGULAR, date, firstSide, secondSide, "code_1");
+    Event secondEvent = createOrGetEvent(REGULAR, TENNIS, date, firstSide, secondSide, "code_1");
     assertThat(secondEvent).isSameAs(firstEvent);
     assertThat(events()).containsOnly(firstEvent);
   }
@@ -61,11 +63,26 @@ public class EventStoreTest {
     String firstSide = randomSide();
     String secondSide = randomSide();
 
-    Event firstEvent = createOrGetEvent(REGULAR, date, firstSide, secondSide, "code_1");
+    Event firstEvent = createOrGetEvent(REGULAR, TENNIS, date, firstSide, secondSide, "code_1");
     assertThat(firstEvent).isNotNull();
     assertThat(events()).hasSize(1).containsOnly(firstEvent);
 
-    Event secondEvent = createOrGetEvent(LIVE, date, firstSide, secondSide, "code_1");
+    Event secondEvent = createOrGetEvent(LIVE, TENNIS, date, firstSide, secondSide, "code_1");
+    assertThat(secondEvent).isNotNull();
+    assertThat(events()).hasSize(2).containsOnly(firstEvent, secondEvent);
+  }
+
+  @Test
+  public void create2eventsWithDiffSports() {
+    Date date = new Date();
+    String firstSide = randomSide();
+    String secondSide = randomSide();
+
+    Event firstEvent = createOrGetEvent(REGULAR, TENNIS, date, firstSide, secondSide, "code_1");
+    assertThat(firstEvent).isNotNull();
+    assertThat(events()).hasSize(1).containsOnly(firstEvent);
+
+    Event secondEvent = createOrGetEvent(REGULAR, BASKETBALL, date, firstSide, secondSide, "code_1");
     assertThat(secondEvent).isNotNull();
     assertThat(events()).hasSize(2).containsOnly(firstEvent, secondEvent);
   }
@@ -76,7 +93,7 @@ public class EventStoreTest {
     String firstSide = randomSide();
     String secondSide = randomSide();
 
-    Event event = createOrGetEvent(REGULAR, date, firstSide, secondSide, "code_1");
+    Event event = createOrGetEvent(REGULAR, TENNIS, date, firstSide, secondSide, "code_1");
     assertThat(event).isNotNull();
     assertThat(event.date()).isEqualTo(date);
     assertThat(event.firstSide()).isEqualTo(firstSide);
@@ -87,7 +104,7 @@ public class EventStoreTest {
 
   @Test
   public void checkClear() {
-    createOrGetEvent(REGULAR, new Date(new Date().getTime() - 200L), randomSide(), randomSide(), "code_1");
+    createOrGetEvent(REGULAR, TENNIS, new Date(new Date().getTime() - 200L), randomSide(), randomSide(), "code_1");
     removeEventsOlderThan(100L);
 
     assertThat(events()).isEmpty();

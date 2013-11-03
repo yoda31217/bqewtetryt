@@ -16,6 +16,7 @@ import java.util.Date;
 import static models.store.EventStore.createOrGetEvent;
 import static models.store.EventType.REGULAR;
 import static models.store.Events.clearEvents;
+import static models.store.Sport.TENNIS;
 import static org.fest.assertions.Assertions.assertThat;
 import static play.test.Helpers.GET;
 import static play.test.Helpers.OK;
@@ -44,7 +45,7 @@ public class ApplicationTest {
 
     date = new Date();
 
-    Event event = createOrGetEvent(REGULAR, date, "firstSide", "secondSide", "eventCode");
+    Event event = createOrGetEvent(REGULAR, TENNIS, date, "firstSide", "secondSide", "eventCode");
     HistoryRecord record = new HistoryRecord(date, Organisation.LANOS, 1.1, 2.1);
     event.addHistory(record);
   }
@@ -80,6 +81,6 @@ public class ApplicationTest {
     assertThat(contentType(result)).isEqualTo("application/json");
     assertThat(contentAsString(result)).isEqualTo("[{\"date\":" + date.getTime() +
       ",\"firstSide\":\"firstSide\",\"secondSide\":\"secondSide\",\"code\":\"eventCode\",\"history\":[{\"date\":" + date.getTime() +
-      ",\"organisation\":\"LANOS\",\"firstKof\":1.1,\"secondKof\":2.1}],\"type\":\"REGULAR\"}]");
+      ",\"organisation\":\"LANOS\",\"firstKof\":1.1,\"secondKof\":2.1}],\"type\":\"REGULAR\",\"sport\":\"TENNIS\"}]");
   }
 }
