@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import web_driver.WebDriverKeeper;
+import web_driver.LanosWebDriverKeeper;
 
 import java.nio.charset.Charset;
 
@@ -26,14 +26,14 @@ public class LiveLanosFetcherTest {
   @Mock
   private FirefoxDriver webDriverMock;
   @Mock
-  private WebDriverKeeper webDriverKeeperMock;
+  private LanosWebDriverKeeper webDriverKeeperMock;
   @Mock
   private WebElement webElementMock;
 
   @Before
   public void before()
     throws Exception {
-    when(webDriverKeeperMock.acquireLanosDriver()).thenReturn(webDriverMock);
+    when(webDriverKeeperMock.acquire()).thenReturn(webDriverMock);
     when(webDriverMock.findElementByTagName("html")).thenReturn(webElementMock);
     when(webElementMock.getAttribute("outerHTML")).thenReturn(OUTER_HTML_TEXT);
   }
@@ -47,15 +47,15 @@ public class LiveLanosFetcherTest {
 
     assertThat(fetchResult).isEqualTo(OUTER_HTML_TEXT.getBytes(UTF8));
 
-    verify(webDriverKeeperMock).acquireLanosDriver();
-    verify(webDriverKeeperMock).releaseLanosDriver();
+    verify(webDriverKeeperMock).acquire();
+    verify(webDriverKeeperMock).release();
   }
 
   @Test
   @Ignore
   public void fetchRealData()
     throws Exception {
-    LiveLanosFetcher fetcher = new LiveLanosFetcher(new WebDriverKeeper(10L));
+    LiveLanosFetcher fetcher = new LiveLanosFetcher(new LanosWebDriverKeeper(10L));
     fetcher.fetch();
   }
 }

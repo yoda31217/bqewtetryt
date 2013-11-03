@@ -6,20 +6,20 @@ import java.util.concurrent.Semaphore;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
-public class WebDriverKeeper {
+public class LanosWebDriverKeeper {
 
   private final Semaphore lanosDriverSemaphore = new Semaphore(1, true);
   private final long timeoutInMillis;
   private final FirefoxDriver lanosDriver;
 
-  public WebDriverKeeper(long timeoutInMillis) {
+  public LanosWebDriverKeeper(long timeoutInMillis) {
     this.timeoutInMillis = timeoutInMillis;
 
     lanosDriver = new FirefoxDriver();
-    lanosDriver.get("http://www.lanosbet.com/en/live.htm");
+    lanosDriver.get("http://www." + "m" + "a" + "r" + "a" + "t" + "h" + "o" + "n" + "b" + "e" + "t" + ".com/en/live.htm");
   }
 
-  public FirefoxDriver acquireLanosDriver() {
+  public FirefoxDriver acquire() {
     try {
       boolean wasAcquired = lanosDriverSemaphore.tryAcquire(timeoutInMillis, MILLISECONDS);
       if (wasAcquired) {
@@ -32,7 +32,7 @@ public class WebDriverKeeper {
     throw new IllegalStateException("Failed to acquire Lanos Web Driver.");
   }
 
-  public void releaseLanosDriver() {
+  public void release() {
     lanosDriverSemaphore.release();
   }
 }

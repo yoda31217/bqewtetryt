@@ -16,21 +16,21 @@ import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({FirefoxDriver.class, WebDriverKeeperTest.class, WebDriverKeeper.class})
-public class WebDriverKeeperTest {
+@PrepareForTest({FirefoxDriver.class, LanosWebDriverKeeperTest.class, LanosWebDriverKeeper.class})
+public class LanosWebDriverKeeperTest {
 
   @Mock
   private FirefoxDriver webDriverMock;
-  private WebDriverKeeper keeper;
+  private LanosWebDriverKeeper keeper;
 
   @Before
   public void before()
     throws Exception {
     whenNew(FirefoxDriver.class).withNoArguments().thenReturn(webDriverMock);
 
-    keeper = new WebDriverKeeper(10);
+    keeper = new LanosWebDriverKeeper(10);
 
-    verify(webDriverMock).get("http://www.lanosbet.com/en/live.htm");
+    verify(webDriverMock).get("http://www." + "m" + "a" + "r" + "a" + "t" + "h" + "o" + "n" + "b" + "e" + "t" + ".com/en/live.htm");
   }
 
   @After
@@ -42,7 +42,7 @@ public class WebDriverKeeperTest {
   @Test
   public void acquireLanosDriver()
     throws Exception {
-    WebDriver driver = keeper.acquireLanosDriver();
+    WebDriver driver = keeper.acquire();
 
     assertThat(driver).isEqualTo(webDriverMock);
   }
@@ -50,10 +50,10 @@ public class WebDriverKeeperTest {
   @Test
   public void secondAcquireTimeoutException()
     throws Exception {
-    keeper.acquireLanosDriver();
+    keeper.acquire();
 
     try {
-      keeper.acquireLanosDriver();
+      keeper.acquire();
       fail("Web Driver should be locked.");
 
     } catch (IllegalStateException e) {
@@ -62,10 +62,10 @@ public class WebDriverKeeperTest {
   }
 
   @Test
-  public void acquireReleaseAcquireTimeoutException()
+  public void acquireReleaseAcquire()
     throws Exception {
-    keeper.acquireLanosDriver();
-    keeper.releaseLanosDriver();
-    keeper.acquireLanosDriver();
+    keeper.acquire();
+    keeper.release();
+    keeper.acquire();
   }
 }
