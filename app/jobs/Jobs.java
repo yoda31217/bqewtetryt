@@ -1,13 +1,17 @@
 package jobs;
 
 import data.adapter.LanosAdapter;
+import data.adapter.LiveLanosAdapter;
 import data.adapter.VolvoAdapter;
 import data.fetcher.LanosFetcher;
+import data.fetcher.LiveLanosFetcher;
 import data.fetcher.VolvoFetcher;
 import data.parser.LanosParser;
+import data.parser.LiveLanosParser;
 import data.parser.VolvoParser;
 import web_driver.LanosWebDriverKeeper;
 
+import static models.store.EventType.LIVE;
 import static models.store.Organisation.LANOS;
 import static models.store.Organisation.VOLVO;
 
@@ -22,6 +26,8 @@ public final class Jobs {
   public static final Runnable REMOVE_OLD_HISTORY_JOB = new RemoveOldHistoryJob(50);
   public static final LanosWebDriverKeeper LANOS_WEB_DRIVER_KEEPER = new LanosWebDriverKeeper(5000L);
   public static final LiveLanosSportSelectionJob LANOS_SPORT_SELECTION_JOB = new LiveLanosSportSelectionJob(LANOS_WEB_DRIVER_KEEPER);
+  public static final EventJob LIVE_LANOS_JOB = new EventJob(new LiveLanosFetcher(LANOS_WEB_DRIVER_KEEPER), new LiveLanosParser(), new LiveLanosAdapter(),
+    LIVE + "_" + LANOS);
 
   private Jobs() {
     throw new UnsupportedOperationException();
