@@ -17,6 +17,7 @@ import java.util.List;
 
 import static jobs.Jobs.LANOS_SPORT_SELECTION_JOB;
 import static jobs.Jobs.LIVE_LANOS_JOB;
+import static jobs.Jobs.REMOVE_OLD_EVENT_JOB;
 import static jobs.Jobs.REMOVE_OLD_HISTORY_JOB;
 import static models.store.Organisation.LANOS;
 import static models.store.Organisation.VOLVO;
@@ -43,8 +44,7 @@ public class Global
 
       FiniteDuration oldEventOffset = Duration.create(0, "sec");
       FiniteDuration oldEventDelay = Duration.create(1, "min");
-      long oldEventAge = Duration.create(1, "day").toMillis();
-      schedules.add(scheduler.schedule(oldEventOffset, oldEventDelay, logAndStopExceptions(new RemoveOldEventJob(oldEventAge)), defaultDispatcher));
+      schedules.add(scheduler.schedule(oldEventOffset, oldEventDelay, logAndStopExceptions(REMOVE_OLD_EVENT_JOB), defaultDispatcher));
 
       FiniteDuration oldHistoryOffset = Duration.create(10, "sec");
       FiniteDuration oldHistoryDelay = Duration.create(1, "min");

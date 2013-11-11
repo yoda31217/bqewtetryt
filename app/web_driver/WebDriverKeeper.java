@@ -6,17 +6,17 @@ import java.util.concurrent.Semaphore;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
-public class LanosWebDriverKeeper {
+public class WebDriverKeeper {
 
   private final Semaphore lanosDriverSemaphore = new Semaphore(1, true);
   private final long timeoutInMillis;
   private final FirefoxDriver lanosDriver;
 
-  public LanosWebDriverKeeper(long timeoutInMillis) {
+  public WebDriverKeeper(long timeoutInMillis, String url) {
     this.timeoutInMillis = timeoutInMillis;
 
     lanosDriver = new FirefoxDriver();
-    lanosDriver.get("http://www." + "m" + "a" + "r" + "a" + "t" + "h" + "o" + "n" + "b" + "e" + "t" + ".com/en/live.htm");
+    lanosDriver.get(url);
   }
 
   public FirefoxDriver acquire() {

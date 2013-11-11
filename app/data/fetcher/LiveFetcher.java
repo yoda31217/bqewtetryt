@@ -1,17 +1,17 @@
 package data.fetcher;
 
 import org.openqa.selenium.firefox.FirefoxDriver;
-import web_driver.LanosWebDriverKeeper;
+import web_driver.WebDriverKeeper;
 
 import java.nio.charset.Charset;
 
-public class LiveLanosFetcher
+public class LiveFetcher
   implements BFetcher {
 
   public static final Charset UTF8 = Charset.forName("UTF-8");
-  private final LanosWebDriverKeeper webDriverKeeper;
+  private final WebDriverKeeper webDriverKeeper;
 
-  public LiveLanosFetcher(LanosWebDriverKeeper webDriverKeeper) {
+  public LiveFetcher(WebDriverKeeper webDriverKeeper) {
     this.webDriverKeeper = webDriverKeeper;
   }
 

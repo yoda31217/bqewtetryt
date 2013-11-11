@@ -29,7 +29,7 @@ public class LiveLanosParserTest {
   }
 
   @Test
-  public void dateWithInjectedtag()
+  public void dateWithInjectedTag()
     throws IOException {
     byte[] input = toByteArray(this.getClass().getResourceAsStream("/data/parser/LiveLanosParserTest.html"));
 

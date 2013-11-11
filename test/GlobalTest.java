@@ -22,12 +22,13 @@ import scala.concurrent.ExecutionContextExecutor;
 import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
 import utils.BObjects;
-import web_driver.LanosWebDriverKeeper;
+import web_driver.WebDriverKeeper;
 
 import java.util.List;
 
 import static jobs.Jobs.LANOS_SPORT_SELECTION_JOB;
 import static jobs.Jobs.LIVE_LANOS_JOB;
+import static jobs.Jobs.REMOVE_OLD_EVENT_JOB;
 import static jobs.Jobs.REMOVE_OLD_HISTORY_JOB;
 import static models.store.Organisation.LANOS;
 import static models.store.Organisation.VOLVO;
@@ -51,7 +52,7 @@ import static utils.BObjects.logAndStopExceptions;
 
 // TODO: logic of this class is too complex.
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({GlobalTest.class, Global.class, Akka.class, ExecutionContext.class, BObjects.class, Play.class, LanosWebDriverKeeper.class, Jobs.class})
+@PrepareForTest({GlobalTest.class, Global.class, Akka.class, ExecutionContext.class, BObjects.class, Play.class, WebDriverKeeper.class, Jobs.class})
 public class GlobalTest {
 
   @Mock
@@ -71,7 +72,7 @@ public class GlobalTest {
   @Mock
   private Runnable wrappedRunnableMock;
   @Mock
-  private LanosWebDriverKeeper lanosWebDriverKeeperMock;
+  private WebDriverKeeper lanosWebDriverKeeperMock;
   private FakeApplication fakeApplication;
 
   @Before
@@ -94,7 +95,7 @@ public class GlobalTest {
     mockStatic(BObjects.class);
     when(BObjects.logAndStopExceptions(any(Runnable.class))).thenReturn(wrappedRunnableMock);
 
-    whenNew(LanosWebDriverKeeper.class).withAnyArguments().thenReturn(lanosWebDriverKeeperMock);
+    whenNew(WebDriverKeeper.class).withAnyArguments().thenReturn(lanosWebDriverKeeperMock);
 
     fakeApplication = fakeApplication(new Global());
   }
@@ -145,7 +146,7 @@ public class GlobalTest {
     List jobs = jobArgsCaptor.getAllValues();
 
     assertThat(jobs).hasSize(4);
-    assertThat(jobs.get(0)).satisfies(reflectionEq(new RemoveOldEventJob(Duration.create(1, "day").toMillis())));
+    assertThat(jobs.get(0)).isSameAs(REMOVE_OLD_EVENT_JOB);
     assertThat(jobs.get(1)).isSameAs(REMOVE_OLD_HISTORY_JOB);
     //    assertThat(jobs.get(2)).isSameAs(LANOS_JOB);
     //    assertThat(jobs.get(3)).isSameAs(VOLVO_JOB);

@@ -2,14 +2,14 @@ package jobs;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import web_driver.LanosWebDriverKeeper;
+import web_driver.WebDriverKeeper;
 
 public class LiveLanosSportSelectionJob
   implements Runnable {
 
-  private final LanosWebDriverKeeper webDriverKeeper;
+  private final WebDriverKeeper webDriverKeeper;
 
-  public LiveLanosSportSelectionJob(LanosWebDriverKeeper webDriverKeeper) {
+  public LiveLanosSportSelectionJob(WebDriverKeeper webDriverKeeper) {
     this.webDriverKeeper = webDriverKeeper;
   }
 

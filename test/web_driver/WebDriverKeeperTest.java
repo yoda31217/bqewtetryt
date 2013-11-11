@@ -16,21 +16,22 @@ import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({FirefoxDriver.class, LanosWebDriverKeeperTest.class, LanosWebDriverKeeper.class})
-public class LanosWebDriverKeeperTest {
+@PrepareForTest({FirefoxDriver.class, WebDriverKeeperTest.class, WebDriverKeeper.class})
+public class WebDriverKeeperTest {
 
   @Mock
   private FirefoxDriver webDriverMock;
-  private LanosWebDriverKeeper keeper;
+  private WebDriverKeeper keeper;
 
   @Before
   public void before()
     throws Exception {
     whenNew(FirefoxDriver.class).withNoArguments().thenReturn(webDriverMock);
 
-    keeper = new LanosWebDriverKeeper(10);
+    String url = "http://www." + "m" + "a" + "r" + "a" + "t" + "h" + "o" + "n" + "b" + "e" + "t" + ".com/en/live.htm";
+    keeper = new WebDriverKeeper(10, url);
 
-    verify(webDriverMock).get("http://www." + "m" + "a" + "r" + "a" + "t" + "h" + "o" + "n" + "b" + "e" + "t" + ".com/en/live.htm");
+    verify(webDriverMock).get(url);
   }
 
   @After

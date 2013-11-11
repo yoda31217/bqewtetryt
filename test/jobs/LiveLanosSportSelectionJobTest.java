@@ -10,7 +10,7 @@ import org.mockito.Mock;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.powermock.modules.junit4.PowerMockRunner;
-import web_driver.LanosWebDriverKeeper;
+import web_driver.WebDriverKeeper;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.junit.Assert.fail;
@@ -26,7 +26,7 @@ public class LiveLanosSportSelectionJobTest {
   @Mock
   private FirefoxDriver webDriverMock;
   @Mock
-  private LanosWebDriverKeeper webDriverKeeperMock;
+  private WebDriverKeeper webDriverKeeperMock;
   @Mock
   private WebElement selectedSportElementMock;
   @Mock

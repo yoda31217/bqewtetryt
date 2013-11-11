@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import web_driver.LanosWebDriverKeeper;
+import web_driver.WebDriverKeeper;
 
 import java.nio.charset.Charset;
 
@@ -19,14 +19,14 @@ import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({})
-public class LiveLanosFetcherTest {
+public class LiveFetcherTest {
 
   public static final String OUTER_HTML_TEXT = "OUTER_HTML_TEXT";
   public static final Charset UTF8 = Charset.forName("UTF-8");
   @Mock
   private FirefoxDriver webDriverMock;
   @Mock
-  private LanosWebDriverKeeper webDriverKeeperMock;
+  private WebDriverKeeper webDriverKeeperMock;
   @Mock
   private WebElement webElementMock;
 
@@ -41,7 +41,7 @@ public class LiveLanosFetcherTest {
   @Test
   public void fetch()
     throws Exception {
-    LiveLanosFetcher fetcher = new LiveLanosFetcher(webDriverKeeperMock);
+    LiveFetcher fetcher = new LiveFetcher(webDriverKeeperMock);
 
     byte[] fetchResult = fetcher.fetch();
 
@@ -55,7 +55,8 @@ public class LiveLanosFetcherTest {
   @Ignore
   public void fetchRealData()
     throws Exception {
-    LiveLanosFetcher fetcher = new LiveLanosFetcher(new LanosWebDriverKeeper(10L));
+    LiveFetcher fetcher = new LiveFetcher(new WebDriverKeeper(10L,
+      "http://www." + "m" + "a" + "r" + "a" + "t" + "h" + "o" + "n" + "b" + "e" + "t" + ".com/en/live.htm"));
     fetcher.fetch();
   }
 }
