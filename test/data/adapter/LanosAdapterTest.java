@@ -8,7 +8,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -77,7 +76,7 @@ public class LanosAdapterTest {
     calendar.set(SECOND, 0);
     calendar.set(MILLISECOND, 0);
 
-    String eventCode = "murray,peers_flipkens_" + new SimpleDateFormat("yyyy-MM-dd mm").format(calendar.getTime());
+    String eventCode = "murray,peers_flipkens";
 
     assertThat(adaptedEvent.code).isEqualTo(eventCode);
   }

@@ -6,7 +6,6 @@ import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -45,7 +44,7 @@ public class LiveLanosAdapterTest {
     assertThat(adaptedEvent.secondSide).isEqualTo("Hercog, Polona");
     assertThat(adaptedEvent.firstKof).isEqualTo(1.45);
     assertThat(adaptedEvent.secondKof).isEqualTo(2.92);
-    assertThat(adaptedEvent.code).isEqualTo("Flipkens, Kirsten_Hercog, Polona_" + new SimpleDateFormat("yyyy-MM-dd mm").format(calendar.getTime()));
+    assertThat(adaptedEvent.code).isEqualTo("Flipkens, Kirsten_Hercog, Polona");
   }
 
   @Test
@@ -96,7 +95,7 @@ public class LiveLanosAdapterTest {
     assertThat(adaptedEvent.secondSide).isEqualTo("Hercog, Polona");
     assertThat(adaptedEvent.firstKof).isEqualTo(1.45);
     assertThat(adaptedEvent.secondKof).isEqualTo(2.92);
-    assertThat(adaptedEvent.code).isEqualTo("Flipkens, Kirsten_Hercog, Polona_" + new SimpleDateFormat("yyyy-MM-dd mm").format(calendar.getTime()));
+    assertThat(adaptedEvent.code).isEqualTo("Flipkens, Kirsten_Hercog, Polona");
   }
 
   @Test
@@ -106,7 +105,7 @@ public class LiveLanosAdapterTest {
 
     assertThat(adaptedEvent.firstSide).isEqualTo("Flipcens, Kirsten");
     assertThat(adaptedEvent.secondSide).isEqualTo("Hercog, Polona");
-    assertThat(adaptedEvent.code).startsWith("Flipcens, Kirsten_Hercog, Polona_");
+    assertThat(adaptedEvent.code).startsWith("Flipcens, Kirsten_Hercog, Polona");
   }
 
   @Test

@@ -4,12 +4,10 @@ import models.store.EventType;
 import models.store.Organisation;
 import models.store.Sport;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class AdaptedEvent {
 
-  static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd mm");
   public final String firstSide;
   public final String secondSide;
   public final double firstKof;
@@ -32,6 +30,6 @@ public class AdaptedEvent {
     this.organisation = organisation;
     this.eventDate = eventDate;
     this.adoptedDate = new Date();
-    this.code = firstSideCode + "_" + secondSideCode + "_" + DATE_FORMAT.format(eventDate);
+    this.code = firstSideCode + "_" + secondSideCode;
   }
 }

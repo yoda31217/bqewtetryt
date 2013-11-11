@@ -7,7 +7,6 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -66,7 +65,7 @@ public class VolvoAdapterTest {
     calendar.set(SECOND, 0);
     calendar.set(MILLISECOND, 0);
 
-    String eventCode = "qureshi,rojer_mayer_" + new SimpleDateFormat("yyyy-MM-dd mm").format(calendar.getTime());
+    String eventCode = "qureshi,rojer_mayer";
 
     assertThat(adaptedEvent.code).isEqualTo(eventCode);
   }
@@ -84,7 +83,7 @@ public class VolvoAdapterTest {
   }
 
   @Test
-  public void nunUnicodeCharacters()
+  public void nonUnicodeCharacters()
     throws Exception {
     ParsedEvent event = new ParsedEvent("TENNIS", "Florian Hradečka", "Kristina Hradečka", "11 Oct 07:30", "1.50", "3.28");
     AdaptedEvent adaptedEvent = new VolvoAdapter().adapt(event);
