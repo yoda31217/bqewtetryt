@@ -79,6 +79,8 @@ public class EventJobTest {
   @Test
   @Ignore
   public void realLanosRun() {
+    //        Jobs.LIVE_VOLVO_JOB.run();
+    //
     //    EventJob job = new EventJob(new LanosFetcher("htp://www.lanosbet.com/en/betting/Tennis/"), new LanosParser(), new LanosAdapter());
     //    job.run();
     //    job.run();

@@ -17,6 +17,7 @@ import java.util.List;
 
 import static jobs.Jobs.LANOS_SPORT_SELECTION_JOB;
 import static jobs.Jobs.LIVE_LANOS_JOB;
+import static jobs.Jobs.LIVE_VOLVO_JOB;
 import static jobs.Jobs.REMOVE_OLD_EVENT_JOB;
 import static jobs.Jobs.REMOVE_OLD_HISTORY_JOB;
 import static models.store.Organisation.LANOS;
@@ -68,6 +69,10 @@ public class Global
       FiniteDuration liveLanosOffset = Duration.create(50, "sec");
       FiniteDuration liveLanosDelay = Duration.create(10, "sec");
       schedules.add(scheduler.schedule(liveLanosOffset, liveLanosDelay, logAndStopExceptions(LIVE_LANOS_JOB), defaultDispatcher));
+
+      FiniteDuration liveVolvoOffset = Duration.create(20, "sec");
+      FiniteDuration liveVolvoDelay = Duration.create(10, "sec");
+      schedules.add(scheduler.schedule(liveVolvoOffset, liveVolvoDelay, logAndStopExceptions(LIVE_VOLVO_JOB), defaultDispatcher));
 
     } else {
       LOG.info("Starting fake Jobs.");

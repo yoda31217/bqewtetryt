@@ -21,7 +21,7 @@ public class LiveVolvoAdapterTest {
   @Test
   public void adapt_checkType() {
     LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovic", null, "1.5", "3.2"));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovic", null, "3/2", "16/5"));
 
     assertThat(adaptedEvent.type).isEqualTo(LIVE);
   }
@@ -33,7 +33,7 @@ public class LiveVolvoAdapterTest {
     whenNew(Date.class).withNoArguments().thenReturn(eventDate);
 
     LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovic", null, "1.5", "3.2"));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovic", null, "3/2", "16/5"));
 
     assertThat(adaptedEvent.eventDate).isSameAs(eventDate);
   }
@@ -42,7 +42,7 @@ public class LiveVolvoAdapterTest {
   public void adapt_checkSport()
     throws Exception {
     LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovic", null, "1.5", "3.2"));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovic", null, "3/2", "16/5"));
 
     assertThat(adaptedEvent.sport).isEqualTo(TENNIS);
   }
@@ -51,7 +51,7 @@ public class LiveVolvoAdapterTest {
   public void adapt_checkFirstSideName()
     throws Exception {
     LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovic", null, "1.5", "3.2"));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovic", null, "3/2", "16/5"));
 
     assertThat(adaptedEvent.firstSide).isEqualTo("Florian Mayer");
   }
@@ -60,7 +60,7 @@ public class LiveVolvoAdapterTest {
   public void adapt_checkFirstSideNameAccents()
     throws Exception {
     LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayerč", "Kristina Mladenovic", null, "1.5", "3.2"));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayerč", "Kristina Mladenovic", null, "3/2", "16/5"));
 
     assertThat(adaptedEvent.firstSide).isEqualTo("Florian Mayerc");
   }
@@ -69,7 +69,7 @@ public class LiveVolvoAdapterTest {
   public void adapt_checkSecondSideName()
     throws Exception {
     LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovic", null, "1.5", "3.2"));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovic", null, "3/2", "16/5"));
 
     assertThat(adaptedEvent.secondSide).isEqualTo("Kristina Mladenovic");
   }
@@ -78,7 +78,7 @@ public class LiveVolvoAdapterTest {
   public void adapt_checkSecondSideNameAccents()
     throws Exception {
     LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovič", null, "1.5", "3.2"));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovič", null, "3/2", "16/5"));
 
     assertThat(adaptedEvent.secondSide).isEqualTo("Kristina Mladenovic");
   }
@@ -87,7 +87,7 @@ public class LiveVolvoAdapterTest {
   public void adapt_checkFirstKof()
     throws Exception {
     LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayerč", "Kristina Mladenovic", null, "1.5", "3.2"));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayerč", "Kristina Mladenovic", null, "3/2", "16/5"));
 
     assertThat(adaptedEvent.firstKof).isEqualTo(1.5);
   }
@@ -96,7 +96,7 @@ public class LiveVolvoAdapterTest {
   public void adapt_checkSecondKof()
     throws Exception {
     LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovic", null, "1.5", "3.2"));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovic", null, "3/2", "16/5"));
 
     assertThat(adaptedEvent.secondKof).isEqualTo(3.2);
   }
@@ -105,7 +105,7 @@ public class LiveVolvoAdapterTest {
   public void adapt_checkOrganisation()
     throws Exception {
     LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovic", null, "1.5", "3.2"));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovic", null, "3/2", "16/5"));
 
     assertThat(adaptedEvent.organisation).isEqualTo(VOLVO);
   }
@@ -114,7 +114,7 @@ public class LiveVolvoAdapterTest {
   public void adapt_checkCode()
     throws Exception {
     LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovic", null, "1.5", "3.2"));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovic", null, "3/2", "16/5"));
 
     assertThat(adaptedEvent.code).isEqualTo("Florian Mayer_Kristina Mladenovic");
   }
@@ -123,7 +123,7 @@ public class LiveVolvoAdapterTest {
   public void adapt_checkFirstSideName_flipped()
     throws Exception {
     LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Kristina Mladenovic", "Florian Mayer", null, "3.2", "1.5"));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Kristina Mladenovic", "Florian Mayer", null, "16/5", "3/2"));
 
     assertThat(adaptedEvent.firstSide).isEqualTo("Florian Mayer");
   }
@@ -132,7 +132,7 @@ public class LiveVolvoAdapterTest {
   public void adapt_checkSecondSideName_flipped()
     throws Exception {
     LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Kristina Mladenovic", "Florian Mayer", null, "3.2", "1.5"));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Kristina Mladenovic", "Florian Mayer", null, "16/5", "3/2"));
 
     assertThat(adaptedEvent.secondSide).isEqualTo("Kristina Mladenovic");
   }
@@ -141,7 +141,7 @@ public class LiveVolvoAdapterTest {
   public void adapt_checkFirstKof_flipped()
     throws Exception {
     LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayerč", "Kristina Mladenovic", null, "3.2", "1.5"));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayerč", "Kristina Mladenovic", null, "16/5", "3/2"));
 
     assertThat(adaptedEvent.firstKof).isEqualTo(1.5);
   }
@@ -150,7 +150,7 @@ public class LiveVolvoAdapterTest {
   public void adapt_checkSecondKof_flipped()
     throws Exception {
     LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Kristina Mladenovic", "Florian Mayer", null, "3.2", "1.5"));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Kristina Mladenovic", "Florian Mayer", null, "16/5", "3/2"));
 
     assertThat(adaptedEvent.secondKof).isEqualTo(3.2);
   }
@@ -159,7 +159,7 @@ public class LiveVolvoAdapterTest {
   public void adapt_checkCode_flipped()
     throws Exception {
     LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Kristina Mladenovic", "Florian Mayer", null, "3.2", "1.5"));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Kristina Mladenovic", "Florian Mayer", null, "16/5", "3/2"));
 
     assertThat(adaptedEvent.code).isEqualTo("Florian Mayer_Kristina Mladenovic");
   }
