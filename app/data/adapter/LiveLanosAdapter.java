@@ -1,5 +1,6 @@
 package data.adapter;
 
+import com.google.common.base.Splitter;
 import data.parser.ParsedEvent;
 import models.store.Sport;
 
@@ -7,8 +8,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
+import static java.lang.Double.parseDouble;
 import static java.util.Calendar.HOUR_OF_DAY;
 import static java.util.Calendar.MILLISECOND;
 import static java.util.Calendar.MINUTE;
@@ -23,6 +26,7 @@ import static org.apache.commons.lang3.StringUtils.stripAccents;
 public class LiveLanosAdapter
   implements BAdapter {
 
+  static final Splitter KOF_FRACTIONAL_SPLITTER = Splitter.on('/').omitEmptyStrings().trimResults();
   static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat("yyyy dd MMM HH:mm Z");
 
   @Override
@@ -33,8 +37,8 @@ public class LiveLanosAdapter
     firstSide = stripAccents(firstSide);
     secondSide = stripAccents(secondSide);
 
-    double firstKof = Double.parseDouble(parsedEvent.firstKof);
-    double secondKof = Double.parseDouble(parsedEvent.secondKof);
+    double firstKof = parseKof(parsedEvent.firstKof);
+    double secondKof = parseKof(parsedEvent.secondKof);
 
     if (firstKof > secondKof) {
       double swapKof = firstKof;
@@ -56,6 +60,15 @@ public class LiveLanosAdapter
     AdaptedEvent adoptedEvent = new AdaptedEvent(LIVE, sport, firstSide, secondSide, firstKof, secondKof, LANOS, date, firstSideCode, secondSIdeCode);
 
     return adoptedEvent;
+  }
+
+  private double parseKof(String kof) {
+    if (!kof.contains("/")) return parseDouble(kof);
+    else {
+      Iterator<String> kofParts = KOF_FRACTIONAL_SPLITTER.split(kof).iterator();
+      return 1 + (parseDouble(kofParts.next()) / parseDouble(kofParts.next()));
+    }
+
   }
 
   private Sport adoptSport(String descr) {

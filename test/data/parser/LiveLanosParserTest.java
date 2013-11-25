@@ -11,13 +11,13 @@ import static org.fest.assertions.Assertions.assertThat;
 public class LiveLanosParserTest {
 
   @Test
-  public void parse()
+  public void parse_events_sizeAndFieldsAreCorrect()
     throws IOException {
     byte[] input = toByteArray(this.getClass().getResourceAsStream("/data/parser/LiveLanosParserTest.html"));
 
     List<ParsedEvent> events = new LiveLanosParser().parse(input);
 
-    assertThat(events).hasSize(6);
+    assertThat(events).hasSize(5);
 
     ParsedEvent firstEvent = events.get(0);
     assertThat(firstEvent.sportDescr).startsWith("Tennis");
@@ -29,7 +29,7 @@ public class LiveLanosParserTest {
   }
 
   @Test
-  public void dateWithInjectedTag()
+  public void parse_eventDateWithInjectedTag_parseDateWithoutTag()
     throws IOException {
     byte[] input = toByteArray(this.getClass().getResourceAsStream("/data/parser/LiveLanosParserTest.html"));
 
@@ -37,5 +37,25 @@ public class LiveLanosParserTest {
 
     ParsedEvent secondEvent = events.get(1);
     assertThat(secondEvent.date).isEqualTo("02:05");
+  }
+
+  @Test
+  public void parse_1eventWithEmptyFirstKof_zeroEvents()
+    throws IOException {
+    byte[] input = toByteArray(this.getClass().getResourceAsStream("/data/parser/LiveLanosParserTest_parse_1eventWithEmptyFirstKof_zeroEvents.html"));
+
+    List<ParsedEvent> events = new LiveLanosParser().parse(input);
+
+    assertThat(events).hasSize(0);
+  }
+
+  @Test
+  public void parse_1eventWithEmptySecondKof_zeroEvents()
+    throws IOException {
+    byte[] input = toByteArray(this.getClass().getResourceAsStream("/data/parser/LiveLanosParserTest_parse_1eventWithEmptySecondKof_zeroEvents.html"));
+
+    List<ParsedEvent> events = new LiveLanosParser().parse(input);
+
+    assertThat(events).hasSize(0);
   }
 }

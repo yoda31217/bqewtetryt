@@ -11,13 +11,13 @@ import static org.fest.assertions.Assertions.assertThat;
 public class LiveVolvoParserTest {
 
   @Test
-  public void parse()
+  public void parse_events_sizeAndFieldsAreCorrect()
     throws IOException {
     byte[] input = toByteArray(this.getClass().getResourceAsStream("/data/parser/LiveVolvoParserTest.html"));
 
     List<ParsedEvent> events = new LiveVolvoParser().parse(input);
 
-    assertThat(events).hasSize(9);
+    assertThat(events).hasSize(8);
 
     ParsedEvent firstEvent = events.get(0);
     assertThat(firstEvent.sportDescr).isEqualTo(null);
@@ -26,5 +26,25 @@ public class LiveVolvoParserTest {
     assertThat(firstEvent.date).isEqualTo(null);
     assertThat(firstEvent.firstKof).isEqualTo("21.00");
     assertThat(firstEvent.secondKof).isEqualTo("1.006");
+  }
+
+  @Test
+  public void parse_1eventWithEmptyFirstKof_zeroEvents()
+    throws IOException {
+    byte[] input = toByteArray(this.getClass().getResourceAsStream("/data/parser/LiveVolvoParserTest_parse_1eventWithEmptyFirstKof_zeroEvents.html"));
+
+    List<ParsedEvent> events = new LiveVolvoParser().parse(input);
+
+    assertThat(events).hasSize(0);
+  }
+
+  @Test
+  public void parse_1eventWithEmptySecondKof_zeroEvents()
+    throws IOException {
+    byte[] input = toByteArray(this.getClass().getResourceAsStream("/data/parser/LiveVolvoParserTest_parse_1eventWithEmptySecondKof_zeroEvents.html"));
+
+    List<ParsedEvent> events = new LiveVolvoParser().parse(input);
+
+    assertThat(events).hasSize(0);
   }
 }

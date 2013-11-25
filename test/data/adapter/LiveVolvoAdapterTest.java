@@ -163,5 +163,4 @@ public class LiveVolvoAdapterTest {
 
     assertThat(adaptedEvent.code).isEqualTo("Florian Mayer_Kristina Mladenovic");
   }
-
 }

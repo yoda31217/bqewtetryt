@@ -1,5 +1,6 @@
 package jobs;
 
+import com.google.common.base.Predicate;
 import data.adapter.AdaptedEvent;
 import data.adapter.BAdapter;
 import data.fetcher.BFetcher;
@@ -22,11 +23,13 @@ public class EventJob
   final String name;
   final BFetcher fetcher;
   final BParser parser;
+  private final Predicate<AdaptedEvent> filter;
 
-  public EventJob(BFetcher fetcher, BParser parser, BAdapter adapter, String name) {
+  public EventJob(BFetcher fetcher, BParser parser, BAdapter adapter, Predicate<AdaptedEvent> filter, String name) {
     this.fetcher = fetcher;
     this.parser = parser;
     this.adapter = adapter;
+    this.filter = filter;
     this.name = name;
   }
 
@@ -39,6 +42,8 @@ public class EventJob
     List<ParsedEvent> parsedEvents = parser.parse(fetchResult);
     for (ParsedEvent parsedEvent : parsedEvents) {
       AdaptedEvent adaptedEvent = adapter.adapt(parsedEvent);
+
+      if (!filter.apply(adaptedEvent)) continue;
 
       Event event = createOrGetEvent(adaptedEvent.type, adaptedEvent.sport, adaptedEvent.eventDate, adaptedEvent.firstSide, adaptedEvent.secondSide,
         adaptedEvent.code);

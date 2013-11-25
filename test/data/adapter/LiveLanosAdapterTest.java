@@ -167,4 +167,20 @@ public class LiveLanosAdapterTest {
 
     assertThat(adaptedEvent.sport).isEqualTo(UNKNOWN);
   }
+
+  @Test
+  public void adapt_firstKofInFraction_dividedPlusOne() {
+    ParsedEvent event = new ParsedEvent("Tennis. Some descr.", "Flipčens, Kirsten", "Herčog, Polona", "17:30", "1/2", "2.92");
+    AdaptedEvent adaptedEvent = new LiveLanosAdapter().adapt(event);
+
+    assertThat(adaptedEvent.firstKof).isEqualTo(1.5);
+  }
+
+  @Test
+  public void adapt_secondKofInFraction_dividedPlusOne() {
+    ParsedEvent event = new ParsedEvent("Tennis. Some descr.", "Flipčens, Kirsten", "Herčog, Polona", "17:30", "1.2", "3/2");
+    AdaptedEvent adaptedEvent = new LiveLanosAdapter().adapt(event);
+
+    assertThat(adaptedEvent.secondKof).isEqualTo(2.5);
+  }
 }

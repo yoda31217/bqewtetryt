@@ -59,8 +59,8 @@ public class Event {
     history.add(record);
   }
 
-  public void removeHistory(HistoryRecord record) {
-    history.remove(record);
+  public void removeHistory(List<HistoryRecord> records) {
+    history.removeAll(records);
   }
 
   public Date date() {

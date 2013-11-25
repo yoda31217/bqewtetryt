@@ -8,6 +8,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static net.htmlparser.jericho.CharacterReference.decodeCollapseWhiteSpace;
 import static play.Logger.of;
 
@@ -25,7 +26,11 @@ public class LiveVolvoParser
 
     List<ParsedEvent> parsedEvents = new ArrayList<ParsedEvent>();
     for (Element eventEl : doc.getAllElementsByClass("vx__media-slat")) {
-      parsedEvents.add(buildEvent(eventEl.getChildElements()));
+      ParsedEvent event = buildEvent(eventEl.getChildElements());
+
+      if (null == event) continue;
+
+      parsedEvents.add(event);
     }
     LOG.debug("Parsed Events: {}", parsedEvents.size());
 
@@ -39,7 +44,10 @@ public class LiveVolvoParser
     String secondSide = decodeCollapseWhiteSpace(sideNameEls.get(1).getContent());
 
     String firstKof = decodeCollapseWhiteSpace(eventElChildren.get(1).getChildElements().get(0).getContent());
+    if (isNullOrEmpty(firstKof)) return null;
+
     String secondKof = decodeCollapseWhiteSpace(eventElChildren.get(2).getChildElements().get(0).getContent());
+    if (isNullOrEmpty(secondKof)) return null;
 
     return new ParsedEvent(null, firstSide, secondSide, null, firstKof, secondKof);
   }

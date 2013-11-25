@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.Date;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static models.store.EventType.REGULAR;
 import static models.store.Events.randomHistoryRecord;
 import static models.store.Events.randomSide;
@@ -51,7 +52,7 @@ public class EventTest {
     event.addHistory(record);
     assertThat(event.history()).containsExactly(record);
 
-    event.removeHistory(record);
+    event.removeHistory(newArrayList(record));
     assertThat(event.history()).hasSize(0);
   }
 }

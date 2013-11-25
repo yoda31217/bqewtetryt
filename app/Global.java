@@ -51,15 +51,15 @@ public class Global
       FiniteDuration oldHistoryDelay = Duration.create(1, "min");
       schedules.add(scheduler.schedule(oldHistoryOffset, oldHistoryDelay, logAndStopExceptions(REMOVE_OLD_HISTORY_JOB), defaultDispatcher));
 
-      //      FiniteDuration lanosOffset = Duration.create(20, "sec");
-      //      FiniteDuration lanosDelay = Duration.create(1, "min");
-      //      MessageDispatcher lanosFetchingDispatcher = system().dispatchers().lookup("contexts.fetch-lanos");
-      //      schedules.add(scheduler.schedule(lanosOffset, lanosDelay, logAndStopExceptions(LANOS_JOB), lanosFetchingDispatcher));
-
-      //      FiniteDuration volvoOffset = Duration.create(30, "sec");
-      //      FiniteDuration volvoDelay = Duration.create(1, "min");
-      //      MessageDispatcher volvoFetchingDispatcher = system().dispatchers().lookup("contexts.fetch-volvo");
-      //      schedules.add(scheduler.schedule(volvoOffset, volvoDelay, logAndStopExceptions(VOLVO_JOB), volvoFetchingDispatcher));
+      //            FiniteDuration lanosOffset = Duration.create(20, "sec");
+      //            FiniteDuration lanosDelay = Duration.create(1, "min");
+      //            MessageDispatcher lanosFetchingDispatcher = system().dispatchers().lookup("contexts.fetch-lanos");
+      //            schedules.add(scheduler.schedule(lanosOffset, lanosDelay, logAndStopExceptions(LANOS_JOB), lanosFetchingDispatcher));
+      //
+      //            FiniteDuration volvoOffset = Duration.create(30, "sec");
+      //            FiniteDuration volvoDelay = Duration.create(1, "min");
+      //            MessageDispatcher volvoFetchingDispatcher = system().dispatchers().lookup("contexts.fetch-volvo");
+      //            schedules.add(scheduler.schedule(volvoOffset, volvoDelay, logAndStopExceptions(VOLVO_JOB), volvoFetchingDispatcher));
 
       FiniteDuration lanosSportSelectionOffset = Duration.create(40, "sec");
       FiniteDuration lanosSportSelectionDelay = Duration.create(1, "min");
