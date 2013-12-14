@@ -1,8 +1,11 @@
 package data.adapter;
 
 import data.parser.ParsedEvent;
+import data.side.SideCoder;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -12,16 +15,33 @@ import static models.store.EventType.LIVE;
 import static models.store.Organisation.VOLVO;
 import static models.store.Sport.TENNIS;
 import static org.fest.assertions.Assertions.assertThat;
+import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({LiveVolvoAdapter.class, Date.class})
 public class LiveVolvoAdapterTest {
 
+  public static final String SIDE_1 = "SIDE1";
+  public static final String SIDE_2 = "SIDE2";
+  public static final String KOF_1_STR = "1/2";
+  public static final String KOF_2_STR = "11/5";
+  public static final String SIDE_1_CODE = "SIDE1_CODE";
+  public static final String SIDE_2_CODE = "SIDE2_CODE";
+  @Mock
+  private SideCoder sideCoderMock;
+  private LiveVolvoAdapter adapter;
+
+  @Before
+  public void before() {
+    adapter = new LiveVolvoAdapter(sideCoderMock);
+    when(sideCoderMock.buildCode(SIDE_1)).thenReturn(SIDE_1_CODE);
+    when(sideCoderMock.buildCode(SIDE_2)).thenReturn(SIDE_2_CODE);
+  }
+
   @Test
   public void adapt_checkType() {
-    LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovic", null, "3/2", "16/5"));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, SIDE_1, SIDE_2, null, KOF_1_STR, KOF_2_STR));
 
     assertThat(adaptedEvent.type).isEqualTo(LIVE);
   }
@@ -32,8 +52,7 @@ public class LiveVolvoAdapterTest {
     Date eventDate = new Date();
     whenNew(Date.class).withNoArguments().thenReturn(eventDate);
 
-    LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovic", null, "3/2", "16/5"));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, SIDE_1, SIDE_2, null, KOF_1_STR, KOF_2_STR));
 
     assertThat(adaptedEvent.eventDate).isSameAs(eventDate);
   }
@@ -41,126 +60,84 @@ public class LiveVolvoAdapterTest {
   @Test
   public void adapt_checkSport()
     throws Exception {
-    LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovic", null, "3/2", "16/5"));
-
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, SIDE_1, SIDE_2, null, KOF_1_STR, KOF_2_STR));
     assertThat(adaptedEvent.sport).isEqualTo(TENNIS);
   }
 
   @Test
   public void adapt_checkFirstSideName()
     throws Exception {
-    LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovic", null, "3/2", "16/5"));
-
-    assertThat(adaptedEvent.firstSide).isEqualTo("Florian Mayer");
-  }
-
-  @Test
-  public void adapt_checkFirstSideNameAccents()
-    throws Exception {
-    LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayerč", "Kristina Mladenovic", null, "3/2", "16/5"));
-
-    assertThat(adaptedEvent.firstSide).isEqualTo("Florian Mayerc");
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, SIDE_1, SIDE_2, null, KOF_1_STR, KOF_2_STR));
+    assertThat(adaptedEvent.firstSide).isEqualTo(SIDE_1);
   }
 
   @Test
   public void adapt_checkSecondSideName()
     throws Exception {
-    LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovic", null, "3/2", "16/5"));
-
-    assertThat(adaptedEvent.secondSide).isEqualTo("Kristina Mladenovic");
-  }
-
-  @Test
-  public void adapt_checkSecondSideNameAccents()
-    throws Exception {
-    LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovič", null, "3/2", "16/5"));
-
-    assertThat(adaptedEvent.secondSide).isEqualTo("Kristina Mladenovic");
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, SIDE_1, SIDE_2, null, KOF_1_STR, KOF_2_STR));
+    assertThat(adaptedEvent.secondSide).isEqualTo(SIDE_2);
   }
 
   @Test
   public void adapt_checkFirstKof()
     throws Exception {
-    LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayerč", "Kristina Mladenovic", null, "3/2", "16/5"));
-
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, SIDE_1, SIDE_2, null, KOF_1_STR, KOF_2_STR));
     assertThat(adaptedEvent.firstKof).isEqualTo(1.5);
   }
 
   @Test
   public void adapt_checkSecondKof()
     throws Exception {
-    LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovic", null, "3/2", "16/5"));
-
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, SIDE_1, SIDE_2, null, KOF_1_STR, KOF_2_STR));
     assertThat(adaptedEvent.secondKof).isEqualTo(3.2);
   }
 
   @Test
   public void adapt_checkOrganisation()
     throws Exception {
-    LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovic", null, "3/2", "16/5"));
-
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, SIDE_1, SIDE_2, null, KOF_1_STR, KOF_2_STR));
     assertThat(adaptedEvent.organisation).isEqualTo(VOLVO);
   }
 
   @Test
   public void adapt_checkCode()
     throws Exception {
-    LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayer", "Kristina Mladenovic", null, "3/2", "16/5"));
-
-    assertThat(adaptedEvent.code).isEqualTo("Florian Mayer_Kristina Mladenovic");
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, SIDE_1, SIDE_2, null, KOF_1_STR, KOF_2_STR));
+    assertThat(adaptedEvent.code).isEqualTo(SIDE_1_CODE + "_" + SIDE_2_CODE);
   }
 
   @Test
   public void adapt_checkFirstSideName_flipped()
     throws Exception {
-    LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Kristina Mladenovic", "Florian Mayer", null, "16/5", "3/2"));
-
-    assertThat(adaptedEvent.firstSide).isEqualTo("Florian Mayer");
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, SIDE_2, SIDE_1, null, KOF_2_STR, KOF_1_STR));
+    assertThat(adaptedEvent.firstSide).isEqualTo(SIDE_1);
   }
 
   @Test
   public void adapt_checkSecondSideName_flipped()
     throws Exception {
-    LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Kristina Mladenovic", "Florian Mayer", null, "16/5", "3/2"));
-
-    assertThat(adaptedEvent.secondSide).isEqualTo("Kristina Mladenovic");
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, SIDE_2, SIDE_1, null, KOF_2_STR, KOF_1_STR));
+    assertThat(adaptedEvent.secondSide).isEqualTo(SIDE_2);
   }
 
   @Test
   public void adapt_checkFirstKof_flipped()
     throws Exception {
-    LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Florian Mayerč", "Kristina Mladenovic", null, "16/5", "3/2"));
-
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, SIDE_1, SIDE_2, null, KOF_2_STR, KOF_1_STR));
     assertThat(adaptedEvent.firstKof).isEqualTo(1.5);
   }
 
   @Test
   public void adapt_checkSecondKof_flipped()
     throws Exception {
-    LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Kristina Mladenovic", "Florian Mayer", null, "16/5", "3/2"));
-
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, SIDE_2, SIDE_1, null, KOF_2_STR, KOF_1_STR));
     assertThat(adaptedEvent.secondKof).isEqualTo(3.2);
   }
 
   @Test
   public void adapt_checkCode_flipped()
     throws Exception {
-    LiveVolvoAdapter adapter = new LiveVolvoAdapter();
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, "Kristina Mladenovic", "Florian Mayer", null, "16/5", "3/2"));
-
-    assertThat(adaptedEvent.code).isEqualTo("Florian Mayer_Kristina Mladenovic");
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, SIDE_2, SIDE_1, null, KOF_2_STR, KOF_1_STR));
+    assertThat(adaptedEvent.code).isEqualTo(SIDE_2_CODE + "_" + SIDE_1_CODE);
   }
 }

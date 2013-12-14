@@ -14,6 +14,7 @@ import data.parser.LanosParser;
 import data.parser.LiveLanosParser;
 import data.parser.LiveVolvoParser;
 import data.parser.VolvoParser;
+import data.side.VolvoSideCoder;
 import scala.concurrent.duration.Duration;
 import web_driver.WebDriverKeeper;
 
@@ -48,7 +49,8 @@ public final class Jobs {
   }
 
   private static EventJob createLiveVolvoJob() {
-    return new EventJob(new LiveFetcher(VOLVO_WEB_DRIVER_KEEPER), new LiveVolvoParser(), new LiveVolvoAdapter(), EVENT_FILTER, LIVE + "_" + VOLVO);
+    return new EventJob(new LiveFetcher(VOLVO_WEB_DRIVER_KEEPER), new LiveVolvoParser(), new LiveVolvoAdapter(new VolvoSideCoder()), EVENT_FILTER,
+      LIVE + "_" + VOLVO);
   }
 
   private static EventJob createLiveLanosJob() {
