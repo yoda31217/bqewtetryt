@@ -1,7 +1,7 @@
 package jobs;
 
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import web_driver.WebDriverKeeper;
 
 public class LiveLanosSportSelectionJob
@@ -15,7 +15,7 @@ public class LiveLanosSportSelectionJob
 
   @Override
   public void run() {
-    FirefoxDriver webDriver = webDriverKeeper.acquire();
+    ChromeDriver webDriver = webDriverKeeper.acquire();
 
     try {
       boolean uncheckedEventsFound = false;

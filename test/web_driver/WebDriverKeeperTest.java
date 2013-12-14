@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -20,13 +21,13 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 public class WebDriverKeeperTest {
 
   @Mock
-  private FirefoxDriver webDriverMock;
+  private ChromeDriver webDriverMock;
   private WebDriverKeeper keeper;
 
   @Before
   public void before()
     throws Exception {
-    whenNew(FirefoxDriver.class).withNoArguments().thenReturn(webDriverMock);
+    whenNew(ChromeDriver.class).withNoArguments().thenReturn(webDriverMock);
 
     String url = "http://www." + "m" + "a" + "r" + "a" + "t" + "h" + "o" + "n" + "b" + "e" + "t" + ".com/en/live.htm";
     keeper = new WebDriverKeeper(10, url);

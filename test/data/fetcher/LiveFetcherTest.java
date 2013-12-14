@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import web_driver.WebDriverKeeper;
@@ -24,7 +24,7 @@ public class LiveFetcherTest {
   public static final String OUTER_HTML_TEXT = "OUTER_HTML_TEXT";
   public static final Charset UTF8 = Charset.forName("UTF-8");
   @Mock
-  private FirefoxDriver webDriverMock;
+  private ChromeDriver webDriverMock;
   @Mock
   private WebDriverKeeper webDriverKeeperMock;
   @Mock

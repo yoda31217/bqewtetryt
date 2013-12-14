@@ -54,10 +54,10 @@ public class LiveLanosAdapter
 
     Date date = adoptDate(parsedEvent.date);
 
-    String firstSideCode = sideCoder.buildCode(firstSide);
-    String secondSIdeCode = sideCoder.buildCode(secondSide);
-
     Sport sport = adoptSport(parsedEvent.sportDescr);
+
+    String firstSideCode = sideCoder.buildCode(firstSide, sport);
+    String secondSIdeCode = sideCoder.buildCode(secondSide, sport);
 
     AdaptedEvent adoptedEvent = new AdaptedEvent(LIVE, sport, firstSide, secondSide, firstKof, secondKof, LANOS, date, firstSideCode, secondSIdeCode);
 

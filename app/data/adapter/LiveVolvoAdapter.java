@@ -40,8 +40,8 @@ public class LiveVolvoAdapter
       secondSide = swapSide;
     }
 
-    String firstSideCode = sideCoder.buildCode(firstSide);
-    String secondSideCode = sideCoder.buildCode(secondSide);
+    String firstSideCode = sideCoder.buildCode(firstSide, TENNIS);
+    String secondSideCode = sideCoder.buildCode(secondSide, TENNIS);
 
     AdaptedEvent adoptedEvent = new AdaptedEvent(LIVE, TENNIS, firstSide, secondSide, firstKof, secondKof, VOLVO, new Date(), firstSideCode, secondSideCode);
     return adoptedEvent;

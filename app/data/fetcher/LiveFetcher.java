@@ -1,6 +1,6 @@
 package data.fetcher;
 
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import web_driver.WebDriverKeeper;
 
 import java.nio.charset.Charset;
@@ -17,7 +17,7 @@ public class LiveFetcher
 
   @Override
   public byte[] fetch() {
-    FirefoxDriver webDriver = webDriverKeeper.acquire();
+    ChromeDriver webDriver = webDriverKeeper.acquire();
     try {
       String contentStr = webDriver.findElementByTagName("html").getAttribute("outerHTML");
       return contentStr.getBytes(UTF8);

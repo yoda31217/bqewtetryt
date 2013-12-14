@@ -2,6 +2,7 @@ package data.adapter;
 
 import data.parser.ParsedEvent;
 import data.side.SideCoder;
+import models.store.Sport;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +16,8 @@ import static models.store.EventType.LIVE;
 import static models.store.Organisation.VOLVO;
 import static models.store.Sport.TENNIS;
 import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.same;
 import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
@@ -35,8 +38,8 @@ public class LiveVolvoAdapterTest {
   @Before
   public void before() {
     adapter = new LiveVolvoAdapter(sideCoderMock);
-    when(sideCoderMock.buildCode(SIDE_1)).thenReturn(SIDE_1_CODE);
-    when(sideCoderMock.buildCode(SIDE_2)).thenReturn(SIDE_2_CODE);
+    when(sideCoderMock.buildCode(same(SIDE_1), any(Sport.class))).thenReturn(SIDE_1_CODE);
+    when(sideCoderMock.buildCode(same(SIDE_2), any(Sport.class))).thenReturn(SIDE_2_CODE);
   }
 
   @Test

@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.powermock.modules.junit4.PowerMockRunner;
 import web_driver.WebDriverKeeper;
 
@@ -24,7 +24,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 public class LiveLanosSportSelectionJobTest {
 
   @Mock
-  private FirefoxDriver webDriverMock;
+  private ChromeDriver webDriverMock;
   @Mock
   private WebDriverKeeper webDriverKeeperMock;
   @Mock

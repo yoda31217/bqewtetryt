@@ -25,6 +25,7 @@ import static models.store.Organisation.VOLVO;
 
 public final class Jobs {
 
+  static final Predicate<AdaptedEvent> EVENT_FILTER = new EventFilter();
   public static final Runnable REMOVE_OLD_HISTORY_JOB = new RemoveOldHistoryJob(50);
   public static final RemoveOldEventJob REMOVE_OLD_EVENT_JOB = new RemoveOldEventJob(Duration.create(12, "hour").toMillis());
   public static final EventJob LANOS_JOB = createLanosJob();
@@ -34,7 +35,6 @@ public final class Jobs {
   public static final EventJob VOLVO_JOB = createVolvoJob();
   public static final WebDriverKeeper VOLVO_WEB_DRIVER_KEEPER = createVolvoWebDriverKeeper();
   public static final EventJob LIVE_VOLVO_JOB = createLiveVolvoJob();
-  static final Predicate<AdaptedEvent> EVENT_FILTER = new EventFilter();
 
   private Jobs() {
     throw new UnsupportedOperationException();

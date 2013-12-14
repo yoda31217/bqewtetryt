@@ -1,6 +1,6 @@
 package web_driver;
 
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.concurrent.Semaphore;
 
@@ -8,22 +8,26 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class WebDriverKeeper {
 
+  static {
+    System.setProperty("webdriver.chrome.driver", "/Users/yoda31217/projects/niknik/betty/conf/chromedriver");
+  }
+
   private final Semaphore lanosDriverSemaphore = new Semaphore(1, true);
   private final long timeoutInMillis;
-  private final FirefoxDriver lanosDriver;
+  private final ChromeDriver driver;
 
   public WebDriverKeeper(long timeoutInMillis, String url) {
     this.timeoutInMillis = timeoutInMillis;
 
-    lanosDriver = new FirefoxDriver();
-    lanosDriver.get(url);
+    driver = new ChromeDriver();
+    driver.get(url);
   }
 
-  public FirefoxDriver acquire() {
+  public ChromeDriver acquire() {
     try {
       boolean wasAcquired = lanosDriverSemaphore.tryAcquire(timeoutInMillis, MILLISECONDS);
       if (wasAcquired) {
-        return lanosDriver;
+        return driver;
       }
 
     } catch (InterruptedException skipped) {
