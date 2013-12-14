@@ -5,15 +5,15 @@ import org.junit.Test;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-public class VolvoSideCoderTest {
+public class LanosSideCoderTest {
 
-  private VolvoSideCoder coder;
-  private static final String SIDE = "Kristina Mladenovič";
+  private LanosSideCoder coder;
+  private static final String SIDE = "Flipčens, Kirsten";
 
   @Before
   public void before()
     throws Exception {
-    coder = new VolvoSideCoder();
+    coder = new LanosSideCoder();
   }
 
   @Test
@@ -21,6 +21,6 @@ public class VolvoSideCoderTest {
     throws Exception {
 
     String code = coder.buildCode(SIDE);
-    assertThat(code).isEqualTo("Kristina Mladenovic");
+    assertThat(code).isEqualTo("Flipcens, Kirsten");
   }
 }

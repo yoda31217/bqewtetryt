@@ -2,6 +2,7 @@ package data.adapter;
 
 import com.google.common.base.Splitter;
 import data.parser.ParsedEvent;
+import data.side.SideCoder;
 import models.store.Sport;
 
 import java.text.ParseException;
@@ -21,21 +22,22 @@ import static models.store.EventType.LIVE;
 import static models.store.Organisation.LANOS;
 import static models.store.Sport.TENNIS;
 import static models.store.Sport.UNKNOWN;
-import static org.apache.commons.lang3.StringUtils.stripAccents;
 
 public class LiveLanosAdapter
   implements BAdapter {
 
   static final Splitter KOF_FRACTIONAL_SPLITTER = Splitter.on('/').omitEmptyStrings().trimResults();
   static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat("yyyy dd MMM HH:mm Z");
+  private final SideCoder sideCoder;
+
+  public LiveLanosAdapter(SideCoder sideCoder) {
+    this.sideCoder = sideCoder;
+  }
 
   @Override
   public AdaptedEvent adapt(ParsedEvent parsedEvent) {
     String firstSide = parsedEvent.firstSide;
     String secondSide = parsedEvent.secondSide;
-
-    firstSide = stripAccents(firstSide);
-    secondSide = stripAccents(secondSide);
 
     double firstKof = parseKof(parsedEvent.firstKof);
     double secondKof = parseKof(parsedEvent.secondKof);
@@ -52,8 +54,8 @@ public class LiveLanosAdapter
 
     Date date = adoptDate(parsedEvent.date);
 
-    String firstSideCode = adoptSideCode(firstSide);
-    String secondSIdeCode = adoptSideCode(secondSide);
+    String firstSideCode = sideCoder.buildCode(firstSide);
+    String secondSIdeCode = sideCoder.buildCode(secondSide);
 
     Sport sport = adoptSport(parsedEvent.sportDescr);
 
@@ -77,10 +79,6 @@ public class LiveLanosAdapter
     if (descr.startsWith("Tennis. ")) return TENNIS;
 
     return UNKNOWN;
-  }
-
-  private String adoptSideCode(String sideStr) {
-    return sideStr;
   }
 
   private Date adoptDate(String date) {

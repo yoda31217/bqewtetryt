@@ -1,8 +1,11 @@
 package data.adapter;
 
 import data.parser.ParsedEvent;
+import data.side.SideCoder;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -22,16 +25,36 @@ import static models.store.Organisation.LANOS;
 import static models.store.Sport.TENNIS;
 import static models.store.Sport.UNKNOWN;
 import static org.fest.assertions.Assertions.assertThat;
+import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Date.class, AdaptedEvent.class})
 public class LiveLanosAdapterTest {
 
+  public static final String DESCRIPTION = "Tennis. This is a description.";
+  public static final String SIDE_1 = "SIDE_1";
+  public static final String SIDE_2 = "SIDE_2";
+  public static final String KOF_1 = "1.45";
+  public static final String KOF_2 = "2.92";
+  public static final String SHORT_DATE = "17:30";
+  public static final String SIDE_1_CODE = "SIDE_2_CODE";
+  public static final String SIDE_2_CODE = "SIDE_1_CODE";
+  @Mock
+  private SideCoder sideCoderMock;
+  private LiveLanosAdapter adapter1;
+
+  @Before
+  public void before() {
+    adapter1 = new LiveLanosAdapter(sideCoderMock);
+    when(sideCoderMock.buildCode(SIDE_1)).thenReturn(SIDE_1_CODE);
+    when(sideCoderMock.buildCode(SIDE_2)).thenReturn(SIDE_2_CODE);
+  }
+
   @Test
   public void sidesAndKofsAndCodeAndShortEventDate() {
-    ParsedEvent event = new ParsedEvent("Tennis. This is a description.", "Flipkens, Kirsten", "Hercog, Polona", "17:30", "1.45", "2.92");
-    AdaptedEvent adaptedEvent = new LiveLanosAdapter().adapt(event);
+    ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_1, SIDE_2, SHORT_DATE, KOF_1, KOF_2);
+    AdaptedEvent adaptedEvent = adapter1.adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
     calendar.set(HOUR_OF_DAY, 17);
@@ -40,17 +63,17 @@ public class LiveLanosAdapterTest {
     calendar.set(MILLISECOND, 0);
 
     assertThat(adaptedEvent.eventDate).isEqualTo(calendar.getTime());
-    assertThat(adaptedEvent.firstSide).isEqualTo("Flipkens, Kirsten");
-    assertThat(adaptedEvent.secondSide).isEqualTo("Hercog, Polona");
+    assertThat(adaptedEvent.firstSide).isEqualTo(SIDE_1);
+    assertThat(adaptedEvent.secondSide).isEqualTo(SIDE_2);
     assertThat(adaptedEvent.firstKof).isEqualTo(1.45);
     assertThat(adaptedEvent.secondKof).isEqualTo(2.92);
-    assertThat(adaptedEvent.code).isEqualTo("Flipkens, Kirsten_Hercog, Polona");
+    assertThat(adaptedEvent.code).isEqualTo(SIDE_1_CODE + "_" + SIDE_2_CODE);
   }
 
   @Test
   public void longEventDate() {
-    ParsedEvent event = new ParsedEvent("Tennis. This is a description.", "Flipkens, Kirsten", "Hercog, Polona", "11 Sep 17:30", "1.45", "2.92");
-    AdaptedEvent adaptedEvent = new LiveLanosAdapter().adapt(event);
+    ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_1, SIDE_2, "11 Sep 17:30", KOF_1, KOF_2);
+    AdaptedEvent adaptedEvent = adapter1.adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
     calendar.set(MONTH, SEPTEMBER);
@@ -65,8 +88,8 @@ public class LiveLanosAdapterTest {
 
   @Test
   public void eventDate24hours() {
-    ParsedEvent event = new ParsedEvent("Tennis. This is a description.", "Flipkens, Kirsten", "Hercog, Polona", "11 Sep 12:30", "1.45", "2.92");
-    AdaptedEvent adaptedEvent = new LiveLanosAdapter().adapt(event);
+    ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_1, SIDE_2, "11 Sep 12:30", KOF_1, KOF_2);
+    AdaptedEvent adaptedEvent = adapter1.adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
     calendar.set(MONTH, SEPTEMBER);
@@ -81,8 +104,8 @@ public class LiveLanosAdapterTest {
 
   @Test
   public void sidesAndKofsAndCodeAndDateWithChangedOrder() {
-    ParsedEvent event = new ParsedEvent("Tennis. This is a description.", "Hercog, Polona", "Flipkens, Kirsten", "17:30", "2.92", "1.45");
-    AdaptedEvent adaptedEvent = new LiveLanosAdapter().adapt(event);
+    ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_2, SIDE_1, SHORT_DATE, KOF_2, KOF_1);
+    AdaptedEvent adaptedEvent = adapter1.adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
     calendar.set(HOUR_OF_DAY, 17);
@@ -91,35 +114,25 @@ public class LiveLanosAdapterTest {
     calendar.set(MILLISECOND, 0);
 
     assertThat(adaptedEvent.eventDate).isEqualTo(calendar.getTime());
-    assertThat(adaptedEvent.firstSide).isEqualTo("Flipkens, Kirsten");
-    assertThat(adaptedEvent.secondSide).isEqualTo("Hercog, Polona");
+    assertThat(adaptedEvent.firstSide).isEqualTo(SIDE_1);
+    assertThat(adaptedEvent.secondSide).isEqualTo(SIDE_2);
     assertThat(adaptedEvent.firstKof).isEqualTo(1.45);
     assertThat(adaptedEvent.secondKof).isEqualTo(2.92);
-    assertThat(adaptedEvent.code).isEqualTo("Flipkens, Kirsten_Hercog, Polona");
-  }
-
-  @Test
-  public void sidesAndCodeWithAccents() {
-    ParsedEvent event = new ParsedEvent("Tennis. This is a description.", "Flipčens, Kirsten", "Herčog, Polona", "17:30", "1.45", "2.92");
-    AdaptedEvent adaptedEvent = new LiveLanosAdapter().adapt(event);
-
-    assertThat(adaptedEvent.firstSide).isEqualTo("Flipcens, Kirsten");
-    assertThat(adaptedEvent.secondSide).isEqualTo("Hercog, Polona");
-    assertThat(adaptedEvent.code).startsWith("Flipcens, Kirsten_Hercog, Polona");
+    assertThat(adaptedEvent.code).isEqualTo(SIDE_1_CODE + "_" + SIDE_2_CODE);
   }
 
   @Test
   public void organisation() {
-    ParsedEvent event = new ParsedEvent("Tennis. This is a description.", "Flipčens, Kirsten", "Herčog, Polona", "17:30", "1.45", "2.92");
-    AdaptedEvent adaptedEvent = new LiveLanosAdapter().adapt(event);
+    ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_1, SIDE_2, SHORT_DATE, KOF_1, KOF_2);
+    AdaptedEvent adaptedEvent = adapter1.adapt(event);
 
     assertThat(adaptedEvent.organisation).isEqualTo(LANOS);
   }
 
   @Test
   public void type() {
-    ParsedEvent event = new ParsedEvent("Tennis. This is a description.", "Flipčens, Kirsten", "Herčog, Polona", "17:30", "1.45", "2.92");
-    AdaptedEvent adaptedEvent = new LiveLanosAdapter().adapt(event);
+    ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_1, SIDE_2, SHORT_DATE, KOF_1, KOF_2);
+    AdaptedEvent adaptedEvent = adapter1.adapt(event);
 
     assertThat(adaptedEvent.type).isEqualTo(LIVE);
   }
@@ -130,56 +143,56 @@ public class LiveLanosAdapterTest {
     Date expectedAdaptedDate = new Date();
     whenNew(Date.class).withNoArguments().thenReturn(expectedAdaptedDate);
 
-    ParsedEvent event = new ParsedEvent("Tennis. This is a description.", "Flipčens, Kirsten", "Herčog, Polona", "17:30", "1.45", "2.92");
-    AdaptedEvent adaptedEvent = new LiveLanosAdapter().adapt(event);
+    ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_1, SIDE_2, SHORT_DATE, KOF_1, KOF_2);
+    AdaptedEvent adaptedEvent = adapter1.adapt(event);
 
     assertThat(adaptedEvent.adoptedDate).isEqualTo(expectedAdaptedDate);
   }
 
   @Test
   public void sportTennis() {
-    ParsedEvent event = new ParsedEvent("Tennis. This is a description.", "Flipčens, Kirsten", "Herčog, Polona", "17:30", "1.45", "2.92");
-    AdaptedEvent adaptedEvent = new LiveLanosAdapter().adapt(event);
+    ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_1, SIDE_2, SHORT_DATE, KOF_1, KOF_2);
+    AdaptedEvent adaptedEvent = adapter1.adapt(event);
 
     assertThat(adaptedEvent.sport).isEqualTo(TENNIS);
   }
 
   @Test
   public void sportUnknown() {
-    ParsedEvent event = new ParsedEvent("Tennis1. This is a description.", "Flipčens, Kirsten", "Herčog, Polona", "17:30", "1.45", "2.92");
-    AdaptedEvent adaptedEvent = new LiveLanosAdapter().adapt(event);
+    ParsedEvent event = new ParsedEvent("Tennis1. This is a description.", SIDE_1, SIDE_2, SHORT_DATE, KOF_1, KOF_2);
+    AdaptedEvent adaptedEvent = adapter1.adapt(event);
 
     assertThat(adaptedEvent.sport).isEqualTo(UNKNOWN);
   }
 
   @Test
   public void sportUnknownForEmptyDescription() {
-    ParsedEvent event = new ParsedEvent("", "Flipčens, Kirsten", "Herčog, Polona", "17:30", "1.45", "2.92");
-    AdaptedEvent adaptedEvent = new LiveLanosAdapter().adapt(event);
+    ParsedEvent event = new ParsedEvent("", SIDE_1, SIDE_2, SHORT_DATE, KOF_1, KOF_2);
+    AdaptedEvent adaptedEvent = adapter1.adapt(event);
 
     assertThat(adaptedEvent.sport).isEqualTo(UNKNOWN);
   }
 
   @Test
   public void sportUnknownForNullDescription() {
-    ParsedEvent event = new ParsedEvent(null, "Flipčens, Kirsten", "Herčog, Polona", "17:30", "1.45", "2.92");
-    AdaptedEvent adaptedEvent = new LiveLanosAdapter().adapt(event);
+    ParsedEvent event = new ParsedEvent(null, SIDE_1, SIDE_2, SHORT_DATE, KOF_1, KOF_2);
+    AdaptedEvent adaptedEvent = adapter1.adapt(event);
 
     assertThat(adaptedEvent.sport).isEqualTo(UNKNOWN);
   }
 
   @Test
   public void adapt_firstKofInFraction_dividedPlusOne() {
-    ParsedEvent event = new ParsedEvent("Tennis. Some descr.", "Flipčens, Kirsten", "Herčog, Polona", "17:30", "1/2", "2.92");
-    AdaptedEvent adaptedEvent = new LiveLanosAdapter().adapt(event);
+    ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_1, SIDE_2, SHORT_DATE, "1/2", KOF_2);
+    AdaptedEvent adaptedEvent = adapter1.adapt(event);
 
     assertThat(adaptedEvent.firstKof).isEqualTo(1.5);
   }
 
   @Test
   public void adapt_secondKofInFraction_dividedPlusOne() {
-    ParsedEvent event = new ParsedEvent("Tennis. Some descr.", "Flipčens, Kirsten", "Herčog, Polona", "17:30", "1.2", "3/2");
-    AdaptedEvent adaptedEvent = new LiveLanosAdapter().adapt(event);
+    ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_1, SIDE_2, SHORT_DATE, KOF_1, "3/2");
+    AdaptedEvent adaptedEvent = adapter1.adapt(event);
 
     assertThat(adaptedEvent.secondKof).isEqualTo(2.5);
   }

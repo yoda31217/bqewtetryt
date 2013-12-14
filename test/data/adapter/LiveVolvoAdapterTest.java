@@ -138,6 +138,6 @@ public class LiveVolvoAdapterTest {
   public void adapt_checkCode_flipped()
     throws Exception {
     AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, SIDE_2, SIDE_1, null, KOF_2_STR, KOF_1_STR));
-    assertThat(adaptedEvent.code).isEqualTo(SIDE_2_CODE + "_" + SIDE_1_CODE);
+    assertThat(adaptedEvent.code).isEqualTo(SIDE_1_CODE + "_" + SIDE_2_CODE);
   }
 }
