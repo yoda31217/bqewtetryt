@@ -28,7 +28,7 @@ import java.util.List;
 
 import static jobs.Jobs.LANOS_SPORT_SELECTION_JOB;
 import static jobs.Jobs.LIVE_LANOS_JOB;
-import static jobs.Jobs.LIVE_VOLVO_JOB;
+import static jobs.Jobs.LIVE_VOLVO_TENNIS_JOB;
 import static jobs.Jobs.REMOVE_OLD_EVENT_JOB;
 import static jobs.Jobs.REMOVE_OLD_HISTORY_JOB;
 import static models.store.Organisation.LANOS;
@@ -153,7 +153,7 @@ public class GlobalTest {
     //    assertThat(jobs.get(3)).isSameAs(VOLVO_JOB);
     assertThat(jobs.get(2)).isSameAs(LANOS_SPORT_SELECTION_JOB);
     assertThat(jobs.get(3)).isSameAs(LIVE_LANOS_JOB);
-    assertThat(jobs.get(4)).isSameAs(LIVE_VOLVO_JOB);
+    assertThat(jobs.get(4)).isSameAs(LIVE_VOLVO_TENNIS_JOB);
 
     ArgumentCaptor<FiniteDuration> durationArgsCaptor = forClass(FiniteDuration.class);
     ArgumentCaptor<ExecutionContext> executionContextArgsCaptor = forClass(ExecutionContext.class);

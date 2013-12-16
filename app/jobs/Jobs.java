@@ -25,7 +25,6 @@ import static models.store.Organisation.VOLVO;
 
 public final class Jobs {
 
-  static final Predicate<AdaptedEvent> EVENT_FILTER = new EventFilter();
   public static final Runnable REMOVE_OLD_HISTORY_JOB = new RemoveOldHistoryJob(4);
   public static final RemoveOldEventJob REMOVE_OLD_EVENT_JOB = new RemoveOldEventJob(Duration.create(12, "hour").toMillis());
   public static final EventJob LANOS_JOB = createLanosJob();
@@ -33,25 +32,36 @@ public final class Jobs {
   public static final LiveLanosSportSelectionJob LANOS_SPORT_SELECTION_JOB = new LiveLanosSportSelectionJob(LANOS_WEB_DRIVER_KEEPER);
   public static final EventJob LIVE_LANOS_JOB = createLiveLanosJob();
   public static final EventJob VOLVO_JOB = createVolvoJob();
-  public static final WebDriverKeeper VOLVO_WEB_DRIVER_KEEPER = createVolvoWebDriverKeeper();
-  public static final EventJob LIVE_VOLVO_JOB = createLiveVolvoJob();
+  public static final WebDriverKeeper VOLVO_TENNIS_WEB_DRIVER_KEEPER = createVolvoTennisWebDriverKeeper();
+  public static final WebDriverKeeper VOLVO_VALLEYBALL_WEB_DRIVER_KEEPER = createVolvoValleyballWebDriverKeeper();
+  public static final EventJob LIVE_VOLVO_TENNIS_JOB = createLiveVolvoTennisJob();
+  public static final EventJob LIVE_VOLVO_VALLEYBALL_JOB = createLiveVolvoValleyballJob();
+  static final Predicate<AdaptedEvent> EVENT_FILTER = new EventFilter();
 
   private Jobs() {
     throw new UnsupportedOperationException();
   }
 
   private static WebDriverKeeper createLanosWebDriverKeeper() {
-    return new WebDriverKeeper(5000L, "http://www." + "m" + "a" + "r" + "a" + "t" + "h" + "o" + "n" + "b" + "e" + "t" + ".com/en/live.htm");
+    return new WebDriverKeeper(5000L, getLanosSite() + "/en/live.htm");
   }
 
-  private static WebDriverKeeper createVolvoWebDriverKeeper() {
-    return new WebDriverKeeper(5000L,
-      "http://www." + "b" + "e" + "t" + "3" + "6" + "5" + ".com/Lite/#!clt=9994;op=14;cid=13;cpid=13-0-0-0-0-0-0-4-0-0-0-0-0-0-1-0-0-0-0");
+  private static WebDriverKeeper createVolvoTennisWebDriverKeeper() {
+    return new WebDriverKeeper(5000L, getVolvoSite() + "/Lite/#!clt=9994;op=14;cid=13;cpid=13-0-0-0-0-0-0-4-0-0-0-0-0-0-1-0-0-0-0");
   }
 
-  private static EventJob createLiveVolvoJob() {
-    return new EventJob(new LiveFetcher(VOLVO_WEB_DRIVER_KEEPER), new LiveVolvoParser(), new LiveVolvoAdapter(new VolvoSideCoder()), EVENT_FILTER,
-      LIVE + "_" + VOLVO);
+  private static WebDriverKeeper createVolvoValleyballWebDriverKeeper() {
+    return new WebDriverKeeper(5000L, getVolvoSite() + "/Lite/#!clt=9994;op=14;cid=91;cpid=91-0-0-0-0-0-0-4-0-0-0-0-0-0-1-0-0-0-0");
+  }
+
+  private static EventJob createLiveVolvoTennisJob() {
+    return new EventJob(new LiveFetcher(VOLVO_TENNIS_WEB_DRIVER_KEEPER), new LiveVolvoParser(), new LiveVolvoAdapter(new VolvoSideCoder()), EVENT_FILTER,
+      LIVE + "_" + VOLVO + "_TENNIS");
+  }
+
+  private static EventJob createLiveVolvoValleyballJob() {
+    return new EventJob(new LiveFetcher(VOLVO_VALLEYBALL_WEB_DRIVER_KEEPER), new LiveVolvoParser(), new LiveVolvoAdapter(new VolvoSideCoder()), EVENT_FILTER,
+      LIVE + "_" + VOLVO + "_VALLEYBALL");
   }
 
   private static EventJob createLiveLanosJob() {
@@ -60,13 +70,16 @@ public final class Jobs {
   }
 
   private static EventJob createVolvoJob() {
-    return new EventJob(new VolvoFetcher("http://www." + "b" + "e" + "t" + "3" + "6" + "5" +
-      ".com/Lite/cache/api/?clt=9994&op=4&cid=13&cpid=13-1-50-2-163-0-0-0-1-0-0-4505-0-0-1-0-0-0-0&cf=N&lng=1&cty=195&fm=1&tzi=1&oty=2&hd=N"),
+    return new EventJob(new VolvoFetcher(
+      getVolvoSite() + "/Lite/cache/api/?clt=9994&op=4&cid=13&cpid=13-1-50-2-163-0-0-0-1-0-0-4505-0-0-1-0-0-0-0&cf=N&lng=1&cty=195&fm=1&tzi=1&oty=2&hd=N"),
       new VolvoParser(), new VolvoAdapter(), EVENT_FILTER, VOLVO.toString());
   }
 
   private static EventJob createLanosJob() {
-    return new EventJob(new LanosFetcher("http://www." + "m" + "a" + "r" + "a" + "t" + "h" + "o" + "n" + "b" + "e" + "t" + ".com/en/betting/Tennis/"),
-      new LanosParser(), new LanosAdapter(), EVENT_FILTER, LANOS.toString());
+    return new EventJob(new LanosFetcher(getLanosSite() + "/en/betting/Tennis/"), new LanosParser(), new LanosAdapter(), EVENT_FILTER, LANOS.toString());
   }
+
+  private static String getVolvoSite() {return "http://www." + "b" + "e" + "t" + "3" + "6" + "5" + ".com";}
+
+  private static String getLanosSite() {return "http://www." + "m" + "a" + "r" + "a" + "t" + "h" + "o" + "n" + "b" + "e" + "t" + ".com";}
 }
