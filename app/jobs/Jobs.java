@@ -25,18 +25,33 @@ import static models.store.Organisation.VOLVO;
 
 public final class Jobs {
 
-  public static final Runnable REMOVE_OLD_HISTORY_JOB = new RemoveOldHistoryJob(4);
-  public static final RemoveOldEventJob REMOVE_OLD_EVENT_JOB = new RemoveOldEventJob(Duration.create(12, "hour").toMillis());
-  public static final EventJob LANOS_JOB = createLanosJob();
-  public static final WebDriverKeeper LANOS_WEB_DRIVER_KEEPER = createLanosWebDriverKeeper();
-  public static final LiveLanosSportSelectionJob LANOS_SPORT_SELECTION_JOB = new LiveLanosSportSelectionJob(LANOS_WEB_DRIVER_KEEPER);
-  public static final EventJob LIVE_LANOS_JOB = createLiveLanosJob();
-  public static final EventJob VOLVO_JOB = createVolvoJob();
-  public static final WebDriverKeeper VOLVO_TENNIS_WEB_DRIVER_KEEPER = createVolvoTennisWebDriverKeeper();
-  public static final WebDriverKeeper VOLVO_VALLEYBALL_WEB_DRIVER_KEEPER = createVolvoValleyballWebDriverKeeper();
-  public static final EventJob LIVE_VOLVO_TENNIS_JOB = createLiveVolvoTennisJob();
-  public static final EventJob LIVE_VOLVO_VALLEYBALL_JOB = createLiveVolvoValleyballJob();
-  static final Predicate<AdaptedEvent> EVENT_FILTER = new EventFilter();
+  private static final Predicate<AdaptedEvent> EVENT_FILTER;
+  public static final Runnable REMOVE_OLD_HISTORY_JOB;
+  public static final RemoveOldEventJob REMOVE_OLD_EVENT_JOB;
+  public static final EventJob LANOS_JOB;
+  public static final WebDriverKeeper LANOS_WEB_DRIVER_KEEPER;
+  public static final LiveLanosSportSelectionJob LANOS_SPORT_SELECTION_JOB;
+  public static final EventJob LIVE_LANOS_JOB;
+  public static final EventJob VOLVO_JOB;
+  public static final WebDriverKeeper VOLVO_TENNIS_WEB_DRIVER_KEEPER;
+  public static final WebDriverKeeper VOLVO_VALLEYBALL_WEB_DRIVER_KEEPER;
+  public static final EventJob LIVE_VOLVO_TENNIS_JOB;
+  public static final EventJob LIVE_VOLVO_VALLEYBALL_JOB;
+
+  static {
+    EVENT_FILTER = new EventFilter();
+    REMOVE_OLD_HISTORY_JOB = new RemoveOldHistoryJob(4);
+    REMOVE_OLD_EVENT_JOB = new RemoveOldEventJob(Duration.create(12, "hour").toMillis());
+    LANOS_JOB = createLanosJob();
+    LANOS_WEB_DRIVER_KEEPER = createLanosWebDriverKeeper();
+    LANOS_SPORT_SELECTION_JOB = new LiveLanosSportSelectionJob(LANOS_WEB_DRIVER_KEEPER);
+    LIVE_LANOS_JOB = createLiveLanosJob();
+    VOLVO_JOB = createVolvoJob();
+    VOLVO_TENNIS_WEB_DRIVER_KEEPER = createVolvoTennisWebDriverKeeper();
+    VOLVO_VALLEYBALL_WEB_DRIVER_KEEPER = createVolvoValleyballWebDriverKeeper();
+    LIVE_VOLVO_TENNIS_JOB = createLiveVolvoTennisJob();
+    LIVE_VOLVO_VALLEYBALL_JOB = createLiveVolvoValleyballJob();
+  }
 
   private Jobs() {
     throw new UnsupportedOperationException();
