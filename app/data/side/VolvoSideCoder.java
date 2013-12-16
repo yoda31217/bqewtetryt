@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Splitter.on;
 import static com.google.common.collect.Lists.newArrayList;
-import static models.store.Sport.UNKNOWN;
 import static org.apache.commons.lang3.StringUtils.stripAccents;
 
 public class VolvoSideCoder
@@ -22,8 +21,18 @@ public class VolvoSideCoder
 
   @Override
   public String buildCode(String side, Sport sport) {
-    if (UNKNOWN.equals(sport)) return side;
 
+    switch (sport) {
+
+      case TENNIS:
+        return buildTennisCode(side);
+
+      default:
+        return side;
+    }
+  }
+
+  private String buildTennisCode(String side) {
     side = stripAccents(side);
     side = side.toLowerCase();
 

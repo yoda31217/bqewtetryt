@@ -29,6 +29,7 @@ import java.util.List;
 import static jobs.Jobs.LANOS_SPORT_SELECTION_JOB;
 import static jobs.Jobs.LIVE_LANOS_JOB;
 import static jobs.Jobs.LIVE_VOLVO_TENNIS_JOB;
+import static jobs.Jobs.LIVE_VOLVO_VALLEYBALL_JOB;
 import static jobs.Jobs.REMOVE_OLD_EVENT_JOB;
 import static jobs.Jobs.REMOVE_OLD_HISTORY_JOB;
 import static models.store.Organisation.LANOS;
@@ -142,11 +143,11 @@ public class GlobalTest {
     start(fakeApplication);
 
     ArgumentCaptor<Runnable> jobArgsCaptor = forClass(Runnable.class);
-    verifyStatic(times(5));
+    verifyStatic(times(6));
     logAndStopExceptions(jobArgsCaptor.capture());
     List jobs = jobArgsCaptor.getAllValues();
 
-    assertThat(jobs).hasSize(5);
+    assertThat(jobs).hasSize(6);
     assertThat(jobs.get(0)).isSameAs(REMOVE_OLD_EVENT_JOB);
     assertThat(jobs.get(1)).isSameAs(REMOVE_OLD_HISTORY_JOB);
     //    assertThat(jobs.get(2)).isSameAs(LANOS_JOB);
@@ -154,16 +155,17 @@ public class GlobalTest {
     assertThat(jobs.get(2)).isSameAs(LANOS_SPORT_SELECTION_JOB);
     assertThat(jobs.get(3)).isSameAs(LIVE_LANOS_JOB);
     assertThat(jobs.get(4)).isSameAs(LIVE_VOLVO_TENNIS_JOB);
+    assertThat(jobs.get(5)).isSameAs(LIVE_VOLVO_VALLEYBALL_JOB);
 
     ArgumentCaptor<FiniteDuration> durationArgsCaptor = forClass(FiniteDuration.class);
     ArgumentCaptor<ExecutionContext> executionContextArgsCaptor = forClass(ExecutionContext.class);
 
-    verify(schedulerMock, times(5)).schedule(durationArgsCaptor.capture(), durationArgsCaptor.capture(), same(wrappedRunnableMock),
+    verify(schedulerMock, times(6)).schedule(durationArgsCaptor.capture(), durationArgsCaptor.capture(), same(wrappedRunnableMock),
       executionContextArgsCaptor.capture());
 
     List<FiniteDuration> durations = durationArgsCaptor.getAllValues();
 
-    assertThat(durations).hasSize(10);
+    assertThat(durations).hasSize(12);
     assertThat(durations.get(0)).satisfies(reflectionEq(Duration.create(0, "sec")));
     assertThat(durations.get(1)).satisfies(reflectionEq(Duration.create(1, "min")));
 
@@ -185,9 +187,12 @@ public class GlobalTest {
     assertThat(durations.get(8)).satisfies(reflectionEq(Duration.create(20, "sec")));
     assertThat(durations.get(9)).satisfies(reflectionEq(Duration.create(10, "sec")));
 
+    assertThat(durations.get(10)).satisfies(reflectionEq(Duration.create(30, "sec")));
+    assertThat(durations.get(11)).satisfies(reflectionEq(Duration.create(10, "sec")));
+
     List<ExecutionContext> executionContexts = executionContextArgsCaptor.getAllValues();
-    assertThat(executionContexts).hasSize(5).containsExactly(defaultDispatcherMock, defaultDispatcherMock
+    assertThat(executionContexts).hasSize(6).containsExactly(defaultDispatcherMock, defaultDispatcherMock
       //      , lanosFetchingDispatcherMock, volvoFetchingDispatcherMock
-      , defaultDispatcherMock, defaultDispatcherMock, defaultDispatcherMock);
+      , defaultDispatcherMock, defaultDispatcherMock, defaultDispatcherMock, defaultDispatcherMock);
   }
 }
