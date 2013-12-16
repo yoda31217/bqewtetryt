@@ -47,15 +47,10 @@ public class VolvoSideCoderTest {
   }
 
   @Test
-  public void buildCode_oneWordSide_throwsArgEx()
+  public void buildCode_oneWordSide_returnThisWord()
     throws Exception {
-    try {
-      coder.buildCode("firstword", TENNIS);
-      fail();
-
-    } catch (IllegalArgumentException e) {
-      assertThat(e).hasMessage("Failed to build code for side: firstword");
-    }
+    String code = coder.buildCode("firstword", TENNIS);
+    assertThat(code).isEqualTo("firstword");
   }
 
   @Test
@@ -71,7 +66,7 @@ public class VolvoSideCoderTest {
   }
 
   @Test
-  public void buildCode_sideWithOneChar_throwsArgEx()
+  public void buildCode_sideWithOneChar_returnOneCharCode()
     throws Exception {
     String code = coder.buildCode("f s", TENNIS);
     assertThat(code).isEqualTo("s");
@@ -80,7 +75,30 @@ public class VolvoSideCoderTest {
   @Test
   public void buildCode_twoPlayersSide_returnLastWordsWithComa()
     throws Exception {
-    String code = coder.buildCode("firstword secondword & thidrword fourthword", TENNIS);
+    String code = coder.buildCode("firstword secondword / thidrword fourthword", TENNIS);
     assertThat(code).isEqualTo("secondword,fourthword");
   }
+
+  //  @Test
+  //  public void zxc()
+  //    throws Exception {
+  //    System.setProperty("webdriver.chrome.driver", "/Users/yoda31217/projects/niknik/betty/conf/chromedriver");
+  //
+  //    ChromeDriver driver = new ChromeDriver();
+  //    driver.get("http://google.com");
+  //
+  //    driver.findElementByTagName("body").sendKeys(Keys.PAGE_UP);
+  //
+  ////    openNewBrowserTab(driver, "http://ya.ru");
+  //  }
+  //
+  //  private void openNewBrowserTab(ChromeDriver driver, String url) {
+  //    String createAnchorElScript = "var anchor=document.createElement('a');anchor.target='_blank';anchor.href='%s';anchor.innerHTML='.';document.body
+  // .appendChild(anchor);return anchor";
+  //    String removeAnchorElScript = "var a=arguments[0];a.parentNode.removeChild(a);";
+  //
+  //    WebElement anchorEl = (WebElement) driver.executeScript(format(createAnchorElScript, url));
+  //    anchorEl.click();
+  //    driver.executeScript(removeAnchorElScript, anchorEl);
+  //  }
 }

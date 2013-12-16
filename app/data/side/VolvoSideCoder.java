@@ -16,8 +16,8 @@ import static org.apache.commons.lang3.StringUtils.stripAccents;
 public class VolvoSideCoder
   implements SideCoder {
 
-  private static final Pattern LAST_WORD_PATTERN = Pattern.compile("^.*[^a-z]([a-z]+)$");
-  private static final String TWO_PLAYERS_SPLIT_STR = "&";
+  private static final Pattern LAST_WORD_PATTERN = Pattern.compile("(^.*[^a-z])?([a-z]+)$");
+  private static final String TWO_PLAYERS_SPLIT_STR = "/";
   private static final Splitter TWO_PLAYERS_SIDE_SPLITTER = on(TWO_PLAYERS_SPLIT_STR).omitEmptyStrings().trimResults();
 
   @Override
@@ -39,6 +39,6 @@ public class VolvoSideCoder
     Matcher matcher = LAST_WORD_PATTERN.matcher(side);
     checkArgument(matcher.matches(), "Failed to build code for side: %s", side);
 
-    return matcher.group(1);
+    return matcher.group(2);
   }
 }

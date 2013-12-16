@@ -71,7 +71,7 @@ public class LanosSideCoderTest {
   }
 
   @Test
-  public void buildCode_sideWithOneChar_throwsArgEx()
+  public void buildCode_sideWithOneChar_returnOneCharCode()
     throws Exception {
     String code = coder.buildCode("f s", TENNIS);
     assertThat(code).isEqualTo("f");

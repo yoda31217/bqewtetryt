@@ -4,6 +4,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import web_driver.WebDriverKeeper;
 
+import static org.openqa.selenium.Keys.PAGE_UP;
+
 public class LiveLanosSportSelectionJob
   implements Runnable {
 
@@ -18,6 +20,8 @@ public class LiveLanosSportSelectionJob
     ChromeDriver webDriver = webDriverKeeper.acquire();
 
     try {
+      webDriver.findElementByTagName("body").sendKeys(PAGE_UP);
+
       boolean uncheckedEventsFound = false;
 
       for (WebElement element : webDriver.findElementsByClassName("group-selection")) {
