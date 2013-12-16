@@ -25,6 +25,7 @@ import static models.store.EventType.LIVE;
 import static models.store.Organisation.LANOS;
 import static models.store.Sport.TENNIS;
 import static models.store.Sport.UNKNOWN;
+import static models.store.Sport.VALLEYBALL;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.same;
@@ -45,11 +46,11 @@ public class LiveLanosAdapterTest {
   public static final String SIDE_2_CODE = "SIDE_1_CODE";
   @Mock
   private SideCoder sideCoderMock;
-  private LiveLanosAdapter adapter1;
+  private LiveLanosAdapter adapter;
 
   @Before
   public void before() {
-    adapter1 = new LiveLanosAdapter(sideCoderMock);
+    adapter = new LiveLanosAdapter(sideCoderMock);
     when(sideCoderMock.buildCode(same(SIDE_1), any(Sport.class))).thenReturn(SIDE_1_CODE);
     when(sideCoderMock.buildCode(same(SIDE_2), any(Sport.class))).thenReturn(SIDE_2_CODE);
   }
@@ -57,7 +58,7 @@ public class LiveLanosAdapterTest {
   @Test
   public void sidesAndKofsAndCodeAndShortEventDate() {
     ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_1, SIDE_2, SHORT_DATE, KOF_1, KOF_2);
-    AdaptedEvent adaptedEvent = adapter1.adapt(event);
+    AdaptedEvent adaptedEvent = adapter.adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
     calendar.set(HOUR_OF_DAY, 17);
@@ -76,7 +77,7 @@ public class LiveLanosAdapterTest {
   @Test
   public void longEventDate() {
     ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_1, SIDE_2, "11 Sep 17:30", KOF_1, KOF_2);
-    AdaptedEvent adaptedEvent = adapter1.adapt(event);
+    AdaptedEvent adaptedEvent = adapter.adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
     calendar.set(MONTH, SEPTEMBER);
@@ -92,7 +93,7 @@ public class LiveLanosAdapterTest {
   @Test
   public void eventDate24hours() {
     ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_1, SIDE_2, "11 Sep 12:30", KOF_1, KOF_2);
-    AdaptedEvent adaptedEvent = adapter1.adapt(event);
+    AdaptedEvent adaptedEvent = adapter.adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
     calendar.set(MONTH, SEPTEMBER);
@@ -108,7 +109,7 @@ public class LiveLanosAdapterTest {
   @Test
   public void sidesAndKofsAndCodeAndDateWithChangedOrder() {
     ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_2, SIDE_1, SHORT_DATE, KOF_2, KOF_1);
-    AdaptedEvent adaptedEvent = adapter1.adapt(event);
+    AdaptedEvent adaptedEvent = adapter.adapt(event);
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
     calendar.set(HOUR_OF_DAY, 17);
@@ -127,7 +128,7 @@ public class LiveLanosAdapterTest {
   @Test
   public void organisation() {
     ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_1, SIDE_2, SHORT_DATE, KOF_1, KOF_2);
-    AdaptedEvent adaptedEvent = adapter1.adapt(event);
+    AdaptedEvent adaptedEvent = adapter.adapt(event);
 
     assertThat(adaptedEvent.organisation).isEqualTo(LANOS);
   }
@@ -135,7 +136,7 @@ public class LiveLanosAdapterTest {
   @Test
   public void type() {
     ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_1, SIDE_2, SHORT_DATE, KOF_1, KOF_2);
-    AdaptedEvent adaptedEvent = adapter1.adapt(event);
+    AdaptedEvent adaptedEvent = adapter.adapt(event);
 
     assertThat(adaptedEvent.type).isEqualTo(LIVE);
   }
@@ -147,7 +148,7 @@ public class LiveLanosAdapterTest {
     whenNew(Date.class).withNoArguments().thenReturn(expectedAdaptedDate);
 
     ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_1, SIDE_2, SHORT_DATE, KOF_1, KOF_2);
-    AdaptedEvent adaptedEvent = adapter1.adapt(event);
+    AdaptedEvent adaptedEvent = adapter.adapt(event);
 
     assertThat(adaptedEvent.adoptedDate).isEqualTo(expectedAdaptedDate);
   }
@@ -155,15 +156,23 @@ public class LiveLanosAdapterTest {
   @Test
   public void sportTennis() {
     ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_1, SIDE_2, SHORT_DATE, KOF_1, KOF_2);
-    AdaptedEvent adaptedEvent = adapter1.adapt(event);
+    AdaptedEvent adaptedEvent = adapter.adapt(event);
 
     assertThat(adaptedEvent.sport).isEqualTo(TENNIS);
   }
 
   @Test
+  public void adapt_valleyballdescription_returnValleyballEvent() {
+    ParsedEvent event = new ParsedEvent("Valleyball. Some another description.", SIDE_1, SIDE_2, SHORT_DATE, KOF_1, KOF_2);
+    AdaptedEvent adaptedEvent = adapter.adapt(event);
+
+    assertThat(adaptedEvent.sport).isEqualTo(VALLEYBALL);
+  }
+
+  @Test
   public void sportUnknown() {
     ParsedEvent event = new ParsedEvent("Tennis1. This is a description.", SIDE_1, SIDE_2, SHORT_DATE, KOF_1, KOF_2);
-    AdaptedEvent adaptedEvent = adapter1.adapt(event);
+    AdaptedEvent adaptedEvent = adapter.adapt(event);
 
     assertThat(adaptedEvent.sport).isEqualTo(UNKNOWN);
   }
@@ -171,7 +180,7 @@ public class LiveLanosAdapterTest {
   @Test
   public void sportUnknownForEmptyDescription() {
     ParsedEvent event = new ParsedEvent("", SIDE_1, SIDE_2, SHORT_DATE, KOF_1, KOF_2);
-    AdaptedEvent adaptedEvent = adapter1.adapt(event);
+    AdaptedEvent adaptedEvent = adapter.adapt(event);
 
     assertThat(adaptedEvent.sport).isEqualTo(UNKNOWN);
   }
@@ -179,7 +188,7 @@ public class LiveLanosAdapterTest {
   @Test
   public void sportUnknownForNullDescription() {
     ParsedEvent event = new ParsedEvent(null, SIDE_1, SIDE_2, SHORT_DATE, KOF_1, KOF_2);
-    AdaptedEvent adaptedEvent = adapter1.adapt(event);
+    AdaptedEvent adaptedEvent = adapter.adapt(event);
 
     assertThat(adaptedEvent.sport).isEqualTo(UNKNOWN);
   }
@@ -187,7 +196,7 @@ public class LiveLanosAdapterTest {
   @Test
   public void adapt_firstKofInFraction_dividedPlusOne() {
     ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_1, SIDE_2, SHORT_DATE, "1/2", KOF_2);
-    AdaptedEvent adaptedEvent = adapter1.adapt(event);
+    AdaptedEvent adaptedEvent = adapter.adapt(event);
 
     assertThat(adaptedEvent.firstKof).isEqualTo(1.5);
   }
@@ -195,7 +204,7 @@ public class LiveLanosAdapterTest {
   @Test
   public void adapt_secondKofInFraction_dividedPlusOne() {
     ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_1, SIDE_2, SHORT_DATE, KOF_1, "3/2");
-    AdaptedEvent adaptedEvent = adapter1.adapt(event);
+    AdaptedEvent adaptedEvent = adapter.adapt(event);
 
     assertThat(adaptedEvent.secondKof).isEqualTo(2.5);
   }

@@ -14,11 +14,9 @@ import web_driver.WebDriverKeeper;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.openqa.selenium.Keys.PAGE_UP;
 import static org.powermock.api.mockito.PowerMockito.verifyNoMoreInteractions;
 import static org.powermock.api.mockito.PowerMockito.when;
 
@@ -37,8 +35,6 @@ public class LiveLanosSportSelectionJobTest {
   private WebElement anotherSelectedSportElementMock;
   @Mock
   private WebElement showSelectionsButtonElementMock;
-  @Mock
-  private WebElement bodyElMock;
 
   @Before
   public void before() {
@@ -49,7 +45,6 @@ public class LiveLanosSportSelectionJobTest {
     when(anotherSelectedSportElementMock.isSelected()).thenReturn(true);
 
     when(webDriverMock.findElementByClassName("but-show")).thenReturn(showSelectionsButtonElementMock);
-    when(webDriverMock.findElementByTagName("body")).thenReturn(bodyElMock);
   }
 
   @After
@@ -100,15 +95,8 @@ public class LiveLanosSportSelectionJobTest {
 
   @Test
   public void run_always_pageUpPressed() {
-    //    when(webDriverMock.findElementsByClassName("group-selection")).thenReturn(newArrayList(selectedSportElementMock, anotherSelectedSportElementMock));
-
     new LiveLanosSportSelectionJob(webDriverKeeperMock).run();
-    verify(bodyElMock).sendKeys(same(PAGE_UP));
-
-    //    verify(selectedSportElementMock, never()).click();
-    //    verify(anotherSelectedSportElementMock, never()).click();
-    //
-    //    verify(showSelectionsButtonElementMock, never()).click();
+    verify(webDriverMock).executeScript("document.getElementById(\"body_content\").scrollByLines(-1000000)");
   }
 
   @Ignore

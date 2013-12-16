@@ -4,8 +4,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import web_driver.WebDriverKeeper;
 
-import static org.openqa.selenium.Keys.PAGE_UP;
-
 public class LiveLanosSportSelectionJob
   implements Runnable {
 
@@ -20,7 +18,7 @@ public class LiveLanosSportSelectionJob
     ChromeDriver webDriver = webDriverKeeper.acquire();
 
     try {
-      webDriver.findElementByTagName("body").sendKeys(PAGE_UP);
+      scrollToTop(webDriver);
 
       boolean uncheckedEventsFound = false;
 
@@ -37,4 +35,6 @@ public class LiveLanosSportSelectionJob
       webDriverKeeper.release();
     }
   }
+
+  private void scrollToTop(ChromeDriver webDriver) {webDriver.executeScript("document.getElementById(\"body_content\").scrollByLines(-1000000)");}
 }
