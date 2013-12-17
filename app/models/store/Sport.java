@@ -4,5 +4,6 @@ public enum Sport {
   UNKNOWN,
   TENNIS,
   VOLLEYBALL,
-  BASKETBALL;
+  TABLE_TENNIS,
+  BASKETBALL
 }

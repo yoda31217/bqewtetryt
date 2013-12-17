@@ -23,6 +23,8 @@ import static java.util.Calendar.SEPTEMBER;
 import static java.util.TimeZone.getTimeZone;
 import static models.store.EventType.LIVE;
 import static models.store.Organisation.LANOS;
+import static models.store.Sport.BASKETBALL;
+import static models.store.Sport.TABLE_TENNIS;
 import static models.store.Sport.TENNIS;
 import static models.store.Sport.UNKNOWN;
 import static models.store.Sport.VOLLEYBALL;
@@ -162,11 +164,27 @@ public class LiveLanosAdapterTest {
   }
 
   @Test
-  public void adapt_valleyballdescription_returnVolleyballEvent() {
+  public void adapt_volleyballdescription_returnVolleyballEvent() {
     ParsedEvent event = new ParsedEvent("Volleyball. Some another description.", SIDE_1, SIDE_2, SHORT_DATE, KOF_1, KOF_2);
     AdaptedEvent adaptedEvent = adapter.adapt(event);
 
     assertThat(adaptedEvent.sport).isEqualTo(VOLLEYBALL);
+  }
+
+  @Test
+  public void adapt_volleyballdescription_returnTableTennisEvent() {
+    ParsedEvent event = new ParsedEvent("Table Tennis. Some another description.", SIDE_1, SIDE_2, SHORT_DATE, KOF_1, KOF_2);
+    AdaptedEvent adaptedEvent = adapter.adapt(event);
+
+    assertThat(adaptedEvent.sport).isEqualTo(TABLE_TENNIS);
+  }
+
+  @Test
+  public void adapt_volleyballdescription_returnBasketballEvent() {
+    ParsedEvent event = new ParsedEvent("Basketball. Some another description.", SIDE_1, SIDE_2, SHORT_DATE, KOF_1, KOF_2);
+    AdaptedEvent adaptedEvent = adapter.adapt(event);
+
+    assertThat(adaptedEvent.sport).isEqualTo(BASKETBALL);
   }
 
   @Test

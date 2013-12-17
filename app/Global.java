@@ -17,6 +17,8 @@ import java.util.List;
 
 import static jobs.Jobs.LANOS_SPORT_SELECTION_JOB;
 import static jobs.Jobs.LIVE_LANOS_JOB;
+import static jobs.Jobs.LIVE_VOLVO_BASKETBALL_JOB;
+import static jobs.Jobs.LIVE_VOLVO_TABLETENNIS_JOB;
 import static jobs.Jobs.LIVE_VOLVO_TENNIS_JOB;
 import static jobs.Jobs.LIVE_VOLVO_VOLLEYBALL_JOB;
 import static jobs.Jobs.REMOVE_OLD_EVENT_JOB;
@@ -78,6 +80,16 @@ public class Global
       FiniteDuration liveVolvoVolleyballOffset = Duration.create(30, "sec");
       FiniteDuration liveVolvoVolleyballDelay = Duration.create(10, "sec");
       schedules.add(scheduler.schedule(liveVolvoVolleyballOffset, liveVolvoVolleyballDelay, logAndStopExceptions(LIVE_VOLVO_VOLLEYBALL_JOB),
+        defaultDispatcher));
+
+      FiniteDuration liveVolvoBasketballOffset = Duration.create(5, "sec");
+      FiniteDuration liveVolvoBasketballDelay = Duration.create(10, "sec");
+      schedules.add(scheduler.schedule(liveVolvoBasketballOffset, liveVolvoBasketballDelay, logAndStopExceptions(LIVE_VOLVO_BASKETBALL_JOB),
+        defaultDispatcher));
+
+      FiniteDuration liveVolvoTableTennisOffset = Duration.create(15, "sec");
+      FiniteDuration liveVolvoTableTennisDelay = Duration.create(10, "sec");
+      schedules.add(scheduler.schedule(liveVolvoTableTennisOffset, liveVolvoTableTennisDelay, logAndStopExceptions(LIVE_VOLVO_TABLETENNIS_JOB),
         defaultDispatcher));
 
     } else {

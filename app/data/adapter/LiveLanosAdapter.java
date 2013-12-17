@@ -20,6 +20,8 @@ import static java.util.Calendar.SECOND;
 import static java.util.TimeZone.getTimeZone;
 import static models.store.EventType.LIVE;
 import static models.store.Organisation.LANOS;
+import static models.store.Sport.BASKETBALL;
+import static models.store.Sport.TABLE_TENNIS;
 import static models.store.Sport.TENNIS;
 import static models.store.Sport.UNKNOWN;
 import static models.store.Sport.VOLLEYBALL;
@@ -78,7 +80,9 @@ public class LiveLanosAdapter
     if (isNullOrEmpty(descr)) return UNKNOWN;
 
     if (descr.startsWith("Tennis. ")) return TENNIS;
+    if (descr.startsWith("Table Tennis. ")) return TABLE_TENNIS;
     if (descr.startsWith("Volleyball. ")) return VOLLEYBALL;
+    if (descr.startsWith("Basketball. ")) return BASKETBALL;
 
     return UNKNOWN;
   }
