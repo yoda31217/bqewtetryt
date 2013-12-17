@@ -25,7 +25,7 @@ import static models.store.EventType.LIVE;
 import static models.store.Organisation.LANOS;
 import static models.store.Sport.TENNIS;
 import static models.store.Sport.UNKNOWN;
-import static models.store.Sport.VALLEYBALL;
+import static models.store.Sport.VOLLEYBALL;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.same;
@@ -162,11 +162,11 @@ public class LiveLanosAdapterTest {
   }
 
   @Test
-  public void adapt_valleyballdescription_returnValleyballEvent() {
-    ParsedEvent event = new ParsedEvent("Valleyball. Some another description.", SIDE_1, SIDE_2, SHORT_DATE, KOF_1, KOF_2);
+  public void adapt_valleyballdescription_returnVolleyballEvent() {
+    ParsedEvent event = new ParsedEvent("Volleyball. Some another description.", SIDE_1, SIDE_2, SHORT_DATE, KOF_1, KOF_2);
     AdaptedEvent adaptedEvent = adapter.adapt(event);
 
-    assertThat(adaptedEvent.sport).isEqualTo(VALLEYBALL);
+    assertThat(adaptedEvent.sport).isEqualTo(VOLLEYBALL);
   }
 
   @Test

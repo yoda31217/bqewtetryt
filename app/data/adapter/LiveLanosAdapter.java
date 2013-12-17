@@ -22,7 +22,7 @@ import static models.store.EventType.LIVE;
 import static models.store.Organisation.LANOS;
 import static models.store.Sport.TENNIS;
 import static models.store.Sport.UNKNOWN;
-import static models.store.Sport.VALLEYBALL;
+import static models.store.Sport.VOLLEYBALL;
 
 public class LiveLanosAdapter
   implements BAdapter {
@@ -78,7 +78,7 @@ public class LiveLanosAdapter
     if (isNullOrEmpty(descr)) return UNKNOWN;
 
     if (descr.startsWith("Tennis. ")) return TENNIS;
-    if (descr.startsWith("Valleyball. ")) return VALLEYBALL;
+    if (descr.startsWith("Volleyball. ")) return VOLLEYBALL;
 
     return UNKNOWN;
   }

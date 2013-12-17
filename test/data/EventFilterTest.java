@@ -7,7 +7,7 @@ import static models.store.EventType.LIVE;
 import static models.store.EventType.REGULAR;
 import static models.store.Sport.BASKETBALL;
 import static models.store.Sport.TENNIS;
-import static models.store.Sport.VALLEYBALL;
+import static models.store.Sport.VOLLEYBALL;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class EventFilterTest {
@@ -26,7 +26,7 @@ public class EventFilterTest {
 
   @Test
   public void apply_valleyballLiveEvent_returnTrue() {
-    AdaptedEvent event = new AdaptedEvent(LIVE, VALLEYBALL, null, null, 1.0, 1.0, null, null, null, null);
+    AdaptedEvent event = new AdaptedEvent(LIVE, VOLLEYBALL, null, null, 1.0, 1.0, null, null, null, null);
     assertThat(new EventFilter().apply(event)).isTrue();
   }
 

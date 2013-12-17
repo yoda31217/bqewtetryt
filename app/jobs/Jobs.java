@@ -23,7 +23,7 @@ import static models.store.EventType.LIVE;
 import static models.store.Organisation.LANOS;
 import static models.store.Organisation.VOLVO;
 import static models.store.Sport.TENNIS;
-import static models.store.Sport.VALLEYBALL;
+import static models.store.Sport.VOLLEYBALL;
 
 public final class Jobs {
 
@@ -35,9 +35,9 @@ public final class Jobs {
   public static final EventJob LIVE_LANOS_JOB;
   public static final EventJob VOLVO_JOB;
   public static final WebDriverKeeper VOLVO_TENNIS_WEB_DRIVER_KEEPER;
-  public static final WebDriverKeeper VOLVO_VALLEYBALL_WEB_DRIVER_KEEPER;
+  public static final WebDriverKeeper VOLVO_VOLLEYBALL_WEB_DRIVER_KEEPER;
   public static final EventJob LIVE_VOLVO_TENNIS_JOB;
-  public static final EventJob LIVE_VOLVO_VALLEYBALL_JOB;
+  public static final EventJob LIVE_VOLVO_VOLLEYBALL_JOB;
 
   static {
     EVENT_FILTER = new EventFilter();
@@ -49,9 +49,9 @@ public final class Jobs {
     LIVE_LANOS_JOB = createLiveLanosJob();
     VOLVO_JOB = createVolvoJob();
     VOLVO_TENNIS_WEB_DRIVER_KEEPER = createVolvoTennisWebDriverKeeper();
-    VOLVO_VALLEYBALL_WEB_DRIVER_KEEPER = createVolvoValleyballWebDriverKeeper();
+    VOLVO_VOLLEYBALL_WEB_DRIVER_KEEPER = createVolvoVolleyballWebDriverKeeper();
     LIVE_VOLVO_TENNIS_JOB = createLiveVolvoTennisJob();
-    LIVE_VOLVO_VALLEYBALL_JOB = createLiveVolvoValleyballJob();
+    LIVE_VOLVO_VOLLEYBALL_JOB = createLiveVolvoVolleyballJob();
   }
 
   private static final Predicate<AdaptedEvent> EVENT_FILTER;
@@ -68,7 +68,7 @@ public final class Jobs {
     return new WebDriverKeeper(5000L, getVolvoSite() + "/Lite/#!clt=9994;op=14;cid=13;cpid=13-0-0-0-0-0-0-4-0-0-0-0-0-0-1-0-0-0-0");
   }
 
-  private static WebDriverKeeper createVolvoValleyballWebDriverKeeper() {
+  private static WebDriverKeeper createVolvoVolleyballWebDriverKeeper() {
     return new WebDriverKeeper(5000L, getVolvoSite() + "/Lite/#!clt=9994;op=14;cid=91;cpid=91-0-0-0-0-0-0-4-0-0-0-0-0-0-1-0-0-0-0");
   }
 
@@ -77,9 +77,9 @@ public final class Jobs {
       EVENT_FILTER, LIVE + "_" + VOLVO + "_TENNIS");
   }
 
-  private static EventJob createLiveVolvoValleyballJob() {
-    return new EventJob(new LiveFetcher(VOLVO_VALLEYBALL_WEB_DRIVER_KEEPER), new LiveVolvoParser(), new LiveVolvoAdapter(new VolvoSideCoder(), VALLEYBALL),
-      EVENT_FILTER, LIVE + "_" + VOLVO + "_VALLEYBALL");
+  private static EventJob createLiveVolvoVolleyballJob() {
+    return new EventJob(new LiveFetcher(VOLVO_VOLLEYBALL_WEB_DRIVER_KEEPER), new LiveVolvoParser(), new LiveVolvoAdapter(new VolvoSideCoder(), VOLLEYBALL),
+      EVENT_FILTER, LIVE + "_" + VOLVO + "_VOLLEYBALL");
   }
 
   private static EventJob createLiveLanosJob() {
