@@ -3,6 +3,7 @@ package data.adapter;
 import com.google.common.base.Splitter;
 import data.parser.ParsedEvent;
 import data.side.SideCoder;
+import models.store.Sport;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -10,16 +11,17 @@ import java.util.Iterator;
 import static java.lang.Double.parseDouble;
 import static models.store.EventType.LIVE;
 import static models.store.Organisation.VOLVO;
-import static models.store.Sport.TENNIS;
 
 public class LiveVolvoAdapter
   implements BAdapter {
 
   public static final Splitter KOF_SPLITTER = Splitter.on("/").omitEmptyStrings().trimResults();
   private final SideCoder sideCoder;
+  private final Sport sport;
 
-  public LiveVolvoAdapter(SideCoder sideCoder) {
+  public LiveVolvoAdapter(SideCoder sideCoder, Sport sport) {
     this.sideCoder = sideCoder;
+    this.sport = sport;
   }
 
   @Override
@@ -40,10 +42,10 @@ public class LiveVolvoAdapter
       secondSide = swapSide;
     }
 
-    String firstSideCode = sideCoder.buildCode(firstSide, TENNIS);
-    String secondSideCode = sideCoder.buildCode(secondSide, TENNIS);
+    String firstSideCode = sideCoder.buildCode(firstSide, sport);
+    String secondSideCode = sideCoder.buildCode(secondSide, sport);
 
-    AdaptedEvent adoptedEvent = new AdaptedEvent(LIVE, TENNIS, firstSide, secondSide, firstKof, secondKof, VOLVO, new Date(), firstSideCode, secondSideCode);
+    AdaptedEvent adoptedEvent = new AdaptedEvent(LIVE, sport, firstSide, secondSide, firstKof, secondKof, VOLVO, new Date(), firstSideCode, secondSideCode);
     return adoptedEvent;
   }
 

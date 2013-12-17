@@ -37,7 +37,7 @@ public class LiveVolvoAdapterTest {
 
   @Before
   public void before() {
-    adapter = new LiveVolvoAdapter(sideCoderMock);
+    adapter = new LiveVolvoAdapter(sideCoderMock, TENNIS);
     when(sideCoderMock.buildCode(same(SIDE_1), any(Sport.class))).thenReturn(SIDE_1_CODE);
     when(sideCoderMock.buildCode(same(SIDE_2), any(Sport.class))).thenReturn(SIDE_2_CODE);
   }

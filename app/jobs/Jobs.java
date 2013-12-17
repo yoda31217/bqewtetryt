@@ -22,10 +22,11 @@ import web_driver.WebDriverKeeper;
 import static models.store.EventType.LIVE;
 import static models.store.Organisation.LANOS;
 import static models.store.Organisation.VOLVO;
+import static models.store.Sport.TENNIS;
+import static models.store.Sport.VALLEYBALL;
 
 public final class Jobs {
 
-  private static final Predicate<AdaptedEvent> EVENT_FILTER;
   public static final Runnable REMOVE_OLD_HISTORY_JOB;
   public static final RemoveOldEventJob REMOVE_OLD_EVENT_JOB;
   public static final EventJob LANOS_JOB;
@@ -53,6 +54,8 @@ public final class Jobs {
     LIVE_VOLVO_VALLEYBALL_JOB = createLiveVolvoValleyballJob();
   }
 
+  private static final Predicate<AdaptedEvent> EVENT_FILTER;
+
   private Jobs() {
     throw new UnsupportedOperationException();
   }
@@ -70,13 +73,13 @@ public final class Jobs {
   }
 
   private static EventJob createLiveVolvoTennisJob() {
-    return new EventJob(new LiveFetcher(VOLVO_TENNIS_WEB_DRIVER_KEEPER), new LiveVolvoParser(), new LiveVolvoAdapter(new VolvoSideCoder()), EVENT_FILTER,
-      LIVE + "_" + VOLVO + "_TENNIS");
+    return new EventJob(new LiveFetcher(VOLVO_TENNIS_WEB_DRIVER_KEEPER), new LiveVolvoParser(), new LiveVolvoAdapter(new VolvoSideCoder(), TENNIS),
+      EVENT_FILTER, LIVE + "_" + VOLVO + "_TENNIS");
   }
 
   private static EventJob createLiveVolvoValleyballJob() {
-    return new EventJob(new LiveFetcher(VOLVO_VALLEYBALL_WEB_DRIVER_KEEPER), new LiveVolvoParser(), new LiveVolvoAdapter(new VolvoSideCoder()), EVENT_FILTER,
-      LIVE + "_" + VOLVO + "_VALLEYBALL");
+    return new EventJob(new LiveFetcher(VOLVO_VALLEYBALL_WEB_DRIVER_KEEPER), new LiveVolvoParser(), new LiveVolvoAdapter(new VolvoSideCoder(), VALLEYBALL),
+      EVENT_FILTER, LIVE + "_" + VOLVO + "_VALLEYBALL");
   }
 
   private static EventJob createLiveLanosJob() {
