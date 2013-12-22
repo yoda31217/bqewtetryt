@@ -68,12 +68,8 @@ public class LiveLanosAdapter
   }
 
   private double parseKof(String kof) {
-    if (!kof.contains("/")) return parseDouble(kof);
-    else {
-      Iterator<String> kofParts = KOF_FRACTIONAL_SPLITTER.split(kof).iterator();
-      return 1 + (parseDouble(kofParts.next()) / parseDouble(kofParts.next()));
-    }
-
+    Iterator<String> kofParts = KOF_FRACTIONAL_SPLITTER.split(kof).iterator();
+    return 1 + (parseDouble(kofParts.next()) / parseDouble(kofParts.next()));
   }
 
   private Sport adoptSport(String descr) {

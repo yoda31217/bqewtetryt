@@ -41,8 +41,8 @@ public class LiveLanosAdapterTest {
   public static final String DESCRIPTION = "Tennis. This is a description.";
   public static final String SIDE_1 = "SIDE_1";
   public static final String SIDE_2 = "SIDE_2";
-  public static final String KOF_1 = "1.45";
-  public static final String KOF_2 = "2.92";
+  public static final String KOF_1 = "9/20";
+  public static final String KOF_2 = "96/50";
   public static final String SHORT_DATE = "17:30";
   public static final String SIDE_1_CODE = "SIDE_2_CODE";
   public static final String SIDE_2_CODE = "SIDE_1_CODE";
@@ -209,21 +209,5 @@ public class LiveLanosAdapterTest {
     AdaptedEvent adaptedEvent = adapter.adapt(event);
 
     assertThat(adaptedEvent.sport).isEqualTo(UNKNOWN);
-  }
-
-  @Test
-  public void adapt_firstKofInFraction_dividedPlusOne() {
-    ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_1, SIDE_2, SHORT_DATE, "1/2", KOF_2);
-    AdaptedEvent adaptedEvent = adapter.adapt(event);
-
-    assertThat(adaptedEvent.firstKof).isEqualTo(1.5);
-  }
-
-  @Test
-  public void adapt_secondKofInFraction_dividedPlusOne() {
-    ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_1, SIDE_2, SHORT_DATE, KOF_1, "3/2");
-    AdaptedEvent adaptedEvent = adapter.adapt(event);
-
-    assertThat(adaptedEvent.secondKof).isEqualTo(2.5);
   }
 }
