@@ -13,10 +13,10 @@ public class RemoveOldHistoryJob
   implements Runnable {
 
   private static final Logger.ALogger LOG = of(RemoveOldHistoryJob.class);
-  private final int historyCount;
+  private final int newHistoryCount;
 
-  public RemoveOldHistoryJob(int historyCount) {
-    this.historyCount = historyCount;
+  public RemoveOldHistoryJob(int newHistoryCount) {
+    this.newHistoryCount = newHistoryCount;
   }
 
   @Override
@@ -27,11 +27,9 @@ public class RemoveOldHistoryJob
     for (Event event : events()) {
       List<HistoryRecord> history = event.history();
 
-      if (historyCount > history.size()) continue;
+      if (newHistoryCount > history.size()) continue;
 
-      List<HistoryRecord> historyToRemove = history.subList(0, history.size() - historyCount);
-      removedHistoryCount += historyToRemove.size();
-      event.removeHistory(historyToRemove);
+      removedHistoryCount += event.removeOldHistory(newHistoryCount);
     }
 
     LOG.debug("Removed {} History Records", removedHistoryCount);

@@ -17,7 +17,7 @@ import static org.fest.assertions.Assertions.assertThat;
 
 public class RemoveOldHistoryJobTest {
 
-  private RemoveOldHistoryJob job;
+  private RemoveOldHistoryJob jobToRemoveAllExcept2records;
   private Event event;
 
   @Before
@@ -25,7 +25,7 @@ public class RemoveOldHistoryJobTest {
     clearEvents();
     event = createOrGetEvent(REGULAR, TENNIS, new Date(), randomSide(), randomSide(), "code_2");
 
-    job = new RemoveOldHistoryJob(2);
+    jobToRemoveAllExcept2records = new RemoveOldHistoryJob(2);
   }
 
   @Test
@@ -38,7 +38,7 @@ public class RemoveOldHistoryJobTest {
     event.addHistory(secondRecord);
     event.addHistory(thirdRecord);
 
-    job.run();
+    jobToRemoveAllExcept2records.run();
 
     assertThat(event.history()).containsExactly(secondRecord, thirdRecord);
   }
@@ -51,7 +51,7 @@ public class RemoveOldHistoryJobTest {
     event.addHistory(firstRecord);
     event.addHistory(secondRecord);
 
-    job.run();
+    jobToRemoveAllExcept2records.run();
 
     assertThat(event.history()).containsExactly(firstRecord, secondRecord);
   }
@@ -61,7 +61,7 @@ public class RemoveOldHistoryJobTest {
     HistoryRecord record = randomHistoryRecord();
     event.addHistory(record);
 
-    job.run();
+    jobToRemoveAllExcept2records.run();
 
     assertThat(event.history()).containsExactly(record);
   }
@@ -72,7 +72,7 @@ public class RemoveOldHistoryJobTest {
       event.addHistory(randomHistoryRecord());
     }
 
-    job.run();
+    jobToRemoveAllExcept2records.run();
 
     assertThat(event.history()).hasSize(2);
   }
