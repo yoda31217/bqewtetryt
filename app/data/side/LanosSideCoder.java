@@ -22,20 +22,56 @@ public class LanosSideCoder
 
   @Override
   public String buildCode(String side, Sport sport) {
+    side = side.toLowerCase();
+    side = stripAccents(side);
+    side = removeHyphens(side);
+    side = stripSpaces(side);
+    side = side.trim();
+
     switch (sport) {
 
+      case BASKETBALL:
+        side = buildBasketballCode(side);
+        break;
+
       case TENNIS:
-        return buildTennisCode(side);
+      case TABLE_TENNIS:
+        side = buildTennisCode(side);
+        break;
 
       default:
-        return side;
+        break;
     }
+
+    side = stripSpaces(side);
+    side = side.trim();
+
+    return side;
+  }
+
+  private String buildBasketballCode(String side) {
+    side = removeDigit2(side);
+    side = removeJunior(side);
+    return side;
+  }
+
+  private String removeJunior(String side) {
+    return side.replaceAll("\\sjunior", " ");
+  }
+
+  private String removeDigit2(String side) {
+    return side.replaceAll("\\s2", " ");
+  }
+
+  private String stripSpaces(String side) {
+    return side.replaceAll("\\s+", " ");
+  }
+
+  private String removeHyphens(String side) {
+    return side.replace('-', ' ');
   }
 
   private String buildTennisCode(String side) {
-    side = stripAccents(side);
-    side = side.toLowerCase();
-
     if (!side.contains(TWO_PLAYERS_SPLIT_STR)) {
       return getFirstWordFromOnePlayerSide(side).toLowerCase();
     }
@@ -54,7 +90,7 @@ public class LanosSideCoder
 
   private String getFirstGroupFromSideByPattern(String side, Pattern pattern) {
     Matcher matcher = pattern.matcher(side);
-    checkArgument(matcher.matches(), "Failed to build code for side: %s", side);
+    checkArgument(matcher.matches(), "Failed to build code for side: [%s]", side);
 
     return matcher.group(1);
   }
