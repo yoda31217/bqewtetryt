@@ -1,8 +1,8 @@
 package controllers;
 
-import models.store.Event;
-import models.store.HistoryRecord;
-import models.store.Organisation;
+import models.event.Event;
+import models.event.HistoryRecord;
+import models.event.Organisation;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,10 +13,11 @@ import views.html.main;
 
 import java.util.Date;
 
-import static models.store.EventStore.createOrGetEvent;
-import static models.store.EventType.REGULAR;
-import static models.store.Events.clearEvents;
-import static models.store.Sport.TENNIS;
+import static models.event.EventStore.createOrGetEvent;
+import static models.event.EventType.REGULAR;
+import static models.event.Events.clearEvents;
+import static models.event.Sport.TENNIS;
+import static models.util.BObjects.callConstructor;
 import static org.fest.assertions.Assertions.assertThat;
 import static play.test.Helpers.GET;
 import static play.test.Helpers.OK;
@@ -29,7 +30,6 @@ import static play.test.Helpers.route;
 import static play.test.Helpers.start;
 import static play.test.Helpers.status;
 import static play.test.Helpers.stop;
-import static utils.BObjects.callConstructor;
 
 public class ApplicationTest {
 

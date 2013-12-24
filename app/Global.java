@@ -1,8 +1,8 @@
 import akka.actor.Cancellable;
 import akka.actor.Scheduler;
-import jobs.FakeEventJob;
-import jobs.FakeHistoryRecordJob;
-import jobs.RemoveOldEventJob;
+import models.job.FakeEventJob;
+import models.job.FakeHistoryRecordJob;
+import models.job.RemoveOldEventJob;
 import play.Application;
 import play.Configuration;
 import play.GlobalSettings;
@@ -15,20 +15,20 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
-import static jobs.Jobs.LANOS_SPORT_SELECTION_JOB;
-import static jobs.Jobs.LIVE_LANOS_JOB;
-import static jobs.Jobs.LIVE_VOLVO_BASKETBALL_JOB;
-import static jobs.Jobs.LIVE_VOLVO_TABLETENNIS_JOB;
-import static jobs.Jobs.LIVE_VOLVO_TENNIS_JOB;
-import static jobs.Jobs.LIVE_VOLVO_VOLLEYBALL_JOB;
-import static jobs.Jobs.REMOVE_OLD_EVENT_JOB;
-import static jobs.Jobs.REMOVE_OLD_HISTORY_JOB;
-import static models.store.Organisation.LANOS;
-import static models.store.Organisation.VOLVO;
+import static models.event.Organisation.LANOS;
+import static models.event.Organisation.VOLVO;
+import static models.job.Jobs.LANOS_SPORT_SELECTION_JOB;
+import static models.job.Jobs.LIVE_LANOS_JOB;
+import static models.job.Jobs.LIVE_VOLVO_BASKETBALL_JOB;
+import static models.job.Jobs.LIVE_VOLVO_TABLETENNIS_JOB;
+import static models.job.Jobs.LIVE_VOLVO_TENNIS_JOB;
+import static models.job.Jobs.LIVE_VOLVO_VOLLEYBALL_JOB;
+import static models.job.Jobs.REMOVE_OLD_EVENT_JOB;
+import static models.job.Jobs.REMOVE_OLD_HISTORY_JOB;
+import static models.util.BObjects.logAndStopExceptions;
 import static play.Logger.of;
 import static play.Play.isProd;
 import static play.libs.Akka.system;
-import static utils.BObjects.logAndStopExceptions;
 
 public class Global
   extends GlobalSettings {

@@ -1,6 +1,6 @@
 package controllers;
 
-import models.store.Event;
+import models.event.Event;
 import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -8,7 +8,7 @@ import views.html.main;
 
 import java.util.List;
 
-import static models.store.EventStore.events;
+import static models.event.EventStore.events;
 import static play.Logger.of;
 import static play.libs.Json.toJson;
 
