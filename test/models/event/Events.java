@@ -19,4 +19,8 @@ public final class Events {
   public static void clearEvents() {
     EVENTS.clear();
   }
+
+  public static Event createEvent(EventType type, Sport sport, Date date, String side1, String side2, String code) {
+    return new Event(type, sport, date, side1, side2, code);
+  }
 }

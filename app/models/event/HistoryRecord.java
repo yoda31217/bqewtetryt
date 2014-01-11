@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 import java.util.Date;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public final class HistoryRecord {
 
@@ -13,6 +15,8 @@ public final class HistoryRecord {
   final double secondKof;
 
   public HistoryRecord(Date date, Organisation organisation, double firstKof, double secondKof) {
+    checkArgument(firstKof <= secondKof, "First kof cannot be greater than second: %s, %s", firstKof, secondKof);
+
     this.date = date;
     this.organisation = organisation;
     this.firstKof = firstKof;

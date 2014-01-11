@@ -86,4 +86,8 @@ public class Event {
   public EventType type() {
     return type;
   }
+
+  public Sport sport() {
+    return sport;
+  }
 }
