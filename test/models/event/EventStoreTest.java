@@ -100,14 +100,21 @@ public class EventStoreTest {
     assertThat(event.secondSide()).isEqualTo(secondSide);
     assertThat(event.code()).isEqualTo("code_1");
     assertThat(event.history()).isEmpty();
+    assertThat(event.isRemoved()).isFalse();
   }
 
   @Test
-  public void checkClear() {
+  public void removeEventsOlderThan_registerOldEvent_removed() {
     createOrGetEvent(REGULAR, TENNIS, new Date(new Date().getTime() - 200L), randomSide(), randomSide(), "code_1");
     removeEventsOlderThan(100L);
-
     assertThat(events()).isEmpty();
+  }
+
+  @Test
+  public void removeEventsOlderThan_registerOldEvent_markedRemoved() {
+    Event event = createOrGetEvent(REGULAR, TENNIS, new Date(new Date().getTime() - 200L), randomSide(), randomSide(), "code_1");
+    removeEventsOlderThan(100L);
+    assertThat(event.isRemoved()).isTrue();
   }
 
   @Test(expected = UnsupportedOperationException.class)

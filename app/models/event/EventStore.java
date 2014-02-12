@@ -53,7 +53,9 @@ public class EventStore {
       Event event = iterator.next();
 
       if (now - event.date().getTime() > ageInMillis) {
+
         LOG.debug("Removing old Event with Code: {}", event.code());
+        event.markRemoved();
         iterator.remove();
       }
     }

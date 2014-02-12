@@ -19,6 +19,7 @@ public class Event {
   final CopyOnWriteArrayList<HistoryRecord> history = new CopyOnWriteArrayList<HistoryRecord>();
   final EventType type;
   final Sport sport;
+  private boolean removed;
 
   Event(EventType type, Sport sport, Date date, String firstSide, String secondSide, String code) {
     this.type = type;
@@ -27,6 +28,7 @@ public class Event {
     this.firstSide = firstSide;
     this.secondSide = secondSide;
     this.code = code;
+    removed = false;
   }
 
   @Override
@@ -89,5 +91,13 @@ public class Event {
 
   public Sport sport() {
     return sport;
+  }
+
+  public boolean isRemoved() {
+    return removed;
+  }
+
+  void markRemoved() {
+    removed = true;
   }
 }
