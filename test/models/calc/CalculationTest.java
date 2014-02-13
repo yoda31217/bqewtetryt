@@ -121,6 +121,30 @@ public class CalculationTest {
   }
 
   @Test
+  public void forkDate1_forkEvent_date1lanos() {
+    Date lanosRecordDate = createDate1minOld();
+    event.addHistory(new HistoryRecord(lanosRecordDate, LANOS, 1.5, 2.9));
+    event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
+
+    Calculation calculation = new Calculation(event);
+
+    assertThat(calculation.forkDate1()).isEqualTo(lanosRecordDate);
+  }
+
+  @Test
+  public void forkDate2_forkEvent_date2volvo() {
+    Date volvoRecordDate = createDate1minOld();
+    event.addHistory(new HistoryRecord(new Date(), LANOS, 1.5, 2.9));
+    event.addHistory(new HistoryRecord(volvoRecordDate, VOLVO, 1.4, 3.2));
+
+    Calculation calculation = new Calculation(event);
+
+    assertThat(calculation.forkDate2()).isEqualTo(volvoRecordDate);
+  }
+
+  private Date createDate1minOld() {return new Date(new Date().getTime() - 60 * 1000);}
+
+  @Test
   public void isFork_forkThenNotForkEvent_isForkFalse() {
     event.addHistory(new HistoryRecord(new Date(), LANOS, 1.5, 2.8));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));

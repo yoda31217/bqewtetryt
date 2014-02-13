@@ -15,6 +15,7 @@ import java.util.Set;
 import static com.google.common.base.Strings.padEnd;
 import static java.util.Collections.sort;
 import static models.calc.Calcularium.calcularium;
+import static models.util.Dates.secsFromNow;
 import static play.Logger.of;
 
 public class Application
@@ -89,14 +90,18 @@ public class Application
   }
 
   private static void appendForkKofs(StringBuilder response, Calculation calculation) {
-    response.append(NUMBER_FORMAT.format(calculation.forkKof1()));
-    response.append("(");
+    response.append(padEnd(NUMBER_FORMAT.format(calculation.forkKof1()), 6, ' '));
+    response.append(",");
     response.append(calculation.forkOrganisation1().label);
-    response.append("):");
-    response.append(NUMBER_FORMAT.format(calculation.forkKof2()));
-    response.append("(");
+    response.append(",");
+    response.append(padEnd(secsFromNow(calculation.forkDate1()) + "", 3, ' '));
+    response.append("/");
+    response.append(padEnd(NUMBER_FORMAT.format(calculation.forkKof2()), 6, ' '));
+    response.append(",");
     response.append(calculation.forkOrganisation2().label);
-    response.append(")  ");
+    response.append(",");
+    response.append(padEnd(secsFromNow(calculation.forkDate2()) + "", 3, ' '));
+    response.append("  ");
   }
 
   private static StringBuilder appendSides(StringBuilder response, Calculation calculation) {

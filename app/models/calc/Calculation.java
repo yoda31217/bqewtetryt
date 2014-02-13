@@ -17,12 +17,13 @@ public class
   Calculation {
 
   private final Event event;
-
   private boolean isFork;
   private Organisation forkOrganisation1;
   private Organisation forkOrganisation2;
   private double forkKof1;
   private double forkKof2;
+  private Date forkDate1;
+  private Date forkDate2;
   private double highProfitMoney1;
   private double highProfitMoney2;
   private double lowProfitMoney1;
@@ -38,6 +39,8 @@ public class
     forkOrganisation2 = UNKNOWN;
     forkKof1 = 0.0;
     forkKof2 = 0.0;
+    forkDate1 = new Date();
+    forkDate2 = new Date();
     highProfitMoney1 = 0.0;
     highProfitMoney2 = 0.0;
     lowProfitMoney1 = 0.0;
@@ -98,11 +101,13 @@ public class
       if ((null == forkOrganisation1) || (organisationLastRecord.firstKof() > forkKof1)) {
         forkKof1 = organisationLastRecord.firstKof();
         forkOrganisation1 = organisationLastRecord.organisation();
+        forkDate1 = organisationLastRecord.date();
       }
 
       if ((null == forkOrganisation2) || (organisationLastRecord.secondKof() > forkKof2)) {
         forkKof2 = organisationLastRecord.secondKof();
         forkOrganisation2 = organisationLastRecord.organisation();
+        forkDate2 = organisationLastRecord.date();
       }
     }
   }
@@ -136,4 +141,12 @@ public class
   public double highProfit() { return highProfit; }
 
   public double lowProfit() { return lowProfit; }
+
+  public Date forkDate1() {
+    return forkDate1;
+  }
+
+  public Date forkDate2() {
+    return forkDate2;
+  }
 }
