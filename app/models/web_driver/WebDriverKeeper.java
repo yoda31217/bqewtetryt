@@ -21,6 +21,7 @@ public class WebDriverKeeper {
 
     driver = new ChromeDriver();
     driver.get(url);
+    driver.manage().window().maximize();
   }
 
   public ChromeDriver acquire() {

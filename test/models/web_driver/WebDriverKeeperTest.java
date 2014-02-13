@@ -13,6 +13,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.Fail.fail;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
@@ -29,10 +31,16 @@ public class WebDriverKeeperTest {
     throws Exception {
     whenNew(ChromeDriver.class).withNoArguments().thenReturn(webDriverMock);
 
+    WebDriver.Options optionsMock = mock(WebDriver.Options.class);
+    doReturn(optionsMock).when(webDriverMock).manage();
+    WebDriver.Window windowMock = mock(WebDriver.Window.class);
+    doReturn(windowMock).when(optionsMock).window();
+
     String url = "http://www." + "m" + "a" + "r" + "a" + "t" + "h" + "o" + "n" + "b" + "e" + "t" + ".com/en/live.htm";
     keeper = new WebDriverKeeper(10, url);
 
     verify(webDriverMock).get(url);
+    verify(windowMock).maximize();
   }
 
   @After
