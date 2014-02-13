@@ -2,7 +2,6 @@ package models.event;
 
 import play.Logger;
 
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -10,7 +9,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static java.util.Collections.sort;
 import static models.calc.Calcularium.calcularium;
 import static play.Logger.of;
 
@@ -18,21 +16,13 @@ public class EventStore {
 
   static final ConcurrentMap<Event, Event> EVENTS = new ConcurrentHashMap<Event, Event>();
   private static final Logger.ALogger LOG = of(EventStore.class);
-  private static final Comparator<Event> EVENT_COMPARATOR = new Comparator<Event>() {
-    @Override
-    public int compare(Event event1, Event event2) {
-      return event1.code.compareTo(event2.code);
-    }
-  };
 
   private EventStore() {
     throw new UnsupportedOperationException();
   }
 
   public static List<Event> events() {
-    List<Event> events = newArrayList(EVENTS.keySet());
-    sort(events, EVENT_COMPARATOR);
-    return events;
+    return newArrayList(EVENTS.keySet());
   }
 
   public static Event createOrGetEvent(EventType type, Sport sport, Date date, String firstSide, String secondSide, String code) {

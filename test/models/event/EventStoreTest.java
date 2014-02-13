@@ -40,10 +40,10 @@ public class EventStoreTest {
     assertThat(events()).containsOnly(firstEvent);
     Event secondEvent = createOrGetEvent(REGULAR, TENNIS, new Date(), randomSide(), randomSide(), "code_1");
     assertThat(secondEvent).isNotNull();
-    assertThat(events()).containsExactly(secondEvent, firstEvent);
+    assertThat(events()).contains(secondEvent, firstEvent);
     Event thirdEvent = createOrGetEvent(REGULAR, TENNIS, new Date(), randomSide(), randomSide(), "code_3");
     assertThat(thirdEvent).isNotNull();
-    assertThat(events()).containsExactly(secondEvent, firstEvent, thirdEvent);
+    assertThat(events()).contains(secondEvent, firstEvent, thirdEvent);
   }
 
   @Test
