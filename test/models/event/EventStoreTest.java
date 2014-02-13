@@ -1,21 +1,25 @@
 package models.event;
 
+import models.calc.Calcularium;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
 
+import static models.calc.CalculariumTests.mockCalcularium;
 import static models.event.EventStore.EVENTS;
 import static models.event.EventStore.createOrGetEvent;
 import static models.event.EventStore.events;
 import static models.event.EventStore.removeEventsOlderThan;
+import static models.event.EventTests.randomSide;
 import static models.event.EventType.LIVE;
 import static models.event.EventType.REGULAR;
-import static models.event.Events.randomSide;
 import static models.event.Sport.BASKETBALL;
 import static models.event.Sport.TENNIS;
 import static models.util.BObjects.callConstructor;
 import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Matchers.notNull;
+import static org.mockito.Mockito.verify;
 
 public class EventStoreTest {
 
@@ -122,4 +126,12 @@ public class EventStoreTest {
     throws Exception {
     callConstructor(EventStore.class);
   }
+
+  @Test
+  public void createOrGetEvent_newEvent_registerInCalcularium() {
+    Calcularium calculariumMock = mockCalcularium();
+    createOrGetEvent(REGULAR, TENNIS, new Date(), randomSide(), randomSide(), "code_1");
+    verify(calculariumMock).registerEvent(notNull(Event.class));
+  }
+
 }

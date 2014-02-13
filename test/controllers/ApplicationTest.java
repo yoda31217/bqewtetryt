@@ -14,8 +14,8 @@ import views.html.main;
 import java.util.Date;
 
 import static models.event.EventStore.createOrGetEvent;
+import static models.event.EventTests.clearEvents;
 import static models.event.EventType.REGULAR;
-import static models.event.Events.clearEvents;
 import static models.event.Sport.TENNIS;
 import static models.util.BObjects.callConstructor;
 import static org.fest.assertions.Assertions.assertThat;

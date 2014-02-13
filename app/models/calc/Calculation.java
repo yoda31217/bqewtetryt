@@ -10,7 +10,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Calculation {
+public class
+
+  Calculation {
 
   private final Event event;
 
@@ -26,9 +28,14 @@ public class Calculation {
   private double highProfit;
   private double lowProfit;
 
-  public Calculation(Event event) {
+  Calculation(Event event) {
     this.event = event;
-    update();
+
+    Map<Organisation, HistoryRecord> organisation2lastRecord = calculateOrganisation2lastRecord();
+    calculateForkKofsAndOrganisations(organisation2lastRecord);
+    calculateIsFork();
+    calculateProfitMoneys();
+    calculateProfits();
   }
 
   public Sport sport() {
@@ -53,20 +60,6 @@ public class Calculation {
 
   public String side1() {
     return event.firstSide();
-  }
-
-  public void update() {
-    isFork = false;
-    forkOrganisation1 = null;
-    forkOrganisation2 = null;
-    forkKof1 = 0.0;
-    forkKof2 = 0.0;
-
-    Map<Organisation, HistoryRecord> organisation2lastRecord = calculateOrganisation2lastRecord();
-    calculateForkKofsAndOrganisations(organisation2lastRecord);
-    calculateIsFork();
-    calculateProfitMoneys();
-    calculateProfits();
   }
 
   private void calculateProfits() {

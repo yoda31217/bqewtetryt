@@ -8,10 +8,10 @@ import org.junit.Test;
 import java.util.Date;
 
 import static models.event.EventStore.createOrGetEvent;
+import static models.event.EventTests.clearEvents;
+import static models.event.EventTests.randomHistoryRecord;
+import static models.event.EventTests.randomSide;
 import static models.event.EventType.REGULAR;
-import static models.event.Events.clearEvents;
-import static models.event.Events.randomHistoryRecord;
-import static models.event.Events.randomSide;
 import static models.event.Sport.TENNIS;
 import static org.fest.assertions.Assertions.assertThat;
 

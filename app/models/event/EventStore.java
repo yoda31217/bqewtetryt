@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import static com.google.common.base.Objects.firstNonNull;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Collections.sort;
+import static models.calc.Calcularium.calcularium;
 import static play.Logger.of;
 
 public class EventStore {
@@ -37,13 +37,14 @@ public class EventStore {
 
   public static Event createOrGetEvent(EventType type, Sport sport, Date date, String firstSide, String secondSide, String code) {
     Event newEvent = new Event(type, sport, date, firstSide, secondSide, code);
-    Event event = EVENTS.putIfAbsent(newEvent, newEvent);
+    Event oldEvent = EVENTS.putIfAbsent(newEvent, newEvent);
 
-    if (null == event) {
-      LOG.debug("Adding new Event with Code: {}", newEvent.code());
-      return firstNonNull(event, newEvent);
+    if (null != oldEvent) return oldEvent;
 
-    } else return event;
+    LOG.debug("Adding new Event with Code: {}", newEvent.code());
+    calcularium().registerEvent(newEvent);
+    return newEvent;
+
   }
 
   public static void removeEventsOlderThan(long ageInMillis) {
