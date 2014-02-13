@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static models.event.Organisation.UNKNOWN;
+
 public class
 
   Calculation {
@@ -17,8 +19,8 @@ public class
   private final Event event;
 
   private boolean isFork;
-  private Organisation forkOrganisation2;
   private Organisation forkOrganisation1;
+  private Organisation forkOrganisation2;
   private double forkKof1;
   private double forkKof2;
   private double highProfitMoney1;
@@ -30,6 +32,20 @@ public class
 
   Calculation(Event event) {
     this.event = event;
+
+    isFork = false;
+    forkOrganisation1 = UNKNOWN;
+    forkOrganisation2 = UNKNOWN;
+    forkKof1 = 0.0;
+    forkKof2 = 0.0;
+    highProfitMoney1 = 0.0;
+    highProfitMoney2 = 0.0;
+    lowProfitMoney1 = 0.0;
+    lowProfitMoney2 = 0.0;
+    highProfit = 0.0;
+    lowProfit = 0.0;
+
+    if (event.history().isEmpty()) return;
 
     Map<Organisation, HistoryRecord> organisation2lastRecord = calculateOrganisation2lastRecord();
     calculateForkKofsAndOrganisations(organisation2lastRecord);

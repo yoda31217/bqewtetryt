@@ -10,6 +10,7 @@ import java.util.Date;
 import static models.event.EventTests.createEvent;
 import static models.event.EventType.LIVE;
 import static models.event.Organisation.LANOS;
+import static models.event.Organisation.UNKNOWN;
 import static models.event.Organisation.VOLVO;
 import static models.event.Sport.BASKETBALL;
 import static org.fest.assertions.Assertions.assertThat;
@@ -188,5 +189,27 @@ public class CalculationTest {
     Calculation calculation = new Calculation(event);
 
     assertThat(calculation.lowProfit()).isEqualTo(2.2 / 3.2 * 1.5 - 1.0);
+  }
+
+  @Test
+  public void forkOrganisation_eventWithoutHistory_returnUnknown() {
+    Calculation calculation = new Calculation(event);
+
+    assertThat(calculation.forkOrganisation1()).describedAs("forkOrganisation1").isSameAs(UNKNOWN);
+    assertThat(calculation.forkOrganisation2()).describedAs("forkOrganisation2").isSameAs(UNKNOWN);
+  }
+
+  @Test
+  public void anyValueMethod_eventWithoutHistory_returnZero() {
+    Calculation calculation = new Calculation(event);
+
+    assertThat(calculation.forkKof1()).describedAs("forkKof1").isEqualTo(0.0);
+    assertThat(calculation.forkKof2()).describedAs("forkKof2").isEqualTo(0.0);
+    assertThat(calculation.highProfitMoney1()).describedAs("highProfitMoney1").isEqualTo(0.0);
+    assertThat(calculation.highProfitMoney2()).describedAs("highProfitMoney2").isEqualTo(0.0);
+    assertThat(calculation.lowProfitMoney1()).describedAs("lowProfitMoney1").isEqualTo(0.0);
+    assertThat(calculation.lowProfitMoney2()).describedAs("lowProfitMoney2").isEqualTo(0.0);
+    assertThat(calculation.highProfit()).describedAs("highProfit").isEqualTo(0.0);
+    assertThat(calculation.lowProfit()).describedAs("lowProfit").isEqualTo(0.0);
   }
 }
