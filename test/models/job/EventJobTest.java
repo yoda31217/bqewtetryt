@@ -30,6 +30,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.refEq;
 import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
@@ -95,6 +96,21 @@ public class EventJobTest {
 
     verifyStatic(never());
     createOrGetEvent(any(EventType.class), any(Sport.class), any(Date.class), any(String.class), any(String.class), any(String.class));
+  }
+
+  @Test
+  public void run_adapterThrowEx_catchAndAdaptNext() {
+    mockStatic(EventStore.class);
+
+    when(fetcher.fetch()).thenReturn(fetchResult);
+    when(parser.parse(same(fetchResult))).thenReturn(newArrayList(parsedEvent, parsedEvent));
+    when(adapter.adapt(parsedEvent)).thenThrow(new RuntimeException()).thenReturn(adaptedEvent);
+    when(eventFilter.apply(same(adaptedEvent))).thenReturn(false);
+
+    EventJob job = new EventJob(fetcher, parser, adapter, eventFilter, "JOB_NAME");
+    job.run();
+
+    verify(adapter, times(2)).adapt(same(parsedEvent));
   }
 
   @Test

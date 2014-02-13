@@ -17,4 +17,16 @@ public class ParsedEvent {
     this.firstKof = firstKof;
     this.secondKof = secondKof;
   }
+
+  @Override
+  public String toString() {
+    return "ParsedEvent{" +
+      "sportDescr='" + sportDescr + '\'' +
+      ", firstSide='" + firstSide + '\'' +
+      ", secondSide='" + secondSide + '\'' +
+      ", date='" + date + '\'' +
+      ", firstKof='" + firstKof + '\'' +
+      ", secondKof='" + secondKof + '\'' +
+      '}';
+  }
 }

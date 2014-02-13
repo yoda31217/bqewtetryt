@@ -41,13 +41,20 @@ public class EventJob
 
     List<ParsedEvent> parsedEvents = parser.parse(fetchResult);
     for (ParsedEvent parsedEvent : parsedEvents) {
-      AdaptedEvent adaptedEvent = adapter.adapt(parsedEvent);
 
-      if (!filter.apply(adaptedEvent)) continue;
+      try {
+        AdaptedEvent adaptedEvent = adapter.adapt(parsedEvent);
 
-      Event event = createOrGetEvent(adaptedEvent.type, adaptedEvent.sport, adaptedEvent.eventDate, adaptedEvent.firstSide, adaptedEvent.secondSide,
-        adaptedEvent.code);
-      event.addHistory(new HistoryRecord(adaptedEvent.adoptedDate, adaptedEvent.organisation, adaptedEvent.firstKof, adaptedEvent.secondKof));
+        if (!filter.apply(adaptedEvent)) continue;
+
+        Event event = createOrGetEvent(adaptedEvent.type, adaptedEvent.sport, adaptedEvent.eventDate, adaptedEvent.firstSide, adaptedEvent.secondSide,
+          adaptedEvent.code);
+        event.addHistory(new HistoryRecord(adaptedEvent.adoptedDate, adaptedEvent.organisation, adaptedEvent.firstKof, adaptedEvent.secondKof));
+
+      } catch (Exception e) {
+        LOG.error("Failed to run job: {}. Failed to adapt event: {}", name, parsedEvent.toString());
+        LOG.error("Cause:", e);
+      }
     }
   }
 }
