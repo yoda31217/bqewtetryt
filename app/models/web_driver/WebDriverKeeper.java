@@ -1,5 +1,6 @@
 package models.web_driver;
 
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.concurrent.Semaphore;
@@ -21,7 +22,7 @@ public class WebDriverKeeper {
 
     driver = new ChromeDriver();
     driver.get(url);
-    driver.manage().window().maximize();
+    driver.manage().window().setSize(new Dimension(1800, 1000));
   }
 
   public ChromeDriver acquire() {

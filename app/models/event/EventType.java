@@ -1,6 +1,12 @@
 package models.event;
 
 public enum EventType {
-  REGULAR,
-  LIVE;
+  REGULAR("R"),
+  LIVE("L");
+
+  public final String label;
+
+  EventType(String label) {
+    this.label = label;
+  }
 }

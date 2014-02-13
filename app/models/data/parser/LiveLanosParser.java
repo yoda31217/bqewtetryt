@@ -40,7 +40,9 @@ public class LiveLanosParser
     Element rootEl = doc.getElementById("container_EVENTS");
     for (Element eventBlockSportDescrEl : rootEl.getAllElementsByClass("opened-live-event")) {
 
-      final String sportDescr = decodeCollapseWhiteSpace(eventBlockSportDescrEl.getContent()).trim();
+      String sportDescr = decodeCollapseWhiteSpace(eventBlockSportDescrEl.getContent());
+      sportDescr = sportDescr.replaceAll("\\<.*?\\>", "").trim();
+
       Element eventBlockEl = eventBlockSportDescrEl.getParentElement();
       List<Element> eventEls = eventBlockEl.getAllElementsByClass("event-header");
 
@@ -66,10 +68,6 @@ public class LiveLanosParser
   private ParsedEvent transformToEvent(String sportDescr, List<Element> eventElChildren) {
     Element nameEl = eventElChildren.get(0);
 
-    String date = decodeCollapseWhiteSpace(nameEl.getFirstElementByClass("date").getContent());
-    int injectedTagIntoDateIdx = date.indexOf('<');
-    if (-1 < injectedTagIntoDateIdx) date = date.substring(0, injectedTagIntoDateIdx).trim();
-
     List<Element> sideNameEls = nameEl.getAllElementsByClass("live-today-member-name");
 
     String firstSide = decodeCollapseWhiteSpace(sideNameEls.get(0).getContent());
@@ -81,6 +79,6 @@ public class LiveLanosParser
     String secondKof = decodeCollapseWhiteSpace(eventElChildren.get(2).getChildElements().get(0).getContent());
     if (isNullOrEmpty(secondKof)) return null;
 
-    return new ParsedEvent(sportDescr, firstSide, secondSide, date, firstKof, secondKof);
+    return new ParsedEvent(sportDescr, firstSide, secondSide, null, firstKof, secondKof);
   }
 }

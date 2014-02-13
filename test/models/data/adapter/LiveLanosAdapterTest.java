@@ -13,13 +13,10 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.util.Calendar;
 import java.util.Date;
 
-import static java.util.Calendar.DAY_OF_MONTH;
 import static java.util.Calendar.HOUR_OF_DAY;
 import static java.util.Calendar.MILLISECOND;
 import static java.util.Calendar.MINUTE;
-import static java.util.Calendar.MONTH;
 import static java.util.Calendar.SECOND;
-import static java.util.Calendar.SEPTEMBER;
 import static java.util.TimeZone.getTimeZone;
 import static models.event.EventType.LIVE;
 import static models.event.Organisation.LANOS;
@@ -28,6 +25,7 @@ import static models.event.Sport.TABLE_TENNIS;
 import static models.event.Sport.TENNIS;
 import static models.event.Sport.UNKNOWN;
 import static models.event.Sport.VOLLEYBALL;
+import static models.util.Conditions.oneSecOld;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.same;
@@ -58,17 +56,11 @@ public class LiveLanosAdapterTest {
   }
 
   @Test
-  public void sidesAndKofsAndCodeAndShortEventDate() {
+  public void sidesAndKofsAndCodeAndDate() {
     ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_1, SIDE_2, SHORT_DATE, KOF_1, KOF_2);
     AdaptedEvent adaptedEvent = adapter.adapt(event);
 
-    Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
-    calendar.set(HOUR_OF_DAY, 17);
-    calendar.set(MINUTE, 30);
-    calendar.set(SECOND, 0);
-    calendar.set(MILLISECOND, 0);
-
-    assertThat(adaptedEvent.eventDate).isEqualTo(calendar.getTime());
+    assertThat(adaptedEvent.eventDate).is(oneSecOld());
     assertThat(adaptedEvent.firstSide).isEqualTo(SIDE_1);
     assertThat(adaptedEvent.secondSide).isEqualTo(SIDE_2);
     assertThat(adaptedEvent.firstKof).isEqualTo(1.45);
@@ -77,39 +69,7 @@ public class LiveLanosAdapterTest {
   }
 
   @Test
-  public void longEventDate() {
-    ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_1, SIDE_2, "11 Sep 17:30", KOF_1, KOF_2);
-    AdaptedEvent adaptedEvent = adapter.adapt(event);
-
-    Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
-    calendar.set(MONTH, SEPTEMBER);
-    calendar.set(DAY_OF_MONTH, 11);
-    calendar.set(HOUR_OF_DAY, 17);
-    calendar.set(MINUTE, 30);
-    calendar.set(SECOND, 0);
-    calendar.set(MILLISECOND, 0);
-
-    assertThat(adaptedEvent.eventDate).isEqualTo(calendar.getTime());
-  }
-
-  @Test
-  public void eventDate24hours() {
-    ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_1, SIDE_2, "11 Sep 12:30", KOF_1, KOF_2);
-    AdaptedEvent adaptedEvent = adapter.adapt(event);
-
-    Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
-    calendar.set(MONTH, SEPTEMBER);
-    calendar.set(DAY_OF_MONTH, 11);
-    calendar.set(HOUR_OF_DAY, 12);
-    calendar.set(MINUTE, 30);
-    calendar.set(SECOND, 0);
-    calendar.set(MILLISECOND, 0);
-
-    assertThat(adaptedEvent.eventDate).isEqualTo(calendar.getTime());
-  }
-
-  @Test
-  public void sidesAndKofsAndCodeAndDateWithChangedOrder() {
+  public void sidesAndKofsAndCodeWithChangedOrder() {
     ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_2, SIDE_1, SHORT_DATE, KOF_2, KOF_1);
     AdaptedEvent adaptedEvent = adapter.adapt(event);
 
@@ -119,7 +79,6 @@ public class LiveLanosAdapterTest {
     calendar.set(SECOND, 0);
     calendar.set(MILLISECOND, 0);
 
-    assertThat(adaptedEvent.eventDate).isEqualTo(calendar.getTime());
     assertThat(adaptedEvent.firstSide).isEqualTo(SIDE_1);
     assertThat(adaptedEvent.secondSide).isEqualTo(SIDE_2);
     assertThat(adaptedEvent.firstKof).isEqualTo(1.45);

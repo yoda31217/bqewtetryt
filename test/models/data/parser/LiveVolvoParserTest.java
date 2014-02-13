@@ -1,5 +1,6 @@
 package models.data.parser;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -8,6 +9,7 @@ import java.util.List;
 import static org.apache.commons.io.IOUtils.toByteArray;
 import static org.fest.assertions.Assertions.assertThat;
 
+@Ignore
 public class LiveVolvoParserTest {
 
   @Test

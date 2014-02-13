@@ -4,7 +4,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.mockito.Mock;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -40,7 +42,7 @@ public class WebDriverKeeperTest {
     keeper = new WebDriverKeeper(10, url);
 
     verify(webDriverMock).get(url);
-    verify(windowMock).maximize();
+    verify(windowMock).setSize(Matchers.refEq(new Dimension(1800, 1000)));
   }
 
   @After

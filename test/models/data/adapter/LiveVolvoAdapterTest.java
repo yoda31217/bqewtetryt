@@ -63,7 +63,7 @@ public class LiveVolvoAdapterTest {
   @Test
   public void adapt_checkSport()
     throws Exception {
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent(null, SIDE_1, SIDE_2, null, KOF_1_STR, KOF_2_STR));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_1, SIDE_2, null, KOF_1_STR, KOF_2_STR));
     assertThat(adaptedEvent.sport).isEqualTo(TENNIS);
   }
 

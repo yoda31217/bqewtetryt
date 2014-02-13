@@ -82,11 +82,11 @@ public final class Jobs {
   }
 
   private static WebDriverKeeper createVolvoTennisWebDriverKeeper() {
-    return new WebDriverKeeper(5000L, getVolvoSite() + "/Lite/#!clt=9994;op=14;cid=13;cpid=13-0-0-0-0-0-0-4-0-0-0-0-0-0-1-0-0-0-0");
+    return new WebDriverKeeper(5000L, getVolvoSite() + "/Lite/#!in-play/overview/");
   }
 
   private static WebDriverKeeper createVolvoVolleyballWebDriverKeeper() {
-    return new WebDriverKeeper(5000L, getVolvoSite() + "/Lite/#!clt=9994;op=14;cid=91;cpid=91-0-0-0-0-0-0-4-0-0-0-0-0-0-1-0-0-0-0");
+    return new WebDriverKeeper(5000L, getVolvoSite() + "/Lite/#!in-play/overview/");
   }
 
   private static EventJob createLiveVolvoTennisJob() {
@@ -120,7 +120,7 @@ public final class Jobs {
   }
 
   private static WebDriverKeeper createVolvoTableTennisWebDriverKeeper() {
-    return new WebDriverKeeper(5000L, getVolvoSite() + "/Lite/#!clt=9994;op=14;cid=92;cpid=92-0-0-0-0-0-0-4-0-0-0-0-0-0-1-0-0-0-0");
+    return new WebDriverKeeper(5000L, getVolvoSite() + "/Lite/#!in-play/overview/");
   }
 
   private static EventJob createLiveVolvoBasketballJob() {
@@ -129,7 +129,7 @@ public final class Jobs {
   }
 
   private static WebDriverKeeper createVolvoBasketballWebDriverKeeper() {
-    return new WebDriverKeeper(5000L, getVolvoSite() + "/Lite/#!clt=9994;op=14;cid=18;cpid=18-0-0-0-0-0-0-4-0-0-0-0-0-0-1-0-0-0-0");
+    return new WebDriverKeeper(5000L, getVolvoSite() + "/Lite/#!in-play/overview/");
   }
 
   private static String getVolvoSite() {return "http://www." + "b" + "e" + "t" + "3" + "6" + "5" + ".com";}
