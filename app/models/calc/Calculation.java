@@ -149,4 +149,21 @@ public class
   public Date forkDate2() {
     return forkDate2;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Calculation that = (Calculation) o;
+
+    if (!event.equals(that.event)) return false;
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    return event.hashCode();
+  }
 }

@@ -35,7 +35,7 @@ public class EventJob
 
   @Override
   public void run() {
-    LOG.debug("Running Job: {}", name);
+    //    LOG.debug("Running Job: {}", name);
 
     byte[] fetchResult = fetcher.fetch();
 

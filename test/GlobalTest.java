@@ -31,9 +31,10 @@ import static models.event.Organisation.VOLVO;
 import static models.job.Jobs.LANOS_SPORT_SELECTION_JOB;
 import static models.job.Jobs.LIVE_LANOS_JOB;
 import static models.job.Jobs.LIVE_VOLVO_BASKETBALL_JOB;
-import static models.job.Jobs.LIVE_VOLVO_TABLETENNIS_JOB;
+import static models.job.Jobs.LIVE_VOLVO_TABLE_TENNIS_JOB;
 import static models.job.Jobs.LIVE_VOLVO_TENNIS_JOB;
 import static models.job.Jobs.LIVE_VOLVO_VOLLEYBALL_JOB;
+import static models.job.Jobs.NOTIFICATION_JOB;
 import static models.job.Jobs.REMOVE_OLD_EVENT_JOB;
 import static models.job.Jobs.REMOVE_OLD_HISTORY_JOB;
 import static models.test.BMatchers.reflectionEq;
@@ -113,8 +114,8 @@ public class GlobalTest {
     start(fakeApplication);
 
     FiniteDuration offset = Duration.create(0, "ms");
-    FiniteDuration delay = Duration.create(30, "sec");
-    long oldEventAge = Duration.create(5, "min").toMillis();
+    FiniteDuration delay = Duration.create(10, "sec");
+    long maxSilenceDelayInMillis = Duration.create(20, "sec").toMillis();
 
     verifyStatic();
     isProd();
@@ -124,7 +125,7 @@ public class GlobalTest {
     logAndStopExceptions(argsCaptor.capture());
     List args = argsCaptor.getAllValues();
 
-    assertThat(args.get(0)).satisfies(reflectionEq(new RemoveOldEventJob(oldEventAge)));
+    assertThat(args.get(0)).satisfies(reflectionEq(new RemoveOldEventJob(maxSilenceDelayInMillis)));
     assertThat(args.get(1)).satisfies(reflectionEq(new FakeEventJob()));
     assertThat(args.get(2)).satisfies(reflectionEq(new FakeHistoryRecordJob(VOLVO)));
     assertThat(args.get(3)).satisfies(reflectionEq(new FakeHistoryRecordJob(LANOS)));
@@ -145,11 +146,11 @@ public class GlobalTest {
     start(fakeApplication);
 
     ArgumentCaptor<Runnable> jobArgsCaptor = forClass(Runnable.class);
-    verifyStatic(times(8));
+    verifyStatic(times(9));
     logAndStopExceptions(jobArgsCaptor.capture());
     List jobs = jobArgsCaptor.getAllValues();
 
-    assertThat(jobs).hasSize(8);
+    assertThat(jobs).hasSize(9);
     assertThat(jobs.get(0)).isSameAs(REMOVE_OLD_EVENT_JOB);
     assertThat(jobs.get(1)).isSameAs(REMOVE_OLD_HISTORY_JOB);
     //    assertThat(jobs.get(2)).isSameAs(LANOS_JOB);
@@ -159,21 +160,22 @@ public class GlobalTest {
     assertThat(jobs.get(4)).isSameAs(LIVE_VOLVO_TENNIS_JOB);
     assertThat(jobs.get(5)).isSameAs(LIVE_VOLVO_VOLLEYBALL_JOB);
     assertThat(jobs.get(6)).isSameAs(LIVE_VOLVO_BASKETBALL_JOB);
-    assertThat(jobs.get(7)).isSameAs(LIVE_VOLVO_TABLETENNIS_JOB);
+    assertThat(jobs.get(7)).isSameAs(LIVE_VOLVO_TABLE_TENNIS_JOB);
+    assertThat(jobs.get(8)).isSameAs(NOTIFICATION_JOB);
 
     ArgumentCaptor<FiniteDuration> durationArgsCaptor = forClass(FiniteDuration.class);
     ArgumentCaptor<ExecutionContext> executionContextArgsCaptor = forClass(ExecutionContext.class);
 
-    verify(schedulerMock, times(8)).schedule(durationArgsCaptor.capture(), durationArgsCaptor.capture(), same(wrappedRunnableMock),
+    verify(schedulerMock, times(9)).schedule(durationArgsCaptor.capture(), durationArgsCaptor.capture(), same(wrappedRunnableMock),
       executionContextArgsCaptor.capture());
 
     List<FiniteDuration> durations = durationArgsCaptor.getAllValues();
 
-    assertThat(durations).hasSize(16);
-    assertThat(durations.get(0)).satisfies(reflectionEq(Duration.create(0, "sec")));
+    assertThat(durations).hasSize(18);
+    assertThat(durations.get(0)).satisfies(reflectionEq(Duration.create(20, "ms")));
     assertThat(durations.get(1)).satisfies(reflectionEq(Duration.create(1, "min")));
 
-    assertThat(durations.get(2)).satisfies(reflectionEq(Duration.create(10, "sec")));
+    assertThat(durations.get(2)).satisfies(reflectionEq(Duration.create(30, "ms")));
     assertThat(durations.get(3)).satisfies(reflectionEq(Duration.create(1, "min")));
 
     //    assertThat(durations.get(4)).satisfies(reflectionEq(Duration.create(20, "sec")));
@@ -182,27 +184,31 @@ public class GlobalTest {
     //    assertThat(durations.get(6)).satisfies(reflectionEq(Duration.create(30, "sec")));
     //    assertThat(durations.get(7)).satisfies(reflectionEq(Duration.create(1, "min")));
 
-    assertThat(durations.get(4)).satisfies(reflectionEq(Duration.create(40, "sec")));
+    assertThat(durations.get(4)).satisfies(reflectionEq(Duration.create(50, "ms")));
     assertThat(durations.get(5)).satisfies(reflectionEq(Duration.create(1, "min")));
 
-    assertThat(durations.get(6)).satisfies(reflectionEq(Duration.create(50, "sec")));
-    assertThat(durations.get(7)).satisfies(reflectionEq(Duration.create(10, "sec")));
+    assertThat(durations.get(6)).satisfies(reflectionEq(Duration.create(70, "ms")));
+    assertThat(durations.get(7)).satisfies(reflectionEq(Duration.create(300, "ms")));
 
-    assertThat(durations.get(8)).satisfies(reflectionEq(Duration.create(20, "sec")));
-    assertThat(durations.get(9)).satisfies(reflectionEq(Duration.create(10, "sec")));
+    assertThat(durations.get(8)).satisfies(reflectionEq(Duration.create(110, "ms")));
+    assertThat(durations.get(9)).satisfies(reflectionEq(Duration.create(300, "ms")));
 
-    assertThat(durations.get(10)).satisfies(reflectionEq(Duration.create(30, "sec")));
-    assertThat(durations.get(11)).satisfies(reflectionEq(Duration.create(10, "sec")));
+    assertThat(durations.get(10)).satisfies(reflectionEq(Duration.create(130, "ms")));
+    assertThat(durations.get(11)).satisfies(reflectionEq(Duration.create(300, "ms")));
 
-    assertThat(durations.get(12)).satisfies(reflectionEq(Duration.create(5, "sec")));
-    assertThat(durations.get(13)).satisfies(reflectionEq(Duration.create(10, "sec")));
+    assertThat(durations.get(12)).satisfies(reflectionEq(Duration.create(170, "ms")));
+    assertThat(durations.get(13)).satisfies(reflectionEq(Duration.create(300, "ms")));
 
-    assertThat(durations.get(14)).satisfies(reflectionEq(Duration.create(15, "sec")));
-    assertThat(durations.get(15)).satisfies(reflectionEq(Duration.create(10, "sec")));
+    assertThat(durations.get(14)).satisfies(reflectionEq(Duration.create(190, "ms")));
+    assertThat(durations.get(15)).satisfies(reflectionEq(Duration.create(300, "ms")));
+
+    assertThat(durations.get(16)).satisfies(reflectionEq(Duration.create(230, "ms")));
+    assertThat(durations.get(17)).satisfies(reflectionEq(Duration.create(300, "ms")));
 
     List<ExecutionContext> executionContexts = executionContextArgsCaptor.getAllValues();
-    assertThat(executionContexts).hasSize(8).containsExactly(defaultDispatcherMock, defaultDispatcherMock
+    assertThat(executionContexts).hasSize(9).containsExactly(defaultDispatcherMock, defaultDispatcherMock
       //      , lanosFetchingDispatcherMock, volvoFetchingDispatcherMock
-      , defaultDispatcherMock, defaultDispatcherMock, defaultDispatcherMock, defaultDispatcherMock, defaultDispatcherMock, defaultDispatcherMock);
+      , defaultDispatcherMock, defaultDispatcherMock, defaultDispatcherMock, defaultDispatcherMock, defaultDispatcherMock, defaultDispatcherMock,
+      defaultDispatcherMock);
   }
 }

@@ -21,7 +21,7 @@ public class RemoveOldHistoryJob
 
   @Override
   public void run() {
-    LOG.debug("Removing old History");
+    //    LOG.debug("Removing old History");
 
     int removedHistoryCount = 0;
     for (Event event : events()) {

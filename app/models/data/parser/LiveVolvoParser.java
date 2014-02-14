@@ -36,7 +36,7 @@ public class LiveVolvoParser
 
       parsedEvents.add(event);
     }
-    LOG.debug("Parsed Events: {}", parsedEvents.size());
+    //    LOG.debug("Parsed Events: {}", parsedEvents.size());
 
     return parsedEvents;
   }
@@ -50,15 +50,19 @@ public class LiveVolvoParser
     String firstSide = decodeCollapseWhiteSpace(eventElChildren.get(0).getFirstElement("class", "Row", true).getChildElements().get(1).getContent());
     String secondSide = decodeCollapseWhiteSpace(eventElChildren.get(0).getAllElements("class", "Row", true).get(1).getChildElements().get(1).getContent());
 
+    if (2 > eventElChildren.get(1).getChildElements().size()) return null;
+
     Element firstKofContainer = eventElChildren.get(1).getChildElements().get(0);
     if (firstKofContainer.getChildElements().isEmpty()) return null;
     String firstKof = decodeCollapseWhiteSpace(firstKofContainer.getChildElements().get(1).getContent());
     if (isNullOrEmpty(firstKof)) return null;
+    if ("SP".equalsIgnoreCase(firstKof)) return null;
 
     Element secondKofContainer = eventElChildren.get(1).getChildElements().get(1);
     if (secondKofContainer.getChildElements().isEmpty()) return null;
     String secondKof = decodeCollapseWhiteSpace(secondKofContainer.getChildElements().get(1).getContent());
     if (isNullOrEmpty(secondKof)) return null;
+    if ("SP".equalsIgnoreCase(secondKof)) return null;
 
     return new ParsedEvent(sportDescr, firstSide, secondSide, null, firstKof, secondKof);
   }

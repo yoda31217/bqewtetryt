@@ -18,6 +18,7 @@ import models.data.side.LanosSideCoder;
 import models.data.side.VolvoSideCoder;
 import models.web_driver.WebDriverKeeper;
 import scala.concurrent.duration.Duration;
+import twitter4j.TwitterFactory;
 
 import static models.event.EventType.LIVE;
 import static models.event.Organisation.LANOS;
@@ -31,6 +32,7 @@ public final class Jobs {
 
   public static final Runnable REMOVE_OLD_HISTORY_JOB;
   public static final RemoveOldEventJob REMOVE_OLD_EVENT_JOB;
+  public static final Runnable NOTIFICATION_JOB;
   public static final EventJob LANOS_JOB;
   public static final WebDriverKeeper LANOS_WEB_DRIVER_KEEPER;
   public static final LiveLanosSportSelectionJob LANOS_SPORT_SELECTION_JOB;
@@ -43,14 +45,16 @@ public final class Jobs {
   public static final WebDriverKeeper VOLVO_BASKETBALL_WEB_DRIVER_KEEPER;
   public static final EventJob LIVE_VOLVO_BASKETBALL_JOB;
   public static final WebDriverKeeper VOLVO_TABLE_TENNIS_WEB_DRIVER_KEEPER;
-  public static final EventJob LIVE_VOLVO_TABLETENNIS_JOB;
+  public static final EventJob LIVE_VOLVO_TABLE_TENNIS_JOB;
   private static final Predicate<AdaptedEvent> EVENT_FILTER;
 
   static {
     EVENT_FILTER = new EventFilter();
 
     REMOVE_OLD_HISTORY_JOB = new RemoveOldHistoryJob(4);
-    REMOVE_OLD_EVENT_JOB = new RemoveOldEventJob(Duration.create(12, "hour").toMillis());
+    REMOVE_OLD_EVENT_JOB = new RemoveOldEventJob(Duration.create(2, "min").toMillis());
+
+    NOTIFICATION_JOB = new TwitterNotificationJob(TwitterFactory.getSingleton());
 
     LANOS_JOB = createLanosJob();
 
@@ -70,7 +74,7 @@ public final class Jobs {
     LIVE_VOLVO_BASKETBALL_JOB = createLiveVolvoBasketballJob();
 
     VOLVO_TABLE_TENNIS_WEB_DRIVER_KEEPER = createVolvoTableTennisWebDriverKeeper();
-    LIVE_VOLVO_TABLETENNIS_JOB = createLiveVolvoTableTennisJob();
+    LIVE_VOLVO_TABLE_TENNIS_JOB = createLiveVolvoTableTennisJob();
   }
 
   private Jobs() {

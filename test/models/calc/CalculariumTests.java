@@ -10,4 +10,10 @@ public class CalculariumTests {
     setCalcularium(calculariumMock);
     return calculariumMock;
   }
+
+  public static Calcularium resetCalcularium() {
+    Calcularium newCalcularium = new Calcularium();
+    setCalcularium(newCalcularium);
+    return newCalcularium;
+  }
 }

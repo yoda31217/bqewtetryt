@@ -10,7 +10,7 @@ import static models.calc.CalculariumTests.mockCalcularium;
 import static models.event.EventStore.EVENTS;
 import static models.event.EventStore.createOrGetEvent;
 import static models.event.EventStore.events;
-import static models.event.EventStore.removeEventsOlderThan;
+import static models.event.EventStore.remove;
 import static models.event.EventTests.randomSide;
 import static models.event.EventType.LIVE;
 import static models.event.EventType.REGULAR;
@@ -108,16 +108,16 @@ public class EventStoreTest {
   }
 
   @Test
-  public void removeEventsOlderThan_registerOldEvent_removed() {
-    createOrGetEvent(REGULAR, TENNIS, new Date(new Date().getTime() - 200L), randomSide(), randomSide(), "code_1");
-    removeEventsOlderThan(100L);
+  public void remove_event_remove() {
+    Event event = createOrGetEvent(REGULAR, TENNIS, new Date(new Date().getTime() - 200L), randomSide(), randomSide(), "code_1");
+    remove(event);
     assertThat(events()).isEmpty();
   }
 
   @Test
-  public void removeEventsOlderThan_registerOldEvent_markedRemoved() {
+  public void remove_event_markedRemoved() {
     Event event = createOrGetEvent(REGULAR, TENNIS, new Date(new Date().getTime() - 200L), randomSide(), randomSide(), "code_1");
-    removeEventsOlderThan(100L);
+    remove(event);
     assertThat(event.isRemoved()).isTrue();
   }
 

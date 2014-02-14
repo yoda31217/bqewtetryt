@@ -7,8 +7,10 @@ import static java.lang.System.currentTimeMillis;
 public class Dates {
 
   public static long secsFromNow(Date date) {
-    long nowInMillis = currentTimeMillis();
-    long delayInMillis = nowInMillis - date.getTime();
-    return delayInMillis / 1000L;
+    return millisFromNow(date) / 1000L;
+  }
+
+  public static long millisFromNow(Date date) {
+    return currentTimeMillis() - date.getTime();
   }
 }

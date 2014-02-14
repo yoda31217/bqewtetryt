@@ -3,7 +3,6 @@ package models.event;
 import play.Logger;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -37,18 +36,9 @@ public class EventStore {
 
   }
 
-  public static void removeEventsOlderThan(long ageInMillis) {
-    long now = new Date().getTime();
-
-    for (Iterator<Event> iterator = EVENTS.keySet().iterator(); iterator.hasNext(); ) {
-      Event event = iterator.next();
-
-      if (now - event.date().getTime() > ageInMillis) {
-
-        LOG.debug("Removing old Event with Code: {}", event.code());
-        event.markRemoved();
-        iterator.remove();
-      }
-    }
+  public static void remove(Event event) {
+    EVENTS.remove(event);
+    event.markRemoved();
+    LOG.debug("Removing old Event with Code: {}", event.code());
   }
 }

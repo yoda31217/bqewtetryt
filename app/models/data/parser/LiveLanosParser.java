@@ -49,7 +49,7 @@ public class LiveLanosParser
       parsedEvents.addAll(filter(transform(eventEls, createElToEventTransformer(sportDescr)), NOT_NULL_EVENT_FILTER));
     }
 
-    LOG.debug("Parsed Events: {}", parsedEvents.size());
+    //    LOG.debug("Parsed Events: {}", parsedEvents.size());
 
     return parsedEvents;
   }
