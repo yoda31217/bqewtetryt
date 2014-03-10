@@ -2,7 +2,7 @@ import play.Project._
 
 name := """betty"""
 
-version := "1.0.0.beta"
+version := "2.0.0-snapshot"
 
 libraryDependencies ++= Seq(
   "org.twitter4j" % "twitter4j-core" % "3.0.5",
