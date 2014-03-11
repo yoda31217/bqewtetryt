@@ -10,7 +10,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 public class WebDriverKeeper {
 
   static {
-    System.setProperty("webdriver.chrome.driver", "/Users/yoda31217/projects/niknik/betty/conf/chromedriver");
+    initWebDriverEnv();
   }
 
   private final Semaphore lanosDriverSemaphore = new Semaphore(1, true);
@@ -41,4 +41,10 @@ public class WebDriverKeeper {
   public void release() {
     lanosDriverSemaphore.release();
   }
+
+  public static void initWebDriverEnv() {
+    System.setProperty("webdriver.chrome.driver", getChromeWebDriverPath());
+  }
+
+  public static String getChromeWebDriverPath() {return "/Users/yoda31217/projects/niknik/betty/conf/chromedriver";}
 }

@@ -7,16 +7,18 @@ import models.data.adapter.LanosAdapter;
 import models.data.adapter.LiveLanosAdapter;
 import models.data.adapter.LiveVolvoAdapter;
 import models.data.adapter.VolvoAdapter;
+import models.data.fetcher.BFetcher;
 import models.data.fetcher.LanosFetcher;
 import models.data.fetcher.LiveFetcher;
 import models.data.fetcher.VolvoFetcher;
 import models.data.parser.LanosParser;
 import models.data.parser.LiveLanosParser;
-import models.data.parser.LiveVolvoParser;
+import models.data.parser.LiveVolvoParser2;
 import models.data.parser.VolvoParser;
 import models.data.side.LanosSideCoder;
 import models.data.side.VolvoSideCoder;
 import models.web_driver.WebDriverKeeper;
+import org.openqa.selenium.chrome.ChromeDriver;
 import scala.concurrent.duration.Duration;
 import twitter4j.TwitterFactory;
 
@@ -27,8 +29,16 @@ import static models.event.Sport.BASKETBALL;
 import static models.event.Sport.TABLE_TENNIS;
 import static models.event.Sport.TENNIS;
 import static models.event.Sport.VOLLEYBALL;
+import static models.web_driver.WebDriverKeeper.initWebDriverEnv;
 
 public final class Jobs {
+
+  public static final BFetcher DUMMY_FETCHER = new BFetcher() {
+    @Override
+    public byte[] fetch() {
+      return null;
+    }
+  };
 
   public static final Runnable REMOVE_OLD_HISTORY_JOB;
   public static final RemoveOldEventJob REMOVE_OLD_EVENT_JOB;
@@ -38,17 +48,19 @@ public final class Jobs {
   public static final LiveLanosSportSelectionJob LANOS_SPORT_SELECTION_JOB;
   public static final EventJob LIVE_LANOS_JOB;
   public static final EventJob VOLVO_JOB;
-  public static final WebDriverKeeper VOLVO_TENNIS_WEB_DRIVER_KEEPER;
+  //  public static final WebDriverKeeper VOLVO_TENNIS_WEB_DRIVER_KEEPER;
   public static final EventJob LIVE_VOLVO_TENNIS_JOB;
-  public static final WebDriverKeeper VOLVO_VOLLEYBALL_WEB_DRIVER_KEEPER;
+  //  public static final WebDriverKeeper VOLVO_VOLLEYBALL_WEB_DRIVER_KEEPER;
   public static final EventJob LIVE_VOLVO_VOLLEYBALL_JOB;
-  public static final WebDriverKeeper VOLVO_BASKETBALL_WEB_DRIVER_KEEPER;
+  //  public static final WebDriverKeeper VOLVO_BASKETBALL_WEB_DRIVER_KEEPER;
   public static final EventJob LIVE_VOLVO_BASKETBALL_JOB;
-  public static final WebDriverKeeper VOLVO_TABLE_TENNIS_WEB_DRIVER_KEEPER;
+  //  public static final WebDriverKeeper VOLVO_TABLE_TENNIS_WEB_DRIVER_KEEPER;
   public static final EventJob LIVE_VOLVO_TABLE_TENNIS_JOB;
   private static final Predicate<AdaptedEvent> EVENT_FILTER;
 
   static {
+    initWebDriverEnv();
+
     EVENT_FILTER = new EventFilter();
 
     REMOVE_OLD_HISTORY_JOB = new RemoveOldHistoryJob(4);
@@ -64,16 +76,16 @@ public final class Jobs {
 
     VOLVO_JOB = createVolvoJob();
 
-    VOLVO_TENNIS_WEB_DRIVER_KEEPER = createVolvoTennisWebDriverKeeper();
+    //    VOLVO_TENNIS_WEB_DRIVER_KEEPER = createVolvoTennisWebDriverKeeper();
     LIVE_VOLVO_TENNIS_JOB = createLiveVolvoTennisJob();
 
-    VOLVO_VOLLEYBALL_WEB_DRIVER_KEEPER = createVolvoVolleyballWebDriverKeeper();
+    //    VOLVO_VOLLEYBALL_WEB_DRIVER_KEEPER = createVolvoVolleyballWebDriverKeeper();
     LIVE_VOLVO_VOLLEYBALL_JOB = createLiveVolvoVolleyballJob();
 
-    VOLVO_BASKETBALL_WEB_DRIVER_KEEPER = createVolvoBasketballWebDriverKeeper();
+    //    VOLVO_BASKETBALL_WEB_DRIVER_KEEPER = createVolvoBasketballWebDriverKeeper();
     LIVE_VOLVO_BASKETBALL_JOB = createLiveVolvoBasketballJob();
 
-    VOLVO_TABLE_TENNIS_WEB_DRIVER_KEEPER = createVolvoTableTennisWebDriverKeeper();
+    //    VOLVO_TABLE_TENNIS_WEB_DRIVER_KEEPER = createVolvoTableTennisWebDriverKeeper();
     LIVE_VOLVO_TABLE_TENNIS_JOB = createLiveVolvoTableTennisJob();
   }
 
@@ -94,13 +106,13 @@ public final class Jobs {
   }
 
   private static EventJob createLiveVolvoTennisJob() {
-    return new EventJob(new LiveFetcher(VOLVO_TENNIS_WEB_DRIVER_KEEPER), new LiveVolvoParser(), new LiveVolvoAdapter(new VolvoSideCoder(), TENNIS),
-      EVENT_FILTER, LIVE + "_" + VOLVO + "_" + TENNIS);
+    return new EventJob(DUMMY_FETCHER, new LiveVolvoParser2(getVolvoSite() + "/Lite/#!in-play/overview/", new ChromeDriver()), new LiveVolvoAdapter(
+      new VolvoSideCoder(), TENNIS), EVENT_FILTER, LIVE + "_" + VOLVO + "_" + TENNIS);
   }
 
   private static EventJob createLiveVolvoVolleyballJob() {
-    return new EventJob(new LiveFetcher(VOLVO_VOLLEYBALL_WEB_DRIVER_KEEPER), new LiveVolvoParser(), new LiveVolvoAdapter(new VolvoSideCoder(), VOLLEYBALL),
-      EVENT_FILTER, LIVE + "_" + VOLVO + "_" + VOLLEYBALL);
+    return new EventJob(DUMMY_FETCHER, new LiveVolvoParser2(getVolvoSite() + "/Lite/#!in-play/overview/", new ChromeDriver()), new LiveVolvoAdapter(
+      new VolvoSideCoder(), VOLLEYBALL), EVENT_FILTER, LIVE + "_" + VOLVO + "_" + VOLLEYBALL);
   }
 
   private static EventJob createLiveLanosJob() {
@@ -119,8 +131,8 @@ public final class Jobs {
   }
 
   private static EventJob createLiveVolvoTableTennisJob() {
-    return new EventJob(new LiveFetcher(VOLVO_TABLE_TENNIS_WEB_DRIVER_KEEPER), new LiveVolvoParser(), new LiveVolvoAdapter(new VolvoSideCoder(), TABLE_TENNIS),
-      EVENT_FILTER, LIVE + "_" + VOLVO + "_" + TABLE_TENNIS);
+    return new EventJob(DUMMY_FETCHER, new LiveVolvoParser2(getVolvoSite() + "/Lite/#!in-play/overview/", new ChromeDriver()), new LiveVolvoAdapter(
+      new VolvoSideCoder(), TABLE_TENNIS), EVENT_FILTER, LIVE + "_" + VOLVO + "_" + TABLE_TENNIS);
   }
 
   private static WebDriverKeeper createVolvoTableTennisWebDriverKeeper() {
@@ -128,8 +140,8 @@ public final class Jobs {
   }
 
   private static EventJob createLiveVolvoBasketballJob() {
-    return new EventJob(new LiveFetcher(VOLVO_BASKETBALL_WEB_DRIVER_KEEPER), new LiveVolvoParser(), new LiveVolvoAdapter(new VolvoSideCoder(), BASKETBALL),
-      EVENT_FILTER, LIVE + "_" + VOLVO + "_" + BASKETBALL);
+    return new EventJob(DUMMY_FETCHER, new LiveVolvoParser2(getVolvoSite() + "/Lite/#!in-play/overview/", new ChromeDriver()), new LiveVolvoAdapter(
+      new VolvoSideCoder(), BASKETBALL), EVENT_FILTER, LIVE + "_" + VOLVO + "_" + BASKETBALL);
   }
 
   private static WebDriverKeeper createVolvoBasketballWebDriverKeeper() {
