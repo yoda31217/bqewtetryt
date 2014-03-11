@@ -1,23 +1,18 @@
 package models.job;
 
-import models.web_driver.WebDriverKeeper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.verifyNoMoreInteractions;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
@@ -25,8 +20,6 @@ public class LiveLanosSportSelectionJobTest {
 
   @Mock
   private ChromeDriver webDriverMock;
-  @Mock
-  private WebDriverKeeper webDriverKeeperMock;
   @Mock
   private WebElement selectedSportElementMock;
   @Mock
@@ -38,8 +31,6 @@ public class LiveLanosSportSelectionJobTest {
 
   @Before
   public void before() {
-    when(webDriverKeeperMock.acquire()).thenReturn(webDriverMock);
-
     when(selectedSportElementMock.isSelected()).thenReturn(true);
     when(unselectedSportElementMock.isSelected()).thenReturn(false);
     when(anotherSelectedSportElementMock.isSelected()).thenReturn(true);
@@ -56,7 +47,7 @@ public class LiveLanosSportSelectionJobTest {
     when(webDriverMock.findElementsByClassName("group-selection")).thenReturn(newArrayList(selectedSportElementMock, unselectedSportElementMock,
       anotherSelectedSportElementMock));
 
-    new LiveLanosSportSelectionJob(webDriverKeeperMock).run();
+    new LiveLanosSportSelectionJob(webDriverMock).run();
 
     verify(selectedSportElementMock, never()).click();
     verify(unselectedSportElementMock).click();
@@ -69,7 +60,7 @@ public class LiveLanosSportSelectionJobTest {
   public void runWithAllSelectedSports() {
     when(webDriverMock.findElementsByClassName("group-selection")).thenReturn(newArrayList(selectedSportElementMock, anotherSelectedSportElementMock));
 
-    new LiveLanosSportSelectionJob(webDriverKeeperMock).run();
+    new LiveLanosSportSelectionJob(webDriverMock).run();
 
     verify(selectedSportElementMock, never()).click();
     verify(anotherSelectedSportElementMock, never()).click();
@@ -78,24 +69,8 @@ public class LiveLanosSportSelectionJobTest {
   }
 
   @Test
-  public void acquireAndRelease() {
-    InOrder inOrder = inOrder(webDriverKeeperMock);
-    when(webDriverMock.findElementsByClassName("group-selection")).thenThrow(new RuntimeException("Somme inner exception for testing purposes."));
-
-    try {
-      new LiveLanosSportSelectionJob(webDriverKeeperMock).run();
-      fail("Should not get here. Should throw exception.");
-
-    } catch (Exception skipped) {} finally {
-      inOrder.verify(webDriverKeeperMock).acquire();
-      inOrder.verify(webDriverKeeperMock).release();
-      verifyNoMoreInteractions(webDriverKeeperMock);
-    }
-  }
-
-  @Test
   public void run_always_pageUpPressed() {
-    new LiveLanosSportSelectionJob(webDriverKeeperMock).run();
+    new LiveLanosSportSelectionJob(webDriverMock).run();
     verify(webDriverMock).executeScript("document.getElementById(\"body_content\").scrollByLines(-1000000)");
   }
 

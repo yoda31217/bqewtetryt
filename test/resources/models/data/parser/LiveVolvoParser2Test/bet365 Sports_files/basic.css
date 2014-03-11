@@ -1,0 +1,1061 @@
+.match-live, #StatsHeader label, .PopUpMatchStats table {
+  font-family: "HelveticaNeue-CondensedBold", "Helvetica Neue", Helvetica, "Droid Sans Mono", "Droid Sans", Arial
+}
+
+#mlContainer {
+  width: 100%;
+  float: left;
+  clear: both;
+  position: relative;
+  background: #303030;
+  tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -o-tap-highlight-color: rgba(0, 0, 0, 0);
+  -moz-tap-highlight-color: rgba(0, 0, 0, 0)
+}
+
+.match-live {
+  color: #ddd;
+  border-bottom: solid 1px #222;
+  box-shadow: inset 0 0 10px rgba(20, 20, 20, 0.8);
+  -webkit-box-shadow: inset 0 0 10px rgba(20, 20, 20, 0.8);
+  font-size: 10px;
+  margin: 0;
+  padding: 0
+}
+
+.inplay-scoreboard {
+  overflow: hidden;
+  padding: 0
+}
+
+.match-live #match-details {
+  width: 100%;
+  float: left;
+  clear: both
+}
+
+.match-live ul.carousel {
+  width: 200%;
+  float: left;
+  clear: both;
+  margin: 0;
+  padding: 0
+}
+
+.match-live ul.carousel.animOn {
+  -webkit-transition: all .4s ease-in-out;
+  -moz-transition: all .4s ease-in-out;
+  -o-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out
+}
+
+.match-live ul.carousel li {
+  list-style: none
+}
+
+.match-live ul.carousel > li {
+  width: 50%;
+  float: left;
+  -webkit-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-perspective: 0;
+  perspective: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d
+}
+
+.lineup {
+  position: absolute;
+  z-index: 100;
+  top: 5px;
+  right: 0;
+  left: 0;
+  margin: 0 5px;
+  color: #525252;
+  text-shadow: 0 1px 0 #c8c8c8;
+  background: #bbb;
+  border: 1px solid #202020;
+  border-radius: 4px;
+  -webkit-border-radius: 4px
+}
+
+.lineup .team {
+  display: block;
+  padding: 0 5px;
+  color: #333;
+  font-weight: bold;
+  font-size: 1.8em;
+  line-height: 1.889;
+  height: 34px;
+  background: #aaa;
+  border-bottom: 1px solid #898989;
+  box-shadow: inset 0 0 1px #bcbcbc;
+  -webkit-box-shadow: inset 0 0 1px #bcbcbc;
+  border-radius: 4px 4px 0 0;
+  -webkit-border-radius: 4px 4px 0 0;
+  text-transform: uppercase
+}
+
+.lineup .close {
+  min-width: 43px;
+  float: right;
+  margin: 2px -2px 0 0;
+  padding: 0 10px;
+  color: #545454;
+  font-size: .833em;
+  line-height: 1.867;
+  text-align: center;
+  text-transform: capitalize;
+  background: #c0c0c0;
+  border: 1px solid #929292;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  box-shadow: inset 0 0 1px #d1d1d1;
+  -webkit-box-shadow: inset 0 0 1px #d1d1d1;
+  text-shadow: 0 1px 0 #d7d7d7
+}
+
+.lineup div {
+  width: 50%;
+  float: left;
+  font-size: 1em
+}
+
+.lineup ul {
+  margin: 0;
+  padding: 0;
+  list-style: none
+}
+
+.lineup .title, .lineup li {
+  min-height: 2em;
+  display: block;
+  position: relative;
+  clear: both;
+  padding: 0 5px;
+  font-size: 1.3em;
+  line-height: 2
+}
+
+.lineup li {
+  padding-right: 30%
+}
+
+.lineup .title:after, .lineup li:after {
+  content: "";
+  width: 100%;
+  height: 1px;
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  background: #9c9c9c;
+  border-bottom: 1px solid #d1d1d1
+}
+
+.lineup li:last-child {
+  padding-top: 2px
+}
+
+.lineup li:last-child:after {
+  display: none
+}
+
+.lineup .starting li:last-child {
+  border-radius: 0 0 0 4px
+}
+
+.lineup .subs li:last-child {
+  border-radius: 0 0 4px 0
+}
+
+.lineup .title {
+  color: #333;
+  font-weight: bold
+}
+
+.lineup .starting li:first-child, .lineup .title {
+  border-top: 1px solid #d1d1d1
+}
+
+.lineup .starting li {
+  border-left: 1px solid #cacaca;
+  border-right: 1px solid #9c9c9c
+}
+
+.lineup .subs li {
+  border-right: 1px solid #cacaca
+}
+
+.lineup li > span {
+  height: 2em;
+  position: absolute;
+  padding-left: 14px;
+  top: 0;
+  right: 5px;
+  text-align: right;
+  font-weight: bold;
+  font-size: .923em;
+  line-height: 26px
+}
+
+.lineup li > span .card {
+  position: absolute;
+  top: 6px;
+  left: 0
+}
+
+.lineup li > span .card:before {
+  width: 8px;
+  height: 12px
+}
+
+.lineup li .icon.sub {
+  width: 10px;
+  height: 7px;
+  display: inline-block;
+  margin-right: 4px;
+  background-image: url(sports/1/grfx/sub-on.png);
+  background-position: 0 0;
+  background-repeat: no-repeat
+}
+
+.lineup li .icon.sub.off {
+  background-image: url(sports/1/grfx/sub-off.png)
+}
+
+.card {
+  min-height: 16px;
+  line-height: 16px;
+  display: inline-block;
+  position: relative;
+  margin: 0 4px 0 0;
+  padding: 0 0 0 14px
+}
+
+.card:before {
+  content: "";
+  width: 10px;
+  height: 14px;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid #202020;
+  border-radius: 1px;
+  -webkit-border-radius: 1px
+}
+
+.card.yellow:before {
+  background: #d1c10a
+}
+
+.card.red:before {
+  background: #ae0a33
+}
+
+.match-live p:before, .match-live p:after {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: 99;
+  font-size: 0;
+  line-height: 0;
+  border: 0;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  background-color: transparent;
+  background-position: 0 0;
+  background-repeat: no-repeat
+}
+
+.match-live .icons .icon.line-up {
+  float: right;
+  width: 33px;
+  height: 16px;
+  display: inline-block;
+  background-image: url(sports/1/grfx/line-up.png);
+  background-repeat: no-repeat;
+  background-position: right
+}
+
+.match-live .icons .team.two .icon.line-up {
+  float: left;
+  -webkit-transform: scaleX(-1);
+  -ms-transform: scaleX(-1);
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  transform: scaleX(-1)
+}
+
+.score-board {
+  width: 100%;
+  height: 42px;
+  float: left;
+  clear: both;
+  padding: 0 0 2px;
+  color: #a5a5a5
+}
+
+.score-board .team {
+  width: 38%;
+  float: left;
+  padding: 6px 0 2px;
+  color: #ddd;
+  font-size: 14px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: uppercase
+}
+
+.match-live[data-lng="2"] .score-board .team, .match-live[data-lng="10"] .score-board .team, .match-live[data-lng="19"] .score-board .team, .match-live[data-lng="20"] .score-board .team, .lineup[data-lng="2"] .team, .lineup[data-lng="10"] .team, .lineup[data-lng="19"] .team, .lineup[data-lng="20"] .team {
+  text-transform: none
+}
+
+.score-board .team.one {
+  text-align: left;
+  margin-left: 8px
+}
+
+.score-board .team.two {
+  float: right;
+  margin-right: 8px;
+  text-align: right
+}
+
+.score-board .clock-score {
+  width: 20%;
+  margin: 0 auto 0;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px
+}
+
+.score-board .clock-score > span {
+  display: inline-block;
+  background: #3f3f3f
+}
+
+.score-board .clock-score > span > span {
+  display: block;
+  padding: 0 4px;
+  border: 1px solid #3d3d3d;
+  background-color: #333;
+  box-shadow: 0 0 0 1px #212121;
+  -webkit-box-shadow: 0 0 0 1px #212121
+}
+
+.score-board .clock-score .score {
+  min-width: 32px;
+  color: #ffdf1b;
+  line-height: 22px;
+  background: #3f3f3f;
+  background: -moz-linear-gradient(top, #3f3f3f 0, #303030 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #3f3f3f), color-stop(100%, #303030));
+  background: -webkit-linear-gradient(top, #3f3f3f 0, #303030 100%);
+  background: -o-linear-gradient(top, #3f3f3f 0, #303030 100%);
+  background: -ms-linear-gradient(top, #3f3f3f 0, #303030 100%);
+  background: linear-gradient(to bottom, #3f3f3f 0, #303030 100%)
+}
+
+.score-board .clock-score span.score > span {
+  display: inline;
+  padding: 0;
+  background: 0;
+  border: 0;
+  box-shadow: none;
+  -webkit-box-shadow: none
+}
+
+.soccer .score-board .clock-score .clock, .basketball .score-board .clock-score .period {
+  min-height: 12px;
+  padding: 0 4px 2px 4px;
+  color: #bbb;
+  font-size: 12px;
+  line-height: 12px;
+  border-radius: 0 0 2px 2px;
+  -webkit-border-radius: 0 0 2px 2px
+}
+
+.match-live #arena {
+  padding: .5em 0 0;
+  text-align: center;
+  line-height: 0
+}
+
+.match-live #arena .terrain {
+  position: relative;
+  margin: 0 auto;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  background-position: 5px 0;
+  width: 310px;
+  height: 125px;
+  padding: 0 5px;
+  background-position: center
+}
+
+.match-live #arena .events {
+  width: 310px;
+  height: 125px;
+  display: table-cell;
+  vertical-align: middle
+}
+
+.match-live #arena .events {
+  margin: 0;
+  padding: 0;
+  float: none;
+  list-style: none;
+  text-align: center
+}
+
+.match-live #arena .events li {
+  float: none;
+  clear: none;
+  margin: 0;
+  padding: 0;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4)
+}
+
+.match-live #arena .events li div {
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.286
+}
+
+.match-live .events p {
+  margin: 0;
+  padding: 0;
+  position: relative
+}
+
+.match-live #arena .events .generic.single {
+  min-height: 40px;
+  padding: 0 10px;
+  line-height: 2.857
+}
+
+.match-live #arena .events .generic.single p span {
+  display: block;
+  padding: 0;
+  margin: 0;
+  height: auto;
+  line-height: 1.3
+}
+
+.match-live #arena .events .generic.single p span.type {
+  padding-top: 2px
+}
+
+.match-live #arena .events .icon p {
+  position: relative;
+  text-align: left
+}
+
+.match-live #arena .events p span {
+  margin: 0;
+  padding: 0;
+  color: #fff
+}
+
+.match-live #arena .events p span.type em {
+  font-style: normal
+}
+
+.match-live #arena .events p span.type em, .match-live #arena .events p span.team {
+  display: block;
+  color: #c1c9a3;
+  text-transform: uppercase
+}
+
+.match-live[data-lng="2"] #arena .events p span.team, .match-live[data-lng="10"] #arena .events p span.team, .match-live[data-lng="19"] #arena .events p span.team, .match-live[data-lng="20"] #arena .events p span.team {
+  text-transform: none
+}
+
+.match-live #arena .events .transparent {
+  opacity: 0;
+  display: none
+}
+
+.match-live #arena .events .opaque {
+  display: inline-block;
+  opacity: 1;
+  -webkit-transition-property: opacity;
+  transition-property: opacity;
+  -webkit-transition-duration: 1s;
+  transition-duration: 1s
+}
+
+.match-live #arena .events canvas {
+  position: absolute;
+  top: 0;
+  left: 6px;
+  z-index: 98
+}
+
+.match-live #arena .events .possession {
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  float: left;
+  vertical-align: middle;
+  text-align: center;
+  -webkit-transition-property: width;
+  transition-property: width;
+  -webkit-transition-duration: 1s;
+  transition-duration: 1s;
+  -webkit-transition-timing-function: linear;
+  transition-timing-function: linear
+}
+
+.match-live #arena .events .possession.team1, .match-live #arena .events .possession.team2 {
+  position: relative;
+  z-index: 99
+}
+
+.match-live #arena .events .possession.team1 {
+  float: left;
+  padding: 0 0 0 10px;
+  text-align: right
+}
+
+.match-live #arena .events .possession.team2 {
+  float: right;
+  padding: 0 10px 0 0;
+  text-align: left
+}
+
+.match-live .icons {
+  width: 100%;
+  float: left;
+  clear: both;
+  position: relative;
+  padding: 2px 0 3px;
+  font-size: 12px;
+  border-bottom: 1px solid #222
+}
+
+.inplay-scoreboard .icons {
+  margin: -1.917em 0 0;
+  position: static;
+  background: 0
+}
+
+.match-live .icons:after {
+  content: "";
+  width: 100%;
+  height: 1px;
+  display: block;
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  background: #3f3f3f
+}
+
+.match-live .icons .team {
+  width: 40%;
+  float: left
+}
+
+.match-live .icons .team.two {
+  float: right;
+  text-align: right
+}
+
+.match-live .icons .team.one .card.red {
+  margin-left: 8px
+}
+
+.match-live .icons .team.two .corners {
+  margin-right: 8px
+}
+
+.match-live #summary .graphs {
+  width: 100%;
+  float: left;
+  clear: both;
+  margin: 0 0 -12px;
+  padding: 10px 0 0;
+  color: #a5a5a5;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: bold
+}
+
+.match-live #summary .graphs li {
+  width: 100%;
+  float: left;
+  clear: both;
+  padding: 0 0 9px
+}
+
+.match-live #summary .graphs li.teamPercent {
+  padding: 0
+}
+
+.match-live #summary .graphs li span {
+  display: inline-block;
+  vertical-align: top
+}
+
+.match-live #summary .graphs li .title {
+  padding: 0 0 4px;
+  color: #bbb;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 70%
+}
+
+.match-live #summary .graphs li .left, .match-live #summary .graphs li .right {
+  color: #ddd
+}
+
+.match-live #summary .graphs li .left {
+  float: left;
+  padding-left: 8px
+}
+
+.match-live #summary .graphs li .right {
+  float: right;
+  padding-right: 8px
+}
+
+.match-live #summary .graphs li .bar {
+  height: 4px;
+  clear: both;
+  margin: 0 8px;
+  background: #657c14;
+  border: 1px solid #202020;
+  -webkit-box-shadow: 1px 1px 0 rgba(255, 255, 255, 0.05), -1px -1px 0 rgba(255, 255, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  box-shadow: 1px 1px 0 rgba(255, 255, 255, 0.05), -1px -1px 0 rgba(255, 255, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  -webkit-border-radius: 1px;
+  border-radius: 1px
+}
+
+.match-live #summary .graphs li .bar span {
+  float: right;
+  height: 4px;
+  background: #c7b127;
+  -webkit-transition-property: width;
+  transition-property: width;
+  -webkit-transition-duration: 1s;
+  transition-duration: 1s;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+  -webkit-border-radius: 0 1px 1px 0;
+  border-radius: 0 1px 1px 0;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4)
+}
+
+.match-live #summary .graphs li.split {
+  width: 50%;
+  float: left;
+  clear: none
+}
+
+.match-live #summary #noStats {
+  width: 100%;
+  font-size: 13px;
+  text-align: center;
+  height: 100px;
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -ms-flexbox;
+  -webkit-box-orient: horizontal;
+  -moz-box-orient: horizontal;
+  box-orient: horizontal;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  box-align: center
+}
+
+.match-live #summary #noStats > div {
+  width: 100%
+}
+
+.clock-score .ScoreWrapper {
+  border-radius: 0 0 2px 2px;
+  -webkit-border-radius: 0 0 2px 2px
+}
+
+.StatsSelectIcon {
+  border-radius: 0 0 2px 2px;
+  -webkit-border-radius: 0 0 2px 2px;
+  padding: 2px 4px;
+  border: 1px solid #515151;
+  background-color: #333;
+  box-shadow: 0 0 0 1px #212121;
+  -webkit-box-shadow: 0 0 0 1px #212121
+}
+
+#MatchStatsPopUpBox {
+  left: 3%;
+  position: absolute;
+  width: 94%;
+  z-index: 75;
+  top: 82px
+}
+
+.PopUpMatchStats {
+  background-color: #696969;
+  border: 1px solid #222;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  color: #333;
+  font-size: 15px;
+  position: absolute;
+  top: 12px;
+  width: 100%;
+  text-indent: 0
+}
+
+.PopUpMatchStats table {
+  text-align: center;
+  font-weight: bold;
+  border-spacing: 0;
+  border: 0
+}
+
+.PopUpMatchStats table tr {
+  height: 30px
+}
+
+.PopUpMatchStats table div {
+  margin: 0 auto;
+  height: 17px;
+  width: 16px
+}
+
+.PopUpMatchStats thead {
+  background-color: #696969;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid #595959
+}
+
+.PopUpMatchStats tbody {
+  background-color: #a0a0a0
+}
+
+.PopUpMatchStats table tbody td {
+  border-bottom: 1px solid #868686;
+  border-left: 1px solid #868686;
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.1);
+  -webkit-box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.1);
+  padding-top: 2px
+}
+
+.PopUpMatchStats table thead td {
+  border-top: 1px rgba(255, 255, 255, 0.1) solid;
+  border-bottom: 1px #595959 solid
+}
+
+.PopUpMatchStats table tbody tr {
+  border-top: 1px #595959 solid
+}
+
+.PopUpMatchStats table tbody td:last-child {
+  border-right: 0
+}
+
+.PopUpMatchStats table tbody td:first-child {
+  border-left: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1)
+}
+
+.PopUpMatchStats table tbody td.ColummHeader {
+  font-size: 18px
+}
+
+#StatsHeader {
+  height: 35px;
+  padding-left: 10px;
+  background-color: #bbb;
+  font-size: 11pt;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom: 1px solid #595959
+}
+
+#StatsHeader label {
+  margin-top: 6px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  position: absolute;
+  font-size: 18px
+}
+
+#MatchStats .StatRow {
+  min-height: 18px;
+  border: solid 1px;
+  border-left-color: rgba(255, 255, 255, 0.1);
+  border-right-color: rgba(255, 255, 255, 0.1);
+  border-top-color: rgba(255, 255, 255, 0.1);
+  border-bottom-color: rgba(0, 0, 0, 0.15);
+  padding: 5px 8px 5px 9px;
+  font-size: 12px;
+  background-color: #bbb;
+  color: #545454;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3)
+}
+
+#MatchStats .StatRow div {
+  display: table-cell
+}
+
+#MatchStats .StatRow .Description span {
+  padding-right: 8px;
+  font-weight: bold;
+  font-size: 11px
+}
+
+#MatchStats .StatRow .Description {
+  padding-left: 15px
+}
+
+#MatchStats .StatRow:last-child {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom: 0
+}
+
+#MatchStats .StatRow .StatsIcon {
+  padding: 0
+}
+
+#MatchStatsPopUpBox #StatsClose {
+  width: 65px;
+  float: right;
+  margin: 2px 2px 0 0;
+  text-align: center;
+  height: 24px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border: 1px solid #989898;
+  font-weight: bold;
+  padding-top: 5px;
+  color: #545454;
+  -webkit-box-shadow: inset 1px 1px 0 rgba(204, 204, 204, 0.5), inset -1px 0 0 rgba(204, 204, 204, 0.5);
+  box-shadow: inset 1px 1px 0 rgba(204, 204, 204, 0.5), inset -1px 0 0 rgba(204, 204, 204, 0.5);
+  border: 1px solid #989898;
+  font-weight: bold;
+  padding-top: 5px;
+  color: #545454;
+  text-shadow: 1px -1px 0 rgba(142, 142, 142, 0.2)
+}
+
+#MatchStats ul {
+  list-style: none;
+  margin: 0;
+  padding: 0
+}
+
+#MatchStats .StatRow {
+  min-height: 18px;
+  border: solid 1px;
+  border-left-color: rgba(255, 255, 255, 0.1);
+  border-right-color: rgba(255, 255, 255, 0.1);
+  border-top-color: rgba(255, 255, 255, 0.1);
+  border-bottom-color: rgba(0, 0, 0, 0.15);
+  padding: 5px 8px 5px 40px;
+  font-size: 12px;
+  background-color: #bbb;
+  color: #545454;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3)
+}
+
+#MatchStats .StatRow span {
+  padding-right: 8px;
+  font-weight: bold;
+  font-size: 11px
+}
+
+#MatchStats .StatRow:last-child {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom: 0
+}
+
+#MatchStatsPopUpBox #StatsClose {
+  width: 65px;
+  float: right;
+  margin: 2px 2px 0 0;
+  text-align: center;
+  height: 24px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border: 1px solid #989898;
+  font-weight: bold;
+  padding-top: 5px;
+  color: #545454;
+  box-shadow: inset 1px 1px 0 rgba(204, 204, 204, 0.5), inset -1px 0 0 rgba(204, 204, 204, 0.5);
+  -webkit-box-shadow: inset 1px 1px 0 rgba(204, 204, 204, 0.5), inset -1px 0 0 rgba(204, 204, 204, 0.5);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2)
+}
+
+#MatchStats .StatIcon2, #MatchStats .StatIcon4, #MatchStats .StatIcon5, #MatchStats .StatIcon1, #MatchStats.StatIcon0, #MatchStats .StatIcon3 {
+  background-position: 9px 6px
+}
+
+.StatsSelectIcon {
+  height: 13px;
+  min-width: 32px;
+  background-position: center;
+  background-color: rgba(255, 255, 255, 0.05)
+}
+
+.StatsIcon.GoalsIcon, #MatchStats .StatIcon2 {
+  background-repeat: no-repeat;
+  background-image: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAA3NCSVQICAjb4U/gAAAAw1BMVEX///8AAACEhIQAAABYWFgAAAAAAAAAAAB6enomJiYAAAAiIiJ4eHgAAABiYmJgYGAAAACJiYkAAAC0tLR/f3/IyMjHx8e/v7+vr6+fn5+ZmZmUlJSBgYFmZmYiIiIQEBAAAAD////w8PDv7+/i4uLh4eHf39/W1tbS0tLR0dHMzMzHx8fFxcXCwsK/v7+4uLi0tLSvr6+rq6ulpaWfn5+ZmZmQkJCPj498fHxwcHBgYGBAQEAwMDAgICAfHx8QEBAAAAAphWZmAAAAQXRSTlMAESIiMzNEVWZmZneIiKqqu8zM3d3u7u7u7u7u7u7u7u7//////////////////////////////////////////wP/q/8AAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAVdEVYdENyZWF0aW9uIFRpbWUAMjEvNS8xMpVX8IQAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzVxteM2AAAAw0lEQVQYlU2P6VLCUAyFD1KvWFQ2F1ChnLLW2oIs1ZZC8/5PRW4rM+RH5uSbLCeARt2YO2Pq+I+aafUjRs+PplbVzfeQcbyZzoZuSZoBdyKSkQxdOx+SuQKZK/m8BZ7Iia3lT8m6BQy4/NodpYjpb9OiC3i/U+1NfE08iAdIamXACggwzq7BCGgfrIxt8pOsDbjpRu/k+Q/DBWf3auSVq/1Rz55074d16gT0i8pq4JTPOC9MRIqEbzeXfx860eS71yj1GWENHluGjvJwAAAAAElFTkSuQmCC)
+}
+
+.StatsIcon.PenaltiesIcon {
+  background-repeat: no-repeat;
+  background-image: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAA3NCSVQICAjb4U/gAAAAvVBMVEX///8AAAAAAACPj48zMzMAAAAoKCgAAAAAAAAAAAAAAACPj49OTk4AAAC1tbUwMDAAAABAQECdnZ2ZmZl3d3dtbW1mZmYTExOgoKCdnZ3////x8fHv7+/h4eHf39/Y2NjR0dHMzMzGxsbDw8PAwMC/v7+6urq5ubm1tbWxsbGvr6+tra2pqamkpKSgoKCfn5+Pj4+AgIB/f394eHhwcHBmZmZgYGBfX19bW1tXV1dAQEAwMDAfHx8QEBAAAAC8LuzAAAAAP3RSTlMAETNERERVVWZ3iJmZmaqqqrvMzMzMzMzd7v////////////////////////////////////////////////8NerQBAAAACXBIWXMAAAsSAAALEgHS3X78AAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M1cbXjNgAAABV0RVh0Q3JlYXRpb24gVGltZQAyMS81LzEylVfwhAAAALtJREFUGJVFjYlyglAMRQNWUSzu3a5EnyKKbBW62Iq8//+svmDVM5PJzZnMXCLBEuiGZfdc1+3aV2U5wzeF4MVz/oUz2x7KMsRmbF8enuHXWn8CPGpEm5Frrc8MlM3LI5bRt67UPP6oeyJGX3MgMYOT9kR4J5M3uItuZbIS8Vs/NC3VCng/LvwtErntziuCH1NzAJ46pmbAHKEwghEyD4jYEK+LIo/3EolSJXsXRrJUStTqT7LdhWzab9EfcXEX2pSRfKoAAAAASUVORK5CYII=)
+}
+
+.StatsIcon.CornersIcon {
+  background-repeat: no-repeat;
+  background-image: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAgMAAABinRfyAAAAA3NCSVQICAjb4U/gAAAADFBMVEX///8zMzPMAACZAADpEUi7AAAABHRSTlMA////sy1AiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNXG14zYAAAAVdEVYdENyZWF0aW9uIFRpbWUAMjEvNS8xMpVX8IQAAAAbSURBVAiZYxD9//8Pg+iqVWuIJ8A6GIAACwEAFJcZRbRLScEAAAAASUVORK5CYII=)
+}
+
+.StatsIcon.YellowsIcon, #MatchStats .StatIcon4 {
+  background-repeat: no-repeat;
+  background-image: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAA3NCSVQICAjb4U/gAAAAb1BMVEX///8ZGRkZGRnnvwroxB/73i783i773i353Cz32yr82Sb22Sn81yP01yfy1SXx0yLu0iL9zxj8zhft0CD7zRbrzh75yxTpzR33yRLoyxv2yBH0xg/yxA3wwgvowxHuwQnowg/tvwjrvQbpvATnuQK4DZMbAAAAJXRSTlMAM1W7zP//////////////////////////////////////////WRLP2wAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNXG14zYAAAAVdEVYdENyZWF0aW9uIFRpbWUAMjEvNS8xMpVX8IQAAABcSURBVBiVPcjFEYBAEATAxd3dOck/RoopmH62iDguOfLyG/IRbRp+8hbRR8GvR4wxjYg5oRmxZrQitoI2xF7SjjgqOhBXTRdCdaQQeiCNMBMZhD2Xz20RniVP5AH0fgxf5PEv1QAAAABJRU5ErkJggg==)
+}
+
+.StatsIcon.RedsIcon, #MatchStats .StatIcon5 {
+  background-repeat: no-repeat;
+  background-image: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAA3NCSVQICAjb4U/gAAAAIVBMVEX///8AAAAAAACqAACZAADMAAC5AACzAAC1AACxAACZAAB4zH7WAAAAC3RSTlMAM1W7zP///////1oj6FAAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzVxteM2AAAAFXRFWHRDcmVhdGlvbiBUaW1lADIxLzUvMTKVV/CEAAAAL0lEQVQImWNgEFICAkUGBgavVUCwBMhYFgoEVUDGUhAjiqaMFSDGLCDDCmT7YgYAXB8mcqUyuKsAAAAASUVORK5CYII=)
+}
+
+.StatsIcon.ThrowInsIcon {
+  background-repeat: no-repeat;
+  background-image: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAA3NCSVQICAjb4U/gAAAAxlBMVEX///+3t7cWFhYSEhIKCgoICAhKSkoMDAwICAhGRkYMDAwKCgpQUFBOTk63t7c2NjYKCgqZmZk8PDy1tbWUlJSFhYVfX19ISEhzc3NcXFxKSkp5eXm3t7dKSkq8vLynp6eZmZmRkZFISEi8vLy5ubmnp6ehoaHIyMi3t7e1tbWysrKpqamhoaGBgYFtbW21tbWysrKxsbGvr6+srKyrq6upqamnp6ehoaGJiYl8fHxtbW1mZmZiYmJcXFxQUFBOTk5NTU1KSkpVbH1gAAAAQnRSTlMAEREREREiIiIzMzNERFVVVWZmd3d3d3eIiIiZqqq7u7u7u8zMzMzu7u7u7u7u7v////////////////////////8jpxspAAAACXBIWXMAAAsSAAALEgHS3X78AAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M1cbXjNgAAABV0RVh0Q3JlYXRpb24gVGltZQAyMS81LzEylVfwhAAAAJZJREFUGJVjYIABbi4uBhSgoCLHz4zgsrAba8uri0B5rNwCYtJGRoaqykxgPoeQookxkG+gryUI5kuYmhibWwL5+hp8IPVAvpmVLBuQL8MIUsAL5NtKMTDoa/JBTATqt5EF0sKMED6nibGFIxuSe0SNjWyVUBxopOMojiygZqTrwIssoG2oZ4/iJ0MDazsUAQN9SR5kPgD+GxAyvQOGcwAAAABJRU5ErkJggg==)
+}
+
+.StatsIcon.FreeKicksIcon {
+  background-repeat: no-repeat;
+  background-image: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAA3NCSVQICAjb4U/gAAAAWlBMVEX///8AAAAAAABSUlIAAACDg4NxcXFPT0+VlZVubm5mZmaFhYWqqqqhoaGZmZlmZmZgYGCnp6ejo6OqqqqoqKihoaGdnZ2QkJCMjIyAgIBubm5qampmZmZfX18zXtheAAAAHnRSTlMAETNERFV3iJmZmbvMzMzd3e7u///////////////aOuepAAAACXBIWXMAAAsSAAALEgHS3X78AAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M1cbXjNgAAABV0RVh0Q3JlYXRpb24gVGltZQAyMS81LzEylVfwhAAAAG5JREFUGJWtzrkWg0AMQ1ENmH0JIIZJsPn/34xpcqCjiIpbvEpAkAyOBCA7QTmPAfmy5AjjXHoYyAI1WaMgB0A6rpU0ZCPVyk4w6bG/bVN19sMmWNSNxpScqNFg9F34S2gT+Xn9aP0qeeNJ6PsrX9WnDmlyU7KeAAAAAElFTkSuQmCC)
+}
+
+.StatsIcon.GoalKicksIcon {
+  background-repeat: no-repeat;
+  background-image: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAA3NCSVQICAjb4U/gAAAAeFBMVEX///8AAAAAAAAAAAAAAAA+WkM+WEFSdlpPcldQb1FObVBdgWKxy7exybOxx7Ll5eXj5OPY39na39vU3dbU3NTN2c7G1smLto94s4Zwrn0TgCcbfiYAfB4AexwDehsAeRoAeBgAdhYAdBEAdBAAcg8AcQ0AcA0AbgqZuZBBAAAAKHRSTlMAESJEVXd3iIiIiJnu7u7/////////////////////////////////NUrR0AAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNXG14zYAAAAVdEVYdENyZWF0aW9uIFRpbWUAMjEvNS8xMpVX8IQAAAB2SURBVBiVbcjpEoIwEAPgpdQDOdYDBeSyBfT939CsBZw6fpMfSYg+AqUC+lLhJo63oVr3Pjndruf0sDy7S3W3Q13kkSytdVJ2xg7PV5FhEMNxJp248eBoPTh6D46HB4cxvEInthZxpP85xhFxpBNPE+JIJ/7xBp5+FHabbBcGAAAAAElFTkSuQmCC)
+}
+
+.StatsIcon.FoulIcon, #MatchStats .StatIcon1, #MatchStats.StatIcon0 {
+  background-repeat: no-repeat;
+  background-image: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAA3NCSVQICAjb4U/gAAAA5FBMVEX///+QkJAmJiYWFhYHBwcHBwcmJiYWFhYmJiYkJCQhISEYGBhWVlY+Pj4fHx8eHh4bGxs+Pj42NjaDg4NsbGyRkZFxcXE5OTmHh4dQUFBOTk5JSUmZmZl0dHRxcXFvb2+np6ddXV2RkZGHh4eDg4OAgIB6enpmZmZjY2O1tbWysrKvr6+tra2rq6upqamnp6ekpKSioqKdnZ2ZmZmTk5ORkZGQkJCLi4uJiYmHh4eFhYWDg4N/f392dnZ0dHRxcXFvb29sbGxmZmZjY2NgYGBeXl5aWlpQUFBLS0tKSko8PDw2NjZaAb2AAAAATHRSTlMAERERESIzM0RERERVVVVVVWZmd3eIiIiZmZmZqqq7u93d7u7u7u7u7v//////////////////////////////////////////////de+tCgAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNXG14zYAAAAVdEVYdENyZWF0aW9uIFRpbWUAMjEvNS8xMpVX8IQAAACWSURBVBiVY2AgBzCzcwvw83FxcjBB+CxCcqqWLs5KGopivBxsQEFBNRtrN1czJ0dDfV0FGWEGVmVjIxcXcxdnI0M9HS1NdQZZY3MzMxMzWwtjAz1tLXV3BhNLC5CIraODrbKRurskg4kVWMTJydHB3s5DioHB1Bos4unFIyJvLw20VdQaJGLrLQ53l6iKtZUEI1leggIALlcXHphCNBYAAAAASUVORK5CYII=)
+}
+
+.StatsIcon.SubsIcon, #MatchStats .StatIcon3 {
+  background-repeat: no-repeat;
+  background-image: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAA3NCSVQICAjb4U/gAAAAKlBMVEX///8AAAAAAAAAAAAAHQ4AAAAAPh0AWyvEISUAczYAiEAAhT8AiEDEISWbs2p0AAAADnRSTlMAESIzRFVmiJm7zO7///itF10AAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzVxteM2AAAAFXRFWHRDcmVhdGlvbiBUaW1lADIxLzUvMTKVV/CEAAAAU0lEQVQImWNgAAFmAyARGsrAoDkJyLh7l4Gx5rgAmMF25kwCmOF95swWMGPNmTOnwAyGM2cYiGKY3r0bDGb03r17A8zguHu3AaKm9wZUMUcD2CUAfTIyAvy9WNIAAAAASUVORK5CYII=)
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
+  .match-live .icon.line-up, .match-live p:before {
+    background-size: 100%;
+    -webkit-background-size: 100%
+  }
+
+  .match-live .icons .icon.line-up {
+    background-image: url(sports/1/grfx/@2x/line-up@2x.png);
+    -webkit-background-size: 23px 15px
+  }
+
+  .StatsSelectIcon {
+    background-size: 11px 8px;
+    -webkit-background-size: 11px 8px
+  }
+
+  .StatsIcon.GoalsIcon, #MatchStats .StatIcon2 {
+    background-size: 16px 16px;
+    -webkit-background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-image: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNXG14zYAAAAVdEVYdENyZWF0aW9uIFRpbWUAMTcvNS8xMnLmCQQAAARlSURBVFiFtZdPSCNXHMe/SVYKSw+jVnoQcRBRWjCMpz3UP0GKbPESPVRt0QhN0YLg1IuSQxgjPVq1BxMk2lCwfzBqlCpOiyRGDz0UJppLd1t09NR0qTNL1/5z468HTZhkZpIsbr/wYP689/t+3u+9ee+NhYhgsVhQomoBVAN4FcArmucE4F8AKoBzAL8DuDILQkTZ63slmJYB4AC8/uDBg4dOp9NRX19fXVVVxWQqWK3WdCqV+kMUxZ+DweD3ACQAvwB4DODPgtG1NAZqBPCux+P54ejoKE0lyOfzUXl5+SWAPQAf3MbQeWZKIYC3mpubv15cXLwqxfj4+JjC4XD2PhQKEcuyBOBLAI7bTOoALAZzoAxA+/j4+GczMzNvAMDa2hoaGhrQ1NSEWCwGWZYhy3K2gdVqhcvlQm1tra4X8/Pz8Pl8ZxcXFzwAEcBfOZ02yMA7IyMjT/J76Pf7CTeTTVcYhiFFUUyzo6oquVyuVFNT03uZTJgNwZvT09OPjYLcptO0CIJQcIjOz8+pt7c3BeChGUBZZ2fnulHjUChU0DyThWLa2NighYWFRwCqjQDeNpvpTqezKAAACoVCRbMgyzK1trZ+ogOYmJiQjBopilKSOQByOBxFs7C7u0vr6+tPANzXAtSa9T4SiZRkzjAMhUIhCofDtLq6amiuKAr19fWRLMsEoDML0NbWNm3UYHNzk7a3t0kQBGIYxtSc4zhKJBI5bfNBJEkijuMIAPE8T5OTk99kAex2+7f5n1EwGCRVVbP3qqqSIAg6c57nc+rlKxwOU1dXl1EHDrVDcMxxHCmKQoqi0MrKimlAWZZpaGiIGIahSCRiWk8rk0l8ogW4zIzj8vJySUGLzXitjDJ3sxQQrLef4H0AUFUVdXV1eNliGMb0ndX0zUsUx3G6ZyzL5gA8e9Gg6XT6LkyQZfmZFuCnFw1gs9nuBICbw0oWQMo8jcVidw2s08nJSc4wsCyL/v7+37QAO5mXiUSipKDX19dQVbVova2tLfT09ECSJMiyDJ7nIQgCKisrvwOQsxk9BUB2u50kyXBbyEqSJGIYhliWpWg0alrP7/frFilJkmhqauqfrLcGwJfZ05PJJC0tLRkGjUajulWNZVmanZ3NHkpOT08pEAgYtt/a2iK32/2FEQCzv7//XFs5fz0fGxsruim1t7fT4eGhaVYEQfgbAGMEgNHR0Y+Njlbb29vU0tJS0q7odDpNzc/OzgiAM+OnAwAAr9d7YNS4lFMRAJqbmzMFGBwcDGu9DAEKQWS200JFlmVDc6/Xe6A1JoMjmQ4ifzgSiURBc47jdMaKopDH4/kqv+dFAYCbORGPx3N+THie1xmzLEsOh4PcbjeJopj9GnZ2di4HBgb68uOWDHArZnh4+PN4PH4liiIlk0nTMc4oEAg8bWxs/MgsoBbA6M/IVN3d3R92dHS8X1NT01hRUfFaOp2+BwA2m+356enpr6lU6kdRFD/d29s7KBRH22lLCRn4X/Uf5t3aFKaK/qgAAAAASUVORK5CYII=)
+  }
+
+  .StatsIcon.PenaltiesIcon {
+    background-size: 16px 16px;
+    -webkit-background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-image: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNXG14zYAAAAVdEVYdENyZWF0aW9uIFRpbWUAMTcvNS8xMnLmCQQAAAUPSURBVFiFvZffaxRXFMe/s3X7sLbuKIKJYjJZY4o/2IwPxRclS1CbGktWLAREuwP5AxxIIOCLa2sJ+DQPeVBMcIjdJtQIQdEHX3Yw81BiNNksJKDgzCytm4B0Zlu6/bHunj5sdrrZnZlNaeuBy965e885n3vuub8YIgLDMNiktALYA+ADAO8DqCgSgD8B/ATgBwCrXkaIyK5v2aTjAwBCR48e/TQajUba29v37Nq168NSqfQeAPh8vuLa2tovU1NTy/fu3VMAqABerZdCrTGGYf6GqKZxkB0APonFYtOqqv5BDcQwDDpz5gxt3779VwDfAvgcQJNbFIjIE6AjFAoN37x5M3f37l1Px6Zp0uTkJFmWZbfJskxtbW15AF8D+OifAnScPn06kUqlihWD09PTlEwm6cqVKxSLxairq8suQ0NDjmCWZVE8Hqf1aByode4GsKO3t/eb6tEQES0sLBDKyVZXWJYl0zRdIzQ/P09NTU3TAEINAfbt2zdkGEap1oggCK4AACgej3tO08zMDPX19d0C4PcCODA1NfVzrbKmaZ7OK1HwknQ6TXfu3CkA6HYFEAThOydlWZYbAgAgWZY9Ie7fv0+XL1/+vhrAVz33J0+e/MwpI2dmZpyaNwjLslhdXYUsy7Asy7HP3Nwc+vv7P2YYJmQ3ViJw6NChL5yox8bGKB6PE8dxriPneZ4WFxdtHVVV6fbt23ZimqZp51A8Hqfz58+P1E3BkSNHJqsz2TRNSiQSdVNRCyKKomvIVVWl69evO8GPO+XAE57nSdM0WlpaoocPH7oalmWZwuEwKYriNeVEVM5+h6g9dwJ4jvVs9nJeDbEZURTFE6A6CQEAlmVh69atDZNus8LzvOf/dQD/tQSDwU0DvP1/UTZI0QngybvwzLIsmpubXzgBqJWKoigNDXEctymH4+PjUBQFkiSB4ziIoohz587N2x1o41mQA0CRSKRhdguCQNFo1PUUNE2zbqWYpkmDg4O/V/ySw2H0pSAIZFkW3bhxgzRNczQciUQ2LKtYLEYLCwt2n9nZWcel/PjxY+rr6xvzAmBTqdTbikI6naZEImGDJJNJzy2Z4zgaGBig2rtERYaHh3+7du1aqxcALl68+FWtoq7rNDIy8q9ORNM0qb29Xaye+moAP8q3lRM9PT0DV69e/bHWgGVZnqOvFLfRDw4OZnp6egYAnFj35bcBeJ7vnZiYuLWysrKm6zrpuk6jo6N1Rlz29Q2nopOMjo5Sxe7KysraxMTErc7Ozl4iAkNESKfTr7Zt29ZWu4QePHiACxcugGVZu+3s2bOu9wNJknDp0iX7W9d1JJNJdHd31/XN5XJaOBwOMUQEwzBc7+bPnj2Dz+dDNBoFADx69AhPnz4FUN4veJ4Hy7LgeR6BQACGYYBlWRSLRXAch6Ymx2cBAKC1tZVhiAizs7PU0tLi2hEA0uk05ubmcOrUKRw7dsyxj6qqePnyJfbu3Yv9+/d72stkMjh+/HgZQJKk1O7du8MtLS1obm72VASA5eVllEolaJoGAOjo6ECxWMTBgwcb6mazWWQyGbx+/XpJFMXOLQDAMExXNpsVstmsCKB1586dCAQCCAQCCAaD8Pv9AAC/349gMGg7Onz4cJ2DXC6HQqH8HCwUCsjlcsjn88jn83jz5g0AGAAkhmFkAOUkrH4dS5LEAYgAqPwCAA/A+1ytlxyAxfW6AkAHoIiiqFfvPUztRvSu5S/+lRJuXT5NrAAAAABJRU5ErkJggg==)
+  }
+
+  .StatsIcon.CornersIcon {
+    background-size: 16px 16px;
+    -webkit-background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-image: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNXG14zYAAAAVdEVYdENyZWF0aW9uIFRpbWUAMTcvNS8xMnLmCQQAAABbSURBVFiF7dZRCkARFIRhdHfkrMlurWm8IqU0dV/+eaPwnbxMlpTmRMSy0XpPzjQpz+vvdqAaHz+NUoz3PwUAAAAAAAAAcO0D3jryANgbjDu/fwEAAAAAAAAwAJbSDXXwUL/AAAAAAElFTkSuQmCC)
+  }
+
+  .StatsIcon.YellowsIcon, #MatchStats .StatIcon4 {
+    background-size: 16px 16px;
+    -webkit-background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-image: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNXG14zYAAAAVdEVYdENyZWF0aW9uIFRpbWUAMTcvNS8xMnLmCQQAAAEwSURBVFiF7ZfNTcQwEIW/JHYEG/7OOVAC2gYQVxqgB0QJFEAJiDOd0AG0wCFHlohEwDrLcAgSke1DtBtvQMqTcpk47z2PJ2M7EhG6yPN8FzgDNMPCAA9FUbx3g8oedX6aXNxdx7cakw2rruvLm68r4L4bj+wMLB+PK5WQkR1C4vhbDysDdUmziup0/rzXfRXbYxUmY7Y/nDhAomF20HI7ehZEpP3AyszmJpSX029gaPFfcifkLMG2MXoGJgN+A4xpAAmm7yN2u40QcAnc0B+tgcnAZGB0A6HQvxGFMjE1on9ThKMaCLcV0qsIR89AsL9A/OcMfwYaM+zFBKBZ9juWS6xKqRaI+UR+KmKjR6TlqhZIrEtbz51munOC+Xji7eVo3cl6ofQrKp3bYedyum18A6gb5lBg7cpoAAAAAElFTkSuQmCC)
+  }
+
+  .StatsIcon.RedsIcon, #MatchStats .StatIcon5 {
+    background-size: 16px 16px;
+    -webkit-background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-image: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAhCAYAAAC4JqlRAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNXG14zYAAAAVdEVYdENyZWF0aW9uIFRpbWUAMTcvNS8xMnLmCQQAAADoSURBVFiF7dc9SgNBGMbx3wRFNiuoJ4gnEFsrT2FrK3ggwVJv4hGsLZIjGE2UIGQsssIymy0Ck7WZpxrer+c/L0wxIcaorRBChWscyqsfvMQYv9vBg7Tqips7HlbUOd2PWD5yj+d2PKQbeAphMaI+R4WQwXyJWXO8jfG4nRulxSvqCcaZzNmsctLMTnMdgL+G3OqbuRVgH+rb5mAAfSoABaAAFIACUAAKQAEoAAVgMID1LgBfewBYIG6JdwAq5lN89jTsqjU+MG1mp/nO5/SMizmvb5xm8MfmImPeT7hMc53P6dD691fwC5XdLn3FfrHIAAAAAElFTkSuQmCC)
+  }
+
+  .StatsIcon.ThrowInsIcon {
+    background-size: 16px 16px;
+    -webkit-background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-image: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNXG14zYAAAAVdEVYdENyZWF0aW9uIFRpbWUAMTcvNS8xMnLmCQQAAARUSURBVFiFvZdNSCNnHMafv5PE6Wg0yUiMX1VT6cG2bEUbpFjYeKlSCluiu1AU2hykaWilKEXppV3aQw9LVXopBd1CodiD1IiKCkuCoBcPLoofjEm0QtNGDLom1ZiPt4d17Bg/WTUPhHkn8877/P7/95khIcYYiAg3obKyMgFACRGJROTz+Xx/nzWPMXbOyTXV29v7lsvl+nVubm6hr6/vO7PZXHIegPy5UQBJku4tLy/vr62tMa/Xy/r7+3vMZrM5bQAAMD09zVZXVxMyxODg4M9ms/nN8wDoOhkoKioSiIgBKCail4iIBgYG5jUaDfLy8pharSYiwubm5hO73d7h8/nmZQBZLwxQWFiobmhouBMOh7WVlZUPeJ4vycjI4Kqrq98FAI7jYDQaodFooIB4CGDG6/XGXhjAZDIJAF7Nz89/pb6+/k5FRUVFfn7+G5mZmcU8z+uI6Hi9VIhwOOzv7u7+bGVlZVKGuDKA0WhUA3itpqamuqmp6UOj0VirUqkEpaHyqITQ6XTIzs4+hujs7PzS6/VOer3eZ1cCyMvLE0tLS+86HI5PCwoK6lNNL4MgIhgMBmRnZwMAksnkv/Pz8+83Nzc/UV1WuSiKJTabrbWxsfErlUolAP+HiIhOBuroXPm9PA6FQkgkEuA4DsFgMMrzfBYAXAig1+tLHA5Hh8ViaT9rUQDY2NhAIBBAKBTC7u7uaGtr63tnQcTjcUiSBMbYvsFg+Emr1U4DF2RAp9OZnE5nl8ViaU9taSwWw+LiIiRJQjgcXgfQQ0S/DA0N7UxMTDDl/EQigVAoBAD7er2+NzMz83ur1boj+5zZgdzcXMFutztqamraU19UGxsb8Hg8iMViuwB+GB4e/kZ5XVl9MBjEwcHBM71e/9Bmsz1SzrkQoK6urrG2trYzteUejweSJAHAUyL6yOVyzafeyxhDNBrF9vb2jlar/balpeVR6hylTgFotVrRZrN9zXHcicCNjo4iEAiAiB4D+GJkZGQn9V4AiEQiPVlZWcN2u919kbGsUxlwOp1Oq9X6o1w5ESkrfzw2NvbxVRa+SOdugSAIYlVV1SfKfZydncXq6iqI6On4+Pi1zVN1AqCtre2DnJyc12XCQCCAhYUFENEuY+zuTZufAigvL3+grN7tdsvtujcxMXHmnt8YAM/zJlEU35arlyQpvre3pwIwMjk56b4NcwDIkAcdHR33lcmfmZlRHcF8flvmJwD0ev078q8Uv9//ZzQaRTwe/31qamo9LQC5ubnVwPPqJUniGWPgOO632zQHjjKgVqtzBEEoZ4whmUyG/X6/kTH2l9vt/uO2ATIAoKurq0oOXyQS2QSAZDI5c9vmxwCRSORl4Hn7t7a21hhjiMfjnrQBFBcXWxSPHxhj0Gg0i2kDkHX0EkoAgNvtdqcN4PDwUC13YGlp6Z+b/rNyKYBGoznOAMdxprS5ywCiKApy1Wq1ep0xZk0XAKWz3WfpPz/jPTBLeeGMAAAAAElFTkSuQmCC)
+  }
+
+  .StatsIcon.FreeKicksIcon {
+    background-size: 16px 16px;
+    -webkit-background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-image: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNXG14zYAAAAVdEVYdENyZWF0aW9uIFRpbWUAMTcvNS8xMnLmCQQAAAOvSURBVFiF7ZbBSyNnGMZ/30xm09QlugkmpKaHSBUaWZOuwQGpa1fIHkpJdxH24CFEliBdltBTDl52Czn0bwilQqAXwZOH4sZ0oe0hKmWwILb0qOi2kEjAoHESp5cknSRmzWHb0uJzmnm/3/vMk5n53okwDAMhBHXJwPtAGHAAReAHQANq/CUXMAuM1M9/A74D/jAxMvABMG3yygJ7hmE0vSy06h1VVT9bWFiYczgc7mKx+Pvq6urtbDb7DNhvQF6v95NoNLo4NjYWANjd3d3JZDJvHxwcfG32CofDT+bm5j5ueC0vL7+3ubn5pdlLMl9dVdX7iUTiscPhcAM4HA53LBabV1X1vpmLRqOLwWBwUlEUq6Io1mAwOBmNRhfbvWKx2LzZK5FIPG73agkQiUTuKYpiNdcURbFGIpF75lowGJxsu3MdtV69WgIMDAwU241fV3+devUyB+gvlUovL2sql8s5QAH6Affp6elWO1OvuQE7cKPe06FSqfRSCOEWQtw0B7gJPFhaWrqTy+VemBs0TdtKJpMjwBjwAHiaSqU2i8XiqwZTLBZfpVKpTeAp8ClwO5lMjmqa1hI0l8u9WFpaulPnwgCivg0fxuPx55IkjVcqFQzDaDYJISiXy4Xt7e1vwuHwR5Ikjeu6Tq1m3pUgyzJWq5VarbazsbHx48TExHxfX9+tdi+bzcbIyAh7e3vfp9PpGQtAPB7/XNf18VAohCzL5PP5ZpOqqlQqFefx8fFDXdffDYVCuFwu8vk8hUIBALvdzvT0NIeHh2iaFhgeHnbMzMzc6uKFpmlMTU3dbT6CUCh0V9d1BgcHcTqduN1uALxeL06nE4/HgyRJ1gYDEAgEsFgszWMAj8dDtVpFkqS3Gl5er7fDq1qtNkM1X0Jd15sTMRAIYLPZ8Pv9zVsnhBBmxmaz4fP58Pl82O32JmcYBpIkWRuc3+/v8DI/lvZJCICiKMzOzl621KLR0dFL6+YLXOUldV35h3QdoOcAhmGIq6m/MYAQwno1RcsW64XpOYAsyzd64c7PzxFCXFzFdASQZZmjo6MO2DAM1tfXd2u12rcXFxfHlzENbn9/n/7+/l8lSSpks9mfuzFDQ0MAX0D9W5BOp5+fnJw829nZafyC5sARQmCxWCgUCipQAr6y2+0ftpsLISiVSj8BT4CSy+X65ezsrCuztra21Qxg+k/IysqKwSV69OiReFOMeVB1fQcymQyZTKbb8htj/jtz4DrAdYDrAP/bAC1j8d/Qn5a8d8+PrHL7AAAAAElFTkSuQmCC)
+  }
+
+  .StatsIcon.GoalKicksIcon {
+    background-size: 16px 16px;
+    -webkit-background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-image: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNXG14zYAAAAVdEVYdENyZWF0aW9uIFRpbWUAMTcvNS8xMnLmCQQAAAJSSURBVFiF7ZY9aBNhGMf/r0mvxrO1p2jD2RJFG7QodnAJFIU6lWoJLh2FkimIUITiki0h6iIuDSiCLtnEgijiULtUwWZIBYX6kUJoQtMUTaWXxrvmHod6tZD7io29Dv3DwfG8D8/7u+fjvZcRERhjsCkOgBfAIQAtAFwA3ACqAH4BWAWQA7D0x6YrItp4d9vdGcDxQCDQEwqFLrT7vOfaBMEnrUlNnmaPR1mTZSj4WSlXFj68n5lMJBJvs9lsGkDRKiizmYHuZDJ5vfO0b3BqIXXw9dyk51NxFsurJShVGQe4/RCaW3HmyCn0HbtY6Wo5kU9NTD+KRCJPAcyaZcAOwOHxF+Njrva9/aFXo3xhpQCoKkAEkLr+qOrfdyL0eM/iXv8daXFu8dnQ1aEbAH4YAeyxylA8Hh+WBXbp2subfEGyzCgAIJ2fwcCTIL9P5Aej0WjQzNcUwO/38wPByyP304+F75WSrc01lZUyHkw/bO3t6x0G0PRPAOFwuFtSK/xULlXX5pomvr1BUV7qjMViopGPNgVX9BYlSTr/sfjZcJysJMkSluVSWyaTCQLIaHat54joOSMi5PN5IlBNAAYGuapgRSlvstb6bdhrlgiciwPP8bqxRVFk7nU3QsdYoJ6P27Lmw+8AbD6ISN1WAE07CcCottsG4HQGVKcBHM/Abg84D7ADS5Ab/QK9f0Q9YmA4erfLBoDOGBIIHbdPbglg/tZX0xG3LkEjSmMSw7oJG9GcJjF2ARzvAatr+X+X4wCWl9JGyCi2KIqMkUNHsCbHS/AbQJsQsU5Jih4AAAAASUVORK5CYII=)
+  }
+
+  .StatsIcon.FoulIcon, #MatchStats .StatIcon1, #MatchStats.StatIcon0 {
+    background-size: 16px 16px;
+    -webkit-background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-image: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNXG14zYAAAAVdEVYdENyZWF0aW9uIFRpbWUAMTcvNS8xMnLmCQQAAAOMSURBVFiF7ZbPSyNJFMc/XZ10UJK1E8zBgAddEQ+Cg6wHZZkdD96E8RRZLysienT2P5jtv8DTgl7WXAKedgZBQXLILEguaRIxgh5WMiJsohA7RvOzQ/ZgOiSOcYIXLz5oGl69qu/nFVXvlVSr1XhJEy+q/grwCvAKANgAJElqG6Bp2htgEXgHjEmShBAC6y+E+CKESAoh4rIsh9fW1uKdCFv1R6rVao8C1IXXgV8sX7O4ruskk0lUVWVmZoauri4LCFmWvwghwkKIT8vLy48CPQmgadpiXbznobhpmkQiEa6urhgYGGBqaopqtUo4HCaVSjE8PMz09HQDRgiRFUJ8soAWFhaMJwHq4n81A1nihUKBSCSCYRiMjo4yNjZGoVAgHA6TyWQYHx9nYmKiWbzlkyQJSZIOgS0gPD8/H28B0DRtzuVy/d3b24vD4WgAVCoVkskkOzs7AIyPjzM0NEQ2m2V/fx+AyclJRkZGvifeWDMQCBzs7u7+3ADQNE31+Xxpu92uFIvFRqDNZsPpdCJJEuVymUwmg2maJJNJDg4OUBSF2dlZvF5vx+KhUOifWCz2NhqNSjbLOTg4+Ofd3Z1SrVZbzoNpmhiGgd1ux+l04na7OTs7o7+/n6WlJWRZbiv8mHgikTiOxWJvGwkCBIPBd7lc7leesEqlQi6Xw+Vyoaoqx8fHyLKMy+XC4/HQ09PTchMeE0+lUv/t7e31N69rA8jlch+eEm/eDdM06evr4/T0tLE7hmEA4HA4UFUVt9uN1+vFbrc35haLxZtgMAjwQ9112AAA3ncCAHB7e4uqqrhcLq6vr1vGSqUS6XSadDrNyckJ3d3dtx6Px+52ux3b29vZarVqZZ/lvrA1ADo26/4qikK5XEZRlLax+Xzemc/nubi4oFAotIhHo1HjWQCW3dzccHR0hKIoqKqKz+f7V5blHzuY+kHX9UZ1fHYzOj8/B6BcLnN5eUk8Hv8JGAB+Bz63mfaHrutbzQ5rBz7T4TmwTnU6nW52B3RdN3RdN7gv4esrKysqMFf/3tdjPj5czwJY7xTA6XSSSCQolUqW6yvwzS3a3Nw0uC+5Ww/Hml/iAmB1dTUMBL4nbrPZyOfzhEIhyxUA3tQzf5a19IKNjY0t4LfHAuuV8BBY9Pv9HfX8dta8A990w0AgMFcsFj8CY9DoBV8lSdoC1v1+/7OzbQvwkvbib8JXgFeA/wG1KXURvtBCjwAAAABJRU5ErkJggg==)
+  }
+
+  .StatsIcon.SubsIcon, #MatchStats .StatIcon3 {
+    background-size: 16px 16px;
+    -webkit-background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-image: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNXG14zYAAAAVdEVYdENyZWF0aW9uIFRpbWUAMTcvNS8xMnLmCQQAAAHlSURBVFiF7Zcxa9tAFMd/T3aHmBAyxSJLENjgEmhr4VGtM3TVFpJvUMiiyUOyJXRQ5oydCvkGzRdIqcdSgmknDaJLSbeQdPZ1kNxGWOec0WnzH4Sk0z3d791796RDKUVNagFv83NBSql/B7UB+O4h79/8xncPFwE0NebhgldfGQy/S9iJeeZsEXZivt1+B36UdRSlFCJSaBx7Xe20BGkiume5XKLBB7bX/zvx688VF1/fAbdQnHXnKVeWVIv93lFhcIDt9ZD93hEl+WAXwHdD+u1R6bN+e4TvzoXWJkAW94bMeQlAQ1qEnRjYrQPAJRrErDW9hb3Wmh7RIBYR1yZAedx1yvNBJJup6gCL4q5Tf2uE3w7tABz0TrRx16nhtDh4fgJoC5G5jq9fFe7P9/Sl9fhaoN46sLRWACuAFcAKYFYJh8CGoc3jj8498LkywBeveyHwwsRg7HU/za4VTF6nycsqAA6AwFBl3hhLwb1kM1dJDkCQJncCwyk8mBhN4UFgGKTJnRWAHOLGgcjQKArS5Kbq4AWAHOIjcPaEzVnez4rmlmGQJqdTuCzrPIXLIE1ObQ1eCpA3Rgomj9sUTExDtIxKd0YAY6+7qeCnwEae8Ts2kg4M/4hmK4MMwkrGl0lq3J4b6S+B55ZWuRZlHgAAAABJRU5ErkJggg==)
+  }
+}

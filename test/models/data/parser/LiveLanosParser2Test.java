@@ -12,9 +12,9 @@ import static models.web_driver.WebDriverKeeper.initWebDriverEnv;
 import static org.fest.assertions.Assertions.assertThat;
 
 @Ignore
-public class LiveVolvoParser2Test {
+public class LiveLanosParser2Test {
 
-  private static LiveVolvoParser2 parser;
+  private static LiveLanosParser2 parser;
   private static WebDriver webDriver;
   private static List<ParsedEvent> parsedEvents;
 
@@ -22,42 +22,43 @@ public class LiveVolvoParser2Test {
   public static void beforeClass()
     throws Exception {
     initWebDriverEnv();
-
     webDriver = new ChromeDriver();
-    String url = LiveVolvoParser2Test.class.getResource("/models/data/parser/LiveVolvoParser2Test/bet365 Sports.html").toString();
+    String url = LiveLanosParser2Test.class.getResource(
+      "/models/data/parser/LiveLanosParser2Test/Live betting   Sportsbook and online sports betting from MARATHON.html").toString();
 
-    parser = new LiveVolvoParser2(url, webDriver);
+    parser = new LiveLanosParser2(url, webDriver);
     parsedEvents = parser.parse(null);
+
     webDriver.quit();
   }
 
   @Test
   public void parse_events_returnWithData() {
-    assertThat(parsedEvents).hasSize(6);
+    assertThat(parsedEvents).hasSize(17);
   }
 
   @Test
   public void parse_firstSideNotEmpty_returnWithFirstSide() {
-    assertThat(parsedEvents.get(0).firstSide).isEqualTo("GAEL MONFILS");
+    assertThat(parsedEvents.get(0).firstSide).isEqualTo("Flamengo");
   }
 
   @Test
   public void parse_secondSideNotEmpty_returnWithSecondSide() {
-    assertThat(parsedEvents.get(0).secondSide).isEqualTo("FABIO FOGNINI");
+    assertThat(parsedEvents.get(0).secondSide).isEqualTo("Limeira");
   }
 
   @Test
   public void parse_sportDescr_returnTennis() {
-    assertThat(parsedEvents.get(0).sportDescr).isEqualTo("Tennis");
+    assertThat(parsedEvents.get(0).sportDescr).startsWith("Basketball");
   }
 
   @Test
   public void parse_firstKofNotEmpty_returnWithFirstKof() {
-    assertThat(parsedEvents.get(0).firstKof).isEqualTo("21/20");
+    assertThat(parsedEvents.get(0).firstKof).isEqualTo("1/25");
   }
 
   @Test
   public void parse_secondKofNotEmpty_returnWithSecondKof() {
-    assertThat(parsedEvents.get(0).secondKof).isEqualTo("7/10");
+    assertThat(parsedEvents.get(0).secondKof).isEqualTo("19/2");
   }
 }

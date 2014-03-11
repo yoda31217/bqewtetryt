@@ -1,0 +1,640 @@
+.tennis {
+  padding: 0 0 4px
+}
+
+.tennis #match-details {
+  margin: 0
+}
+
+.tennis #arena .events li {
+  position: relative
+}
+
+.tennis .score-board {
+  height: 25px
+}
+
+.tennis #arena .events p span {
+  display: block
+}
+
+.hard {
+  background-image: url(grfx/HardCourt.png)
+}
+
+.grass {
+  background-image: url(grfx/GrassCourt.png)
+}
+
+.clay {
+  background-image: url(grfx/ClayCourt.png)
+}
+
+.match-live #arena .events > li > div {
+  height: 102px
+}
+
+.match-live #arena .events li div > #players {
+  padding-left: 2px;
+  width: 100%;
+  height: 100%
+}
+
+#players > div {
+  width: 50%;
+  height: 100%
+}
+
+.match-live.tennis #players .top .playerLabel {
+  padding-top: 3px
+}
+
+.match-live.tennis #players .bottom .playerLabel {
+  padding-bottom: 3px
+}
+
+.match-live #players .playerLabel {
+  min-width: 65px;
+  max-width: 125px;
+  line-height: 15px;
+  text-align: left;
+  margin: 0 6px 0 4px;
+  text-transform: uppercase;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap
+}
+
+.match-live[data-lng="2"] #players .playerLabel, .match-live[data-lng="10"] #players .playerLabel, .match-live[data-lng="19"] #players .playerLabel, .match-live[data-lng="20"] #players .playerLabel {
+  text-transform: none !important
+}
+
+.playerTop {
+  top: 0
+}
+
+.playerBottom {
+  bottom: 0
+}
+
+#players > div > span, #players > div > p {
+  position: absolute
+}
+
+.match-live .events .top > p.status {
+  margin-top: 35px;
+  top: 0
+}
+
+.match-live .events .bottom > p.status {
+  margin-bottom: 37px;
+  botom: 0
+}
+
+.match-live .events p.status {
+  color: #333;
+  font-size: 11px;
+  line-height: 14px;
+  height: 14px;
+  font-weight: bold;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+  background-color: #fff;
+  -webkit-border-radius: 1px;
+  border-radius: 1px;
+  -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+  padding: 0 3px;
+  margin: 0 6px 0 4px;
+  z-index: 1
+}
+
+.match-live .events p.status[data-event="fault"] {
+  background: #ffdf1b
+}
+
+.match-live .events p.service {
+  width: 90px;
+  height: 26px;
+  -webkit-background-size: 90px 26px;
+  background-size: 90px 26px;
+  z-index: 0
+}
+
+.hard p.service {
+  background-image: url(grfx/@2x/serveHard4.gif)
+}
+
+.clay p.service {
+  background-image: url(grfx/@2x/serveClay4.gif)
+}
+
+.grass p.service {
+  background-image: url(grfx/@2x/serveGrass4.gif)
+}
+
+#plyr1 .service {
+  margin-left: 40px
+}
+
+#plyr2 .service {
+  margin-right: 40px
+}
+
+.match-live .events .top > p.service {
+  margin-top: 35px
+}
+
+.match-live .events .bottom > p.service {
+  margin-bottom: 37px
+}
+
+#plyr1.top .service {
+  -webkit-transform: scaleX(-1) scaleY(-1);
+  -ms-transform: scaleX(-1) scaleY(-1);
+  -moz-transform: scaleX(-1) scaleY(-1);
+  -o-transform: scaleX(-1) scaleY(-1);
+  transform: scaleX(-1) scaleY(-1)
+}
+
+#plyr1.bottom .service {
+  -webkit-transform: scaleX(-1);
+  -ms-transform: scaleX(-1);
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  transform: scaleX(-1)
+}
+
+#plyr2.top .service {
+  -webkit-transform: scaleY(-1);
+  -ms-transform: scaleY(-1);
+  -moz-transform: scaleY(-1);
+  -o-transform: scaleY(-1);
+  transform: scaleY(-1);
+  top: 0
+}
+
+#players #plyr2 > span, #players #plyr2 > p {
+  text-align: right;
+  right: 0
+}
+
+#players .bottom > span, #players .bottom > p {
+  bottom: 0
+}
+
+.serviceMessage {
+  font-size: 11px;
+  opacity: .5;
+  margin: 0 6px 0 4px
+}
+
+#players .bottom > span.serviceMessage {
+  bottom: -11px
+}
+
+#players .top > span.serviceMessage {
+  top: -14px
+}
+
+#gameScores, #tiebreakScores {
+  position: absolute;
+  width: 100%;
+  top: 22%
+}
+
+#gameScores > span {
+  margin: 10px
+}
+
+#gameScores span {
+  display: inline-block;
+  width: 50px;
+  height: 30px;
+  line-height: 30px;
+  color: #ffdf1b;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility
+}
+
+.match-live #arena .events li div #tiebreakScores > div {
+  width: 38%;
+  left: 31%;
+  position: absolute;
+  font-size: 12px;
+  line-height: 10px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px
+}
+
+#arena #tiebreakScores > div div {
+  height: 20px;
+  line-height: 20px;
+  width: 50px
+}
+
+#arena #tiebreakScores > div > #tiebreakScore1, #arena #tiebreakScores > div > #tiebreakScore2 {
+  display: inline-block;
+  overflow: hidden;
+  border-right: 1px solid rgba(0, 0, 0, 0.2)
+}
+
+#arena #tiebreakScores > div > #tiebreakScore2 {
+  border-right: 0
+}
+
+#tiebreakScores span {
+  display: block;
+  height: 20px;
+  line-height: 20px;
+  color: #ffdf1b
+}
+
+#gameScore1 span, #gameScore2 span {
+  display: block
+}
+
+.currentGamePt {
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden
+}
+
+.nextTiebreakPt {
+  -webkit-transition: -webkit-transform .5s cubic-bezier(.69, .22, .62, 1) .55s;
+  -moz-transition: -moz-transform .5s cubic-bezier(.69, .22, .62, 1) .55s;
+  -ms-transition: -ms-transform .5s cubic-bezier(.69, .22, .62, 1) .55s;
+  -o-transition: -o-transform .5s cubic-bezier(.69, .22, .62, 1) .55s;
+  transition: transform .5s cubic-bezier(.69, .22, .62, 1) .55s;
+  -webkit-transform: translate3d(0, -20px, 0);
+  -moz-transform: translate3d(0, -20px, 0);
+  -ms-transform: translate3d(0, -20px, 0);
+  -o-transform: translate3d(0, -20px, 0);
+  transform: translate3d(0, -20px, 0);
+  -webkit-backface-visibility: hidden
+}
+
+.nextGamePt {
+  -webkit-transition: -webkit-transform .5s cubic-bezier(.69, .22, .62, 1) .55s;
+  -moz-transition: -moz-transform .5s cubic-bezier(.69, .22, .62, 1) .55s;
+  -ms-transition: -ms-transform .5s cubic-bezier(.69, .22, .62, 1) .55s;
+  -o-transition: -o-transform .5s cubic-bezier(.69, .22, .62, 1) .55s;
+  transition: transform .5s cubic-bezier(.69, .22, .62, 1) .55s;
+  -webkit-transform: translate3d(0, -30px, 0);
+  -moz-transform: translate3d(0, -30px, 0);
+  -ms-transform: translate3d(0, -30px, 0);
+  -o-transform: translate3d(0, -30px, 0);
+  transform: translate3d(0, -30px, 0);
+  -webkit-backface-visibility: hidden
+}
+
+.hard #gameScores > span, .hard #tiebreakScores > div {
+  background: -moz-linear-gradient(top, #2f5a84 0, #234e78 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2f5a84), color-stop(100%, #234e78));
+  background: -webkit-linear-gradient(top, #2f5a84 0, #234e78 100%);
+  background: -o-linear-gradient(top, #2f5a84 0, #234e78 100%);
+  background: -ms-linear-gradient(top, #2f5a84 0, #234e78 100%);
+  background: linear-gradient(to bottom, #2f5a84 0, #234e78 100%);
+  border: #19273d 1px solid
+}
+
+.clay #gameScores > span, .clay #tiebreakScores > div {
+  background: -moz-linear-gradient(top, #803f2b 0, #72331f 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #803f2b), color-stop(100%, #72331f));
+  background: -webkit-linear-gradient(top, #803f2b 0, #72331f 100%);
+  background: -o-linear-gradient(top, #803f2b 0, #72331f 100%);
+  background: -ms-linear-gradient(top, #803f2b 0, #72331f 100%);
+  background: linear-gradient(to bottom, #803f2b 0, #72331f 100%);
+  border: #663522 1px solid
+}
+
+.grass #gameScores > span, .grass #tiebreakScores > div {
+  background: -moz-linear-gradient(top, #526c29 0, #435f1b 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #526c29), color-stop(100%, #435f1b));
+  background: -webkit-linear-gradient(top, #526c29 0, #435f1b 100%);
+  background: -o-linear-gradient(top, #526c29 0, #435f1b 100%);
+  background: -ms-linear-gradient(top, #526c29 0, #435f1b 100%);
+  background: linear-gradient(to bottom, #526c29 0, #435f1b 100%);
+  border: #213309 1px solid
+}
+
+.tennis #arena .events .generic {
+  font-weight: bold;
+  display: inline-block;
+  width: auto;
+  height: auto;
+  min-width: 92px;
+  margin: 0;
+  padding: 3px 6px;
+  vertical-align: middle;
+  text-align: center;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4), inset 0 0 1px rgba(255, 255, 255, 0.2);
+  -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4), inset 0 0 1px rgba(255, 255, 255, 0.2)
+}
+
+.tennis #arena .events .generic .type {
+  color: #ddd
+}
+
+.tennis .generic .type {
+  text-transform: uppercase
+}
+
+.tennis[data-lng="2"] .generic .type, .tennis[data-lng="10"] .generic .type, .tennis[data-lng="19"] .generic .type, .tennis[data-lng="20"] .generic .type {
+  text-transform: capitalize !important
+}
+
+.tennis #arena .events .generic[data-event="ace"] {
+  text-align: left;
+  min-width: 66%;
+  height: 60px;
+  background-size: 141px 46px;
+  -webkit-background-size: 141px 46px
+}
+
+.tennis #arena .events .generic[data-event="ace"] > p {
+  margin-top: 10px
+}
+
+.tennis #arena .hard .events p span.team {
+  color: #b1bcce
+}
+
+.tennis #arena .hard .events p span.info {
+  color: #a0adc3
+}
+
+.tennis #arena .clay .events p span.team {
+  color: #deb7a9
+}
+
+.tennis #arena .clay .events p span.info {
+  color: #dcb5a9
+}
+
+.tennis #arena .grass .events p span.team {
+  color: #b1c56e
+}
+
+.tennis #arena .grass .events p span.info {
+  color: #aebb89
+}
+
+.tennis #arena .events #matchStatsView {
+  padding: 0;
+  width: 75%;
+  font-weight: normal;
+  font-size: 12px
+}
+
+#matchStatsView .type, #tiebreakScores .type {
+  min-height: 20px;
+  line-height: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08)
+}
+
+.hard .generic {
+  background: #4c6592;
+  background: -moz-linear-gradient(top, #4c6592 0, #3a5480 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #4c6592), color-stop(100%, #3a5480));
+  background: -webkit-linear-gradient(top, #4c6592 0, #3a5480 100%);
+  background: -o-linear-gradient(top, #4c6592 0, #3a5480 100%);
+  background: -ms-linear-gradient(top, #4c6592 0, #3a5480 100%);
+  background: linear-gradient(to bottom, #4c6592 0, #3a5480 100%);
+  border: #143159 1px solid
+}
+
+.clay .generic {
+  background: #b95937;
+  background: -moz-linear-gradient(top, #b95937 0, #a74723 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #b95937), color-stop(100%, #a74723));
+  background: -webkit-linear-gradient(top, #b95937 0, #a74723 100%);
+  background: -o-linear-gradient(top, #b95937 0, #a74723 100%);
+  background: -ms-linear-gradient(top, #b95937 0, #a74723 100%);
+  background: linear-gradient(to bottom, #b95937 0, #a74723 100%);
+  border: #663522 1px solid
+}
+
+.grass .generic {
+  background: #67831e;
+  background: -moz-linear-gradient(top, #67831e 0, #55710b 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #67831e), color-stop(100%, #55710b));
+  background: -webkit-linear-gradient(top, #67831e 0, #55710b 100%);
+  background: -o-linear-gradient(top, #67831e 0, #55710b 100%);
+  background: -ms-linear-gradient(top, #67831e 0, #55710b 100%);
+  background: linear-gradient(to bottom, #67831e 0, #55710b 100%);
+  border: #3e521c 1px solid
+}
+
+.generic[data-event="raindelay"] {
+  padding-top: 43px !important
+}
+
+.hard .generic[data-event="raindelay"] {
+  background: #4c6592 url("grfx/Rain.png") no-repeat center 10px
+}
+
+.clay .generic[data-event="raindelay"] {
+  background: #b95937 url("grfx/Rain.png") no-repeat center 10px
+}
+
+.grass .generic[data-event="raindelay"] {
+  background: #67831e url("grfx/Rain.png") no-repeat center 10px
+}
+
+.tennis #arena .events .generic[data-event="ace"] .team {
+  position: absolute;
+  font-size: 18px;
+  right: 15px;
+  top: 10px;
+  color: #fff
+}
+
+.hard .generic[data-event="ace"] {
+  background: #4c6592 url("grfx/Ace2.png") no-repeat right center
+}
+
+.clay .generic[data-event="ace"] {
+  background: #b95937 url("grfx/Ace2.png") no-repeat right center
+}
+
+.grass .generic[data-event="ace"] {
+  background: #67831e url("grfx/Ace2.png") no-repeat right center
+}
+
+.hard .statsTable {
+  color: #a0adc3;
+  width: 100%
+}
+
+.clay .statsTable {
+  color: #dcb5a9;
+  width: 100%
+}
+
+.grass .statsTable {
+  color: #aebb89;
+  width: 100%
+}
+
+.statsTable tr {
+  background: rgba(0, 0, 0, 0.1)
+}
+
+.statsTable td {
+  height: 20px;
+  text-align: center;
+  border-right: 1px solid rgba(0, 0, 0, 0.2)
+}
+
+.statsTable td.singleStat {
+  width: 5%;
+  padding: 0 20px
+}
+
+.statsTable td.singleStat.type2 {
+  width: 40%;
+  padding: 0 10px
+}
+
+.statsTable td.setStat {
+  width: 5%;
+  padding: 0 5px
+}
+
+#match-live .statsTable td:first-child {
+  width: 60%;
+  text-align: left;
+  padding: 0 5px 0 10px;
+  color: #fff;
+  text-transform: uppercase
+}
+
+#match-live[data-lng="2"] .statsTable td:first-child, #match-live[data-lng="10"] .statsTable td:first-child, #match-live[data-lng="19"] .statsTable td:first-child, #match-live[data-lng="20"] .statsTable td:first-child {
+  text-transform: none !important
+}
+
+.statsTable tr:nth-child(2n+1) td {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1)
+}
+
+.statsTable td:last-child {
+  color: #fff;
+  border-right: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none
+}
+
+#courtPointScore {
+  position: absolute;
+  top: -1px
+}
+
+#setScores {
+  font-size: 12px;
+  color: #ddd;
+  clear: both;
+  padding: 3px 0 0 0;
+  margin: 1px auto;
+  vertical-align: middle;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5)
+}
+
+#setScores > div {
+  background-color: #505050;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  height: 15px;
+  line-height: 15px;
+  padding: 0 0 0 5px;
+  display: inline-block
+}
+
+#setScores #currentSet > span {
+  color: #ffdf1b
+}
+
+#setScores #previousSets {
+  background-color: #404040;
+  color: #bbb;
+  border-left: none
+}
+
+#setScores > div > span > span {
+  padding: 0 3px;
+  letter-spacing: 3px;
+  text-align: center
+}
+
+.tennis #summary .graphs li .bar {
+  -webkit-box-shadow: 1px 1px 0 rgba(255, 255, 255, 0.05), -1px -1px 0 rgba(255, 255, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 1px 1px 0 rgba(255, 255, 255, 0.05), -1px -1px 0 rgba(255, 255, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  background: #ffdf1b
+}
+
+.tennis #summary .graphs li .bar span {
+  background: #fff
+}
+
+.tennis #summary .graphs li#stat3team1 .bar, .tennis #summary .graphs li#stat4team1 .bar {
+  background: #303030
+}
+
+.tennis #summary .graphs li#stat3team1 .bar span, .tennis #summary .graphs li#stat4team1 .bar span {
+  background: #ffdf1b
+}
+
+.tennis #summary .graphs li#stat3team2 .bar, .tennis #summary .graphs li#stat4team2 .bar {
+  background: #fff
+}
+
+.tennis #summary .graphs li#stat3team2 .bar span, .tennis #summary .graphs li#stat4team2 .bar span {
+  -webkit-box-shadow: 1px 1px 0 rgba(255, 255, 255, 0.05), -1px -1px 0 rgba(255, 255, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 1px 1px 0 rgba(255, 255, 255, 0.05), -1px -1px 0 rgba(255, 255, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  background: #303030;
+  -webkit-border-radius: 0;
+  border-radius: 0
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
+  .tennis #arena .terrain {
+    background-size: 310px 125px;
+    -webkit-background-size: 310px 125px
+  }
+
+  .hard {
+    background-image: url(grfx/@2x/HardCourt.png)
+  }
+
+  .grass {
+    background-image: url(grfx/@2x/GrassCourt.png)
+  }
+
+  .clay {
+    background-image: url(grfx/@2x/ClayCourt.png)
+  }
+
+  .hard .generic[data-event="ace"] {
+    background: #4c6592 url("grfx/@2x/Ace2.png") no-repeat right center
+  }
+
+  .clay .generic[data-event="ace"] {
+    background: #b95937 url("grfx/@2x/Ace2.png") no-repeat right center
+  }
+
+  .grass .generic[data-event="ace"] {
+    background: #67831e url("grfx/@2x/Ace2.png") no-repeat right center
+  }
+}

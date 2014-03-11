@@ -71,25 +71,25 @@ public class Global
         defaultDispatcher));
 
       FiniteDuration liveLanosOffset = Duration.create(70, "ms");
-      FiniteDuration liveLanosDelay = Duration.create(300, "ms");
+      FiniteDuration liveLanosDelay = Duration.create(10000, "ms");
       schedules.add(scheduler.schedule(liveLanosOffset, liveLanosDelay, logAndStopExceptions(LIVE_LANOS_JOB), defaultDispatcher));
 
       FiniteDuration liveVolvoTennisOffset = Duration.create(110, "ms");
-      FiniteDuration liveVolvoTennisDelay = Duration.create(300, "ms");
+      FiniteDuration liveVolvoTennisDelay = Duration.create(10000, "ms");
       schedules.add(scheduler.schedule(liveVolvoTennisOffset, liveVolvoTennisDelay, logAndStopExceptions(LIVE_VOLVO_TENNIS_JOB), defaultDispatcher));
 
       FiniteDuration liveVolvoVolleyballOffset = Duration.create(130, "ms");
-      FiniteDuration liveVolvoVolleyballDelay = Duration.create(300, "ms");
+      FiniteDuration liveVolvoVolleyballDelay = Duration.create(10000, "ms");
       schedules.add(scheduler.schedule(liveVolvoVolleyballOffset, liveVolvoVolleyballDelay, logAndStopExceptions(LIVE_VOLVO_VOLLEYBALL_JOB),
         defaultDispatcher));
 
       FiniteDuration liveVolvoBasketballOffset = Duration.create(170, "ms");
-      FiniteDuration liveVolvoBasketballDelay = Duration.create(300, "ms");
+      FiniteDuration liveVolvoBasketballDelay = Duration.create(10000, "ms");
       schedules.add(scheduler.schedule(liveVolvoBasketballOffset, liveVolvoBasketballDelay, logAndStopExceptions(LIVE_VOLVO_BASKETBALL_JOB),
         defaultDispatcher));
 
       FiniteDuration liveVolvoTableTennisOffset = Duration.create(190, "ms");
-      FiniteDuration liveVolvoTableTennisDelay = Duration.create(300, "ms");
+      FiniteDuration liveVolvoTableTennisDelay = Duration.create(10000, "ms");
       schedules.add(scheduler.schedule(liveVolvoTableTennisOffset, liveVolvoTableTennisDelay, logAndStopExceptions(LIVE_VOLVO_TABLE_TENNIS_JOB),
         defaultDispatcher));
 

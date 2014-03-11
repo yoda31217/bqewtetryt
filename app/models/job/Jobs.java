@@ -9,10 +9,9 @@ import models.data.adapter.LiveVolvoAdapter;
 import models.data.adapter.VolvoAdapter;
 import models.data.fetcher.BFetcher;
 import models.data.fetcher.LanosFetcher;
-import models.data.fetcher.LiveFetcher;
 import models.data.fetcher.VolvoFetcher;
 import models.data.parser.LanosParser;
-import models.data.parser.LiveLanosParser;
+import models.data.parser.LiveLanosParser2;
 import models.data.parser.LiveVolvoParser2;
 import models.data.parser.VolvoParser;
 import models.data.side.LanosSideCoder;
@@ -44,7 +43,7 @@ public final class Jobs {
   public static final RemoveOldEventJob REMOVE_OLD_EVENT_JOB;
   public static final Runnable NOTIFICATION_JOB;
   public static final EventJob LANOS_JOB;
-  public static final WebDriverKeeper LANOS_WEB_DRIVER_KEEPER;
+  //  public static final WebDriverKeeper LANOS_WEB_DRIVER_KEEPER;
   public static final LiveLanosSportSelectionJob LANOS_SPORT_SELECTION_JOB;
   public static final EventJob LIVE_LANOS_JOB;
   public static final EventJob VOLVO_JOB;
@@ -70,9 +69,10 @@ public final class Jobs {
 
     LANOS_JOB = createLanosJob();
 
-    LANOS_WEB_DRIVER_KEEPER = createLanosWebDriverKeeper();
-    LANOS_SPORT_SELECTION_JOB = new LiveLanosSportSelectionJob(LANOS_WEB_DRIVER_KEEPER);
-    LIVE_LANOS_JOB = createLiveLanosJob();
+    //    LANOS_WEB_DRIVER_KEEPER = createLanosWebDriverKeeper();
+    ChromeDriver webDriver = new ChromeDriver();
+    LANOS_SPORT_SELECTION_JOB = new LiveLanosSportSelectionJob(webDriver);
+    LIVE_LANOS_JOB = createLiveLanosJob(webDriver);
 
     VOLVO_JOB = createVolvoJob();
 
@@ -115,9 +115,9 @@ public final class Jobs {
       new VolvoSideCoder(), VOLLEYBALL), EVENT_FILTER, LIVE + "_" + VOLVO + "_" + VOLLEYBALL);
   }
 
-  private static EventJob createLiveLanosJob() {
-    return new EventJob(new LiveFetcher(LANOS_WEB_DRIVER_KEEPER), new LiveLanosParser(), new LiveLanosAdapter(new LanosSideCoder()), EVENT_FILTER,
-      LIVE + "_" + LANOS);
+  private static EventJob createLiveLanosJob(ChromeDriver webDriver) {
+    return new EventJob(DUMMY_FETCHER, new LiveLanosParser2(getLanosSite() + "/en/live.htm", webDriver), new LiveLanosAdapter(new LanosSideCoder()),
+      EVENT_FILTER, LIVE + "_" + LANOS);
   }
 
   private static EventJob createVolvoJob() {
