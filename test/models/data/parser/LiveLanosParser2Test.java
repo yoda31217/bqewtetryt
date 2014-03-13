@@ -27,7 +27,7 @@ public class LiveLanosParser2Test {
       "/models/data/parser/LiveLanosParser2Test/Live betting   Sportsbook and online sports betting from MARATHON.html").toString();
 
     parser = new LiveLanosParser2(url, webDriver);
-    parsedEvents = parser.parse(null);
+    parsedEvents = parser.parse();
 
     webDriver.quit();
   }

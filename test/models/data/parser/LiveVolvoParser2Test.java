@@ -27,7 +27,7 @@ public class LiveVolvoParser2Test {
     String url = LiveVolvoParser2Test.class.getResource("/models/data/parser/LiveVolvoParser2Test/bet365 Sports.html").toString();
 
     parser = new LiveVolvoParser2(url, webDriver);
-    parsedEvents = parser.parse(null);
+    parsedEvents = parser.parse();
     webDriver.quit();
   }
 

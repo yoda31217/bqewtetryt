@@ -35,7 +35,7 @@ public class LiveLanosParser2
   }
 
   @Override
-  public List<ParsedEvent> parse(byte[] input) {
+  public List<ParsedEvent> parse() {
     Collection<ParsedEvent> parsedEvents = newArrayList();
 
     List<WebElement> eventGroupEls = webDriver.findElements(cssSelector("#container_EVENTS > div.main-block-events"));

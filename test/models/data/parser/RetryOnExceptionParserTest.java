@@ -9,7 +9,6 @@ import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.Fail.fail;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -23,47 +22,47 @@ public class RetryOnExceptionParserTest {
 
   @Before
   public void before() {
-    when(delegateMock.parse(anyBytes())).thenReturn(parsedEventsStub);
+    when(delegateMock.parse()).thenReturn(parsedEventsStub);
   }
 
   @Test
   public void parse_noExceptionInDelegate_returnedResultFromDelegate() {
     RetryOnExceptionParser parser = new RetryOnExceptionParser(delegateMock, 2);
-    List<ParsedEvent> actualParsedEvents = parser.parse(null);
+    List<ParsedEvent> actualParsedEvents = parser.parse();
     assertThat(actualParsedEvents).isSameAs(parsedEventsStub);
   }
 
   @Test
   public void parse_1ExceptionInDelegate_returnedResultFromDelegate() {
-    when(delegateMock.parse(anyBytes())).thenThrow(new RuntimeException()).thenReturn(parsedEventsStub);
+    when(delegateMock.parse()).thenThrow(new RuntimeException()).thenReturn(parsedEventsStub);
     RetryOnExceptionParser parser = new RetryOnExceptionParser(delegateMock, 2);
 
-    List<ParsedEvent> actualParsedEvents = parser.parse(null);
+    List<ParsedEvent> actualParsedEvents = parser.parse();
 
     assertThat(actualParsedEvents).isSameAs(parsedEventsStub);
   }
 
   @Test
   public void parse_1ExceptionInDelegate_2DelegateParseCalls() {
-    when(delegateMock.parse(anyBytes())).thenThrow(new RuntimeException()).thenReturn(parsedEventsStub);
+    when(delegateMock.parse()).thenThrow(new RuntimeException()).thenReturn(parsedEventsStub);
     RetryOnExceptionParser parser = new RetryOnExceptionParser(delegateMock, 2);
 
-    parser.parse(null);
+    parser.parse();
 
-    verify(delegateMock, times(2)).parse(anyBytes());
+    verify(delegateMock, times(2)).parse();
   }
 
   @Test
   public void parse_2ExceptionsInDelegate_2DelegateParseCalls() {
-    when(delegateMock.parse(anyBytes())).thenThrow(new RuntimeException(), new RuntimeException());
+    when(delegateMock.parse()).thenThrow(new RuntimeException(), new RuntimeException());
     RetryOnExceptionParser parser = new RetryOnExceptionParser(delegateMock, 2);
 
     try {
-      parser.parse(null);
+      parser.parse();
       fail("Should never get to this line.");
 
     } catch (Exception ex) {
-      verify(delegateMock, times(2)).parse(anyBytes());
+      verify(delegateMock, times(2)).parse();
     }
   }
 
@@ -71,11 +70,11 @@ public class RetryOnExceptionParserTest {
   public void parse_2ExceptionsInDelegate_throwExWithCauseAndMsg() {
     RuntimeException firstEx = new RuntimeException();
     RuntimeException secondEx = new RuntimeException();
-    when(delegateMock.parse(anyBytes())).thenThrow(firstEx, secondEx);
+    when(delegateMock.parse()).thenThrow(firstEx, secondEx);
     RetryOnExceptionParser parser = new RetryOnExceptionParser(delegateMock, 2);
 
     try {
-      parser.parse(null);
+      parser.parse();
       fail("Should never get to this line.");
 
     } catch (Exception ex) {
@@ -86,14 +85,12 @@ public class RetryOnExceptionParserTest {
 
   @Test
   public void parse_1ExceptionsInDelegate_logException() {
-    when(delegateMock.parse(anyBytes())).thenThrow(new RuntimeException("INNER_MESSAGE")).thenReturn(parsedEventsStub);
+    when(delegateMock.parse()).thenThrow(new RuntimeException("INNER_MESSAGE")).thenReturn(parsedEventsStub);
     RetryOnExceptionParser.log = logMock;
     RetryOnExceptionParser parser = new RetryOnExceptionParser(delegateMock, 2);
 
-    parser.parse(null);
+    parser.parse();
 
     logMock.verifyWarn("Parser delegate call failed. Exception: java.lang.RuntimeException: INNER_MESSAGE.");
   }
-
-  public byte[] anyBytes() {return any(byte[].class);}
 }

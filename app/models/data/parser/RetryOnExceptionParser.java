@@ -19,12 +19,12 @@ public class RetryOnExceptionParser
   }
 
   @Override
-  public List<ParsedEvent> parse(byte[] input) {
+  public List<ParsedEvent> parse() {
     Exception lastEx = null;
 
     for (int i = 0; i < retriesCount; i++) {
       try {
-        return delegate.parse(input);
+        return delegate.parse();
 
       } catch (Exception ex) {
         lastEx = ex;

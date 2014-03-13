@@ -71,7 +71,7 @@ public class LiveVolvoParser2
   }
 
   @Override
-  public List<ParsedEvent> parse(byte[] input) {
+  public List<ParsedEvent> parse() {
     List<WebElement> sportDescrEls = webDriver.findElements(cssSelector(".ClassificationMenu .Classification.on span.title"));
     if (sportDescrEls.isEmpty()) return EMPTY_LIST;
 

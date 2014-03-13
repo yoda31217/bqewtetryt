@@ -3,7 +3,6 @@ package models.job;
 import com.google.common.base.Predicate;
 import models.data.adapter.AdaptedEvent;
 import models.data.adapter.BAdapter;
-import models.data.fetcher.BFetcher;
 import models.data.parser.BParser;
 import models.data.parser.ParsedEvent;
 import models.event.Event;
@@ -21,12 +20,10 @@ public class EventJob
   private static final Logger.ALogger LOG = of(EventJob.class);
   final BAdapter adapter;
   final String name;
-  final BFetcher fetcher;
   final BParser parser;
   private final Predicate<AdaptedEvent> filter;
 
-  public EventJob(BFetcher fetcher, BParser parser, BAdapter adapter, Predicate<AdaptedEvent> filter, String name) {
-    this.fetcher = fetcher;
+  public EventJob(BParser parser, BAdapter adapter, Predicate<AdaptedEvent> filter, String name) {
     this.parser = parser;
     this.adapter = adapter;
     this.filter = filter;
@@ -37,9 +34,7 @@ public class EventJob
   public void run() {
     //    LOG.debug("Running Job: {}", name);
 
-    byte[] fetchResult = fetcher.fetch();
-
-    List<ParsedEvent> parsedEvents = parser.parse(fetchResult);
+    List<ParsedEvent> parsedEvents = parser.parse();
     for (ParsedEvent parsedEvent : parsedEvents) {
 
       try {

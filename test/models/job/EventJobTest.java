@@ -3,7 +3,6 @@ package models.job;
 import com.google.common.base.Predicate;
 import models.data.adapter.AdaptedEvent;
 import models.data.adapter.BAdapter;
-import models.data.fetcher.BFetcher;
 import models.data.parser.BParser;
 import models.data.parser.ParsedEvent;
 import models.event.Event;
@@ -41,12 +40,9 @@ import static org.powermock.api.mockito.PowerMockito.when;
 public class EventJobTest {
 
   @Mock
-  private BFetcher fetcher;
-  @Mock
   private BParser parser;
   @Mock
   private BAdapter adapter;
-  private byte[] fetchResult = new byte[0];
   @Mock
   private ParsedEvent parsedEvent = new ParsedEvent("TENNIS", "fp", "sp", "DATE_STRING", "1.1", "2.2");
   @Mock
@@ -57,23 +53,21 @@ public class EventJobTest {
   private Predicate<AdaptedEvent> eventFilter;
 
   @Test
-  public void run_eventFetched_parsedAndAdaptedAndRecorded() {
+  public void run_regularEvent_parsedAndAdaptedAndRecorded() {
     mockStatic(EventStore.class);
     when(EventStore.createOrGetEvent(any(EventType.class), any(Sport.class), any(Date.class), any(String.class), any(String.class), any(String.class)))
       .thenReturn(event);
 
-    when(fetcher.fetch()).thenReturn(fetchResult);
-    when(parser.parse(same(fetchResult))).thenReturn(newArrayList(parsedEvent));
+    when(parser.parse()).thenReturn(newArrayList(parsedEvent));
     when(adapter.adapt(parsedEvent)).thenReturn(adaptedEvent);
     when(eventFilter.apply(same(adaptedEvent))).thenReturn(true);
 
-    EventJob job = new EventJob(fetcher, parser, adapter, eventFilter, "JOB_NAME");
+    EventJob job = new EventJob(parser, adapter, eventFilter, "JOB_NAME");
     job.run();
 
     assertThat(job.name).isEqualTo("JOB_NAME");
 
-    verify(fetcher).fetch();
-    verify(parser).parse(same(fetchResult));
+    verify(parser).parse();
     verify(adapter).adapt(same(parsedEvent));
 
     verifyStatic();
@@ -86,12 +80,11 @@ public class EventJobTest {
   public void run_filterNotApply_eventNotAddedToStore() {
     mockStatic(EventStore.class);
 
-    when(fetcher.fetch()).thenReturn(fetchResult);
-    when(parser.parse(same(fetchResult))).thenReturn(newArrayList(parsedEvent));
+    when(parser.parse()).thenReturn(newArrayList(parsedEvent));
     when(adapter.adapt(parsedEvent)).thenReturn(adaptedEvent);
     when(eventFilter.apply(same(adaptedEvent))).thenReturn(false);
 
-    EventJob job = new EventJob(fetcher, parser, adapter, eventFilter, "JOB_NAME");
+    EventJob job = new EventJob(parser, adapter, eventFilter, "JOB_NAME");
     job.run();
 
     verifyStatic(never());
@@ -102,12 +95,11 @@ public class EventJobTest {
   public void run_adapterThrowEx_catchAndAdaptNext() {
     mockStatic(EventStore.class);
 
-    when(fetcher.fetch()).thenReturn(fetchResult);
-    when(parser.parse(same(fetchResult))).thenReturn(newArrayList(parsedEvent, parsedEvent));
+    when(parser.parse()).thenReturn(newArrayList(parsedEvent, parsedEvent));
     when(adapter.adapt(parsedEvent)).thenThrow(new RuntimeException()).thenReturn(adaptedEvent);
     when(eventFilter.apply(same(adaptedEvent))).thenReturn(false);
 
-    EventJob job = new EventJob(fetcher, parser, adapter, eventFilter, "JOB_NAME");
+    EventJob job = new EventJob(parser, adapter, eventFilter, "JOB_NAME");
     job.run();
 
     verify(adapter, times(2)).adapt(same(parsedEvent));
