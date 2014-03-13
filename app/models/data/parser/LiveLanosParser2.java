@@ -5,7 +5,6 @@ import com.google.common.base.Predicate;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import play.Logger;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
@@ -16,12 +15,9 @@ import static com.google.common.collect.Collections2.filter;
 import static com.google.common.collect.Collections2.transform;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.openqa.selenium.By.cssSelector;
-import static play.Logger.of;
 
 public class LiveLanosParser2
   implements BParser {
-
-  private static final Logger.ALogger LOG = of(LiveLanosParser2.class);
 
   private static final Predicate<ParsedEvent> NOT_NULL_FILTER = new Predicate<ParsedEvent>() {
     @Override
@@ -45,10 +41,10 @@ public class LiveLanosParser2
     List<WebElement> eventGroupEls = webDriver.findElements(cssSelector("#container_EVENTS > div.main-block-events"));
 
     for (WebElement eventGroupEl : eventGroupEls) {
-      String sportDescr = findElTextOrNull(eventGroupEl, ".block-events-head > h2:first-child > span:first-child", 0);
+      String sportDescr = findElTextOrNull(eventGroupEl, ".block-events-head > h2 > span", 0);
       if (null == sportDescr) continue;
 
-      List<WebElement> eventEls = eventGroupEl.findElements(cssSelector("div > div > table > tbody > tr.event-header"));
+      List<WebElement> eventEls = eventGroupEl.findElements(cssSelector("table > tbody > tr.event-header"));
       parsedEvents.addAll(transform(eventEls, createElToEventTransformer(sportDescr)));
     }
     return newArrayList(filter(parsedEvents, NOT_NULL_FILTER));
@@ -60,12 +56,11 @@ public class LiveLanosParser2
       @Nullable
       @Override
       public ParsedEvent apply(@Nullable WebElement eventEl) {
-        String selector = "td:first-child > table > tbody > tr:first-child > td.live-name > span > .live-member-name";
 
-        String firstSide = findElTextOrNull(eventEl, selector, 0);
+        String firstSide = findElTextOrNull(eventEl, ".first > table > tbody > tr:first-child > td > span.command > div", 0);
         if (null == firstSide) return null;
 
-        String secondSide = findElTextOrNull(eventEl, selector, 1);
+        String secondSide = findElTextOrNull(eventEl, ".first > table > tbody > tr:first-child > td > span.command > div", 1);
         if (null == secondSide) return null;
 
         String firstKof = findElTextOrNull(eventEl, "td.js-price > span", 0);
