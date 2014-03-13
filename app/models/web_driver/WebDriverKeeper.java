@@ -25,6 +25,12 @@ public class WebDriverKeeper {
     driver.manage().window().setSize(new Dimension(1800, 1000));
   }
 
+  public static void initWebDriverEnv() {
+    System.setProperty("webdriver.chrome.driver", getChromeWebDriverPath());
+  }
+
+  public static String getChromeWebDriverPath() {return "/Users/yoda31217/projects/niknik/betty/conf/chromedriver";}
+
   public ChromeDriver acquire() {
     try {
       boolean wasAcquired = lanosDriverSemaphore.tryAcquire(timeoutInMillis, MILLISECONDS);
@@ -41,10 +47,4 @@ public class WebDriverKeeper {
   public void release() {
     lanosDriverSemaphore.release();
   }
-
-  public static void initWebDriverEnv() {
-    System.setProperty("webdriver.chrome.driver", getChromeWebDriverPath());
-  }
-
-  public static String getChromeWebDriverPath() {return "/Users/yoda31217/projects/niknik/betty/conf/chromedriver";}
 }

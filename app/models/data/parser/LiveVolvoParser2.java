@@ -31,21 +31,9 @@ public class LiveVolvoParser2
 
   public LiveVolvoParser2(String url, WebDriver webDriver) {
     this.webDriver = webDriver;
+
     this.webDriver.get(url);
     this.webDriver.manage().window().setSize(new Dimension(1800, 1000));
-  }
-
-  @Override
-  public List<ParsedEvent> parse(byte[] input) {
-    List<WebElement> sportDescrEls = webDriver.findElements(cssSelector(".ClassificationMenu .Classification.on span.title"));
-    if (sportDescrEls.isEmpty()) return EMPTY_LIST;
-
-    String sportDescr = sportDescrEls.get(0).getText();
-
-    List<WebElement> eventEls = webDriver.findElements(cssSelector(".Overview .FixtureList .Fixture"));
-
-    Collection<ParsedEvent> parsedEvents = transform(eventEls, createElToEventTransformer(sportDescr));
-    return newArrayList(filter(parsedEvents, NOT_NULL_FILTER));
   }
 
   private static Function<WebElement, ParsedEvent> createElToEventTransformer(final String sportDescr) {
@@ -80,5 +68,18 @@ public class LiveVolvoParser2
     String text = el.getText();
 
     return isNullOrEmpty(text) ? null : text;
+  }
+
+  @Override
+  public List<ParsedEvent> parse(byte[] input) {
+    List<WebElement> sportDescrEls = webDriver.findElements(cssSelector(".ClassificationMenu .Classification.on span.title"));
+    if (sportDescrEls.isEmpty()) return EMPTY_LIST;
+
+    String sportDescr = sportDescrEls.get(0).getText();
+
+    List<WebElement> eventEls = webDriver.findElements(cssSelector(".Overview .FixtureList .Fixture"));
+
+    Collection<ParsedEvent> parsedEvents = transform(eventEls, createElToEventTransformer(sportDescr));
+    return newArrayList(filter(parsedEvents, NOT_NULL_FILTER));
   }
 }
