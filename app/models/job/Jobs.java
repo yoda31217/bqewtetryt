@@ -10,9 +10,11 @@ import models.data.adapter.VolvoAdapter;
 import models.data.fetcher.BFetcher;
 import models.data.fetcher.LanosFetcher;
 import models.data.fetcher.VolvoFetcher;
+import models.data.parser.BParser;
 import models.data.parser.LanosParser;
 import models.data.parser.LiveLanosParser2;
 import models.data.parser.LiveVolvoParser2;
+import models.data.parser.RetryOnExceptionParser;
 import models.data.parser.VolvoParser;
 import models.data.side.LanosSideCoder;
 import models.data.side.VolvoSideCoder;
@@ -106,18 +108,24 @@ public final class Jobs {
   }
 
   private static EventJob createLiveVolvoTennisJob() {
-    return new EventJob(DUMMY_FETCHER, new LiveVolvoParser2(getVolvoSite() + "/Lite/#!in-play/overview/", new ChromeDriver()), new LiveVolvoAdapter(
-      new VolvoSideCoder(), TENNIS), EVENT_FILTER, LIVE + "_" + VOLVO + "_" + TENNIS);
+    BParser parser = new LiveVolvoParser2(getVolvoSite() + "/Lite/#!in-play/overview/", new ChromeDriver());
+    parser = new RetryOnExceptionParser(parser, 3);
+    LiveVolvoAdapter adapter = new LiveVolvoAdapter(new VolvoSideCoder(), TENNIS);
+    return new EventJob(DUMMY_FETCHER, parser, adapter, EVENT_FILTER, LIVE + "_" + VOLVO + "_" + TENNIS);
   }
 
   private static EventJob createLiveVolvoVolleyballJob() {
-    return new EventJob(DUMMY_FETCHER, new LiveVolvoParser2(getVolvoSite() + "/Lite/#!in-play/overview/", new ChromeDriver()), new LiveVolvoAdapter(
-      new VolvoSideCoder(), VOLLEYBALL), EVENT_FILTER, LIVE + "_" + VOLVO + "_" + VOLLEYBALL);
+    BParser parser = new LiveVolvoParser2(getVolvoSite() + "/Lite/#!in-play/overview/", new ChromeDriver());
+    parser = new RetryOnExceptionParser(parser, 3);
+    LiveVolvoAdapter adapter = new LiveVolvoAdapter(new VolvoSideCoder(), VOLLEYBALL);
+    return new EventJob(DUMMY_FETCHER, parser, adapter, EVENT_FILTER, LIVE + "_" + VOLVO + "_" + VOLLEYBALL);
   }
 
   private static EventJob createLiveLanosJob(ChromeDriver webDriver) {
-    return new EventJob(DUMMY_FETCHER, new LiveLanosParser2(getLanosSite() + "/en/live.htm", webDriver), new LiveLanosAdapter(new LanosSideCoder()),
-      EVENT_FILTER, LIVE + "_" + LANOS);
+    BParser parser = new LiveLanosParser2(getLanosSite() + "/en/live.htm", webDriver);
+    parser = new RetryOnExceptionParser(parser, 3);
+    LiveLanosAdapter adapter = new LiveLanosAdapter(new LanosSideCoder());
+    return new EventJob(DUMMY_FETCHER, parser, adapter, EVENT_FILTER, LIVE + "_" + LANOS);
   }
 
   private static EventJob createVolvoJob() {
@@ -131,8 +139,10 @@ public final class Jobs {
   }
 
   private static EventJob createLiveVolvoTableTennisJob() {
-    return new EventJob(DUMMY_FETCHER, new LiveVolvoParser2(getVolvoSite() + "/Lite/#!in-play/overview/", new ChromeDriver()), new LiveVolvoAdapter(
-      new VolvoSideCoder(), TABLE_TENNIS), EVENT_FILTER, LIVE + "_" + VOLVO + "_" + TABLE_TENNIS);
+    BParser parser = new LiveVolvoParser2(getVolvoSite() + "/Lite/#!in-play/overview/", new ChromeDriver());
+    parser = new RetryOnExceptionParser(parser, 3);
+    LiveVolvoAdapter adapter = new LiveVolvoAdapter(new VolvoSideCoder(), TABLE_TENNIS);
+    return new EventJob(DUMMY_FETCHER, parser, adapter, EVENT_FILTER, LIVE + "_" + VOLVO + "_" + TABLE_TENNIS);
   }
 
   private static WebDriverKeeper createVolvoTableTennisWebDriverKeeper() {
@@ -140,8 +150,10 @@ public final class Jobs {
   }
 
   private static EventJob createLiveVolvoBasketballJob() {
-    return new EventJob(DUMMY_FETCHER, new LiveVolvoParser2(getVolvoSite() + "/Lite/#!in-play/overview/", new ChromeDriver()), new LiveVolvoAdapter(
-      new VolvoSideCoder(), BASKETBALL), EVENT_FILTER, LIVE + "_" + VOLVO + "_" + BASKETBALL);
+    BParser parser = new LiveVolvoParser2(getVolvoSite() + "/Lite/#!in-play/overview/", new ChromeDriver());
+    parser = new RetryOnExceptionParser(parser, 3);
+    LiveVolvoAdapter adapter = new LiveVolvoAdapter(new VolvoSideCoder(), BASKETBALL);
+    return new EventJob(DUMMY_FETCHER, parser, adapter, EVENT_FILTER, LIVE + "_" + VOLVO + "_" + BASKETBALL);
   }
 
   private static WebDriverKeeper createVolvoBasketballWebDriverKeeper() {
