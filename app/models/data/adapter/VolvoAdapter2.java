@@ -1,8 +1,10 @@
 package models.data.adapter;
 
 import com.google.common.base.Splitter;
+import models.data.adapter.date.DateAdapter;
+import models.data.adapter.side.SideCodeAdapter;
 import models.data.parser.ParsedEvent;
-import models.data.side.SideCoder;
+import models.event.EventType;
 import models.event.Sport;
 
 import java.util.Date;
@@ -10,7 +12,6 @@ import java.util.Iterator;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static java.lang.Double.parseDouble;
-import static models.event.EventType.LIVE;
 import static models.event.Organisation.VOLVO;
 import static models.event.Sport.BASKETBALL;
 import static models.event.Sport.TABLE_TENNIS;
@@ -18,14 +19,18 @@ import static models.event.Sport.TENNIS;
 import static models.event.Sport.UNKNOWN;
 import static models.event.Sport.VOLLEYBALL;
 
-public class LiveVolvoAdapter
-  implements BAdapter {
+public class VolvoAdapter2
+implements BAdapter {
 
   public static final Splitter KOF_SPLITTER = Splitter.on("/").omitEmptyStrings().trimResults();
-  private final SideCoder sideCoder;
+  private final SideCodeAdapter sideCodeAdapter;
+  private final DateAdapter dateAdapter;
+  private EventType type;
 
-  public LiveVolvoAdapter(SideCoder sideCoder, Sport ignor) {
-    this.sideCoder = sideCoder;
+  public VolvoAdapter2(SideCodeAdapter sideCodeAdapter, DateAdapter dateAdapter, EventType type) {
+    this.sideCodeAdapter = sideCodeAdapter;
+    this.dateAdapter = dateAdapter;
+    this.type = type;
   }
 
   @Override
@@ -48,11 +53,12 @@ public class LiveVolvoAdapter
       secondSide = swapSide;
     }
 
-    String firstSideCode = sideCoder.buildCode(firstSide, sport);
-    String secondSideCode = sideCoder.buildCode(secondSide, sport);
+    String firstSideCode = sideCodeAdapter.adapt(firstSide, sport);
+    String secondSideCode = sideCodeAdapter.adapt(secondSide, sport);
 
-    AdaptedEvent adoptedEvent = new AdaptedEvent(LIVE, sport, firstSide, secondSide, firstKof, secondKof, VOLVO, new Date(), firstSideCode, secondSideCode);
-    return adoptedEvent;
+    Date adaptedDate = dateAdapter.adapt(parsedEvent.date);
+
+    return new AdaptedEvent(type, sport, firstSide, secondSide, firstKof, secondKof, VOLVO, adaptedDate, firstSideCode, secondSideCode);
   }
 
   private double adaptKof(String kofStr) {

@@ -17,13 +17,8 @@ import java.util.List;
 
 import static models.event.Organisation.LANOS;
 import static models.event.Organisation.VOLVO;
-import static models.job.Jobs.LANOS_SPORT_SELECTION_JOB;
-import static models.job.Jobs.LIVE_LANOS_JOB;
-import static models.job.Jobs.LIVE_VOLVO_BASKETBALL_JOB;
-import static models.job.Jobs.LIVE_VOLVO_TABLE_TENNIS_JOB;
-import static models.job.Jobs.LIVE_VOLVO_TENNIS_JOB;
-import static models.job.Jobs.LIVE_VOLVO_VOLLEYBALL_JOB;
 import static models.job.Jobs.NOTIFICATION_JOB;
+import static models.job.Jobs.REGULAR_VOLVO_TENNIS_JOB;
 import static models.job.Jobs.REMOVE_OLD_EVENT_JOB;
 import static models.job.Jobs.REMOVE_OLD_HISTORY_JOB;
 import static models.util.BObjects.logAndStopExceptions;
@@ -67,31 +62,35 @@ public class Global
 
       FiniteDuration lanosSportSelectionOffset = Duration.create(50, "ms");
       FiniteDuration lanosSportSelectionDelay = Duration.create(1, "min");
-      schedules.add(scheduler.schedule(lanosSportSelectionOffset, lanosSportSelectionDelay, logAndStopExceptions(LANOS_SPORT_SELECTION_JOB),
-        defaultDispatcher));
+      //      schedules.add(scheduler.schedule(lanosSportSelectionOffset, lanosSportSelectionDelay, logAndStopExceptions(LANOS_SPORT_SELECTION_JOB),
+      //        defaultDispatcher));
 
       FiniteDuration liveLanosOffset = Duration.create(70, "ms");
       FiniteDuration liveLanosDelay = Duration.create(10000, "ms");
-      schedules.add(scheduler.schedule(liveLanosOffset, liveLanosDelay, logAndStopExceptions(LIVE_LANOS_JOB), defaultDispatcher));
+      //      schedules.add(scheduler.schedule(liveLanosOffset, liveLanosDelay, logAndStopExceptions(LIVE_LANOS_JOB), defaultDispatcher));
 
       FiniteDuration liveVolvoTennisOffset = Duration.create(110, "ms");
       FiniteDuration liveVolvoTennisDelay = Duration.create(10000, "ms");
-      schedules.add(scheduler.schedule(liveVolvoTennisOffset, liveVolvoTennisDelay, logAndStopExceptions(LIVE_VOLVO_TENNIS_JOB), defaultDispatcher));
+      //      schedules.add(scheduler.schedule(liveVolvoTennisOffset, liveVolvoTennisDelay, logAndStopExceptions(LIVE_VOLVO_TENNIS_JOB), defaultDispatcher));
+
+      FiniteDuration regularVolvoTennisOffset = Duration.create(110, "ms");
+      FiniteDuration regularVolvoTennisDelay = Duration.create(15000, "ms");
+      schedules.add(scheduler.schedule(regularVolvoTennisOffset, regularVolvoTennisDelay, logAndStopExceptions(REGULAR_VOLVO_TENNIS_JOB), defaultDispatcher));
 
       FiniteDuration liveVolvoVolleyballOffset = Duration.create(130, "ms");
       FiniteDuration liveVolvoVolleyballDelay = Duration.create(10000, "ms");
-      schedules.add(scheduler.schedule(liveVolvoVolleyballOffset, liveVolvoVolleyballDelay, logAndStopExceptions(LIVE_VOLVO_VOLLEYBALL_JOB),
-        defaultDispatcher));
+      //      schedules.add(scheduler.schedule(liveVolvoVolleyballOffset, liveVolvoVolleyballDelay, logAndStopExceptions(LIVE_VOLVO_VOLLEYBALL_JOB),
+      //        defaultDispatcher));
 
       FiniteDuration liveVolvoBasketballOffset = Duration.create(170, "ms");
       FiniteDuration liveVolvoBasketballDelay = Duration.create(10000, "ms");
-      schedules.add(scheduler.schedule(liveVolvoBasketballOffset, liveVolvoBasketballDelay, logAndStopExceptions(LIVE_VOLVO_BASKETBALL_JOB),
-        defaultDispatcher));
+      //      schedules.add(scheduler.schedule(liveVolvoBasketballOffset, liveVolvoBasketballDelay, logAndStopExceptions(LIVE_VOLVO_BASKETBALL_JOB),
+      //        defaultDispatcher));
 
       FiniteDuration liveVolvoTableTennisOffset = Duration.create(190, "ms");
       FiniteDuration liveVolvoTableTennisDelay = Duration.create(10000, "ms");
-      schedules.add(scheduler.schedule(liveVolvoTableTennisOffset, liveVolvoTableTennisDelay, logAndStopExceptions(LIVE_VOLVO_TABLE_TENNIS_JOB),
-        defaultDispatcher));
+      //      schedules.add(scheduler.schedule(liveVolvoTableTennisOffset, liveVolvoTableTennisDelay, logAndStopExceptions(LIVE_VOLVO_TABLE_TENNIS_JOB),
+      //        defaultDispatcher));
 
       FiniteDuration notificationOffset = Duration.create(230, "ms");
       FiniteDuration notificationDelay = Duration.create(300, "ms");

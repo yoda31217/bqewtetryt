@@ -6,14 +6,14 @@ import java.util.List;
 
 import static play.Logger.of;
 
-public class RetryOnExceptionParser
+public class RetryExceptionParser
   implements BParser {
 
-  static Logger.ALogger log = of(RetryOnExceptionParser.class);
+  static Logger.ALogger log = of(RetryExceptionParser.class);
   private final BParser delegate;
   private final int retriesCount;
 
-  public RetryOnExceptionParser(BParser delegate, int retriesCount) {
+  public RetryExceptionParser(BParser delegate, int retriesCount) {
     this.delegate = delegate;
     this.retriesCount = retriesCount;
   }

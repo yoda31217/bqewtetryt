@@ -14,7 +14,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class RetryOnExceptionParserTest {
+public class RetryExceptionParserTest {
 
   private ArrayList<ParsedEvent> parsedEventsStub = new ArrayList<ParsedEvent>();
   private BParser delegateMock = mock(BParser.class);
@@ -27,7 +27,7 @@ public class RetryOnExceptionParserTest {
 
   @Test
   public void parse_noExceptionInDelegate_returnedResultFromDelegate() {
-    RetryOnExceptionParser parser = new RetryOnExceptionParser(delegateMock, 2);
+    RetryExceptionParser parser = new RetryExceptionParser(delegateMock, 2);
     List<ParsedEvent> actualParsedEvents = parser.parse();
     assertThat(actualParsedEvents).isSameAs(parsedEventsStub);
   }
@@ -35,7 +35,7 @@ public class RetryOnExceptionParserTest {
   @Test
   public void parse_1ExceptionInDelegate_returnedResultFromDelegate() {
     when(delegateMock.parse()).thenThrow(new RuntimeException()).thenReturn(parsedEventsStub);
-    RetryOnExceptionParser parser = new RetryOnExceptionParser(delegateMock, 2);
+    RetryExceptionParser parser = new RetryExceptionParser(delegateMock, 2);
 
     List<ParsedEvent> actualParsedEvents = parser.parse();
 
@@ -45,7 +45,7 @@ public class RetryOnExceptionParserTest {
   @Test
   public void parse_1ExceptionInDelegate_2DelegateParseCalls() {
     when(delegateMock.parse()).thenThrow(new RuntimeException()).thenReturn(parsedEventsStub);
-    RetryOnExceptionParser parser = new RetryOnExceptionParser(delegateMock, 2);
+    RetryExceptionParser parser = new RetryExceptionParser(delegateMock, 2);
 
     parser.parse();
 
@@ -55,7 +55,7 @@ public class RetryOnExceptionParserTest {
   @Test
   public void parse_2ExceptionsInDelegate_2DelegateParseCalls() {
     when(delegateMock.parse()).thenThrow(new RuntimeException(), new RuntimeException());
-    RetryOnExceptionParser parser = new RetryOnExceptionParser(delegateMock, 2);
+    RetryExceptionParser parser = new RetryExceptionParser(delegateMock, 2);
 
     try {
       parser.parse();
@@ -71,7 +71,7 @@ public class RetryOnExceptionParserTest {
     RuntimeException firstEx = new RuntimeException();
     RuntimeException secondEx = new RuntimeException();
     when(delegateMock.parse()).thenThrow(firstEx, secondEx);
-    RetryOnExceptionParser parser = new RetryOnExceptionParser(delegateMock, 2);
+    RetryExceptionParser parser = new RetryExceptionParser(delegateMock, 2);
 
     try {
       parser.parse();
@@ -86,8 +86,8 @@ public class RetryOnExceptionParserTest {
   @Test
   public void parse_1ExceptionsInDelegate_logException() {
     when(delegateMock.parse()).thenThrow(new RuntimeException("INNER_MESSAGE")).thenReturn(parsedEventsStub);
-    RetryOnExceptionParser.log = logMock;
-    RetryOnExceptionParser parser = new RetryOnExceptionParser(delegateMock, 2);
+    RetryExceptionParser.log = logMock;
+    RetryExceptionParser parser = new RetryExceptionParser(delegateMock, 2);
 
     parser.parse();
 

@@ -1,15 +1,11 @@
 package models.event;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
 import static com.google.common.collect.Lists.newArrayList;
 
-@JsonAutoDetect(fieldVisibility = ANY)
 public class Event {
 
   final Date date;
@@ -38,8 +34,10 @@ public class Event {
 
     Event event = (Event) o;
 
+    if (removed != event.removed) return false;
     if (!code.equals(event.code)) return false;
-    if (!sport.equals(event.sport)) return false;
+    if (date != null ? !date.equals(event.date) : event.date != null) return false;
+    if (sport != event.sport) return false;
     if (type != event.type) return false;
 
     return true;
@@ -47,9 +45,11 @@ public class Event {
 
   @Override
   public int hashCode() {
-    int result = code.hashCode();
+    int result = date != null ? date.hashCode() : 0;
+    result = 31 * result + code.hashCode();
     result = 31 * result + type.hashCode();
     result = 31 * result + sport.hashCode();
+    result = 31 * result + (removed ? 1 : 0);
     return result;
   }
 

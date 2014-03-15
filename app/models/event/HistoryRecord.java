@@ -1,12 +1,9 @@
 package models.event;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-
 import java.util.Date;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public final class HistoryRecord {
 
   final Date date;

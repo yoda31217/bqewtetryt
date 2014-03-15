@@ -30,12 +30,6 @@ import java.util.List;
 
 import static models.event.Organisation.LANOS;
 import static models.event.Organisation.VOLVO;
-import static models.job.Jobs.LANOS_SPORT_SELECTION_JOB;
-import static models.job.Jobs.LIVE_LANOS_JOB;
-import static models.job.Jobs.LIVE_VOLVO_BASKETBALL_JOB;
-import static models.job.Jobs.LIVE_VOLVO_TABLE_TENNIS_JOB;
-import static models.job.Jobs.LIVE_VOLVO_TENNIS_JOB;
-import static models.job.Jobs.LIVE_VOLVO_VOLLEYBALL_JOB;
 import static models.job.Jobs.NOTIFICATION_JOB;
 import static models.job.Jobs.REMOVE_OLD_EVENT_JOB;
 import static models.job.Jobs.REMOVE_OLD_HISTORY_JOB;
@@ -159,12 +153,12 @@ public class GlobalTest {
     assertThat(jobs.get(1)).isSameAs(REMOVE_OLD_HISTORY_JOB);
     //    assertThat(jobs.get(2)).isSameAs(LANOS_JOB);
     //    assertThat(jobs.get(3)).isSameAs(VOLVO_JOB);
-    assertThat(jobs.get(2)).isSameAs(LANOS_SPORT_SELECTION_JOB);
-    assertThat(jobs.get(3)).isSameAs(LIVE_LANOS_JOB);
-    assertThat(jobs.get(4)).isSameAs(LIVE_VOLVO_TENNIS_JOB);
-    assertThat(jobs.get(5)).isSameAs(LIVE_VOLVO_VOLLEYBALL_JOB);
-    assertThat(jobs.get(6)).isSameAs(LIVE_VOLVO_BASKETBALL_JOB);
-    assertThat(jobs.get(7)).isSameAs(LIVE_VOLVO_TABLE_TENNIS_JOB);
+    //    assertThat(jobs.get(2)).isSameAs(LANOS_SPORT_SELECTION_JOB);
+    //    assertThat(jobs.get(3)).isSameAs(LIVE_LANOS_JOB);
+    //    assertThat(jobs.get(4)).isSameAs(LIVE_VOLVO_TENNIS_JOB);
+    //    assertThat(jobs.get(5)).isSameAs(LIVE_VOLVO_VOLLEYBALL_JOB);
+    //    assertThat(jobs.get(6)).isSameAs(LIVE_VOLVO_BASKETBALL_JOB);
+    //    assertThat(jobs.get(7)).isSameAs(LIVE_VOLVO_TABLE_TENNIS_JOB);
     assertThat(jobs.get(8)).isSameAs(NOTIFICATION_JOB);
 
     ArgumentCaptor<FiniteDuration> durationArgsCaptor = forClass(FiniteDuration.class);

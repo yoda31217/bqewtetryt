@@ -1,7 +1,7 @@
 package models.data.adapter;
 
+import models.data.adapter.side.SideCodeAdapter;
 import models.data.parser.ParsedEvent;
-import models.data.side.SideCoder;
 import models.event.Sport;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +25,6 @@ import static models.event.Sport.TABLE_TENNIS;
 import static models.event.Sport.TENNIS;
 import static models.event.Sport.UNKNOWN;
 import static models.event.Sport.VOLLEYBALL;
-import static models.util.Conditions.oneSecOld;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.same;
@@ -45,14 +44,14 @@ public class LiveLanosAdapterTest {
   public static final String SIDE_1_CODE = "SIDE_2_CODE";
   public static final String SIDE_2_CODE = "SIDE_1_CODE";
   @Mock
-  private SideCoder sideCoderMock;
+  private SideCodeAdapter sideCodeAdapterMock;
   private LiveLanosAdapter adapter;
 
   @Before
   public void before() {
-    adapter = new LiveLanosAdapter(sideCoderMock);
-    when(sideCoderMock.buildCode(same(SIDE_1), any(Sport.class))).thenReturn(SIDE_1_CODE);
-    when(sideCoderMock.buildCode(same(SIDE_2), any(Sport.class))).thenReturn(SIDE_2_CODE);
+    adapter = new LiveLanosAdapter(sideCodeAdapterMock);
+    when(sideCodeAdapterMock.adapt(same(SIDE_1), any(Sport.class))).thenReturn(SIDE_1_CODE);
+    when(sideCodeAdapterMock.adapt(same(SIDE_2), any(Sport.class))).thenReturn(SIDE_2_CODE);
   }
 
   @Test
@@ -60,7 +59,7 @@ public class LiveLanosAdapterTest {
     ParsedEvent event = new ParsedEvent(DESCRIPTION, SIDE_1, SIDE_2, SHORT_DATE, KOF_1, KOF_2);
     AdaptedEvent adaptedEvent = adapter.adapt(event);
 
-    assertThat(adaptedEvent.eventDate).is(oneSecOld());
+    assertThat(adaptedEvent.eventDate).isNull();
     assertThat(adaptedEvent.firstSide).isEqualTo(SIDE_1);
     assertThat(adaptedEvent.secondSide).isEqualTo(SIDE_2);
     assertThat(adaptedEvent.firstKof).isEqualTo(1.45);

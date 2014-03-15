@@ -8,7 +8,7 @@ public class Conditions {
 
   public static final long ONE_SEC_IN_MILLIS = 1000L;
 
-  public static Condition<Object> oneSecOld() {
+  public static Condition<Object> dateOneSecOld() {
     return createGeDateCondition(new Date().getTime() - 1 * ONE_SEC_IN_MILLIS);
   }
 

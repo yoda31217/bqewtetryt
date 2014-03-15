@@ -1,11 +1,10 @@
 package models.data.adapter;
 
 import com.google.common.base.Splitter;
+import models.data.adapter.side.SideCodeAdapter;
 import models.data.parser.ParsedEvent;
-import models.data.side.SideCoder;
 import models.event.Sport;
 
-import java.util.Date;
 import java.util.Iterator;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -22,10 +21,10 @@ public class LiveLanosAdapter
   implements BAdapter {
 
   static final Splitter KOF_FRACTIONAL_SPLITTER = Splitter.on('/').omitEmptyStrings().trimResults();
-  private final SideCoder sideCoder;
+  private final SideCodeAdapter sideCodeAdapter;
 
-  public LiveLanosAdapter(SideCoder sideCoder) {
-    this.sideCoder = sideCoder;
+  public LiveLanosAdapter(SideCodeAdapter sideCodeAdapter) {
+    this.sideCodeAdapter = sideCodeAdapter;
   }
 
   @Override
@@ -48,10 +47,10 @@ public class LiveLanosAdapter
 
     Sport sport = adoptSport(parsedEvent.sportDescr);
 
-    String firstSideCode = sideCoder.buildCode(firstSide, sport);
-    String secondSIdeCode = sideCoder.buildCode(secondSide, sport);
+    String firstSideCode = sideCodeAdapter.adapt(firstSide, sport);
+    String secondSIdeCode = sideCodeAdapter.adapt(secondSide, sport);
 
-    return new AdaptedEvent(LIVE, sport, firstSide, secondSide, firstKof, secondKof, LANOS, new Date(), firstSideCode, secondSIdeCode);
+    return new AdaptedEvent(LIVE, sport, firstSide, secondSide, firstKof, secondKof, LANOS, null, firstSideCode, secondSIdeCode);
   }
 
   private double parseKof(String kof) {
