@@ -17,31 +17,31 @@ public class EventFilterTest {
   @Test
   public void apply_regularEvent_returnFalse() {
     AdaptedEvent event = new AdaptedEvent(REGULAR, TENNIS, null, null, 1.0, 1.0, null, null, null, null);
-    assertThat(new EventFilter().apply(event)).isFalse();
+    assertThat(new EventFilter().apply(event)).isTrue();
   }
 
   @Test
   public void apply_tennisLiveEvent_returnTrue() {
     AdaptedEvent event = new AdaptedEvent(LIVE, TENNIS, null, null, 1.0, 1.0, null, null, null, null);
-    assertThat(new EventFilter().apply(event)).isTrue();
+    assertThat(new EventFilter().apply(event)).isFalse();
   }
 
   @Test
   public void apply_volleyballLiveEvent_returnTrue() {
     AdaptedEvent event = new AdaptedEvent(LIVE, VOLLEYBALL, null, null, 1.0, 1.0, null, null, null, null);
-    assertThat(new EventFilter().apply(event)).isTrue();
+    assertThat(new EventFilter().apply(event)).isFalse();
   }
 
   @Test
   public void apply_basketballLiveEvent_returnTrue() {
     AdaptedEvent event = new AdaptedEvent(LIVE, BASKETBALL, null, null, 1.0, 1.0, null, null, null, null);
-    assertThat(new EventFilter().apply(event)).isTrue();
+    assertThat(new EventFilter().apply(event)).isFalse();
   }
 
   @Test
   public void apply_tableTennisLiveEvent_returnTrue() {
     AdaptedEvent event = new AdaptedEvent(LIVE, TABLE_TENNIS, null, null, 1.0, 1.0, null, null, null, null);
-    assertThat(new EventFilter().apply(event)).isTrue();
+    assertThat(new EventFilter().apply(event)).isFalse();
   }
 
   @Test

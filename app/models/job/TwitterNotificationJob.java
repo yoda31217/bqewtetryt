@@ -2,8 +2,7 @@ package models.job;
 
 import com.google.common.base.Predicate;
 import models.calc.Calculation;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
+import models.notification.Twitterer;
 
 import javax.annotation.Nullable;
 import java.text.DecimalFormat;
@@ -25,11 +24,11 @@ public class TwitterNotificationJob
       return calculation.isFork();
     }
   };
-  private final Twitter twitter;
+  private final Twitterer twitterer;
   private Set<Calculation> forkCalculations = EMPTY_SET;
 
-  public TwitterNotificationJob(Twitter twitter) {
-    this.twitter = twitter;
+  public TwitterNotificationJob(Twitterer twitterer) {
+    this.twitterer = twitterer;
   }
 
   @Override
@@ -47,14 +46,7 @@ public class TwitterNotificationJob
   }
 
   private void postTwit(Calculation calculation) {
-    try {
-
-      //    System.out.println("--------------------------- " + buildTwit(calculation));
-      twitter.updateStatus(buildTwit(calculation));
-
-    } catch (TwitterException e) {
-      throw new RuntimeException(e);
-    }
+    twitterer.sendMessage(buildTwit(calculation));
   }
 
   private String buildTwit(Calculation calculation) {

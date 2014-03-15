@@ -1,19 +1,19 @@
 package models.job;
 
-import models.calc.CalculariumTests;
 import models.event.Event;
-import models.event.EventTests;
 import models.event.HistoryRecord;
+import models.notification.Twitterer;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 
 import java.util.Date;
 
+import static models.calc.CalculariumTests.resetCalcularium;
 import static models.event.EventStore.createOrGetEvent;
+import static models.event.EventTests.clearEvents;
 import static models.event.EventType.LIVE;
 import static models.event.Organisation.LANOS;
 import static models.event.Organisation.VOLVO;
@@ -21,18 +21,17 @@ import static models.event.Sport.BASKETBALL;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
 public class TwitterNotificationJobTest {
 
-  private Twitter twitterMock = mock(Twitter.class);
+  private Twitterer twittererMock = mock(Twitterer.class);
 
   @Before
   public void before() {
-    EventTests.clearEvents();
-    CalculariumTests.resetCalcularium();
+    clearEvents();
+    resetCalcularium();
   }
 
   @Test
@@ -42,9 +41,9 @@ public class TwitterNotificationJobTest {
     event.addHistory(new HistoryRecord(createDate1secOld(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
 
-    new TwitterNotificationJob(twitterMock).run();
+    new TwitterNotificationJob(twittererMock).run();
 
-    verify(twitterMock).updateStatus(eq("L BB SIDE1 - SIDE2 1.500,L,1/3.200,V,0 0.667+0.333=0.067 0.688+0.312=0.031"));
+    verify(twittererMock).sendMessage(eq("L BB SIDE1 - SIDE2 1.500,L,1/3.200,V,0 0.667+0.333=0.067 0.688+0.312=0.031"));
   }
 
   @Test
@@ -54,11 +53,11 @@ public class TwitterNotificationJobTest {
     event.addHistory(new HistoryRecord(createDate1secOld(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
 
-    TwitterNotificationJob twitterNotificationJob = new TwitterNotificationJob(twitterMock);
+    TwitterNotificationJob twitterNotificationJob = new TwitterNotificationJob(twittererMock);
     twitterNotificationJob.run();
     twitterNotificationJob.run();
 
-    verify(twitterMock, times(1)).updateStatus(anyString());
+    verify(twittererMock).sendMessage(anyString());
   }
 
   @Test
@@ -68,9 +67,9 @@ public class TwitterNotificationJobTest {
     event.addHistory(new HistoryRecord(createDate1secOld(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 2.9));
 
-    new TwitterNotificationJob(twitterMock).run();
+    new TwitterNotificationJob(twittererMock).run();
 
-    verifyZeroInteractions(twitterMock);
+    verifyZeroInteractions(twittererMock);
   }
 
   @Ignore
