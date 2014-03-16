@@ -17,8 +17,7 @@ import static com.google.common.collect.Lists.transform;
 import static java.util.Collections.EMPTY_LIST;
 import static org.openqa.selenium.By.cssSelector;
 
-public class LiveVolvoParser2
-  implements BParser {
+public class LiveVolvoParser2 implements BParser {
 
   private static final Predicate<ParsedEvent> NOT_NULL_FILTER = new Predicate<ParsedEvent>() {
     @Override

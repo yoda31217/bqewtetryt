@@ -122,8 +122,7 @@ public class EventStoreTest {
   }
 
   @Test(expected = UnsupportedOperationException.class)
-  public void constructorUnsupported()
-    throws Exception {
+  public void constructorUnsupported() throws Exception {
     callConstructor(EventStore.class);
   }
 

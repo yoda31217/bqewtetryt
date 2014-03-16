@@ -17,11 +17,10 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.transform;
 import static org.openqa.selenium.By.cssSelector;
 
-public class RegularVolvoParser
-  implements BParser {
+public class RegularVolvoParser implements BParser {
 
-  public static final String SIDES_SEPARATOR = " v ";
-  public static final Splitter SEDES_SPLITTER = Splitter.on(SIDES_SEPARATOR).trimResults().omitEmptyStrings();
+  public static final String   SIDES_SEPARATOR = " v ";
+  public static final Splitter SEDES_SPLITTER  = Splitter.on(SIDES_SEPARATOR).trimResults().omitEmptyStrings();
   private static final Predicate<ParsedEvent> NOT_NULL_FILTER = new Predicate<ParsedEvent>() {
     @Override
     public boolean apply(@Nullable ParsedEvent parsedEvent) {

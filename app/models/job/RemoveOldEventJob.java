@@ -9,8 +9,7 @@ import static models.event.EventStore.remove;
 import static models.util.Dates.millisFromNow;
 import static play.Logger.of;
 
-public class RemoveOldEventJob
-  implements Runnable {
+public class RemoveOldEventJob implements Runnable {
 
   private static final Logger.ALogger LOG = of(RemoveOldEventJob.class);
   private final long maxSilenceDelayInMillis;

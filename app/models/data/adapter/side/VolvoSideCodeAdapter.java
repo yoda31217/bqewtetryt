@@ -7,10 +7,9 @@ import java.util.ArrayList;
 import static com.google.common.base.Splitter.on;
 import static com.google.common.collect.Lists.newArrayList;
 
-public class VolvoSideCodeAdapter
-  extends BaseSideCodeAdapter {
+public class VolvoSideCodeAdapter extends BaseSideCodeAdapter {
 
-  private final String coopSeparator;
+  private final String   coopSeparator;
   private final Splitter coopSplitter;
 
   public VolvoSideCodeAdapter(String coopSeparator) {

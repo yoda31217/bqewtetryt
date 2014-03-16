@@ -40,15 +40,15 @@ import static org.powermock.api.mockito.PowerMockito.when;
 public class EventJobTest {
 
   @Mock
-  private BParser parser;
+  private BParser  parser;
   @Mock
   private BAdapter adapter;
   @Mock
-  private ParsedEvent parsedEvent = new ParsedEvent("TENNIS", "fp", "sp", "DATE_STRING", "1.1", "2.2");
+  private ParsedEvent  parsedEvent  = new ParsedEvent("TENNIS", "fp", "sp", "DATE_STRING", "1.1", "2.2");
   @Mock
   private AdaptedEvent adaptedEvent = new AdaptedEvent(REGULAR, TENNIS, "side1", "side", 1.1, 2.2, VOLVO, new Date(), "side1_code", "side2_code");
   @Mock
-  private Event event;
+  private Event                   event;
   @Mock
   private Predicate<AdaptedEvent> eventFilter;
 

@@ -24,13 +24,12 @@ import static models.event.Sport.TENNIS;
 import static org.apache.commons.lang3.StringUtils.stripAccents;
 import static play.Logger.of;
 
-public class LanosAdapter
-  implements BAdapter {
+public class LanosAdapter implements BAdapter {
 
-  private static final Logger.ALogger LOG = of(LanosAdapter.class);
-  static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat("yyyy dd MMM HH:mm Z");
-  private static final Splitter ONE_PLAYER_ON_SIDE_NAME_SPLITTER = on(",").omitEmptyStrings().trimResults();
-  private static final Splitter TWO_PLAYERS_ON_SIDE_NAME_SPLITTER = on(anyOf("./")).omitEmptyStrings().trimResults();
+  private static final Logger.ALogger   LOG                               = of(LanosAdapter.class);
+  static final         SimpleDateFormat LONG_DATE_FORMAT                  = new SimpleDateFormat("yyyy dd MMM HH:mm Z");
+  private static final Splitter         ONE_PLAYER_ON_SIDE_NAME_SPLITTER  = on(",").omitEmptyStrings().trimResults();
+  private static final Splitter         TWO_PLAYERS_ON_SIDE_NAME_SPLITTER = on(anyOf("./")).omitEmptyStrings().trimResults();
 
   @Override
   public AdaptedEvent adapt(ParsedEvent parsedEvent) {

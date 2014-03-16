@@ -14,13 +14,12 @@ import java.util.List;
 import static models.event.EventStore.createOrGetEvent;
 import static play.Logger.of;
 
-public class EventJob
-  implements Runnable {
+public class EventJob implements Runnable {
 
   private static final Logger.ALogger LOG = of(EventJob.class);
-  final BAdapter adapter;
-  final String name;
-  final BParser parser;
+  final         BAdapter                adapter;
+  final         String                  name;
+  final         BParser                 parser;
   private final Predicate<AdaptedEvent> filter;
 
   public EventJob(BParser parser, BAdapter adapter, Predicate<AdaptedEvent> filter, String name) {
@@ -43,7 +42,7 @@ public class EventJob
         if (!filter.apply(adaptedEvent)) continue;
 
         Event event = createOrGetEvent(adaptedEvent.type, adaptedEvent.sport, adaptedEvent.eventDate, adaptedEvent.side1, adaptedEvent.side2,
-          adaptedEvent.code);
+                                       adaptedEvent.code);
         event.addHistory(new HistoryRecord(adaptedEvent.adoptedDate, adaptedEvent.organisation, adaptedEvent.lowKof, adaptedEvent.highKof));
 
       } catch (Exception e) {

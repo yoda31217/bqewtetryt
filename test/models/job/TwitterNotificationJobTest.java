@@ -35,8 +35,7 @@ public class TwitterNotificationJobTest {
   }
 
   @Test
-  public void run_newForkEvent_updateStatus()
-    throws TwitterException {
+  public void run_newForkEvent_updateStatus() throws TwitterException {
     Event event = createOrGetEvent(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2", "CODE");
     event.addHistory(new HistoryRecord(createDate1secOld(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
@@ -47,8 +46,7 @@ public class TwitterNotificationJobTest {
   }
 
   @Test
-  public void run_newForkEventRunTwice_updateStatusOnlyOnce()
-    throws TwitterException {
+  public void run_newForkEventRunTwice_updateStatusOnlyOnce() throws TwitterException {
     Event event = createOrGetEvent(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2", "CODE");
     event.addHistory(new HistoryRecord(createDate1secOld(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
@@ -61,8 +59,7 @@ public class TwitterNotificationJobTest {
   }
 
   @Test
-  public void run_newNotForkEvent_notUpdateStatus()
-    throws TwitterException {
+  public void run_newNotForkEvent_notUpdateStatus() throws TwitterException {
     Event event = createOrGetEvent(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2", "CODE");
     event.addHistory(new HistoryRecord(createDate1secOld(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 2.9));
@@ -74,8 +71,7 @@ public class TwitterNotificationJobTest {
 
   @Ignore
   @Test
-  public void test()
-    throws TwitterException {
+  public void test() throws TwitterException {
     TwitterFactory.getSingleton().updateStatus("test sss1");
   }
 

@@ -8,10 +8,9 @@ import java.util.regex.Pattern;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-public abstract class BaseSideCodeAdapter
-  implements SideCodeAdapter {
+public abstract class BaseSideCodeAdapter implements SideCodeAdapter {
 
-  private static final Pattern LAST_WORD_PATTERN = Pattern.compile("^(.*[^a-z])?([a-z]+)$");
+  private static final Pattern LAST_WORD_PATTERN  = Pattern.compile("^(.*[^a-z])?([a-z]+)$");
   private static final Pattern FIRST_WORD_PATTERN = Pattern.compile("^([a-z]+)[^a-z].*$");
 
   public String normalize(String side) {

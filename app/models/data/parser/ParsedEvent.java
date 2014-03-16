@@ -21,12 +21,12 @@ public class ParsedEvent {
   @Override
   public String toString() {
     return "ParsedEvent{" +
-      "sportDescr='" + sportDescr + '\'' +
-      ", side1='" + side1 + '\'' +
-      ", side2='" + side2 + '\'' +
-      ", date='" + date + '\'' +
-      ", lowKof='" + lowKof + '\'' +
-      ", highKof='" + highKof + '\'' +
-      '}';
+           "sportDescr='" + sportDescr + '\'' +
+           ", side1='" + side1 + '\'' +
+           ", side2='" + side2 + '\'' +
+           ", date='" + date + '\'' +
+           ", lowKof='" + lowKof + '\'' +
+           ", highKof='" + highKof + '\'' +
+           '}';
   }
 }

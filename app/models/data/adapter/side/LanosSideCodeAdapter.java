@@ -7,11 +7,10 @@ import java.util.ArrayList;
 import static com.google.common.base.Splitter.on;
 import static com.google.common.collect.Lists.newArrayList;
 
-public class LanosSideCodeAdapter
-  extends BaseSideCodeAdapter {
+public class LanosSideCodeAdapter extends BaseSideCodeAdapter {
 
-  private static final String TWO_PLAYERS_SEPARATOR = "/";
-  private static final Splitter TWO_PLAYERS_SPLITTER = on(TWO_PLAYERS_SEPARATOR).omitEmptyStrings().trimResults();
+  private static final String   TWO_PLAYERS_SEPARATOR = "/";
+  private static final Splitter TWO_PLAYERS_SPLITTER  = on(TWO_PLAYERS_SEPARATOR).omitEmptyStrings().trimResults();
 
   @Override
   protected String buildBasketballCode(String side) {

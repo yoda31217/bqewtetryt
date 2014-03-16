@@ -15,12 +15,11 @@ import static org.fest.assertions.Assertions.assertThat;
 public class LiveVolvoParser2Test {
 
   private static LiveVolvoParser2 parser;
-  private static WebDriver webDriver;
+  private static WebDriver        webDriver;
   private static List<ParsedEvent> parsedEvents;
 
   @BeforeClass
-  public static void beforeClass()
-    throws Exception {
+  public static void beforeClass() throws Exception {
     initWebDriverEnv();
 
     webDriver = new ChromeDriver();

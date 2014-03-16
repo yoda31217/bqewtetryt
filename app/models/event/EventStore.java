@@ -13,8 +13,8 @@ import static play.Logger.of;
 
 public class EventStore {
 
-  static final ConcurrentMap<Event, Event> EVENTS = new ConcurrentHashMap<Event, Event>();
-  private static final Logger.ALogger LOG = of(EventStore.class);
+  static final         ConcurrentMap<Event, Event> EVENTS = new ConcurrentHashMap<Event, Event>();
+  private static final Logger.ALogger              LOG    = of(EventStore.class);
 
   private EventStore() {
     throw new UnsupportedOperationException();

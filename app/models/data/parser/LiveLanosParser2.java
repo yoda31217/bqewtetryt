@@ -16,8 +16,7 @@ import static com.google.common.collect.Collections2.transform;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.openqa.selenium.By.cssSelector;
 
-public class LiveLanosParser2
-  implements BParser {
+public class LiveLanosParser2 implements BParser {
 
   private static final Predicate<ParsedEvent> NOT_NULL_FILTER = new Predicate<ParsedEvent>() {
     @Override

@@ -14,7 +14,7 @@ public class WebDriverKeeper {
   }
 
   private final Semaphore lanosDriverSemaphore = new Semaphore(1, true);
-  private final long timeoutInMillis;
+  private final long         timeoutInMillis;
   private final ChromeDriver driver;
 
   public WebDriverKeeper(long timeoutInMillis, String url) {

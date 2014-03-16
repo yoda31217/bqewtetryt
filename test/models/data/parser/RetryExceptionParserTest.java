@@ -17,8 +17,8 @@ import static org.mockito.Mockito.when;
 public class RetryExceptionParserTest {
 
   private ArrayList<ParsedEvent> parsedEventsStub = new ArrayList<ParsedEvent>();
-  private BParser delegateMock = mock(BParser.class);
-  private LoggerMock logMock = new LoggerMock();
+  private BParser                delegateMock     = mock(BParser.class);
+  private LoggerMock             logMock          = new LoggerMock();
 
   @Before
   public void before() {

@@ -18,8 +18,7 @@ public final class BObjects {
 
   public static List<String> emptyStringList() {return emptyList();}
 
-  public static <T> T callConstructor(Class<T> clazz)
-    throws Exception {
+  public static <T> T callConstructor(Class<T> clazz) throws Exception {
     Constructor<T> constructor = clazz.getDeclaredConstructor();
     constructor.setAccessible(true);
     try {

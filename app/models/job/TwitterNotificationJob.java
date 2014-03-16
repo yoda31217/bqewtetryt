@@ -14,10 +14,9 @@ import static java.util.Collections.EMPTY_SET;
 import static models.calc.Calcularium.calcularium;
 import static models.util.Dates.secsFromNow;
 
-public class TwitterNotificationJob
-  implements Runnable {
+public class TwitterNotificationJob implements Runnable {
 
-  public static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("0.000");
+  public static final DecimalFormat          NUMBER_FORMAT  = new DecimalFormat("0.000");
   public static final Predicate<Calculation> IS_FORK_FILTER = new Predicate<Calculation>() {
     @Override
     public boolean apply(@Nullable Calculation calculation) {

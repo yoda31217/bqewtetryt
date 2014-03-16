@@ -45,7 +45,7 @@ public class LiveLanosSportSelectionJobTest {
   @Test
   public void runWithOneUnselectedSport() {
     when(webDriverMock.findElementsByClassName("group-selection")).thenReturn(newArrayList(selectedSportElementMock, unselectedSportElementMock,
-      anotherSelectedSportElementMock));
+                                                                                           anotherSelectedSportElementMock));
 
     new LiveLanosSportSelectionJob(webDriverMock).run();
 

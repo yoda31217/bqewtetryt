@@ -20,15 +20,13 @@ import static models.util.BObjects.logAndStopExceptions;
 import static play.Logger.of;
 import static play.libs.Akka.system;
 
-public class Global
-  extends GlobalSettings {
+public class Global extends GlobalSettings {
 
-  private static final Logger.ALogger LOG = of(GlobalSettings.class);
-  private List<Cancellable> schedules = new LinkedList<Cancellable>();
+  private static final Logger.ALogger    LOG       = of(GlobalSettings.class);
+  private              List<Cancellable> schedules = new LinkedList<Cancellable>();
 
   @Override
-  public <A> A getControllerInstance(Class<A> controllerClass)
-    throws Exception {
+  public <A> A getControllerInstance(Class<A> controllerClass) throws Exception {
     return super.getControllerInstance(controllerClass);
   }
 

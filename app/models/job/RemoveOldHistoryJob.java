@@ -9,8 +9,7 @@ import java.util.List;
 import static models.event.EventStore.events;
 import static play.Logger.of;
 
-public class RemoveOldHistoryJob
-  implements Runnable {
+public class RemoveOldHistoryJob implements Runnable {
 
   private static final Logger.ALogger LOG = of(RemoveOldHistoryJob.class);
   private final int newHistoryCount;

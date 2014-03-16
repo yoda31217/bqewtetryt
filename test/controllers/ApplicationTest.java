@@ -35,7 +35,7 @@ import static play.test.Helpers.stop;
 @Ignore
 public class ApplicationTest {
 
-  private Date date;
+  private Date            date;
   private FakeApplication fakeApplication;
 
   @Before
@@ -58,8 +58,7 @@ public class ApplicationTest {
   }
 
   @Test(expected = UnsupportedOperationException.class)
-  public void constructorUnsupported()
-    throws Exception {
+  public void constructorUnsupported() throws Exception {
     callConstructor(Application.class);
   }
 
@@ -82,7 +81,8 @@ public class ApplicationTest {
     assertThat(charset(result)).isEqualTo("utf-8");
     assertThat(contentType(result)).isEqualTo("application/json");
     assertThat(contentAsString(result)).isEqualTo("[{\"date\":" + date.getTime() +
-      ",\"side1\":\"side1\",\"side2\":\"side2\",\"code\":\"eventCode\",\"history\":[{\"date\":" + date.getTime() +
-      ",\"organisation\":\"LANOS\",\"lowKof\":1.1,\"highKof\":2.1}],\"type\":\"REGULAR\",\"sport\":\"TENNIS\",\"removed\":false}]");
+                                                  ",\"side1\":\"side1\",\"side2\":\"side2\",\"code\":\"eventCode\",\"history\":[{\"date\":" + date.getTime() +
+                                                  ",\"organisation\":\"LANOS\",\"lowKof\":1.1,\"highKof\":2.1}],\"type\":\"REGULAR\",\"sport\":\"TENNIS\"," +
+                                                  "\"removed\":false}]");
   }
 }

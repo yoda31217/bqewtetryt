@@ -26,8 +26,7 @@ import static org.fest.assertions.Assertions.assertThat;
 public class VolvoAdapterTest {
 
   @Test
-  public void parse()
-    throws Exception {
+  public void parse() throws Exception {
     Date adoptedDate = new Date();
     PowerMockito.whenNew(Date.class).withNoArguments().thenReturn(adoptedDate);
 
@@ -52,8 +51,7 @@ public class VolvoAdapterTest {
   }
 
   @Test
-  public void codeAndOrder()
-    throws Exception {
+  public void codeAndOrder() throws Exception {
     ParsedEvent event = new ParsedEvent("TENNIS", "Florian Del Mayer", "Aisam-Ul Haq Qureshi & Jean-Julien Rojer", "11 Oct 07:30", "3.28", "1.50");
     AdaptedEvent adaptedEvent = new VolvoAdapter().adapt(event);
 
@@ -71,8 +69,7 @@ public class VolvoAdapterTest {
   }
 
   @Test
-  public void order()
-    throws Exception {
+  public void order() throws Exception {
     ParsedEvent event = new ParsedEvent("TENNIS", "Kristina Mladenovic", "Florian Mayer", "11 Oct 07:30", "3.28", "1.50");
     AdaptedEvent adaptedEvent = new VolvoAdapter().adapt(event);
 
@@ -83,8 +80,7 @@ public class VolvoAdapterTest {
   }
 
   @Test
-  public void nonUnicodeCharacters()
-    throws Exception {
+  public void nonUnicodeCharacters() throws Exception {
     ParsedEvent event = new ParsedEvent("TENNIS", "Florian Hradečka", "Kristina Hradečka", "11 Oct 07:30", "1.50", "3.28");
     AdaptedEvent adaptedEvent = new VolvoAdapter().adapt(event);
 
@@ -93,8 +89,7 @@ public class VolvoAdapterTest {
   }
 
   @Test
-  public void date24hours()
-    throws Exception {
+  public void date24hours() throws Exception {
     ParsedEvent event = new ParsedEvent("TENNIS", "Florian Mayer", "Kristina Mladenovic & Flavia Pennetta", "11 Oct 12:30", "3.50", "1.28");
     AdaptedEvent adaptedEvent = new VolvoAdapter().adapt(event);
 

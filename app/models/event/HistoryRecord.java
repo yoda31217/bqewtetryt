@@ -6,10 +6,10 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 public final class HistoryRecord {
 
-  final Date date;
+  final Date         date;
   final Organisation organisation;
-  final double lowKof;
-  final double highKof;
+  final double       lowKof;
+  final double       highKof;
 
   public HistoryRecord(Date date, Organisation organisation, double lowKof, double highKof) {
     checkArgument(lowKof <= highKof, "First kof cannot be greater than second: %s, %s", lowKof, highKof);

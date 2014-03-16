@@ -31,9 +31,9 @@ import static models.web_driver.WebDriverKeeper.initWebDriverEnv;
 
 public final class Jobs {
 
-  public static final Runnable REMOVE_OLD_HISTORY_JOB;
-  public static final RemoveOldEventJob REMOVE_OLD_EVENT_JOB;
-  public static final Runnable NOTIFICATION_JOB;
+  public static final  Runnable                REMOVE_OLD_HISTORY_JOB;
+  public static final  RemoveOldEventJob       REMOVE_OLD_EVENT_JOB;
+  public static final  Runnable                NOTIFICATION_JOB;
   //  public static final WebDriverKeeper LANOS_WEB_DRIVER_KEEPER;
   //  public static final LiveLanosSportSelectionJob LANOS_SPORT_SELECTION_JOB;
   //  public static final EventJob LIVE_LANOS_JOB;
@@ -45,7 +45,7 @@ public final class Jobs {
   //  public static final EventJob LIVE_VOLVO_BASKETBALL_JOB;
   //  public static final WebDriverKeeper VOLVO_TABLE_TENNIS_WEB_DRIVER_KEEPER;
   //  public static final EventJob LIVE_VOLVO_TABLE_TENNIS_JOB;
-  public static final EventJob REGULAR_VOLVO_TENNIS_JOB;
+  public static final  EventJob                REGULAR_VOLVO_TENNIS_JOB;
   private static final Predicate<AdaptedEvent> EVENT_FILTER;
 
   static {
@@ -102,7 +102,7 @@ public final class Jobs {
 
   private static EventJob createRegularVolvoTennisJob() {
     BParser parser = new RegularVolvoParser(getVolvoSite() + "/lite/?sv=2.3.2.3#!clt=9994;op=4;cid=13;cpid=13-1-50-2-163-0-0-0-1-0-0-4505-0-0-1-0-0-0-0",
-      "Tennis", new ChromeDriver());
+                                            "Tennis", new ChromeDriver());
     parser = new RetryExceptionParser(parser, 3);
     VolvoAdapter2 adapter = new VolvoAdapter2(new VolvoSideCodeAdapter("&"), new VolvoDateAdapter(), REGULAR);
     return new EventJob(parser, adapter, EVENT_FILTER, REGULAR + "_" + VOLVO + "_" + TENNIS);

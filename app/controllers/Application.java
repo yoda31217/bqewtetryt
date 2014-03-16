@@ -18,12 +18,11 @@ import static models.calc.Calcularium.calcularium;
 import static models.util.Dates.secsFromNow;
 import static play.Logger.of;
 
-public class Application
-  extends Controller {
+public class Application extends Controller {
 
-  private static final Logger.ALogger LOG = of(Application.class);
-  public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM hh:mm");
-  public static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("0.000");
+  private static final Logger.ALogger   LOG           = of(Application.class);
+  public static final  SimpleDateFormat DATE_FORMAT   = new SimpleDateFormat("dd-MM hh:mm");
+  public static final  DecimalFormat    NUMBER_FORMAT = new DecimalFormat("0.000");
 
   private Application() {
     throw new UnsupportedOperationException();

@@ -55,28 +55,27 @@ import static play.test.Helpers.stop;
 public class GlobalTest {
 
   @Mock
-  private ActorSystem actorSystemMock;
+  private ActorSystem              actorSystemMock;
   @Mock
-  private Scheduler schedulerMock;
+  private Scheduler                schedulerMock;
   @Mock
-  private Dispatchers dispatchersMock;
+  private Dispatchers              dispatchersMock;
   @Mock
   private ExecutionContextExecutor defaultDispatcherMock;
   @Mock
-  private MessageDispatcher volvoFetchingDispatcherMock;
+  private MessageDispatcher        volvoFetchingDispatcherMock;
   @Mock
-  private MessageDispatcher lanosFetchingDispatcherMock;
+  private MessageDispatcher        lanosFetchingDispatcherMock;
   @Mock
-  private Cancellable scheduleMock;
+  private Cancellable              scheduleMock;
   @Mock
-  private Runnable wrappedRunnableMock;
+  private Runnable                 wrappedRunnableMock;
   @Mock
-  private WebDriverKeeper lanosWebDriverKeeperMock;
-  private FakeApplication fakeApplication;
+  private WebDriverKeeper          lanosWebDriverKeeperMock;
+  private FakeApplication          fakeApplication;
 
   @Before
-  public void before()
-    throws Exception {
+  public void before() throws Exception {
     mockStatic(Akka.class);
     when(Akka.system()).thenReturn(actorSystemMock);
 
@@ -100,8 +99,7 @@ public class GlobalTest {
   }
 
   @Test
-  public void startAndStopDevMode()
-    throws InterruptedException {
+  public void startAndStopDevMode() throws InterruptedException {
     mockStatic(Play.class);
     when(isProd()).thenReturn(false);
 
@@ -129,8 +127,7 @@ public class GlobalTest {
   }
 
   @Test
-  public void startProdMode()
-    throws InterruptedException {
+  public void startProdMode() throws InterruptedException {
     mockStatic(Play.class);
     when(isProd()).thenReturn(true);
 
@@ -158,7 +155,7 @@ public class GlobalTest {
     ArgumentCaptor<ExecutionContext> executionContextArgsCaptor = forClass(ExecutionContext.class);
 
     verify(schedulerMock, times(9)).schedule(durationArgsCaptor.capture(), durationArgsCaptor.capture(), same(wrappedRunnableMock),
-      executionContextArgsCaptor.capture());
+                                             executionContextArgsCaptor.capture());
 
     List<FiniteDuration> durations = durationArgsCaptor.getAllValues();
 
@@ -198,8 +195,8 @@ public class GlobalTest {
 
     List<ExecutionContext> executionContexts = executionContextArgsCaptor.getAllValues();
     assertThat(executionContexts).hasSize(9).containsExactly(defaultDispatcherMock, defaultDispatcherMock
-      //      , lanosFetchingDispatcherMock, volvoFetchingDispatcherMock
+                                                             //      , lanosFetchingDispatcherMock, volvoFetchingDispatcherMock
       , defaultDispatcherMock, defaultDispatcherMock, defaultDispatcherMock, defaultDispatcherMock, defaultDispatcherMock, defaultDispatcherMock,
-      defaultDispatcherMock);
+                                                             defaultDispatcherMock);
   }
 }

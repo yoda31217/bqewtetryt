@@ -8,14 +8,14 @@ import static com.google.common.collect.Lists.newArrayList;
 
 public class Event {
 
-  final Date date;
+  final Date   date;
   final String side1;
   final String side2;
   final String code;
   final CopyOnWriteArrayList<HistoryRecord> history = new CopyOnWriteArrayList<HistoryRecord>();
-  final EventType type;
-  final Sport sport;
-  private boolean removed;
+  final   EventType type;
+  final   Sport     sport;
+  private boolean   removed;
 
   Event(EventType type, Sport sport, Date date, String side1, String side2, String code) {
     this.type = type;

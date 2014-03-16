@@ -25,12 +25,11 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 public class WebDriverKeeperTest {
 
   @Mock
-  private ChromeDriver webDriverMock;
+  private ChromeDriver    webDriverMock;
   private WebDriverKeeper keeper;
 
   @Before
-  public void before()
-    throws Exception {
+  public void before() throws Exception {
     whenNew(ChromeDriver.class).withNoArguments().thenReturn(webDriverMock);
 
     WebDriver.Options optionsMock = mock(WebDriver.Options.class);
@@ -46,22 +45,19 @@ public class WebDriverKeeperTest {
   }
 
   @After
-  public void after()
-    throws Exception {
+  public void after() throws Exception {
 
   }
 
   @Test
-  public void acquireLanosDriver()
-    throws Exception {
+  public void acquireLanosDriver() throws Exception {
     WebDriver driver = keeper.acquire();
 
     assertThat(driver).isEqualTo(webDriverMock);
   }
 
   @Test
-  public void secondAcquireTimeoutException()
-    throws Exception {
+  public void secondAcquireTimeoutException() throws Exception {
     keeper.acquire();
 
     try {
@@ -74,8 +70,7 @@ public class WebDriverKeeperTest {
   }
 
   @Test
-  public void acquireReleaseAcquire()
-    throws Exception {
+  public void acquireReleaseAcquire() throws Exception {
     keeper.acquire();
     keeper.release();
     keeper.acquire();

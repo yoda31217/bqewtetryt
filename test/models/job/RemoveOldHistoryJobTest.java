@@ -18,7 +18,7 @@ import static org.fest.assertions.Assertions.assertThat;
 public class RemoveOldHistoryJobTest {
 
   private RemoveOldHistoryJob jobToRemoveAllExcept2records;
-  private Event event;
+  private Event               event;
 
   @Before
   public void before() {

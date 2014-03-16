@@ -29,8 +29,7 @@ import static org.powermock.reflect.Whitebox.invokeMethod;
 public class LanosAdapterTest {
 
   @Test
-  public void parse()
-    throws Exception {
+  public void parse() throws Exception {
     Date adaptedDate = new Date();
     whenNew(Date.class).withNoArguments().thenReturn(adaptedDate);
 
@@ -53,8 +52,7 @@ public class LanosAdapterTest {
   }
 
   @Test
-  public void nunUnicodeCharacters()
-    throws Exception {
+  public void nunUnicodeCharacters() throws Exception {
     ParsedEvent event = new ParsedEvent("TENNIS", "Florian Hradečka", "Kristina Hradečka", "11 Oct 07:30", "1.50", "3.28");
     AdaptedEvent adaptedEvent = new LanosAdapter().adapt(event);
 
@@ -63,8 +61,7 @@ public class LanosAdapterTest {
   }
 
   @Test
-  public void codeAndOrder()
-    throws Exception {
+  public void codeAndOrder() throws Exception {
     ParsedEvent event = new ParsedEvent("TENNIS", "Flipkens, Kirsten", "J.Murray / J.Peers", "11 Sep 17:30", "2.92", "1.45");
     AdaptedEvent adaptedEvent = new LanosAdapter().adapt(event);
 
@@ -82,8 +79,7 @@ public class LanosAdapterTest {
   }
 
   @Test
-  public void order()
-    throws Exception {
+  public void order() throws Exception {
     ParsedEvent event = new ParsedEvent("TENNIS", "Hercog, Polona", "Flipkens, Kirsten", "17:30", "2.92", "1.45");
     AdaptedEvent adaptedEvent = new LanosAdapter().adapt(event);
 
@@ -94,8 +90,7 @@ public class LanosAdapterTest {
   }
 
   @Test
-  public void date24hours()
-    throws InterruptedException, IOException {
+  public void date24hours() throws InterruptedException, IOException {
     ParsedEvent event = new ParsedEvent("TENNIS", "Flipkens, Kirsten", "Hercog, Polona", "11 Sep 12:30", "1.45", "2.92");
     AdaptedEvent adaptedEvent = new LanosAdapter().adapt(event);
 
@@ -110,8 +105,7 @@ public class LanosAdapterTest {
   }
 
   @Test
-  public void longDate()
-    throws InterruptedException, IOException {
+  public void longDate() throws InterruptedException, IOException {
     ParsedEvent event = new ParsedEvent("TENNIS", "Flipkens, Kirsten", "Hercog, Polona", "11 Sep 17:30", "1.45", "2.92");
     AdaptedEvent adaptedEvent = new LanosAdapter().adapt(event);
 
@@ -126,8 +120,7 @@ public class LanosAdapterTest {
   }
 
   @Test
-  public void adoptLongDateParseException()
-    throws Exception {
+  public void adoptLongDateParseException() throws Exception {
     try {
       invokeMethod(new LanosAdapter(), "adaptLongDate", "WRONG_DATE_STRING");
 

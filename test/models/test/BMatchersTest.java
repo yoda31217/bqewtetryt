@@ -11,8 +11,7 @@ public class BMatchersTest {
   private int testField;
 
   @Test(expected = UnsupportedOperationException.class)
-  public void constructorUnsupported()
-    throws Exception {
+  public void constructorUnsupported() throws Exception {
     callConstructor(BMatchers.class);
   }
 

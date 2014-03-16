@@ -8,8 +8,7 @@ import static java.util.Calendar.YEAR;
 import static java.util.TimeZone.getTimeZone;
 import static models.util.Dates.parseDate;
 
-public class VolvoDateAdapter
-  implements DateAdapter {
+public class VolvoDateAdapter implements DateAdapter {
 
   static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat("yyyy dd MMM HH:mm Z");
 

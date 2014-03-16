@@ -9,8 +9,7 @@ import static models.event.Sport.TENNIS;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.Fail.fail;
 
-public class VolvoSideCodeAdapterTest
-  extends BaseSideCoderTest {
+public class VolvoSideCodeAdapterTest extends BaseSideCoderTest {
 
   @Before
   public void before() {

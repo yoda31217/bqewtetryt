@@ -15,9 +15,9 @@ import static org.mockito.Mockito.verify;
 
 public class TwittererTest {
 
-  private Twitter twitterMock = Mockito.mock(Twitter.class);
-  private Twitterer twitterer = new Twitterer(twitterMock);
-  private LoggerMock logMock = new LoggerMock();
+  private Twitter    twitterMock = Mockito.mock(Twitter.class);
+  private Twitterer  twitterer   = new Twitterer(twitterMock);
+  private LoggerMock logMock     = new LoggerMock();
 
   @Before
   public void before() {
@@ -25,15 +25,13 @@ public class TwittererTest {
   }
 
   @Test
-  public void sendMessage_withoutEx_passedToTwitter()
-    throws TwitterException {
+  public void sendMessage_withoutEx_passedToTwitter() throws TwitterException {
     twitterer.sendMessage("MESSAGE");
     verify(twitterMock).updateStatus("MESSAGE");
   }
 
   @Test
-  public void sendMessage_twitterThrowRuntimeEx_propagatedToUpperLevel()
-    throws TwitterException {
+  public void sendMessage_twitterThrowRuntimeEx_propagatedToUpperLevel() throws TwitterException {
     RuntimeException expectedException = new RuntimeException();
     doThrow(expectedException).when(twitterMock).updateStatus(anyString());
 
@@ -47,8 +45,7 @@ public class TwittererTest {
   }
 
   @Test
-  public void sendMessage_twitterThrowTwitterEx_logWarn()
-    throws TwitterException {
+  public void sendMessage_twitterThrowTwitterEx_logWarn() throws TwitterException {
     TwitterException twitterException = new TwitterException("EX_MESSAGE");
     doThrow(twitterException).when(twitterMock).updateStatus(anyString());
 

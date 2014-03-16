@@ -16,8 +16,7 @@ public class EventTest {
   private Event event;
 
   @Before
-  public void before()
-    throws Exception {
+  public void before() throws Exception {
     event = new Event(REGULAR, TENNIS, new Date(), randomSide(), randomSide(), "event_code");
   }
 
@@ -44,8 +43,7 @@ public class EventTest {
   }
 
   @Test
-  public void removeOldHistory()
-    throws Exception {
+  public void removeOldHistory() throws Exception {
     HistoryRecord record = randomHistoryRecord();
 
     event.addHistory(record);
@@ -56,8 +54,7 @@ public class EventTest {
   }
 
   @Test
-  public void removeOldHistory_1record_return1removedCount()
-    throws Exception {
+  public void removeOldHistory_1record_return1removedCount() throws Exception {
     event.addHistory(randomHistoryRecord());
     int removedCount = event.removeOldHistory(0);
     assertThat(removedCount).isEqualTo(1);

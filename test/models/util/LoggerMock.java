@@ -10,11 +10,10 @@ import java.util.List;
 import static ch.qos.logback.classic.Level.WARN;
 import static org.slf4j.helpers.MessageFormatter.arrayFormat;
 
-public class LoggerMock
-  extends Logger.ALogger {
+public class LoggerMock extends Logger.ALogger {
 
   private List<String> messages;
-  private List<Level> levels;
+  private List<Level>  levels;
 
   public LoggerMock() {
     super(null);

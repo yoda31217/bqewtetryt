@@ -6,8 +6,7 @@ import java.util.List;
 
 import static play.Logger.of;
 
-public class RetryExceptionParser
-  implements BParser {
+public class RetryExceptionParser implements BParser {
 
   static Logger.ALogger log = of(RetryExceptionParser.class);
   private final BParser delegate;

@@ -21,7 +21,7 @@ public class Calcularium {
     }
   };
   private static Calcularium calcularium = new Calcularium();
-  private Set<Event> events = newCopyOnWriteArraySet();
+  private        Set<Event>  events      = newCopyOnWriteArraySet();
 
   Calcularium() {
   }

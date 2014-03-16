@@ -36,15 +36,15 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 public class LiveLanosAdapterTest {
 
   public static final String DESCRIPTION = "Tennis. This is a description.";
-  public static final String SIDE_1 = "SIDE_1";
-  public static final String SIDE_2 = "SIDE_2";
-  public static final String LOW_KOF = "9/20";
-  public static final String HIGH_KOF = "96/50";
+  public static final String SIDE_1     = "SIDE_1";
+  public static final String SIDE_2     = "SIDE_2";
+  public static final String LOW_KOF    = "9/20";
+  public static final String HIGH_KOF   = "96/50";
   public static final String SHORT_DATE = "17:30";
   public static final String SIDE_1_CODE = "SIDE_2_CODE";
   public static final String SIDE_2_CODE = "SIDE_1_CODE";
   @Mock
-  private SideCodeAdapter sideCodeAdapterMock;
+  private SideCodeAdapter  sideCodeAdapterMock;
   private LiveLanosAdapter adapter;
 
   @Before
@@ -102,8 +102,7 @@ public class LiveLanosAdapterTest {
   }
 
   @Test
-  public void adoptedDate()
-    throws Exception {
+  public void adoptedDate() throws Exception {
     Date expectedAdaptedDate = new Date();
     whenNew(Date.class).withNoArguments().thenReturn(expectedAdaptedDate);
 

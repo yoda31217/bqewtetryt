@@ -17,8 +17,7 @@ import static models.event.Sport.TENNIS;
 import static models.event.Sport.UNKNOWN;
 import static models.event.Sport.VOLLEYBALL;
 
-public class LiveLanosAdapter
-  implements BAdapter {
+public class LiveLanosAdapter implements BAdapter {
 
   static final Splitter KOF_FRACTIONAL_SPLITTER = Splitter.on('/').omitEmptyStrings().trimResults();
   private final SideCodeAdapter sideCodeAdapter;

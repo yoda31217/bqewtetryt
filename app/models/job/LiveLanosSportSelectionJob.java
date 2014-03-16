@@ -3,8 +3,7 @@ package models.job;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class LiveLanosSportSelectionJob
-  implements Runnable {
+public class LiveLanosSportSelectionJob implements Runnable {
 
   private final ChromeDriver webDriver;
 

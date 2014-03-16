@@ -19,13 +19,12 @@ import static models.event.Sport.TENNIS;
 import static models.event.Sport.UNKNOWN;
 import static models.event.Sport.VOLLEYBALL;
 
-public class VolvoAdapter2
-  implements BAdapter {
+public class VolvoAdapter2 implements BAdapter {
 
   public static final Splitter KOF_SPLITTER = Splitter.on("/").omitEmptyStrings().trimResults();
   private final SideCodeAdapter sideCodeAdapter;
-  private final DateAdapter dateAdapter;
-  private EventType type;
+  private final DateAdapter     dateAdapter;
+  private       EventType       type;
 
   public VolvoAdapter2(SideCodeAdapter sideCodeAdapter, DateAdapter dateAdapter, EventType type) {
     this.sideCodeAdapter = sideCodeAdapter;

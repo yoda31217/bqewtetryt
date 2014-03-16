@@ -9,8 +9,7 @@ import java.util.EnumSet;
 import static models.event.EventType.REGULAR;
 import static models.event.Sport.TENNIS;
 
-public class EventFilter
-  implements Predicate<AdaptedEvent> {
+public class EventFilter implements Predicate<AdaptedEvent> {
 
   public static final EnumSet<Sport> ALLOWED_LIVE_SPORTS = EnumSet.of(TENNIS);
 

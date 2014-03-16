@@ -33,21 +33,18 @@ public class BObjectsTest {
   }
 
   @Test(expected = UnsupportedOperationException.class)
-  public void constructorUnsupported()
-    throws Exception {
+  public void constructorUnsupported() throws Exception {
     callConstructor(BObjects.class);
   }
 
   @Test
-  public void constructorSupported()
-    throws Exception {
+  public void constructorSupported() throws Exception {
     Date date = callConstructor(Date.class);
     assertThat(date).isNotNull();
   }
 
   @Test
-  public void emptyStringList()
-    throws Exception {
+  public void emptyStringList() throws Exception {
     assertThat(BObjects.emptyStringList()).isSameAs(emptyList());
   }
 
