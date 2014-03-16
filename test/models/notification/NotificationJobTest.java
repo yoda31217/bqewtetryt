@@ -10,7 +10,6 @@ import twitter4j.TwitterException;
 import java.util.Date;
 
 import static com.google.common.collect.Sets.newHashSet;
-import static models.event.EventStore.createOrGetEvent;
 import static models.event.EventType.LIVE;
 import static models.event.Organisation.LANOS;
 import static models.event.Organisation.VOLVO;
@@ -30,7 +29,7 @@ public class NotificationJobTest {
 
   @Test
   public void run_newForkEventRunTwice_notifyOnlyOnce() throws TwitterException {
-    Event event = createOrGetEvent(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2", "CODE");
+    Event event = new Event(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2", "CODE");
     event.addHistory(new HistoryRecord(create1secOldDate(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
     when(calculariumMock.createCalculations()).thenReturn(newHashSet(new Calculation(event)));
@@ -43,7 +42,7 @@ public class NotificationJobTest {
 
   @Test
   public void run_newForkEvent_notify() throws TwitterException {
-    Event event = createOrGetEvent(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2", "CODE");
+    Event event = new Event(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2", "CODE");
     event.addHistory(new HistoryRecord(create1secOldDate(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
     when(calculariumMock.createCalculations()).thenReturn(newHashSet(new Calculation(event)));
@@ -55,7 +54,7 @@ public class NotificationJobTest {
 
   @Test
   public void run_newNotForkEvent_notNotify() throws TwitterException {
-    Event event = createOrGetEvent(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2", "CODE");
+    Event event = new Event(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2", "CODE");
     event.addHistory(new HistoryRecord(create1secOldDate(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 2.9));
     when(calculariumMock.createCalculations()).thenReturn(newHashSet(new Calculation(event)));

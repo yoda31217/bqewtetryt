@@ -17,7 +17,7 @@ public class Event {
   final   Sport     sport;
   private boolean   removed;
 
-  Event(EventType type, Sport sport, Date date, String side1, String side2, String code) {
+  public Event(EventType type, Sport sport, Date date, String side1, String side2, String code) {
     this.type = type;
     this.sport = sport;
     this.date = date;
