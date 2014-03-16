@@ -8,12 +8,14 @@ import models.data.adapter.side.VolvoSideCodeAdapter;
 import models.data.parser.BParser;
 import models.data.parser.RegularVolvoParser;
 import models.data.parser.RetryExceptionParser;
-import models.notification.Twitterer;
+import models.notification.NotificationJob;
+import models.notification.TwitterNotifier;
 import models.web_driver.WebDriverKeeper;
 import org.openqa.selenium.chrome.ChromeDriver;
 import scala.concurrent.duration.Duration;
 import twitter4j.TwitterFactory;
 
+import static models.calc.Calcularium.calcularium;
 import static models.event.EventType.REGULAR;
 import static models.event.Organisation.VOLVO;
 import static models.event.Sport.TENNIS;
@@ -46,7 +48,7 @@ public final class Jobs {
     REMOVE_OLD_HISTORY_JOB = new RemoveOldHistoryJob(4);
     REMOVE_OLD_EVENT_JOB = new RemoveOldEventJob(Duration.create(2, "min").toMillis());
 
-    NOTIFICATION_JOB = new TwitterNotificationJob(new Twitterer(TwitterFactory.getSingleton()));
+    NOTIFICATION_JOB = new NotificationJob(new TwitterNotifier(TwitterFactory.getSingleton()), calcularium());
 
     //    LANOS_WEB_DRIVER_KEEPER = createLanosWebDriverKeeper();
     //    ChromeDriver webDriver = new ChromeDriver();

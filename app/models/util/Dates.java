@@ -9,13 +9,7 @@ import static java.lang.System.currentTimeMillis;
 // todo: tests
 public class Dates {
 
-  public static long secsFromNow(Date date) {
-    return millisFromNow(date) / 1000L;
-  }
-
-  public static long millisFromNow(Date date) {
-    return currentTimeMillis() - date.getTime();
-  }
+  public static Date create1secOldDate() {return new Date(new Date().getTime() - 1000);}
 
   public static Date parseDate(String dateText, SimpleDateFormat format) {
     try {
@@ -24,5 +18,13 @@ public class Dates {
     } catch (ParseException ex) {
       throw new IllegalArgumentException("Failed to parse date string: " + dateText, ex);
     }
+  }
+
+  public static long toMillisFromNow(Date date) {
+    return currentTimeMillis() - date.getTime();
+  }
+
+  public static long toSecsFromNow(Date date) {
+    return toMillisFromNow(date) / 1000L;
   }
 }

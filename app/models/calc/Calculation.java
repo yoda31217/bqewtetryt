@@ -29,7 +29,7 @@ public class Calculation {
   private       double       highProfit;
   private       double       lowProfit;
 
-  Calculation(Event event) {
+  public Calculation(Event event) {
     this.event = event;
 
     isFork = false;

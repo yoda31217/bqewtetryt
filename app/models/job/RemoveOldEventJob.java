@@ -6,7 +6,7 @@ import models.event.HistoryRecord;
 import play.Logger;
 
 import static models.event.EventStore.remove;
-import static models.util.Dates.millisFromNow;
+import static models.util.Dates.toMillisFromNow;
 import static play.Logger.of;
 
 public class RemoveOldEventJob implements Runnable {
@@ -26,7 +26,7 @@ public class RemoveOldEventJob implements Runnable {
 
       HistoryRecord lastHistoryRecord = event.history().get(event.history().size() - 1);
 
-      boolean isLastHistoryRecordOld = millisFromNow(lastHistoryRecord.date()) > maxSilenceDelayInMillis;
+      boolean isLastHistoryRecordOld = toMillisFromNow(lastHistoryRecord.date()) > maxSilenceDelayInMillis;
       if (isLastHistoryRecordOld) remove(event);
     }
   }

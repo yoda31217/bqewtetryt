@@ -15,7 +15,7 @@ import java.util.Set;
 import static com.google.common.base.Strings.padEnd;
 import static java.util.Collections.sort;
 import static models.calc.Calcularium.calcularium;
-import static models.util.Dates.secsFromNow;
+import static models.util.Dates.toSecsFromNow;
 import static play.Logger.of;
 
 public class Application extends Controller {
@@ -93,13 +93,13 @@ public class Application extends Controller {
     response.append(",");
     response.append(calculation.lowForkKofOrganisation().label);
     response.append(",");
-    response.append(padEnd(secsFromNow(calculation.lowForkKofDate()) + "", 5, ' '));
+    response.append(padEnd(toSecsFromNow(calculation.lowForkKofDate()) + "", 5, ' '));
     response.append("/");
     response.append(padEnd(NUMBER_FORMAT.format(calculation.highForkKof()), 7, ' '));
     response.append(",");
     response.append(calculation.highForkKofOrganisation().label);
     response.append(",");
-    response.append(padEnd(secsFromNow(calculation.highForkKofDate()) + "", 5, ' '));
+    response.append(padEnd(toSecsFromNow(calculation.highForkKofDate()) + "", 5, ' '));
     response.append("  ");
   }
 
