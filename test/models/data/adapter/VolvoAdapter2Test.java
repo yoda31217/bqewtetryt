@@ -28,8 +28,8 @@ public class VolvoAdapter2Test {
 
   public static final String SIDE_1 = "SIDE1";
   public static final String SIDE_2 = "SIDE2";
-  public static final String KOF_1_STR = "1/2";
-  public static final String KOF_2_STR = "11/5";
+  public static final String LOW_KOF_STR = "1/2";
+  public static final String HIGH_KOF_STR = "11/5";
   public static final String SIDE_1_CODE = "SIDE1_CODE";
   public static final String SIDE_2_CODE = "SIDE2_CODE";
   public static final String EVENT_DATE_TEXT = "EVENT_DATE_TEXT";
@@ -49,7 +49,7 @@ public class VolvoAdapter2Test {
 
   @Test
   public void adapt_checkType() {
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_1, SIDE_2, EVENT_DATE_TEXT, KOF_1_STR, KOF_2_STR));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_1, SIDE_2, EVENT_DATE_TEXT, LOW_KOF_STR, HIGH_KOF_STR));
 
     assertThat(adaptedEvent.type).isEqualTo(LIVE);
   }
@@ -57,91 +57,91 @@ public class VolvoAdapter2Test {
   @Test
   public void adapt_dateTextNotNull_returnAdaptedDate()
   throws Exception {
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_2, SIDE_1, EVENT_DATE_TEXT, KOF_2_STR, KOF_1_STR));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_2, SIDE_1, EVENT_DATE_TEXT, HIGH_KOF_STR, LOW_KOF_STR));
     assertThat(adaptedEvent.eventDate).isSameAs(ADAPTED_EVENT_DATE);
   }
 
   @Test
   public void adapt_checkSport()
     throws Exception {
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_1, SIDE_2, EVENT_DATE_TEXT, KOF_1_STR, KOF_2_STR));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_1, SIDE_2, EVENT_DATE_TEXT, LOW_KOF_STR, HIGH_KOF_STR));
     assertThat(adaptedEvent.sport).isEqualTo(TENNIS);
   }
 
   @Test
   public void adapt_checkSide1Name()
   throws Exception {
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_1, SIDE_2, EVENT_DATE_TEXT, KOF_1_STR, KOF_2_STR));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_1, SIDE_2, EVENT_DATE_TEXT, LOW_KOF_STR, HIGH_KOF_STR));
     assertThat(adaptedEvent.side1).isEqualTo(SIDE_1);
   }
 
   @Test
   public void adapt_checkSide2Name()
   throws Exception {
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_1, SIDE_2, EVENT_DATE_TEXT, KOF_1_STR, KOF_2_STR));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_1, SIDE_2, EVENT_DATE_TEXT, LOW_KOF_STR, HIGH_KOF_STR));
     assertThat(adaptedEvent.side2).isEqualTo(SIDE_2);
   }
 
   @Test
-  public void adapt_checkFirstKof()
+  public void adapt_checkLowKof()
     throws Exception {
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_1, SIDE_2, EVENT_DATE_TEXT, KOF_1_STR, KOF_2_STR));
-    assertThat(adaptedEvent.firstKof).isEqualTo(1.5);
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_1, SIDE_2, EVENT_DATE_TEXT, LOW_KOF_STR, HIGH_KOF_STR));
+    assertThat(adaptedEvent.lowKof).isEqualTo(1.5);
   }
 
   @Test
-  public void adapt_checkSecondKof()
+  public void adapt_checkHighKof()
     throws Exception {
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_1, SIDE_2, EVENT_DATE_TEXT, KOF_1_STR, KOF_2_STR));
-    assertThat(adaptedEvent.secondKof).isEqualTo(3.2);
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_1, SIDE_2, EVENT_DATE_TEXT, LOW_KOF_STR, HIGH_KOF_STR));
+    assertThat(adaptedEvent.highKof).isEqualTo(3.2);
   }
 
   @Test
   public void adapt_checkOrganisation()
     throws Exception {
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_1, SIDE_2, EVENT_DATE_TEXT, KOF_1_STR, KOF_2_STR));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_1, SIDE_2, EVENT_DATE_TEXT, LOW_KOF_STR, HIGH_KOF_STR));
     assertThat(adaptedEvent.organisation).isEqualTo(VOLVO);
   }
 
   @Test
   public void adapt_checkCode()
     throws Exception {
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_1, SIDE_2, EVENT_DATE_TEXT, KOF_1_STR, KOF_2_STR));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_1, SIDE_2, EVENT_DATE_TEXT, LOW_KOF_STR, HIGH_KOF_STR));
     assertThat(adaptedEvent.code).isEqualTo(SIDE_1_CODE + "_" + SIDE_2_CODE);
   }
 
   @Test
   public void adapt_checkSide1Name_flipped()
   throws Exception {
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_2, SIDE_1, EVENT_DATE_TEXT, KOF_2_STR, KOF_1_STR));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_2, SIDE_1, EVENT_DATE_TEXT, HIGH_KOF_STR, LOW_KOF_STR));
     assertThat(adaptedEvent.side1).isEqualTo(SIDE_1);
   }
 
   @Test
   public void adapt_checkSide2Name_flipped()
   throws Exception {
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_2, SIDE_1, EVENT_DATE_TEXT, KOF_2_STR, KOF_1_STR));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_2, SIDE_1, EVENT_DATE_TEXT, HIGH_KOF_STR, LOW_KOF_STR));
     assertThat(adaptedEvent.side2).isEqualTo(SIDE_2);
   }
 
   @Test
-  public void adapt_checkFirstKof_flipped()
+  public void adapt_checkLowKof_flipped()
     throws Exception {
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_1, SIDE_2, EVENT_DATE_TEXT, KOF_2_STR, KOF_1_STR));
-    assertThat(adaptedEvent.firstKof).isEqualTo(1.5);
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_1, SIDE_2, EVENT_DATE_TEXT, HIGH_KOF_STR, LOW_KOF_STR));
+    assertThat(adaptedEvent.lowKof).isEqualTo(1.5);
   }
 
   @Test
-  public void adapt_checkSecondKof_flipped()
+  public void adapt_checkHighKof_flipped()
     throws Exception {
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_2, SIDE_1, EVENT_DATE_TEXT, KOF_2_STR, KOF_1_STR));
-    assertThat(adaptedEvent.secondKof).isEqualTo(3.2);
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_2, SIDE_1, EVENT_DATE_TEXT, HIGH_KOF_STR, LOW_KOF_STR));
+    assertThat(adaptedEvent.highKof).isEqualTo(3.2);
   }
 
   @Test
   public void adapt_checkCode_flipped()
     throws Exception {
-    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_2, SIDE_1, EVENT_DATE_TEXT, KOF_2_STR, KOF_1_STR));
+    AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_2, SIDE_1, EVENT_DATE_TEXT, HIGH_KOF_STR, LOW_KOF_STR));
     assertThat(adaptedEvent.code).isEqualTo(SIDE_1_CODE + "_" + SIDE_2_CODE);
   }
 }

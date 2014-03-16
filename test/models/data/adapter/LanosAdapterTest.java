@@ -47,8 +47,8 @@ public class LanosAdapterTest {
     assertThat(adaptedEvent.organisation).isEqualTo(LANOS);
     assertThat(adaptedEvent.side1).isEqualTo("Flipkens, Kirsten");
     assertThat(adaptedEvent.side2).isEqualTo("Hercog, Polona");
-    assertThat(adaptedEvent.firstKof).isEqualTo(1.45);
-    assertThat(adaptedEvent.secondKof).isEqualTo(2.92);
+    assertThat(adaptedEvent.lowKof).isEqualTo(1.45);
+    assertThat(adaptedEvent.highKof).isEqualTo(2.92);
     assertThat(adaptedEvent.adoptedDate).isSameAs(adaptedDate);
   }
 
@@ -89,8 +89,8 @@ public class LanosAdapterTest {
 
     assertThat(adaptedEvent.side1).isEqualTo("Flipkens, Kirsten");
     assertThat(adaptedEvent.side2).isEqualTo("Hercog, Polona");
-    assertThat(adaptedEvent.firstKof).isEqualTo(1.45);
-    assertThat(adaptedEvent.secondKof).isEqualTo(2.92);
+    assertThat(adaptedEvent.lowKof).isEqualTo(1.45);
+    assertThat(adaptedEvent.highKof).isEqualTo(2.92);
   }
 
   @Test

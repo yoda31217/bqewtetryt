@@ -32,13 +32,13 @@ public class LiveLanosAdapter
     String side1 = parsedEvent.side1;
     String side2 = parsedEvent.side2;
 
-    double firstKof = parseKof(parsedEvent.firstKof);
-    double secondKof = parseKof(parsedEvent.secondKof);
+    double lowKof = parseKof(parsedEvent.lowKof);
+    double highKof = parseKof(parsedEvent.highKof);
 
-    if (firstKof > secondKof) {
-      double swapKof = firstKof;
-      firstKof = secondKof;
-      secondKof = swapKof;
+    if (lowKof > highKof) {
+      double swapKof = lowKof;
+      lowKof = highKof;
+      highKof = swapKof;
 
       String swapSide = side1;
       side1 = side2;
@@ -50,7 +50,7 @@ public class LiveLanosAdapter
     String side1Code = sideCodeAdapter.adapt(side1, sport);
     String secondSIdeCode = sideCodeAdapter.adapt(side2, sport);
 
-    return new AdaptedEvent(LIVE, sport, side1, side2, firstKof, secondKof, LANOS, null, side1Code, secondSIdeCode);
+    return new AdaptedEvent(LIVE, sport, side1, side2, lowKof, highKof, LANOS, null, side1Code, secondSIdeCode);
   }
 
   private double parseKof(String kof) {

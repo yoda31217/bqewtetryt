@@ -52,12 +52,12 @@ public class LiveVolvoParser2Test {
   }
 
   @Test
-  public void parse_firstKofNotEmpty_returnWithFirstKof() {
-    assertThat(parsedEvents.get(0).firstKof).isEqualTo("21/20");
+  public void parse_lowKofNotEmpty_returnWithLowKof() {
+    assertThat(parsedEvents.get(0).lowKof).isEqualTo("21/20");
   }
 
   @Test
-  public void parse_secondKofNotEmpty_returnWithSecondKof() {
-    assertThat(parsedEvents.get(0).secondKof).isEqualTo("7/10");
+  public void parse_highKofNotEmpty_returnWithHighKof() {
+    assertThat(parsedEvents.get(0).highKof).isEqualTo("7/10");
   }
 }

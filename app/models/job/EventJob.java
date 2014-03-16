@@ -44,7 +44,7 @@ public class EventJob
 
         Event event = createOrGetEvent(adaptedEvent.type, adaptedEvent.sport, adaptedEvent.eventDate, adaptedEvent.side1, adaptedEvent.side2,
           adaptedEvent.code);
-        event.addHistory(new HistoryRecord(adaptedEvent.adoptedDate, adaptedEvent.organisation, adaptedEvent.firstKof, adaptedEvent.secondKof));
+        event.addHistory(new HistoryRecord(adaptedEvent.adoptedDate, adaptedEvent.organisation, adaptedEvent.lowKof, adaptedEvent.highKof));
 
       } catch (Exception e) {
         LOG.error("Failed to run job: {}. Failed to adapt event: {}", name, parsedEvent.toString());

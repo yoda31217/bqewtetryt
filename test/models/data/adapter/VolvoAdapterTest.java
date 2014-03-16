@@ -46,8 +46,8 @@ public class VolvoAdapterTest {
     assertThat(adaptedEvent.organisation).isEqualTo(VOLVO);
     assertThat(adaptedEvent.side1).isEqualTo("Florian Mayer");
     assertThat(adaptedEvent.side2).isEqualTo("Kristina Mladenovic");
-    assertThat(adaptedEvent.firstKof).isEqualTo(1.5);
-    assertThat(adaptedEvent.secondKof).isEqualTo(3.28);
+    assertThat(adaptedEvent.lowKof).isEqualTo(1.5);
+    assertThat(adaptedEvent.highKof).isEqualTo(3.28);
     assertThat(adaptedEvent.adoptedDate).isSameAs(adoptedDate);
   }
 
@@ -78,8 +78,8 @@ public class VolvoAdapterTest {
 
     assertThat(adaptedEvent.side1).isEqualTo("Florian Mayer");
     assertThat(adaptedEvent.side2).isEqualTo("Kristina Mladenovic");
-    assertThat(adaptedEvent.firstKof).isEqualTo(1.5);
-    assertThat(adaptedEvent.secondKof).isEqualTo(3.28);
+    assertThat(adaptedEvent.lowKof).isEqualTo(1.5);
+    assertThat(adaptedEvent.highKof).isEqualTo(3.28);
   }
 
   @Test

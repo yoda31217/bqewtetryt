@@ -83,6 +83,6 @@ public class ApplicationTest {
     assertThat(contentType(result)).isEqualTo("application/json");
     assertThat(contentAsString(result)).isEqualTo("[{\"date\":" + date.getTime() +
       ",\"side1\":\"side1\",\"side2\":\"side2\",\"code\":\"eventCode\",\"history\":[{\"date\":" + date.getTime() +
-      ",\"organisation\":\"LANOS\",\"firstKof\":1.1,\"secondKof\":2.1}],\"type\":\"REGULAR\",\"sport\":\"TENNIS\",\"removed\":false}]");
+      ",\"organisation\":\"LANOS\",\"lowKof\":1.1,\"highKof\":2.1}],\"type\":\"REGULAR\",\"sport\":\"TENNIS\",\"removed\":false}]");
   }
 }

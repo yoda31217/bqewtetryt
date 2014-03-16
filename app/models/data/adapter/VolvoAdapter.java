@@ -38,13 +38,13 @@ public class VolvoAdapter
     side1 = stripAccents(side1);
     side2 = stripAccents(side2);
 
-    double firstKof = Double.parseDouble(parsedEvent.firstKof);
-    double secondKof = Double.parseDouble(parsedEvent.secondKof);
+    double lowKof = Double.parseDouble(parsedEvent.lowKof);
+    double highKof = Double.parseDouble(parsedEvent.highKof);
 
-    if (firstKof > secondKof) {
-      double swapKof = firstKof;
-      firstKof = secondKof;
-      secondKof = swapKof;
+    if (lowKof > highKof) {
+      double swapKof = lowKof;
+      lowKof = highKof;
+      highKof = swapKof;
 
       String swapSide = side1;
       side1 = side2;
@@ -56,7 +56,7 @@ public class VolvoAdapter
     String side1Code = adoptSideCode(side1);
     String side2Code = adoptSideCode(side2);
 
-    AdaptedEvent adoptedEvent = new AdaptedEvent(REGULAR, TENNIS, side1, side2, firstKof, secondKof, VOLVO, date, side1Code, side2Code);
+    AdaptedEvent adoptedEvent = new AdaptedEvent(REGULAR, TENNIS, side1, side2, lowKof, highKof, VOLVO, date, side1Code, side2Code);
 
     LOG.trace("Adapted Event with Code: {}", adoptedEvent.code);
 

@@ -11,7 +11,7 @@ import static org.junit.Assert.fail;
 public class HistoryRecordTest {
 
   @Test
-  public void new_firstKofGreaterThanSecond_throwIllegalArgEx() {
+  public void new_lowKofGreaterThanSecond_throwIllegalArgEx() {
     try {
       new HistoryRecord(new Date(), LANOS, 3.2, 1.5);
       fail();

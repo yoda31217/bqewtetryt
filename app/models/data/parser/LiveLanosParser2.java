@@ -63,13 +63,13 @@ public class LiveLanosParser2
         String side2 = findElTextOrNull(eventEl, ".first > table > tbody > tr:first-child > td > span.command > div", 1);
         if (null == side2) return null;
 
-        String firstKof = findElTextOrNull(eventEl, "td.js-price > span", 0);
-        if (null == firstKof) return null;
+        String lowKof = findElTextOrNull(eventEl, "td.js-price > span", 0);
+        if (null == lowKof) return null;
 
-        String secondKof = findElTextOrNull(eventEl, "td.js-price > span", 1);
-        if (null == secondKof) return null;
+        String highKof = findElTextOrNull(eventEl, "td.js-price > span", 1);
+        if (null == highKof) return null;
 
-        return new ParsedEvent(sportDescr, side1, side2, null, firstKof, secondKof);
+        return new ParsedEvent(sportDescr, side1, side2, null, lowKof, highKof);
       }
 
     };

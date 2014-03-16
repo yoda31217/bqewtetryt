@@ -57,13 +57,13 @@ public class RegularVolvoParser
         String side1 = sides.get(0);
         String side2 = sides.get(1);
 
-        String firstKof = findElTextOrNull(eventEl, "td.c4.ti.tis > a", 0);
-        if (null == firstKof) return null;
+        String lowKof = findElTextOrNull(eventEl, "td.c4.ti.tis > a", 0);
+        if (null == lowKof) return null;
 
-        String secondKof = findElTextOrNull(eventEl, "td.c5.ti.tis > a", 0);
-        if (null == secondKof) return null;
+        String highKof = findElTextOrNull(eventEl, "td.c5.ti.tis > a", 0);
+        if (null == highKof) return null;
 
-        return new ParsedEvent(sportDescr, side1, side2, date, firstKof, secondKof);
+        return new ParsedEvent(sportDescr, side1, side2, date, lowKof, highKof);
       }
 
     };

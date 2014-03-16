@@ -30,17 +30,17 @@ public class EventTest {
   public void addHistory() {
     Date date = new Date();
     Organisation organisation = Organisation.LANOS;
-    double firstKof = 1.0;
-    double secondKof = 1.0;
+    double lowKof = 1.0;
+    double highKof = 1.0;
 
-    HistoryRecord record = new HistoryRecord(date, organisation, firstKof, secondKof);
+    HistoryRecord record = new HistoryRecord(date, organisation, lowKof, highKof);
     event.addHistory(record);
 
     assertThat(event.history()).containsOnly(record);
     assertThat(date).isEqualTo(record.date());
     assertThat(organisation).isEqualTo(record.organisation());
-    assertThat(firstKof).isEqualTo(record.firstKof());
-    assertThat(secondKof).isEqualTo(record.secondKof());
+    assertThat(lowKof).isEqualTo(record.lowKof());
+    assertThat(highKof).isEqualTo(record.highKof());
   }
 
   @Test

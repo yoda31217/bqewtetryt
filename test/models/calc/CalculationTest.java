@@ -67,7 +67,7 @@ public class CalculationTest {
 
     Calculation calculation = new Calculation(event);
 
-    assertThat(calculation.isFork()).isEqualTo(true);
+    assertThat(calculation.isFork()).isTrue();
   }
 
   @Test
@@ -77,69 +77,69 @@ public class CalculationTest {
 
     Calculation calculation = new Calculation(event);
 
-    assertThat(calculation.isFork()).isEqualTo(false);
+    assertThat(calculation.isFork()).isFalse();
   }
 
   @Test
-  public void forkOrganisation1_forkEvent_organisation1lanos() {
+  public void lowForkKofOrganisation_forkEvent_lowForkKofOrganisationLanos() {
     event.addHistory(new HistoryRecord(new Date(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
 
     Calculation calculation = new Calculation(event);
 
-    assertThat(calculation.forkOrganisation1()).isEqualTo(LANOS);
+    assertThat(calculation.lowForkKofOrganisation()).isEqualTo(LANOS);
   }
 
   @Test
-  public void forkOrganisation2_forkEvent_organisation2volvo() {
+  public void highForkKofOrganisation_forkEvent_highForkKofOrganisationVolvo() {
     event.addHistory(new HistoryRecord(new Date(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
 
     Calculation calculation = new Calculation(event);
 
-    assertThat(calculation.forkOrganisation2()).isEqualTo(VOLVO);
+    assertThat(calculation.highForkKofOrganisation()).isEqualTo(VOLVO);
   }
 
   @Test
-  public void forkKof1_forkEvent_kof1lanos() {
+  public void lowForkKof_forkEvent_lowForkKofLanos() {
     event.addHistory(new HistoryRecord(new Date(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
 
     Calculation calculation = new Calculation(event);
 
-    assertThat(calculation.forkKof1()).isEqualTo(1.5);
+    assertThat(calculation.lowForkKof()).isEqualTo(1.5);
   }
 
   @Test
-  public void forkKof2_forkEvent_kof2volvo() {
+  public void highForkKof_forkEvent_highForkKofVolvo() {
     event.addHistory(new HistoryRecord(new Date(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
 
     Calculation calculation = new Calculation(event);
 
-    assertThat(calculation.forkKof2()).isEqualTo(3.2);
+    assertThat(calculation.highForkKof()).isEqualTo(3.2);
   }
 
   @Test
-  public void forkDate1_forkEvent_date1lanos() {
+  public void lowForkKofDate_forkEvent_lowForkKofDateLanos() {
     Date lanosRecordDate = createDate1minOld();
     event.addHistory(new HistoryRecord(lanosRecordDate, LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
 
     Calculation calculation = new Calculation(event);
 
-    assertThat(calculation.forkDate1()).isEqualTo(lanosRecordDate);
+    assertThat(calculation.lowForkKofDate()).isEqualTo(lanosRecordDate);
   }
 
   @Test
-  public void forkDate2_forkEvent_date2volvo() {
+  public void highForkKofDate_forkEvent_highForkKofDateVolvo() {
     Date volvoRecordDate = createDate1minOld();
     event.addHistory(new HistoryRecord(new Date(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(volvoRecordDate, VOLVO, 1.4, 3.2));
 
     Calculation calculation = new Calculation(event);
 
-    assertThat(calculation.forkDate2()).isEqualTo(volvoRecordDate);
+    assertThat(calculation.highForkKofDate()).isEqualTo(volvoRecordDate);
   }
 
   private Date createDate1minOld() {return new Date(new Date().getTime() - 60 * 1000);}
@@ -152,7 +152,7 @@ public class CalculationTest {
 
     Calculation calculation = new Calculation(event);
 
-    assertThat(calculation.isFork()).isEqualTo(false);
+    assertThat(calculation.isFork()).isFalse();
   }
 
   @Test
@@ -216,24 +216,25 @@ public class CalculationTest {
   }
 
   @Test
-  public void forkOrganisation_eventWithoutHistory_returnUnknown() {
+  public void forkKofOrganisation_eventWithoutHistory_returnUnknown() {
     Calculation calculation = new Calculation(event);
 
-    assertThat(calculation.forkOrganisation1()).describedAs("forkOrganisation1").isSameAs(UNKNOWN);
-    assertThat(calculation.forkOrganisation2()).describedAs("forkOrganisation2").isSameAs(UNKNOWN);
+    assertThat(calculation.lowForkKofOrganisation()).describedAs("lowForkKofOrganisation").isSameAs(UNKNOWN);
+    assertThat(calculation.highForkKofOrganisation()).describedAs("highForkKofOrganisation").isSameAs(UNKNOWN);
   }
 
   @Test
   public void anyValueMethod_eventWithoutHistory_returnZero() {
     Calculation calculation = new Calculation(event);
 
-    assertThat(calculation.forkKof1()).describedAs("forkKof1").isEqualTo(0.0);
-    assertThat(calculation.forkKof2()).describedAs("forkKof2").isEqualTo(0.0);
+    assertThat(calculation.lowForkKof()).describedAs("lowForkKof").isEqualTo(0.0);
+    assertThat(calculation.highForkKof()).describedAs("highForkKof").isEqualTo(0.0);
     assertThat(calculation.highProfitMoney1()).describedAs("highProfitMoney1").isEqualTo(0.0);
     assertThat(calculation.highProfitMoney2()).describedAs("highProfitMoney2").isEqualTo(0.0);
     assertThat(calculation.lowProfitMoney1()).describedAs("lowProfitMoney1").isEqualTo(0.0);
     assertThat(calculation.lowProfitMoney2()).describedAs("lowProfitMoney2").isEqualTo(0.0);
     assertThat(calculation.highProfit()).describedAs("highProfit").isEqualTo(0.0);
     assertThat(calculation.lowProfit()).describedAs("lowProfit").isEqualTo(0.0);
+    // todo: date check
   }
 }

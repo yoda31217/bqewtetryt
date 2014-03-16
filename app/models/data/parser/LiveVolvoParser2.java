@@ -48,13 +48,13 @@ public class LiveVolvoParser2
         String side2 = findElTextOrNull(eventEl, ".RowContainer .Row .teams", 1);
         if (null == side2) return null;
 
-        String firstKof = findElTextOrNull(eventEl, ".OverviewMarket .Participant .Odds", 0);
-        if (null == firstKof) return null;
+        String lowKof = findElTextOrNull(eventEl, ".OverviewMarket .Participant .Odds", 0);
+        if (null == lowKof) return null;
 
-        String secondKof = findElTextOrNull(eventEl, ".OverviewMarket .Participant .Odds", 1);
-        if (null == secondKof) return null;
+        String highKof = findElTextOrNull(eventEl, ".OverviewMarket .Participant .Odds", 1);
+        if (null == highKof) return null;
 
-        return new ParsedEvent(sportDescr, side1, side2, null, firstKof, secondKof);
+        return new ParsedEvent(sportDescr, side1, side2, null, lowKof, highKof);
       }
 
     };

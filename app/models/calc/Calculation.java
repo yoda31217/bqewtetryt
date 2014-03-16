@@ -18,12 +18,12 @@ public class
 
   private final Event event;
   private boolean isFork;
-  private Organisation forkOrganisation1;
-  private Organisation forkOrganisation2;
-  private double forkKof1;
-  private double forkKof2;
-  private Date forkDate1;
-  private Date forkDate2;
+  private Organisation lowForkKofOrganisation;
+  private Organisation highForkKofOrganisation;
+  private double lowForkKof;
+  private double highForkKof;
+  private Date lowForkKofDate;
+  private Date highForkKofDate;
   private double highProfitMoney1;
   private double highProfitMoney2;
   private double lowProfitMoney1;
@@ -35,17 +35,21 @@ public class
     this.event = event;
 
     isFork = false;
-    forkOrganisation1 = UNKNOWN;
-    forkOrganisation2 = UNKNOWN;
-    forkKof1 = 0.0;
-    forkKof2 = 0.0;
-    forkDate1 = new Date();
-    forkDate2 = new Date();
+
+    lowForkKof = 0.0;
+    lowForkKofDate = new Date();
+    lowForkKofOrganisation = UNKNOWN;
+
+    highForkKof = 0.0;
+    highForkKofDate = new Date();
+    highForkKofOrganisation = UNKNOWN;
+
     highProfitMoney1 = 0.0;
     highProfitMoney2 = 0.0;
+    highProfit = 0.0;
+
     lowProfitMoney1 = 0.0;
     lowProfitMoney2 = 0.0;
-    highProfit = 0.0;
     lowProfit = 0.0;
 
     if (event.history().isEmpty()) return;
@@ -82,32 +86,32 @@ public class
   }
 
   private void calculateProfits() {
-    highProfit = highProfitMoney2 * forkKof2 - 1.0;
-    lowProfit = lowProfitMoney1 * forkKof1 - 1.0;
+    highProfit = highProfitMoney2 * highForkKof - 1.0;
+    lowProfit = lowProfitMoney1 * lowForkKof - 1.0;
   }
 
   private void calculateProfitMoneys() {
-    highProfitMoney1 = 1.0 / forkKof1;
-    highProfitMoney2 = (forkKof1 - 1.0) / forkKof1;
-    lowProfitMoney1 = (forkKof2 - 1.0) / forkKof2;
-    lowProfitMoney2 = 1.0 / forkKof2;
+    highProfitMoney1 = 1.0 / lowForkKof;
+    highProfitMoney2 = (lowForkKof - 1.0) / lowForkKof;
+    lowProfitMoney1 = (highForkKof - 1.0) / highForkKof;
+    lowProfitMoney2 = 1.0 / highForkKof;
   }
 
-  private void calculateIsFork() {isFork = ((1.0 / (forkKof1 - 1.0) + 1.0) < forkKof2);}
+  private void calculateIsFork() {isFork = ((1.0 / (lowForkKof - 1.0) + 1.0) < highForkKof);}
 
   private void calculateForkKofsAndOrganisations(Map<Organisation, HistoryRecord> organisation2lastRecord) {
     for (HistoryRecord organisationLastRecord : organisation2lastRecord.values()) {
 
-      if ((null == forkOrganisation1) || (organisationLastRecord.firstKof() > forkKof1)) {
-        forkKof1 = organisationLastRecord.firstKof();
-        forkOrganisation1 = organisationLastRecord.organisation();
-        forkDate1 = organisationLastRecord.date();
+      if ((null == lowForkKofOrganisation) || (organisationLastRecord.lowKof() > lowForkKof)) {
+        lowForkKof = organisationLastRecord.lowKof();
+        lowForkKofOrganisation = organisationLastRecord.organisation();
+        lowForkKofDate = organisationLastRecord.date();
       }
 
-      if ((null == forkOrganisation2) || (organisationLastRecord.secondKof() > forkKof2)) {
-        forkKof2 = organisationLastRecord.secondKof();
-        forkOrganisation2 = organisationLastRecord.organisation();
-        forkDate2 = organisationLastRecord.date();
+      if ((null == highForkKofOrganisation) || (organisationLastRecord.highKof() > highForkKof)) {
+        highForkKof = organisationLastRecord.highKof();
+        highForkKofOrganisation = organisationLastRecord.organisation();
+        highForkKofDate = organisationLastRecord.date();
       }
     }
   }
@@ -122,13 +126,13 @@ public class
 
   public boolean isFork() { return isFork; }
 
-  public Organisation forkOrganisation2() { return forkOrganisation2; }
+  public Organisation highForkKofOrganisation() { return highForkKofOrganisation; }
 
-  public Organisation forkOrganisation1() { return forkOrganisation1; }
+  public Organisation lowForkKofOrganisation() { return lowForkKofOrganisation; }
 
-  public double forkKof1() { return forkKof1; }
+  public double lowForkKof() { return lowForkKof; }
 
-  public double forkKof2() { return forkKof2; }
+  public double highForkKof() { return highForkKof; }
 
   public double highProfitMoney1() { return highProfitMoney1; }
 
@@ -142,13 +146,9 @@ public class
 
   public double lowProfit() { return lowProfit; }
 
-  public Date forkDate1() {
-    return forkDate1;
-  }
+  public Date lowForkKofDate() { return lowForkKofDate; }
 
-  public Date forkDate2() {
-    return forkDate2;
-  }
+  public Date highForkKofDate() { return highForkKofDate; }
 
   @Override
   public boolean equals(Object o) {

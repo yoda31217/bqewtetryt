@@ -8,31 +8,31 @@ public final class HistoryRecord {
 
   final Date date;
   final Organisation organisation;
-  final double firstKof;
-  final double secondKof;
+  final double lowKof;
+  final double highKof;
 
-  public HistoryRecord(Date date, Organisation organisation, double firstKof, double secondKof) {
-    checkArgument(firstKof <= secondKof, "First kof cannot be greater than second: %s, %s", firstKof, secondKof);
+  public HistoryRecord(Date date, Organisation organisation, double lowKof, double highKof) {
+    checkArgument(lowKof <= highKof, "First kof cannot be greater than second: %s, %s", lowKof, highKof);
 
     this.date = date;
     this.organisation = organisation;
-    this.firstKof = firstKof;
-    this.secondKof = secondKof;
+    this.lowKof = lowKof;
+    this.highKof = highKof;
   }
 
   public Date date() {
     return date;
   }
 
-  public double firstKof() {
-    return firstKof;
+  public double lowKof() {
+    return lowKof;
   }
 
   public Organisation organisation() {
     return organisation;
   }
 
-  public double secondKof() {
-    return secondKof;
+  public double highKof() {
+    return highKof;
   }
 }

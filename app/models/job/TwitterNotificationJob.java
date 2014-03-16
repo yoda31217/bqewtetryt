@@ -62,18 +62,18 @@ public class TwitterNotificationJob
     twitBuilder.append(calculation.side2());
     twitBuilder.append(" ");
 
-    twitBuilder.append(NUMBER_FORMAT.format(calculation.forkKof1()));
+    twitBuilder.append(NUMBER_FORMAT.format(calculation.lowForkKof()));
     twitBuilder.append(",");
-    twitBuilder.append(calculation.forkOrganisation1().label);
+    twitBuilder.append(calculation.lowForkKofOrganisation().label);
     twitBuilder.append(",");
-    twitBuilder.append(secsFromNow(calculation.forkDate1()));
+    twitBuilder.append(secsFromNow(calculation.lowForkKofDate()));
     twitBuilder.append("/");
 
-    twitBuilder.append(NUMBER_FORMAT.format(calculation.forkKof2()));
+    twitBuilder.append(NUMBER_FORMAT.format(calculation.highForkKof()));
     twitBuilder.append(",");
-    twitBuilder.append(calculation.forkOrganisation2().label);
+    twitBuilder.append(calculation.highForkKofOrganisation().label);
     twitBuilder.append(",");
-    twitBuilder.append(secsFromNow(calculation.forkDate2()));
+    twitBuilder.append(secsFromNow(calculation.highForkKofDate()));
     twitBuilder.append(" ");
 
     twitBuilder.append(NUMBER_FORMAT.format(calculation.highProfitMoney1()));

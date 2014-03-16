@@ -40,13 +40,13 @@ public class VolvoAdapter2
     String side1 = parsedEvent.side1;
     String side2 = parsedEvent.side2;
 
-    double firstKof = adaptKof(parsedEvent.firstKof);
-    double secondKof = adaptKof(parsedEvent.secondKof);
+    double lowKof = adaptKof(parsedEvent.lowKof);
+    double highKof = adaptKof(parsedEvent.highKof);
 
-    if (firstKof > secondKof) {
-      double swapKof = firstKof;
-      firstKof = secondKof;
-      secondKof = swapKof;
+    if (lowKof > highKof) {
+      double swapKof = lowKof;
+      lowKof = highKof;
+      highKof = swapKof;
 
       String swapSide = side1;
       side1 = side2;
@@ -58,7 +58,7 @@ public class VolvoAdapter2
 
     Date adaptedDate = dateAdapter.adapt(parsedEvent.date);
 
-    return new AdaptedEvent(type, sport, side1, side2, firstKof, secondKof, VOLVO, adaptedDate, side1Code, side2Code);
+    return new AdaptedEvent(type, sport, side1, side2, lowKof, highKof, VOLVO, adaptedDate, side1Code, side2Code);
   }
 
   private double adaptKof(String kofStr) {

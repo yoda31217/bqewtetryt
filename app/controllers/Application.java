@@ -90,17 +90,17 @@ public class Application
   }
 
   private static void appendForkKofs(StringBuilder response, Calculation calculation) {
-    response.append(padEnd(NUMBER_FORMAT.format(calculation.forkKof1()), 7, ' '));
+    response.append(padEnd(NUMBER_FORMAT.format(calculation.lowForkKof()), 7, ' '));
     response.append(",");
-    response.append(calculation.forkOrganisation1().label);
+    response.append(calculation.lowForkKofOrganisation().label);
     response.append(",");
-    response.append(padEnd(secsFromNow(calculation.forkDate1()) + "", 5, ' '));
+    response.append(padEnd(secsFromNow(calculation.lowForkKofDate()) + "", 5, ' '));
     response.append("/");
-    response.append(padEnd(NUMBER_FORMAT.format(calculation.forkKof2()), 7, ' '));
+    response.append(padEnd(NUMBER_FORMAT.format(calculation.highForkKof()), 7, ' '));
     response.append(",");
-    response.append(calculation.forkOrganisation2().label);
+    response.append(calculation.highForkKofOrganisation().label);
     response.append(",");
-    response.append(padEnd(secsFromNow(calculation.forkDate2()) + "", 5, ' '));
+    response.append(padEnd(secsFromNow(calculation.highForkKofDate()) + "", 5, ' '));
     response.append("  ");
   }
 

@@ -6,16 +6,16 @@ public class ParsedEvent {
   public final String side1;
   public final String side2;
   public final String date;
-  public final String firstKof;
-  public final String secondKof;
+  public final String lowKof;
+  public final String highKof;
 
-  public ParsedEvent(String sportDescr, String side1, String side2, String date, String firstKof, String secondKof) {
+  public ParsedEvent(String sportDescr, String side1, String side2, String date, String lowKof, String highKof) {
     this.sportDescr = sportDescr;
     this.side1 = side1;
     this.side2 = side2;
     this.date = date;
-    this.firstKof = firstKof;
-    this.secondKof = secondKof;
+    this.lowKof = lowKof;
+    this.highKof = highKof;
   }
 
   @Override
@@ -25,8 +25,8 @@ public class ParsedEvent {
       ", side1='" + side1 + '\'' +
       ", side2='" + side2 + '\'' +
       ", date='" + date + '\'' +
-      ", firstKof='" + firstKof + '\'' +
-      ", secondKof='" + secondKof + '\'' +
+      ", lowKof='" + lowKof + '\'' +
+      ", highKof='" + highKof + '\'' +
       '}';
   }
 }
