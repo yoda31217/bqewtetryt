@@ -3,8 +3,6 @@ import akka.actor.Cancellable;
 import akka.actor.Scheduler;
 import akka.dispatch.Dispatchers;
 import akka.dispatch.MessageDispatcher;
-import models.job.FakeEventJob;
-import models.job.FakeHistoryRecordJob;
 import models.job.Jobs;
 import models.job.RemoveOldEventJob;
 import models.util.BObjects;
@@ -28,8 +26,6 @@ import scala.concurrent.duration.FiniteDuration;
 
 import java.util.List;
 
-import static models.event.Organisation.LANOS;
-import static models.event.Organisation.VOLVO;
 import static models.job.Jobs.NOTIFICATION_JOB;
 import static models.job.Jobs.REMOVE_OLD_EVENT_JOB;
 import static models.job.Jobs.REMOVE_OLD_HISTORY_JOB;
@@ -124,9 +120,6 @@ public class GlobalTest {
     List args = argsCaptor.getAllValues();
 
     assertThat(args.get(0)).satisfies(reflectionEq(new RemoveOldEventJob(maxSilenceDelayInMillis)));
-    assertThat(args.get(1)).satisfies(reflectionEq(new FakeEventJob()));
-    assertThat(args.get(2)).satisfies(reflectionEq(new FakeHistoryRecordJob(VOLVO)));
-    assertThat(args.get(3)).satisfies(reflectionEq(new FakeHistoryRecordJob(LANOS)));
 
     verify(schedulerMock, times(4)).schedule(refEq(offset), refEq(delay), same(wrappedRunnableMock), same(defaultDispatcherMock));
 
