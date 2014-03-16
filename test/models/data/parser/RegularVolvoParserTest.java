@@ -14,18 +14,16 @@ import static org.fest.assertions.Assertions.assertThat;
 public class RegularVolvoParserTest {
 
   private static List<ParsedEvent> parsedEvents;
-  private static RegularVolvoParser parser;
-  private static WebDriver         webDriver;
 
   @BeforeClass
   public static void beforeClass() throws Exception {
     initWebDriverEnv();
 
-    webDriver = new ChromeDriver();
+    WebDriver webDriver = new ChromeDriver();
     String url = RegularVolvoParserTest.class.getResource("/models/data/parser/RegularVolvoParserTest/Tennis Full List - Match Coupon   bet365 Sports.html")
                                              .toString();
 
-    parser = new RegularVolvoParser(url, webDriver);
+    RegularVolvoParser parser = new RegularVolvoParser(url, webDriver);
     parsedEvents = parser.parse();
     webDriver.quit();
   }

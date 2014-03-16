@@ -32,6 +32,7 @@ public abstract class BaseSideCodeAdapter implements SideCodeAdapter {
 
   protected abstract String buildTennisCode(String side);
 
+  @SuppressWarnings("UnusedDeclaration")
   protected String getFirstWord(String side) { return getByPattern(side, FIRST_WORD_PATTERN, "first word", 1); }
 
   protected String getLastWord(String side) { return getByPattern(side, LAST_WORD_PATTERN, "last word", 2); }
@@ -40,6 +41,7 @@ public abstract class BaseSideCodeAdapter implements SideCodeAdapter {
 
   protected String removeDigit2(String side) { return side.replaceAll("\\s2", " "); }
 
+  @SuppressWarnings("UnusedDeclaration")
   protected String removeJunior(String side) { return side.replaceAll("\\sjunior", " "); }
 
   protected String removeWomen(String side) { return side.replaceAll("\\swomen", " "); }

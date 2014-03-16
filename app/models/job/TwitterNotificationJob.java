@@ -4,27 +4,26 @@ import com.google.common.base.Predicate;
 import models.calc.Calculation;
 import models.notification.Twitterer;
 
-import javax.annotation.Nullable;
 import java.text.DecimalFormat;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.filter;
 import static com.google.common.collect.Sets.newHashSet;
-import static java.util.Collections.EMPTY_SET;
+import static java.util.Collections.emptySet;
 import static models.calc.Calcularium.calcularium;
 import static models.util.Dates.secsFromNow;
 
 public class TwitterNotificationJob implements Runnable {
 
-  public static final DecimalFormat          NUMBER_FORMAT  = new DecimalFormat("0.000");
-  public static final Predicate<Calculation> IS_FORK_FILTER = new Predicate<Calculation>() {
+  public static final Predicate<Calculation> IS_FORK_FILTER   = new Predicate<Calculation>() {
     @Override
-    public boolean apply(@Nullable Calculation calculation) {
+    public boolean apply(Calculation calculation) {
       return calculation.isFork();
     }
   };
+  public static final DecimalFormat          NUMBER_FORMAT    = new DecimalFormat("0.000");
+  private             Set<Calculation>       forkCalculations = emptySet();
   private final Twitterer twitterer;
-  private Set<Calculation> forkCalculations = EMPTY_SET;
 
   public TwitterNotificationJob(Twitterer twitterer) {
     this.twitterer = twitterer;
@@ -42,10 +41,6 @@ public class TwitterNotificationJob implements Runnable {
     for (Calculation calculation : newestForkCalculations) {
       postTwit(calculation);
     }
-  }
-
-  private void postTwit(Calculation calculation) {
-    twitterer.sendMessage(buildTwit(calculation));
   }
 
   private String buildTwit(Calculation calculation) {
@@ -89,5 +84,9 @@ public class TwitterNotificationJob implements Runnable {
     twitBuilder.append(NUMBER_FORMAT.format(calculation.lowProfit()));
 
     return twitBuilder.toString();
+  }
+
+  private void postTwit(Calculation calculation) {
+    twitterer.sendMessage(buildTwit(calculation));
   }
 }
