@@ -49,14 +49,14 @@ public class EventStoreTest {
   @Test
   public void createAndGetEvent() {
     Date date = new Date();
-    String firstSide = randomSide();
-    String secondSide = randomSide();
+    String side1 = randomSide();
+    String side2 = randomSide();
 
-    Event firstEvent = createOrGetEvent(REGULAR, TENNIS, date, firstSide, secondSide, "code_1");
+    Event firstEvent = createOrGetEvent(REGULAR, TENNIS, date, side1, side2, "code_1");
     assertThat(firstEvent).isNotNull();
     assertThat(events()).containsOnly(firstEvent);
 
-    Event secondEvent = createOrGetEvent(REGULAR, TENNIS, date, firstSide, secondSide, "code_1");
+    Event secondEvent = createOrGetEvent(REGULAR, TENNIS, date, side1, side2, "code_1");
     assertThat(secondEvent).isSameAs(firstEvent);
     assertThat(events()).containsOnly(firstEvent);
   }
@@ -64,14 +64,14 @@ public class EventStoreTest {
   @Test
   public void create2eventsWithDiffTypes() {
     Date date = new Date();
-    String firstSide = randomSide();
-    String secondSide = randomSide();
+    String side1 = randomSide();
+    String side2 = randomSide();
 
-    Event firstEvent = createOrGetEvent(REGULAR, TENNIS, date, firstSide, secondSide, "code_1");
+    Event firstEvent = createOrGetEvent(REGULAR, TENNIS, date, side1, side2, "code_1");
     assertThat(firstEvent).isNotNull();
     assertThat(events()).hasSize(1).containsOnly(firstEvent);
 
-    Event secondEvent = createOrGetEvent(LIVE, TENNIS, date, firstSide, secondSide, "code_1");
+    Event secondEvent = createOrGetEvent(LIVE, TENNIS, date, side1, side2, "code_1");
     assertThat(secondEvent).isNotNull();
     assertThat(events()).hasSize(2).containsOnly(firstEvent, secondEvent);
   }
@@ -79,14 +79,14 @@ public class EventStoreTest {
   @Test
   public void create2eventsWithDiffSports() {
     Date date = new Date();
-    String firstSide = randomSide();
-    String secondSide = randomSide();
+    String side1 = randomSide();
+    String side2 = randomSide();
 
-    Event firstEvent = createOrGetEvent(REGULAR, TENNIS, date, firstSide, secondSide, "code_1");
+    Event firstEvent = createOrGetEvent(REGULAR, TENNIS, date, side1, side2, "code_1");
     assertThat(firstEvent).isNotNull();
     assertThat(events()).hasSize(1).containsOnly(firstEvent);
 
-    Event secondEvent = createOrGetEvent(REGULAR, BASKETBALL, date, firstSide, secondSide, "code_1");
+    Event secondEvent = createOrGetEvent(REGULAR, BASKETBALL, date, side1, side2, "code_1");
     assertThat(secondEvent).isNotNull();
     assertThat(events()).hasSize(2).containsOnly(firstEvent, secondEvent);
   }
@@ -94,14 +94,14 @@ public class EventStoreTest {
   @Test
   public void checkFieldsAfterCreate() {
     Date date = new Date();
-    String firstSide = randomSide();
-    String secondSide = randomSide();
+    String side1 = randomSide();
+    String side2 = randomSide();
 
-    Event event = createOrGetEvent(REGULAR, TENNIS, date, firstSide, secondSide, "code_1");
+    Event event = createOrGetEvent(REGULAR, TENNIS, date, side1, side2, "code_1");
     assertThat(event).isNotNull();
     assertThat(event.date()).isEqualTo(date);
-    assertThat(event.firstSide()).isEqualTo(firstSide);
-    assertThat(event.secondSide()).isEqualTo(secondSide);
+    assertThat(event.side1()).isEqualTo(side1);
+    assertThat(event.side2()).isEqualTo(side2);
     assertThat(event.code()).isEqualTo("code_1");
     assertThat(event.history()).isEmpty();
     assertThat(event.isRemoved()).isFalse();

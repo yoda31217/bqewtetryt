@@ -37,13 +37,13 @@ public class LiveVolvoParser2Test {
   }
 
   @Test
-  public void parse_firstSideNotEmpty_returnWithFirstSide() {
-    assertThat(parsedEvents.get(0).firstSide).isEqualTo("GAEL MONFILS");
+  public void parse_side1NotEmpty_returnWithSide1() {
+    assertThat(parsedEvents.get(0).side1).isEqualTo("GAEL MONFILS");
   }
 
   @Test
-  public void parse_secondSideNotEmpty_returnWithSecondSide() {
-    assertThat(parsedEvents.get(0).secondSide).isEqualTo("FABIO FOGNINI");
+  public void parse_side2NotEmpty_returnWithSide2() {
+    assertThat(parsedEvents.get(0).side2).isEqualTo("FABIO FOGNINI");
   }
 
   @Test

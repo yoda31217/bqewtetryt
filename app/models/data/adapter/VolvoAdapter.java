@@ -32,11 +32,11 @@ public class VolvoAdapter
 
   @Override
   public AdaptedEvent adapt(ParsedEvent parsedEvent) {
-    String firstSide = parsedEvent.firstSide;
-    String secondSide = parsedEvent.secondSide;
+    String side1 = parsedEvent.side1;
+    String side2 = parsedEvent.side2;
 
-    firstSide = stripAccents(firstSide);
-    secondSide = stripAccents(secondSide);
+    side1 = stripAccents(side1);
+    side2 = stripAccents(side2);
 
     double firstKof = Double.parseDouble(parsedEvent.firstKof);
     double secondKof = Double.parseDouble(parsedEvent.secondKof);
@@ -46,17 +46,17 @@ public class VolvoAdapter
       firstKof = secondKof;
       secondKof = swapKof;
 
-      String swapSide = firstSide;
-      firstSide = secondSide;
-      secondSide = swapSide;
+      String swapSide = side1;
+      side1 = side2;
+      side2 = swapSide;
     }
 
     Date date = adoptDate(parsedEvent.date);
 
-    String firstSideCode = adoptSideCode(firstSide);
-    String secondSideCode = adoptSideCode(secondSide);
+    String side1Code = adoptSideCode(side1);
+    String side2Code = adoptSideCode(side2);
 
-    AdaptedEvent adoptedEvent = new AdaptedEvent(REGULAR, TENNIS, firstSide, secondSide, firstKof, secondKof, VOLVO, date, firstSideCode, secondSideCode);
+    AdaptedEvent adoptedEvent = new AdaptedEvent(REGULAR, TENNIS, side1, side2, firstKof, secondKof, VOLVO, date, side1Code, side2Code);
 
     LOG.trace("Adapted Event with Code: {}", adoptedEvent.code);
 
@@ -70,13 +70,13 @@ public class VolvoAdapter
     }
 
     Iterator<String> sideParts = TWO_PLAYERS_ON_SIDE_NAME_SPLITTER.split(sideStr).iterator();
-    String firstSidePart = sideParts.next();
-    String secondSidePart = sideParts.next();
+    String side1Part = sideParts.next();
+    String side2Part = sideParts.next();
 
-    ArrayList<String> firstSideParts = newArrayList(ONE_PLAYER_ON_SIDE_NAME_SPLITTER.split(firstSidePart));
-    ArrayList<String> secondSideParts = newArrayList(ONE_PLAYER_ON_SIDE_NAME_SPLITTER.split(secondSidePart));
+    ArrayList<String> side1Parts = newArrayList(ONE_PLAYER_ON_SIDE_NAME_SPLITTER.split(side1Part));
+    ArrayList<String> side2Parts = newArrayList(ONE_PLAYER_ON_SIDE_NAME_SPLITTER.split(side2Part));
 
-    return firstSideParts.get(firstSideParts.size() - 1).toLowerCase() + "," + secondSideParts.get(secondSideParts.size() - 1).toLowerCase();
+    return side1Parts.get(side1Parts.size() - 1).toLowerCase() + "," + side2Parts.get(side2Parts.size() - 1).toLowerCase();
   }
 
   private Date adoptDate(String dateStr) {

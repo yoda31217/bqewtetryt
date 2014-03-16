@@ -45,8 +45,8 @@ public class LanosAdapterTest {
     assertThat(adaptedEvent.eventDate).isEqualTo(calendar.getTime());
 
     assertThat(adaptedEvent.organisation).isEqualTo(LANOS);
-    assertThat(adaptedEvent.firstSide).isEqualTo("Flipkens, Kirsten");
-    assertThat(adaptedEvent.secondSide).isEqualTo("Hercog, Polona");
+    assertThat(adaptedEvent.side1).isEqualTo("Flipkens, Kirsten");
+    assertThat(adaptedEvent.side2).isEqualTo("Hercog, Polona");
     assertThat(adaptedEvent.firstKof).isEqualTo(1.45);
     assertThat(adaptedEvent.secondKof).isEqualTo(2.92);
     assertThat(adaptedEvent.adoptedDate).isSameAs(adaptedDate);
@@ -58,8 +58,8 @@ public class LanosAdapterTest {
     ParsedEvent event = new ParsedEvent("TENNIS", "Florian Hradečka", "Kristina Hradečka", "11 Oct 07:30", "1.50", "3.28");
     AdaptedEvent adaptedEvent = new LanosAdapter().adapt(event);
 
-    assertThat(adaptedEvent.firstSide).isEqualTo("Florian Hradecka");
-    assertThat(adaptedEvent.secondSide).isEqualTo("Kristina Hradecka");
+    assertThat(adaptedEvent.side1).isEqualTo("Florian Hradecka");
+    assertThat(adaptedEvent.side2).isEqualTo("Kristina Hradecka");
   }
 
   @Test
@@ -87,8 +87,8 @@ public class LanosAdapterTest {
     ParsedEvent event = new ParsedEvent("TENNIS", "Hercog, Polona", "Flipkens, Kirsten", "17:30", "2.92", "1.45");
     AdaptedEvent adaptedEvent = new LanosAdapter().adapt(event);
 
-    assertThat(adaptedEvent.firstSide).isEqualTo("Flipkens, Kirsten");
-    assertThat(adaptedEvent.secondSide).isEqualTo("Hercog, Polona");
+    assertThat(adaptedEvent.side1).isEqualTo("Flipkens, Kirsten");
+    assertThat(adaptedEvent.side2).isEqualTo("Hercog, Polona");
     assertThat(adaptedEvent.firstKof).isEqualTo(1.45);
     assertThat(adaptedEvent.secondKof).isEqualTo(2.92);
   }

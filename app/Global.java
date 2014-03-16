@@ -33,6 +33,12 @@ public class Global
   private List<Cancellable> schedules = new LinkedList<Cancellable>();
 
   @Override
+  public <A> A getControllerInstance(Class<A> controllerClass)
+    throws Exception {
+    return super.getControllerInstance(controllerClass);
+  }
+
+  @Override
   public void onStart(Application app) {
     super.onStart(app);
 

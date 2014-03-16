@@ -74,11 +74,11 @@ public class
   }
 
   public String side2() {
-    return event.secondSide();
+    return event.side2();
   }
 
   public String side1() {
-    return event.firstSide();
+    return event.side1();
   }
 
   private void calculateProfits() {

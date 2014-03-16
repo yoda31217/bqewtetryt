@@ -32,8 +32,8 @@ public class FakeEventJobTest {
   public void createFakeEvent()
     throws Exception {
     Date date = new Date();
-    String firstSide = "first1, second1";
-    String secondSide = "first2, second2";
+    String side1 = "first1, second1";
+    String side2 = "first2, second2";
 
     whenNew(Date.class).withNoArguments().thenReturn(date);
 
@@ -43,6 +43,6 @@ public class FakeEventJobTest {
     new FakeEventJob().run();
 
     verifyStatic();
-    createOrGetEvent(same(REGULAR), same(TENNIS), same(date), eq(firstSide), eq(secondSide), eq(date.toString() + "_code"));
+    createOrGetEvent(same(REGULAR), same(TENNIS), same(date), eq(side1), eq(side2), eq(date.toString() + "_code"));
   }
 }

@@ -60,8 +60,8 @@ public class LiveLanosAdapterTest {
     AdaptedEvent adaptedEvent = adapter.adapt(event);
 
     assertThat(adaptedEvent.eventDate).isNull();
-    assertThat(adaptedEvent.firstSide).isEqualTo(SIDE_1);
-    assertThat(adaptedEvent.secondSide).isEqualTo(SIDE_2);
+    assertThat(adaptedEvent.side1).isEqualTo(SIDE_1);
+    assertThat(adaptedEvent.side2).isEqualTo(SIDE_2);
     assertThat(adaptedEvent.firstKof).isEqualTo(1.45);
     assertThat(adaptedEvent.secondKof).isEqualTo(2.92);
     assertThat(adaptedEvent.code).isEqualTo(SIDE_1_CODE + "_" + SIDE_2_CODE);
@@ -78,8 +78,8 @@ public class LiveLanosAdapterTest {
     calendar.set(SECOND, 0);
     calendar.set(MILLISECOND, 0);
 
-    assertThat(adaptedEvent.firstSide).isEqualTo(SIDE_1);
-    assertThat(adaptedEvent.secondSide).isEqualTo(SIDE_2);
+    assertThat(adaptedEvent.side1).isEqualTo(SIDE_1);
+    assertThat(adaptedEvent.side2).isEqualTo(SIDE_2);
     assertThat(adaptedEvent.firstKof).isEqualTo(1.45);
     assertThat(adaptedEvent.secondKof).isEqualTo(2.92);
     assertThat(adaptedEvent.code).isEqualTo(SIDE_1_CODE + "_" + SIDE_2_CODE);

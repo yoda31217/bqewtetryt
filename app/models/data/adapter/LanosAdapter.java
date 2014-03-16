@@ -34,11 +34,11 @@ public class LanosAdapter
 
   @Override
   public AdaptedEvent adapt(ParsedEvent parsedEvent) {
-    String firstSide = parsedEvent.firstSide;
-    String secondSide = parsedEvent.secondSide;
+    String side1 = parsedEvent.side1;
+    String side2 = parsedEvent.side2;
 
-    firstSide = stripAccents(firstSide);
-    secondSide = stripAccents(secondSide);
+    side1 = stripAccents(side1);
+    side2 = stripAccents(side2);
 
     double firstKof = Double.parseDouble(parsedEvent.firstKof);
     double secondKof = Double.parseDouble(parsedEvent.secondKof);
@@ -48,17 +48,17 @@ public class LanosAdapter
       firstKof = secondKof;
       secondKof = swapKof;
 
-      String swapSide = firstSide;
-      firstSide = secondSide;
-      secondSide = swapSide;
+      String swapSide = side1;
+      side1 = side2;
+      side2 = swapSide;
     }
 
     Date date = adoptDate(parsedEvent.date);
 
-    String firstSideCode = adoptSideCode(firstSide);
-    String secondSideCode = adoptSideCode(secondSide);
+    String side1Code = adoptSideCode(side1);
+    String side2Code = adoptSideCode(side2);
 
-    AdaptedEvent adoptedEvent = new AdaptedEvent(REGULAR, TENNIS, firstSide, secondSide, firstKof, secondKof, LANOS, date, firstSideCode, secondSideCode);
+    AdaptedEvent adoptedEvent = new AdaptedEvent(REGULAR, TENNIS, side1, side2, firstKof, secondKof, LANOS, date, side1Code, side2Code);
 
     LOG.trace("Adapted Event with Code: {}", adoptedEvent.code);
 

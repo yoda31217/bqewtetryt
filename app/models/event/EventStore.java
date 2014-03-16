@@ -24,8 +24,8 @@ public class EventStore {
     return newArrayList(EVENTS.keySet());
   }
 
-  public static Event createOrGetEvent(EventType type, Sport sport, Date date, String firstSide, String secondSide, String code) {
-    Event newEvent = new Event(type, sport, date, firstSide, secondSide, code);
+  public static Event createOrGetEvent(EventType type, Sport sport, Date date, String side1, String side2, String code) {
+    Event newEvent = new Event(type, sport, date, side1, side2, code);
     Event oldEvent = EVENTS.putIfAbsent(newEvent, newEvent);
 
     if (null != oldEvent) return oldEvent;

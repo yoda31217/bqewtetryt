@@ -57,11 +57,11 @@ public class LiveLanosParser2
       @Override
       public ParsedEvent apply(@Nullable WebElement eventEl) {
 
-        String firstSide = findElTextOrNull(eventEl, ".first > table > tbody > tr:first-child > td > span.command > div", 0);
-        if (null == firstSide) return null;
+        String side1 = findElTextOrNull(eventEl, ".first > table > tbody > tr:first-child > td > span.command > div", 0);
+        if (null == side1) return null;
 
-        String secondSide = findElTextOrNull(eventEl, ".first > table > tbody > tr:first-child > td > span.command > div", 1);
-        if (null == secondSide) return null;
+        String side2 = findElTextOrNull(eventEl, ".first > table > tbody > tr:first-child > td > span.command > div", 1);
+        if (null == side2) return null;
 
         String firstKof = findElTextOrNull(eventEl, "td.js-price > span", 0);
         if (null == firstKof) return null;
@@ -69,7 +69,7 @@ public class LiveLanosParser2
         String secondKof = findElTextOrNull(eventEl, "td.js-price > span", 1);
         if (null == secondKof) return null;
 
-        return new ParsedEvent(sportDescr, firstSide, secondSide, null, firstKof, secondKof);
+        return new ParsedEvent(sportDescr, side1, side2, null, firstKof, secondKof);
       }
 
     };

@@ -20,7 +20,7 @@ import static models.event.Sport.UNKNOWN;
 import static models.event.Sport.VOLLEYBALL;
 
 public class VolvoAdapter2
-implements BAdapter {
+  implements BAdapter {
 
   public static final Splitter KOF_SPLITTER = Splitter.on("/").omitEmptyStrings().trimResults();
   private final SideCodeAdapter sideCodeAdapter;
@@ -37,8 +37,8 @@ implements BAdapter {
   public AdaptedEvent adapt(ParsedEvent parsedEvent) {
     Sport sport = adoptSport(parsedEvent.sportDescr);
 
-    String firstSide = parsedEvent.firstSide;
-    String secondSide = parsedEvent.secondSide;
+    String side1 = parsedEvent.side1;
+    String side2 = parsedEvent.side2;
 
     double firstKof = adaptKof(parsedEvent.firstKof);
     double secondKof = adaptKof(parsedEvent.secondKof);
@@ -48,17 +48,17 @@ implements BAdapter {
       firstKof = secondKof;
       secondKof = swapKof;
 
-      String swapSide = firstSide;
-      firstSide = secondSide;
-      secondSide = swapSide;
+      String swapSide = side1;
+      side1 = side2;
+      side2 = swapSide;
     }
 
-    String firstSideCode = sideCodeAdapter.adapt(firstSide, sport);
-    String secondSideCode = sideCodeAdapter.adapt(secondSide, sport);
+    String side1Code = sideCodeAdapter.adapt(side1, sport);
+    String side2Code = sideCodeAdapter.adapt(side2, sport);
 
     Date adaptedDate = dateAdapter.adapt(parsedEvent.date);
 
-    return new AdaptedEvent(type, sport, firstSide, secondSide, firstKof, secondKof, VOLVO, adaptedDate, firstSideCode, secondSideCode);
+    return new AdaptedEvent(type, sport, side1, side2, firstKof, secondKof, VOLVO, adaptedDate, side1Code, side2Code);
   }
 
   private double adaptKof(String kofStr) {

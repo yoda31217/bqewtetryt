@@ -29,8 +29,8 @@ public class LiveLanosAdapter
 
   @Override
   public AdaptedEvent adapt(ParsedEvent parsedEvent) {
-    String firstSide = parsedEvent.firstSide;
-    String secondSide = parsedEvent.secondSide;
+    String side1 = parsedEvent.side1;
+    String side2 = parsedEvent.side2;
 
     double firstKof = parseKof(parsedEvent.firstKof);
     double secondKof = parseKof(parsedEvent.secondKof);
@@ -40,17 +40,17 @@ public class LiveLanosAdapter
       firstKof = secondKof;
       secondKof = swapKof;
 
-      String swapSide = firstSide;
-      firstSide = secondSide;
-      secondSide = swapSide;
+      String swapSide = side1;
+      side1 = side2;
+      side2 = swapSide;
     }
 
     Sport sport = adoptSport(parsedEvent.sportDescr);
 
-    String firstSideCode = sideCodeAdapter.adapt(firstSide, sport);
-    String secondSIdeCode = sideCodeAdapter.adapt(secondSide, sport);
+    String side1Code = sideCodeAdapter.adapt(side1, sport);
+    String secondSIdeCode = sideCodeAdapter.adapt(side2, sport);
 
-    return new AdaptedEvent(LIVE, sport, firstSide, secondSide, firstKof, secondKof, LANOS, null, firstSideCode, secondSIdeCode);
+    return new AdaptedEvent(LIVE, sport, side1, side2, firstKof, secondKof, LANOS, null, side1Code, secondSIdeCode);
   }
 
   private double parseKof(String kof) {

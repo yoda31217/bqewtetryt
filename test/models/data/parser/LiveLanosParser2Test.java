@@ -38,13 +38,13 @@ public class LiveLanosParser2Test {
   }
 
   @Test
-  public void parse_firstSideNotEmpty_returnWithFirstSide() {
-    assertThat(parsedEvents.get(0).firstSide).isEqualTo("Flamengo");
+  public void parse_side1NotEmpty_returnWithSide1() {
+    assertThat(parsedEvents.get(0).side1).isEqualTo("Flamengo");
   }
 
   @Test
-  public void parse_secondSideNotEmpty_returnWithSecondSide() {
-    assertThat(parsedEvents.get(0).secondSide).isEqualTo("Limeira");
+  public void parse_side2NotEmpty_returnWithSide2() {
+    assertThat(parsedEvents.get(0).side2).isEqualTo("Limeira");
   }
 
   @Test

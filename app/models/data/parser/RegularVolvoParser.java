@@ -54,8 +54,8 @@ public class RegularVolvoParser
         ArrayList<String> sides = newArrayList(SEDES_SPLITTER.split(sidesText));
         if (2 > sides.size()) return null;
 
-        String firstSide = sides.get(0);
-        String secondSide = sides.get(1);
+        String side1 = sides.get(0);
+        String side2 = sides.get(1);
 
         String firstKof = findElTextOrNull(eventEl, "td.c4.ti.tis > a", 0);
         if (null == firstKof) return null;
@@ -63,7 +63,7 @@ public class RegularVolvoParser
         String secondKof = findElTextOrNull(eventEl, "td.c5.ti.tis > a", 0);
         if (null == secondKof) return null;
 
-        return new ParsedEvent(sportDescr, firstSide, secondSide, date, firstKof, secondKof);
+        return new ParsedEvent(sportDescr, side1, side2, date, firstKof, secondKof);
       }
 
     };

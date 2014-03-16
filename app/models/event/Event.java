@@ -9,20 +9,20 @@ import static com.google.common.collect.Lists.newArrayList;
 public class Event {
 
   final Date date;
-  final String firstSide;
-  final String secondSide;
+  final String side1;
+  final String side2;
   final String code;
   final CopyOnWriteArrayList<HistoryRecord> history = new CopyOnWriteArrayList<HistoryRecord>();
   final EventType type;
   final Sport sport;
   private boolean removed;
 
-  Event(EventType type, Sport sport, Date date, String firstSide, String secondSide, String code) {
+  Event(EventType type, Sport sport, Date date, String side1, String side2, String code) {
     this.type = type;
     this.sport = sport;
     this.date = date;
-    this.firstSide = firstSide;
-    this.secondSide = secondSide;
+    this.side1 = side1;
+    this.side2 = side2;
     this.code = code;
     removed = false;
   }
@@ -73,12 +73,12 @@ public class Event {
     return date;
   }
 
-  public String firstSide() {
-    return firstSide;
+  public String side1() {
+    return side1;
   }
 
-  public String secondSide() {
-    return secondSide;
+  public String side2() {
+    return side2;
   }
 
   public String code() {

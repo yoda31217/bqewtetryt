@@ -69,17 +69,17 @@ public class VolvoAdapter2Test {
   }
 
   @Test
-  public void adapt_checkFirstSideName()
-    throws Exception {
+  public void adapt_checkSide1Name()
+  throws Exception {
     AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_1, SIDE_2, EVENT_DATE_TEXT, KOF_1_STR, KOF_2_STR));
-    assertThat(adaptedEvent.firstSide).isEqualTo(SIDE_1);
+    assertThat(adaptedEvent.side1).isEqualTo(SIDE_1);
   }
 
   @Test
-  public void adapt_checkSecondSideName()
-    throws Exception {
+  public void adapt_checkSide2Name()
+  throws Exception {
     AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_1, SIDE_2, EVENT_DATE_TEXT, KOF_1_STR, KOF_2_STR));
-    assertThat(adaptedEvent.secondSide).isEqualTo(SIDE_2);
+    assertThat(adaptedEvent.side2).isEqualTo(SIDE_2);
   }
 
   @Test
@@ -111,17 +111,17 @@ public class VolvoAdapter2Test {
   }
 
   @Test
-  public void adapt_checkFirstSideName_flipped()
-    throws Exception {
+  public void adapt_checkSide1Name_flipped()
+  throws Exception {
     AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_2, SIDE_1, EVENT_DATE_TEXT, KOF_2_STR, KOF_1_STR));
-    assertThat(adaptedEvent.firstSide).isEqualTo(SIDE_1);
+    assertThat(adaptedEvent.side1).isEqualTo(SIDE_1);
   }
 
   @Test
-  public void adapt_checkSecondSideName_flipped()
-    throws Exception {
+  public void adapt_checkSide2Name_flipped()
+  throws Exception {
     AdaptedEvent adaptedEvent = adapter.adapt(new ParsedEvent("Tennis", SIDE_2, SIDE_1, EVENT_DATE_TEXT, KOF_2_STR, KOF_1_STR));
-    assertThat(adaptedEvent.secondSide).isEqualTo(SIDE_2);
+    assertThat(adaptedEvent.side2).isEqualTo(SIDE_2);
   }
 
   @Test

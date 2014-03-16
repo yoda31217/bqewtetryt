@@ -43,13 +43,13 @@ public class RegularVolvoParserTest {
   }
 
   @Test
-  public void parse_firstSideNotEmpty_returnWithFirstSide() {
-    assertThat(parsedEvents.get(0).firstSide).isEqualTo("John Isner");
+  public void parse_side1NotEmpty_returnWithSide1() {
+    assertThat(parsedEvents.get(0).side1).isEqualTo("John Isner");
   }
 
   @Test
-  public void parse_secondSideNotEmpty_returnWithSecondSide() {
-    assertThat(parsedEvents.get(0).secondSide).isEqualTo("Ernests Gulbis");
+  public void parse_side2NotEmpty_returnWithSide2() {
+    assertThat(parsedEvents.get(0).side2).isEqualTo("Ernests Gulbis");
   }
 
   @Test

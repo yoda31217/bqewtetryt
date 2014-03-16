@@ -42,11 +42,11 @@ public class LiveVolvoParser2
       @Nullable
       @Override
       public ParsedEvent apply(@Nullable WebElement eventEl) {
-        String firstSide = findElTextOrNull(eventEl, ".RowContainer .Row .teams", 0);
-        if (null == firstSide) return null;
+        String side1 = findElTextOrNull(eventEl, ".RowContainer .Row .teams", 0);
+        if (null == side1) return null;
 
-        String secondSide = findElTextOrNull(eventEl, ".RowContainer .Row .teams", 1);
-        if (null == secondSide) return null;
+        String side2 = findElTextOrNull(eventEl, ".RowContainer .Row .teams", 1);
+        if (null == side2) return null;
 
         String firstKof = findElTextOrNull(eventEl, ".OverviewMarket .Participant .Odds", 0);
         if (null == firstKof) return null;
@@ -54,7 +54,7 @@ public class LiveVolvoParser2
         String secondKof = findElTextOrNull(eventEl, ".OverviewMarket .Participant .Odds", 1);
         if (null == secondKof) return null;
 
-        return new ParsedEvent(sportDescr, firstSide, secondSide, null, firstKof, secondKof);
+        return new ParsedEvent(sportDescr, side1, side2, null, firstKof, secondKof);
       }
 
     };

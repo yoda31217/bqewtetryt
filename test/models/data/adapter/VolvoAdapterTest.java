@@ -44,8 +44,8 @@ public class VolvoAdapterTest {
     assertThat(adaptedEvent.eventDate).isEqualTo(calendar.getTime());
 
     assertThat(adaptedEvent.organisation).isEqualTo(VOLVO);
-    assertThat(adaptedEvent.firstSide).isEqualTo("Florian Mayer");
-    assertThat(adaptedEvent.secondSide).isEqualTo("Kristina Mladenovic");
+    assertThat(adaptedEvent.side1).isEqualTo("Florian Mayer");
+    assertThat(adaptedEvent.side2).isEqualTo("Kristina Mladenovic");
     assertThat(adaptedEvent.firstKof).isEqualTo(1.5);
     assertThat(adaptedEvent.secondKof).isEqualTo(3.28);
     assertThat(adaptedEvent.adoptedDate).isSameAs(adoptedDate);
@@ -76,8 +76,8 @@ public class VolvoAdapterTest {
     ParsedEvent event = new ParsedEvent("TENNIS", "Kristina Mladenovic", "Florian Mayer", "11 Oct 07:30", "3.28", "1.50");
     AdaptedEvent adaptedEvent = new VolvoAdapter().adapt(event);
 
-    assertThat(adaptedEvent.firstSide).isEqualTo("Florian Mayer");
-    assertThat(adaptedEvent.secondSide).isEqualTo("Kristina Mladenovic");
+    assertThat(adaptedEvent.side1).isEqualTo("Florian Mayer");
+    assertThat(adaptedEvent.side2).isEqualTo("Kristina Mladenovic");
     assertThat(adaptedEvent.firstKof).isEqualTo(1.5);
     assertThat(adaptedEvent.secondKof).isEqualTo(3.28);
   }
@@ -88,8 +88,8 @@ public class VolvoAdapterTest {
     ParsedEvent event = new ParsedEvent("TENNIS", "Florian Hradečka", "Kristina Hradečka", "11 Oct 07:30", "1.50", "3.28");
     AdaptedEvent adaptedEvent = new VolvoAdapter().adapt(event);
 
-    assertThat(adaptedEvent.firstSide).isEqualTo("Florian Hradecka");
-    assertThat(adaptedEvent.secondSide).isEqualTo("Kristina Hradecka");
+    assertThat(adaptedEvent.side1).isEqualTo("Florian Hradecka");
+    assertThat(adaptedEvent.side2).isEqualTo("Kristina Hradecka");
   }
 
   @Test
