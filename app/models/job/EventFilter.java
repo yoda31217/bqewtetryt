@@ -1,4 +1,4 @@
-package models.data;
+package models.job;
 
 import com.google.common.base.Predicate;
 import models.data.adapter.AdaptedEvent;

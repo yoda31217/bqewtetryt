@@ -17,15 +17,15 @@ public class VolvoSideCodeAdapterTest extends BaseSideCoderTest {
   }
 
   @Test
-  public void adapt_twoPlayersTennis_returnLastWordsWithComa() {
-    String code = coder.adapt("firstword secondword / thidrword fourthword", TENNIS);
-    assertThat(code).isEqualTo("secondword,fourthword");
+  public void adapt_basketballWithDigit2_removeDigit2() {
+    String code = coder.adapt("team 2", BASKETBALL);
+    assertThat(code).isEqualTo("team");
   }
 
   @Test
-  public void adapt_onePlayerTennis_returnLastWord() {
-    String code = coder.adapt("firstword lastword", TENNIS);
-    assertThat(code).isEqualTo("lastword");
+  public void adapt_basketballWithWomen_removeWomen() {
+    String code = coder.adapt("team women", BASKETBALL);
+    assertThat(code).isEqualTo("team");
   }
 
   @Test
@@ -35,9 +35,21 @@ public class VolvoSideCodeAdapterTest extends BaseSideCoderTest {
   }
 
   @Test
+  public void adapt_onePlayerTennis_returnLastWord() {
+    String code = coder.adapt("firstword lastword", TENNIS);
+    assertThat(code).isEqualTo("lastword");
+  }
+
+  @Test
   public void adapt_oneWordTennis_returnWord() {
     String code = coder.adapt("firstword", TENNIS);
     assertThat(code).isEqualTo("firstword");
+  }
+
+  @Test
+  public void adapt_tennisWithOneChar_returnOneLastCharCode() {
+    String code = coder.adapt("f s", TENNIS);
+    assertThat(code).isEqualTo("s");
   }
 
   @Test
@@ -52,20 +64,8 @@ public class VolvoSideCodeAdapterTest extends BaseSideCoderTest {
   }
 
   @Test
-  public void adapt_tennisWithOneChar_returnOneCharCode() {
-    String code = coder.adapt("f s", TENNIS);
-    assertThat(code).isEqualTo("s");
-  }
-
-  @Test
-  public void adapt_basketball_removeDigit2() {
-    String code = coder.adapt("team 2", BASKETBALL);
-    assertThat(code).isEqualTo("team");
-  }
-
-  @Test
-  public void adapt_basketball_removeWomen() {
-    String code = coder.adapt("team women", BASKETBALL);
-    assertThat(code).isEqualTo("team");
+  public void adapt_twoPlayersTennis_returnLastWordsWithComa() {
+    String code = coder.adapt("firstword secondword / thidrword fourthword", TENNIS);
+    assertThat(code).isEqualTo("secondword,fourthword");
   }
 }

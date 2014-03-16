@@ -10,13 +10,13 @@ import static models.util.Dates.parseDate;
 
 public class VolvoDateAdapter implements DateAdapter {
 
-  static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat("yyyy dd MMM HH:mm Z");
+  static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy dd MMM HH:mm Z");
 
   @Override
   public Date adapt(String dateText) {
     if (null == dateText) return null;
 
     String normalizedDateText = Calendar.getInstance(getTimeZone("GMT")).get(YEAR) + " " + dateText + " +0100";
-    return parseDate(normalizedDateText, LONG_DATE_FORMAT);
+    return parseDate(normalizedDateText, DATE_FORMAT);
   }
 }

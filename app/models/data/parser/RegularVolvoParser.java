@@ -19,19 +19,10 @@ import static org.openqa.selenium.By.cssSelector;
 
 public class RegularVolvoParser implements BParser {
 
-  public static final String   SIDES_SEPARATOR = " v ";
-  public static final Splitter SEDES_SPLITTER  = Splitter.on(SIDES_SEPARATOR).trimResults().omitEmptyStrings();
-  private static final Predicate<ParsedEvent> NOT_NULL_FILTER = new Predicate<ParsedEvent>() {
-    @Override
-    public boolean apply(@Nullable ParsedEvent parsedEvent) {
-      return null != parsedEvent;
-    }
-  };
-  private final String sportDescr;
+  private static final Splitter SIDES_SPLITTER = Splitter.on(" v ").trimResults().omitEmptyStrings();
   private final WebDriver webDriver;
 
-  public RegularVolvoParser(String url, String sportDescr, WebDriver webDriver) {
-    this.sportDescr = sportDescr;
+  public RegularVolvoParser(String url, WebDriver webDriver) {
     this.webDriver = webDriver;
 
     this.webDriver.get(url);
@@ -42,11 +33,11 @@ public class RegularVolvoParser implements BParser {
   public List<ParsedEvent> parse() {
     List<WebElement> eventEls = webDriver.findElements(cssSelector("div.cpn-body > table.tab-typ-h > tbody > tr.ti"));
 
-    List<ParsedEvent> parsedEvents = transform(eventEls, createElToEventTransformer(sportDescr));
-    return newArrayList(filter(parsedEvents, NOT_NULL_FILTER));
+    List<ParsedEvent> parsedEvents = transform(eventEls, createElToEventTransformer());
+    return newArrayList(filter(parsedEvents, createNullEventFilter()));
   }
 
-  private Function<WebElement, ParsedEvent> createElToEventTransformer(final String sportDescr) {
+  private Function<WebElement, ParsedEvent> createElToEventTransformer() {
     return new Function<WebElement, ParsedEvent>() {
 
       @Nullable
@@ -58,7 +49,7 @@ public class RegularVolvoParser implements BParser {
         String sidesText = findElTextOrNull(eventEl, "td.c2 > a.ti > span", 0);
         if (null == sidesText) return null;
 
-        ArrayList<String> sides = newArrayList(SEDES_SPLITTER.split(sidesText));
+        ArrayList<String> sides = newArrayList(SIDES_SPLITTER.split(sidesText));
         if (2 > sides.size()) return null;
 
         String side1 = sides.get(0);
@@ -70,9 +61,18 @@ public class RegularVolvoParser implements BParser {
         String highKof = findElTextOrNull(eventEl, "td.c5.ti.tis > a", 0);
         if (null == highKof) return null;
 
-        return new ParsedEvent(sportDescr, side1, side2, date, lowKof, highKof);
+        return new ParsedEvent(side1, side2, date, lowKof, highKof);
       }
 
+    };
+  }
+
+  private Predicate<ParsedEvent> createNullEventFilter() {
+    return new Predicate<ParsedEvent>() {
+      @Override
+      public boolean apply(@Nullable ParsedEvent parsedEvent) {
+        return null != parsedEvent;
+      }
     };
   }
 

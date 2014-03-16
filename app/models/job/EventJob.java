@@ -2,7 +2,7 @@ package models.job;
 
 import com.google.common.base.Predicate;
 import models.data.adapter.AdaptedEvent;
-import models.data.adapter.BAdapter;
+import models.data.adapter.Adapter;
 import models.data.parser.BParser;
 import models.data.parser.ParsedEvent;
 import models.event.Event;
@@ -17,12 +17,12 @@ import static play.Logger.of;
 public class EventJob implements Runnable {
 
   private static final Logger.ALogger LOG = of(EventJob.class);
-  final         BAdapter                adapter;
+  final Adapter adapter;
   final         String                  name;
   final         BParser                 parser;
   private final Predicate<AdaptedEvent> filter;
 
-  public EventJob(BParser parser, BAdapter adapter, Predicate<AdaptedEvent> filter, String name) {
+  public EventJob(BParser parser, Adapter adapter, Predicate<AdaptedEvent> filter, String name) {
     this.parser = parser;
     this.adapter = adapter;
     this.filter = filter;

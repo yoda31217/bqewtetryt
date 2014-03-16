@@ -10,8 +10,15 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 public abstract class BaseSideCodeAdapter implements SideCodeAdapter {
 
-  private static final Pattern LAST_WORD_PATTERN  = Pattern.compile("^(.*[^a-z])?([a-z]+)$");
   private static final Pattern FIRST_WORD_PATTERN = Pattern.compile("^([a-z]+)[^a-z].*$");
+  private static final Pattern LAST_WORD_PATTERN = Pattern.compile("^(.*[^a-z])?([a-z]+)$");
+
+  @Override
+  public String adapt(String side, Sport sport) {
+    side = normalize(side);
+    side = buildBySport(side, sport);
+    return stripSpaces(side);
+  }
 
   public String normalize(String side) {
     side = stripUpperCase(side);
@@ -21,36 +28,29 @@ public abstract class BaseSideCodeAdapter implements SideCodeAdapter {
     return side;
   }
 
-  protected String stripUpperCase(String side) {return side.toLowerCase();}
+  protected abstract String buildBasketballCode(String side);
 
-  protected String stripAccents(String side) {return StringUtils.stripAccents(side);}
-
-  protected String removeWomen(String side) { return side.replaceAll("\\swomen", " "); }
-
-  protected String removeDigit2(String side) { return side.replaceAll("\\s2", " "); }
-
-  protected String stripSpaces(String side) { return side.trim().replaceAll("\\s+", " "); }
-
-  protected String stripHyphens(String side) { return side.replace('-', ' '); }
-
-  protected String removeJunior(String side) { return side.replaceAll("\\sjunior", " "); }
-
-  protected String getLastWord(String side) { return getByPattern(side, LAST_WORD_PATTERN, "last word", 2); }
+  protected abstract String buildTennisCode(String side);
 
   protected String getFirstWord(String side) { return getByPattern(side, FIRST_WORD_PATTERN, "first word", 1); }
 
-  private String getByPattern(String side, Pattern pattern, final String patternName, int groupNumber) {
-    Matcher matcher = pattern.matcher(side);
-    checkArgument(matcher.matches(), "Failed to get %s from side: [%s]", patternName, side);
-    return matcher.group(groupNumber);
-  }
+  protected String getLastWord(String side) { return getByPattern(side, LAST_WORD_PATTERN, "last word", 2); }
 
-  @Override
-  public String adapt(String side, Sport sport) {
-    side = normalize(side);
-    side = buildBySport(side, sport);
-    return stripSpaces(side);
-  }
+  protected String joinPlayerCodes(String playerCode1, String playerCode2) {return playerCode1 + "," + playerCode2;}
+
+  protected String removeDigit2(String side) { return side.replaceAll("\\s2", " "); }
+
+  protected String removeJunior(String side) { return side.replaceAll("\\sjunior", " "); }
+
+  protected String removeWomen(String side) { return side.replaceAll("\\swomen", " "); }
+
+  protected String stripAccents(String side) {return StringUtils.stripAccents(side);}
+
+  protected String stripHyphens(String side) { return side.replace('-', ' '); }
+
+  protected String stripSpaces(String side) { return side.trim().replaceAll("\\s+", " "); }
+
+  protected String stripUpperCase(String side) {return side.toLowerCase();}
 
   private String buildBySport(String side, Sport sport) {
     switch (sport) {
@@ -67,9 +67,9 @@ public abstract class BaseSideCodeAdapter implements SideCodeAdapter {
     }
   }
 
-  protected abstract String buildBasketballCode(String side);
-
-  protected abstract String buildTennisCode(String side);
-
-  protected String joinPlayerCodes(String playerCode1, String playerCode2) {return playerCode1 + "," + playerCode2;}
+  private String getByPattern(String side, Pattern pattern, final String patternName, int groupNumber) {
+    Matcher matcher = pattern.matcher(side);
+    checkArgument(matcher.matches(), "Failed to get %s from side: [%s]", patternName, side);
+    return matcher.group(groupNumber);
+  }
 }

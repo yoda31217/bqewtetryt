@@ -8,9 +8,9 @@ import static play.Logger.of;
 
 public class RetryExceptionParser implements BParser {
 
-  static Logger.ALogger log = of(RetryExceptionParser.class);
+  Logger.ALogger log = of(RetryExceptionParser.class);
   private final BParser delegate;
-  private final int retriesCount;
+  private final int     retriesCount;
 
   public RetryExceptionParser(BParser delegate, int retriesCount) {
     this.delegate = delegate;

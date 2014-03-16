@@ -12,6 +12,15 @@ public class Conditions {
     return createGeDateCondition(new Date().getTime() - 1 * ONE_SEC_IN_MILLIS);
   }
 
+  public static Condition<Object> isEqualToAsString(final Object expectedObject) {
+    return new Condition<Object>() {
+      @Override
+      public boolean matches(Object actualObject) {
+        return expectedObject.toString().equals(actualObject.toString());
+      }
+    }.as(expectedObject.toString());
+  }
+
   private static Condition<Object> createGeDateCondition(final long dateFromInMillis) {
     return new Condition<Object>() {
       @Override

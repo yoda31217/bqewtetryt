@@ -26,13 +26,7 @@ public class VolvoDateAdapterTest {
   }
 
   @Test
-  public void adapt_null_returnNull() {
-    Date actualDate = adapter.adapt(null);
-    assertThat(actualDate).isEqualTo(null);
-  }
-
-  @Test
-  public void adapt_ddMMMhhmm_returnDate() {
+  public void adapt_ddMMMhhmmText_returnDate() {
     Date actualDate = adapter.adapt("11 Oct 12:30");
 
     Calendar calendar = Calendar.getInstance(getTimeZone("GMT+1"));
@@ -44,5 +38,11 @@ public class VolvoDateAdapterTest {
     calendar.set(MILLISECOND, 0);
 
     assertThat(actualDate).isEqualTo(calendar.getTime());
+  }
+
+  @Test
+  public void adapt_nullText_returnNull() {
+    Date actualDate = adapter.adapt(null);
+    assertThat(actualDate).isEqualTo(null);
   }
 }
