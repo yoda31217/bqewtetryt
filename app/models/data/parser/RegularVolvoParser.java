@@ -39,7 +39,15 @@ public class RegularVolvoParser
     this.webDriver.manage().window().setSize(new Dimension(1800, 1000));
   }
 
-  private static Function<WebElement, ParsedEvent> createElToEventTransformer(final String sportDescr) {
+  @Override
+  public List<ParsedEvent> parse() {
+    List<WebElement> eventEls = webDriver.findElements(cssSelector("div.cpn-body > table.tab-typ-h > tbody > tr.ti"));
+
+    List<ParsedEvent> parsedEvents = transform(eventEls, createElToEventTransformer(sportDescr));
+    return newArrayList(filter(parsedEvents, NOT_NULL_FILTER));
+  }
+
+  private Function<WebElement, ParsedEvent> createElToEventTransformer(final String sportDescr) {
     return new Function<WebElement, ParsedEvent>() {
 
       @Nullable
@@ -69,7 +77,7 @@ public class RegularVolvoParser
     };
   }
 
-  private static String findElTextOrNull(WebElement rootEl, String selector, int index) {
+  private String findElTextOrNull(WebElement rootEl, String selector, int index) {
     List<WebElement> els = rootEl.findElements(cssSelector(selector));
     if (els.isEmpty() || els.size() <= index) return null;
 
@@ -77,13 +85,5 @@ public class RegularVolvoParser
     String text = el.getText();
 
     return isNullOrEmpty(text) ? null : text;
-  }
-
-  @Override
-  public List<ParsedEvent> parse() {
-    List<WebElement> eventEls = webDriver.findElements(cssSelector("div.cpn-body > table.tab-typ-h > tbody > tr.ti"));
-
-    List<ParsedEvent> parsedEvents = transform(eventEls, createElToEventTransformer(sportDescr));
-    return newArrayList(filter(parsedEvents, NOT_NULL_FILTER));
   }
 }

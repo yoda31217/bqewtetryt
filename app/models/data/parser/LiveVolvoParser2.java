@@ -36,6 +36,16 @@ public class LiveVolvoParser2
     this.webDriver.manage().window().setSize(new Dimension(1800, 1000));
   }
 
+  public static String findElTextOrNull(WebElement rootEl, String selector, int index) {
+    List<WebElement> els = rootEl.findElements(cssSelector(selector));
+    if (els.isEmpty() || els.size() <= index) return null;
+
+    WebElement el = els.get(index);
+    String text = el.getText();
+
+    return isNullOrEmpty(text) ? null : text;
+  }
+
   private static Function<WebElement, ParsedEvent> createElToEventTransformer(final String sportDescr) {
     return new Function<WebElement, ParsedEvent>() {
 
@@ -58,16 +68,6 @@ public class LiveVolvoParser2
       }
 
     };
-  }
-
-  public static String findElTextOrNull(WebElement rootEl, String selector, int index) {
-    List<WebElement> els = rootEl.findElements(cssSelector(selector));
-    if (els.isEmpty() || els.size() <= index) return null;
-
-    WebElement el = els.get(index);
-    String text = el.getText();
-
-    return isNullOrEmpty(text) ? null : text;
   }
 
   @Override

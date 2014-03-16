@@ -12,24 +12,22 @@ import java.util.Map;
 
 import static models.event.Organisation.UNKNOWN;
 
-public class
+public class Calculation {
 
-  Calculation {
-
-  private final Event event;
-  private boolean isFork;
-  private Organisation lowForkKofOrganisation;
-  private Organisation highForkKofOrganisation;
-  private double lowForkKof;
-  private double highForkKof;
-  private Date lowForkKofDate;
-  private Date highForkKofDate;
-  private double highProfitMoney1;
-  private double highProfitMoney2;
-  private double lowProfitMoney1;
-  private double lowProfitMoney2;
-  private double highProfit;
-  private double lowProfit;
+  private final Event        event;
+  private       boolean      isFork;
+  private       Organisation lowForkKofOrganisation;
+  private       Organisation highForkKofOrganisation;
+  private       double       lowForkKof;
+  private       double       highForkKof;
+  private       Date         lowForkKofDate;
+  private       Date         highForkKofDate;
+  private       double       highProfitMoney1;
+  private       double       highProfitMoney2;
+  private       double       lowProfitMoney1;
+  private       double       lowProfitMoney2;
+  private       double       highProfit;
+  private       double       lowProfit;
 
   Calculation(Event event) {
     this.event = event;
@@ -85,45 +83,6 @@ public class
     return event.side1();
   }
 
-  private void calculateProfits() {
-    highProfit = highProfitMoney2 * highForkKof - 1.0;
-    lowProfit = lowProfitMoney1 * lowForkKof - 1.0;
-  }
-
-  private void calculateProfitMoneys() {
-    highProfitMoney1 = 1.0 / lowForkKof;
-    highProfitMoney2 = (lowForkKof - 1.0) / lowForkKof;
-    lowProfitMoney1 = (highForkKof - 1.0) / highForkKof;
-    lowProfitMoney2 = 1.0 / highForkKof;
-  }
-
-  private void calculateIsFork() {isFork = ((1.0 / (lowForkKof - 1.0) + 1.0) < highForkKof);}
-
-  private void calculateForkKofsAndOrganisations(Map<Organisation, HistoryRecord> organisation2lastRecord) {
-    for (HistoryRecord organisationLastRecord : organisation2lastRecord.values()) {
-
-      if ((null == lowForkKofOrganisation) || (organisationLastRecord.lowKof() > lowForkKof)) {
-        lowForkKof = organisationLastRecord.lowKof();
-        lowForkKofOrganisation = organisationLastRecord.organisation();
-        lowForkKofDate = organisationLastRecord.date();
-      }
-
-      if ((null == highForkKofOrganisation) || (organisationLastRecord.highKof() > highForkKof)) {
-        highForkKof = organisationLastRecord.highKof();
-        highForkKofOrganisation = organisationLastRecord.organisation();
-        highForkKofDate = organisationLastRecord.date();
-      }
-    }
-  }
-
-  private Map<Organisation, HistoryRecord> calculateOrganisation2lastRecord() {
-    Map<Organisation, HistoryRecord> organisation2lastRecord = new HashMap<Organisation, HistoryRecord>();
-    for (HistoryRecord historyRecord : event.history()) {
-      organisation2lastRecord.put(historyRecord.organisation(), historyRecord);
-    }
-    return organisation2lastRecord;
-  }
-
   public boolean isFork() { return isFork; }
 
   public Organisation highForkKofOrganisation() { return highForkKofOrganisation; }
@@ -165,5 +124,44 @@ public class
   @Override
   public int hashCode() {
     return event.hashCode();
+  }
+
+  private void calculateProfits() {
+    highProfit = highProfitMoney2 * highForkKof - 1.0;
+    lowProfit = lowProfitMoney1 * lowForkKof - 1.0;
+  }
+
+  private void calculateProfitMoneys() {
+    highProfitMoney1 = 1.0 / lowForkKof;
+    highProfitMoney2 = (lowForkKof - 1.0) / lowForkKof;
+    lowProfitMoney1 = (highForkKof - 1.0) / highForkKof;
+    lowProfitMoney2 = 1.0 / highForkKof;
+  }
+
+  private void calculateIsFork() {isFork = ((1.0 / (lowForkKof - 1.0) + 1.0) < highForkKof);}
+
+  private void calculateForkKofsAndOrganisations(Map<Organisation, HistoryRecord> organisation2lastRecord) {
+    for (HistoryRecord organisationLastRecord : organisation2lastRecord.values()) {
+
+      if ((null == lowForkKofOrganisation) || (organisationLastRecord.lowKof() > lowForkKof)) {
+        lowForkKof = organisationLastRecord.lowKof();
+        lowForkKofOrganisation = organisationLastRecord.organisation();
+        lowForkKofDate = organisationLastRecord.date();
+      }
+
+      if ((null == highForkKofOrganisation) || (organisationLastRecord.highKof() > highForkKof)) {
+        highForkKof = organisationLastRecord.highKof();
+        highForkKofOrganisation = organisationLastRecord.organisation();
+        highForkKofDate = organisationLastRecord.date();
+      }
+    }
+  }
+
+  private Map<Organisation, HistoryRecord> calculateOrganisation2lastRecord() {
+    Map<Organisation, HistoryRecord> organisation2lastRecord = new HashMap<Organisation, HistoryRecord>();
+    for (HistoryRecord historyRecord : event.history()) {
+      organisation2lastRecord.put(historyRecord.organisation(), historyRecord);
+    }
+    return organisation2lastRecord;
   }
 }

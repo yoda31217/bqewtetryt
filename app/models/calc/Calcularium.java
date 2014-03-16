@@ -12,7 +12,6 @@ import static com.google.common.collect.Sets.newHashSet;
 
 public class Calcularium {
 
-  private static Calcularium calcularium = new Calcularium();
   private static final Function<Event, Calculation> CALCULATION_FOR_EVENT_BUILDER = new Function<Event, Calculation>() {
 
     @Nullable
@@ -21,6 +20,7 @@ public class Calcularium {
       return new Calculation(event);
     }
   };
+  private static Calcularium calcularium = new Calcularium();
   private Set<Event> events = newCopyOnWriteArraySet();
 
   Calcularium() {
