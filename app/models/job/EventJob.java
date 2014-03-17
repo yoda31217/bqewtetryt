@@ -6,12 +6,12 @@ import models.data.adapter.Adapter;
 import models.data.parser.BParser;
 import models.data.parser.ParsedEvent;
 import models.event.Event;
+import models.event.EventStore;
 import models.event.HistoryRecord;
 import play.Logger;
 
 import java.util.List;
 
-import static models.event.EventStore.createOrGetEvent;
 import static play.Logger.of;
 
 public class EventJob implements Runnable {
@@ -41,8 +41,8 @@ public class EventJob implements Runnable {
 
         if (!filter.apply(adaptedEvent)) continue;
 
-        Event event = createOrGetEvent(adaptedEvent.type, adaptedEvent.sport, adaptedEvent.eventDate, adaptedEvent.side1, adaptedEvent.side2,
-                                       adaptedEvent.code);
+        Event event = EventStore.INSTANCE.createOrGetEvent(adaptedEvent.type, adaptedEvent.sport, adaptedEvent.eventDate, adaptedEvent.side1,
+                                                           adaptedEvent.side2, adaptedEvent.code);
         event.addHistory(new HistoryRecord(adaptedEvent.adoptedDate, adaptedEvent.organisation, adaptedEvent.lowKof, adaptedEvent.highKof));
 
       } catch (Exception e) {

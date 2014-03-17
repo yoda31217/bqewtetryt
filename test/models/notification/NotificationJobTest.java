@@ -1,8 +1,7 @@
 package models.notification;
 
-import models.calc.Calcularium;
-import models.calc.Calculation;
 import models.event.Event;
+import models.event.EventStore;
 import models.event.HistoryRecord;
 import org.junit.Test;
 import twitter4j.TwitterException;
@@ -23,16 +22,16 @@ import static org.mockito.Mockito.when;
 
 public class NotificationJobTest {
 
-  private Calcularium     calculariumMock = mock(Calcularium.class);
-  private TwitterNotifier notifierMock    = mock(TwitterNotifier.class);
-  private NotificationJob job             = new NotificationJob(notifierMock, calculariumMock);
+  private EventStore      eventStoreMock = mock(EventStore.class);
+  private TwitterNotifier notifierMock   = mock(TwitterNotifier.class);
+  private NotificationJob job            = new NotificationJob(notifierMock, eventStoreMock);
 
   @Test
   public void run_newForkEventRunTwice_notifyOnlyOnce() throws TwitterException {
     Event event = new Event(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2", "CODE");
     event.addHistory(new HistoryRecord(create1secOldDate(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
-    when(calculariumMock.createCalculations()).thenReturn(newHashSet(new Calculation(event)));
+    when(eventStoreMock.events()).thenReturn(newHashSet(event));
 
     job.run();
     job.run();
@@ -45,7 +44,7 @@ public class NotificationJobTest {
     Event event = new Event(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2", "CODE");
     event.addHistory(new HistoryRecord(create1secOldDate(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
-    when(calculariumMock.createCalculations()).thenReturn(newHashSet(new Calculation(event)));
+    when(eventStoreMock.events()).thenReturn(newHashSet(event));
 
     job.run();
 
@@ -57,7 +56,7 @@ public class NotificationJobTest {
     Event event = new Event(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2", "CODE");
     event.addHistory(new HistoryRecord(create1secOldDate(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 2.9));
-    when(calculariumMock.createCalculations()).thenReturn(newHashSet(new Calculation(event)));
+    when(eventStoreMock.events()).thenReturn(newHashSet(event));
 
     job.run();
 

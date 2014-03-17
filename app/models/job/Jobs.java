@@ -8,6 +8,7 @@ import models.data.adapter.side.VolvoSideCodeAdapter;
 import models.data.parser.BParser;
 import models.data.parser.RegularVolvoParser;
 import models.data.parser.RetryExceptionParser;
+import models.event.EventStore;
 import models.notification.NotificationJob;
 import models.notification.TwitterNotifier;
 import models.web_driver.WebDriverKeeper;
@@ -15,30 +16,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import scala.concurrent.duration.Duration;
 import twitter4j.TwitterFactory;
 
-import static models.calc.Calcularium.calcularium;
 import static models.event.EventType.REGULAR;
 import static models.event.Organisation.VOLVO;
 import static models.event.Sport.TENNIS;
 import static models.web_driver.WebDriverKeeper.initWebDriverEnv;
 
 public final class Jobs {
-
-  public static final  Runnable                NOTIFICATION_JOB;
-  //  public static final WebDriverKeeper LANOS_WEB_DRIVER_KEEPER;
-  //  public static final LiveLanosSportSelectionJob LANOS_SPORT_SELECTION_JOB;
-  //  public static final EventJob LIVE_LANOS_JOB;
-  //  public static final WebDriverKeeper VOLVO_TENNIS_WEB_DRIVER_KEEPER;
-  //  public static final EventJob LIVE_VOLVO_TENNIS_JOB;
-  //  public static final WebDriverKeeper VOLVO_VOLLEYBALL_WEB_DRIVER_KEEPER;
-  //  public static final EventJob LIVE_VOLVO_VOLLEYBALL_JOB;
-  //  public static final WebDriverKeeper VOLVO_BASKETBALL_WEB_DRIVER_KEEPER;
-  //  public static final EventJob LIVE_VOLVO_BASKETBALL_JOB;
-  //  public static final WebDriverKeeper VOLVO_TABLE_TENNIS_WEB_DRIVER_KEEPER;
-  //  public static final EventJob LIVE_VOLVO_TABLE_TENNIS_JOB;
-  public static final  EventJob                REGULAR_VOLVO_TENNIS_JOB;
-  public static final RemoveOldEventJob REMOVE_OLD_EVENT_JOB;
-  public static final Runnable          REMOVE_OLD_HISTORY_JOB;
-  private static final Predicate<AdaptedEvent> EVENT_FILTER;
 
   static {
     initWebDriverEnv();
@@ -48,7 +31,7 @@ public final class Jobs {
     REMOVE_OLD_HISTORY_JOB = new RemoveOldHistoryJob(4);
     REMOVE_OLD_EVENT_JOB = new RemoveOldEventJob(Duration.create(2, "min").toMillis());
 
-    NOTIFICATION_JOB = new NotificationJob(new TwitterNotifier(TwitterFactory.getSingleton()), calcularium());
+    NOTIFICATION_JOB = new NotificationJob(new TwitterNotifier(TwitterFactory.getSingleton()), EventStore.INSTANCE);
 
     //    LANOS_WEB_DRIVER_KEEPER = createLanosWebDriverKeeper();
     //    ChromeDriver webDriver = new ChromeDriver();
@@ -68,6 +51,23 @@ public final class Jobs {
     //    LIVE_VOLVO_TABLE_TENNIS_JOB = createLiveVolvoTableTennisJob();
     REGULAR_VOLVO_TENNIS_JOB = createRegularVolvoTennisJob();
   }
+
+  public static final  Runnable                NOTIFICATION_JOB;
+  //  public static final WebDriverKeeper LANOS_WEB_DRIVER_KEEPER;
+  //  public static final LiveLanosSportSelectionJob LANOS_SPORT_SELECTION_JOB;
+  //  public static final EventJob LIVE_LANOS_JOB;
+  //  public static final WebDriverKeeper VOLVO_TENNIS_WEB_DRIVER_KEEPER;
+  //  public static final EventJob LIVE_VOLVO_TENNIS_JOB;
+  //  public static final WebDriverKeeper VOLVO_VOLLEYBALL_WEB_DRIVER_KEEPER;
+  //  public static final EventJob LIVE_VOLVO_VOLLEYBALL_JOB;
+  //  public static final WebDriverKeeper VOLVO_BASKETBALL_WEB_DRIVER_KEEPER;
+  //  public static final EventJob LIVE_VOLVO_BASKETBALL_JOB;
+  //  public static final WebDriverKeeper VOLVO_TABLE_TENNIS_WEB_DRIVER_KEEPER;
+  //  public static final EventJob LIVE_VOLVO_TABLE_TENNIS_JOB;
+  public static final  EventJob                REGULAR_VOLVO_TENNIS_JOB;
+  public static final  RemoveOldEventJob       REMOVE_OLD_EVENT_JOB;
+  public static final  Runnable                REMOVE_OLD_HISTORY_JOB;
+  private static final Predicate<AdaptedEvent> EVENT_FILTER;
 
   private Jobs() {
     throw new UnsupportedOperationException();

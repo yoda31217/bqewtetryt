@@ -1,8 +1,8 @@
 package models.notification;
 
 import com.google.common.base.Predicate;
-import models.calc.Calcularium;
 import models.calc.Calculation;
+import models.event.EventStore;
 
 import java.text.DecimalFormat;
 import java.util.Set;
@@ -10,18 +10,19 @@ import java.util.Set;
 import static com.google.common.collect.Sets.filter;
 import static com.google.common.collect.Sets.newCopyOnWriteArraySet;
 import static com.google.common.collect.Sets.newHashSet;
+import static models.calc.Calculations.eventsToCalculations;
 import static models.util.Dates.toSecsFromNow;
 
 public class NotificationJob implements Runnable {
 
   private static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("0.000");
-  private final Calcularium calcularium;
+  private final EventStore eventStore;
   private final Set<Calculation> lastForkCalculations = newCopyOnWriteArraySet();
   private final TwitterNotifier notifier;
 
-  public NotificationJob(TwitterNotifier notifier, Calcularium calcularium) {
+  public NotificationJob(TwitterNotifier notifier, EventStore eventStore) {
     this.notifier = notifier;
-    this.calcularium = calcularium;
+    this.eventStore = eventStore;
   }
 
   @Override
@@ -29,18 +30,18 @@ public class NotificationJob implements Runnable {
     Set<Calculation> oldForkCalculations = newHashSet(lastForkCalculations);
     lastForkCalculations.clear();
 
-    Set<Calculation> currentForkCalculations = filter(calcularium.createCalculations(), createIsForkFilter());
+    Set<Calculation> currentForkCalculations = createCurrentForkCalculations();
     lastForkCalculations.addAll(currentForkCalculations);
 
-    Set<Calculation> newestForkCalculations = newHashSet(currentForkCalculations);
+    Set<Calculation> newestForkCalculations = currentForkCalculations;
     newestForkCalculations.removeAll(oldForkCalculations);
 
     for (Calculation calculation : newestForkCalculations) {
-      notifier.notify(buildMessage(calculation));
+      notifier.notify(createMessage(calculation));
     }
   }
 
-  private String buildMessage(Calculation calculation) {
+  private String createMessage(Calculation calculation) {
     @SuppressWarnings("StringBufferReplaceableByString") StringBuilder messageBuilder = new StringBuilder();
 
     messageBuilder.append(calculation.type().label);
@@ -81,6 +82,11 @@ public class NotificationJob implements Runnable {
     messageBuilder.append(NUMBER_FORMAT.format(calculation.lowProfit()));
 
     return messageBuilder.toString();
+  }
+
+  private Set<Calculation> createCurrentForkCalculations() {
+    Set<Calculation> calculations = eventsToCalculations(eventStore.events());
+    return filter(calculations, createIsForkFilter());
   }
 
   private Predicate<Calculation> createIsForkFilter() {

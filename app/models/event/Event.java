@@ -8,14 +8,13 @@ import static com.google.common.collect.Lists.newArrayList;
 
 public class Event {
 
-  final Date   date;
-  final String side1;
-  final String side2;
   final String code;
+  final Date   date;
   final CopyOnWriteArrayList<HistoryRecord> history = new CopyOnWriteArrayList<HistoryRecord>();
-  final   EventType type;
-  final   Sport     sport;
-  private boolean   removed;
+  final String    side1;
+  final String    side2;
+  final Sport     sport;
+  final EventType type;
 
   public Event(EventType type, Sport sport, Date date, String side1, String side2, String code) {
     this.type = type;
@@ -24,7 +23,18 @@ public class Event {
     this.side1 = side1;
     this.side2 = side2;
     this.code = code;
-    removed = false;
+  }
+
+  public void addHistory(HistoryRecord record) {
+    history.add(record);
+  }
+
+  public String code() {
+    return code;
+  }
+
+  public Date date() {
+    return date;
   }
 
   @Override
@@ -34,7 +44,6 @@ public class Event {
 
     Event event = (Event) o;
 
-    if (removed != event.removed) return false;
     if (!code.equals(event.code)) return false;
     if (date != null ? !date.equals(event.date) : event.date != null) return false;
     if (sport != event.sport) return false;
@@ -49,16 +58,11 @@ public class Event {
     result = 31 * result + code.hashCode();
     result = 31 * result + type.hashCode();
     result = 31 * result + sport.hashCode();
-    result = 31 * result + (removed ? 1 : 0);
     return result;
   }
 
   public List<HistoryRecord> history() {
     return newArrayList(history);
-  }
-
-  public void addHistory(HistoryRecord record) {
-    history.add(record);
   }
 
   public int removeOldHistory(int newSize) {
@@ -69,10 +73,6 @@ public class Event {
     return recordsToRemove.size();
   }
 
-  public Date date() {
-    return date;
-  }
-
   public String side1() {
     return side1;
   }
@@ -81,23 +81,11 @@ public class Event {
     return side2;
   }
 
-  public String code() {
-    return code;
-  }
-
-  public EventType type() {
-    return type;
-  }
-
   public Sport sport() {
     return sport;
   }
 
-  public boolean isRemoved() {
-    return removed;
-  }
-
-  void markRemoved() {
-    removed = true;
+  public EventType type() {
+    return type;
   }
 }

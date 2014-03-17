@@ -5,7 +5,6 @@ import models.event.EventStore;
 import models.event.HistoryRecord;
 import play.Logger;
 
-import static models.event.EventStore.remove;
 import static models.util.Dates.toMillisFromNow;
 import static play.Logger.of;
 
@@ -22,12 +21,12 @@ public class RemoveOldEventJob implements Runnable {
   public void run() {
     //    LOG.debug("Removing old Events");
 
-    for (Event event : EventStore.events()) {
+    for (Event event : EventStore.INSTANCE.events()) {
 
       HistoryRecord lastHistoryRecord = event.history().get(event.history().size() - 1);
 
       boolean isLastHistoryRecordOld = toMillisFromNow(lastHistoryRecord.date()) > maxSilenceDelayInMillis;
-      if (isLastHistoryRecordOld) remove(event);
+      if (isLastHistoryRecordOld) EventStore.INSTANCE.remove(event);
     }
   }
 }

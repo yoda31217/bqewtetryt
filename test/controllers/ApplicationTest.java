@@ -1,6 +1,7 @@
 package controllers;
 
 import models.event.Event;
+import models.event.EventStore;
 import models.event.HistoryRecord;
 import models.event.Organisation;
 import org.junit.After;
@@ -14,7 +15,6 @@ import views.html.main;
 
 import java.util.Date;
 
-import static models.event.EventStore.createOrGetEvent;
 import static models.event.EventTests.clearEvents;
 import static models.event.EventType.REGULAR;
 import static models.event.Sport.TENNIS;
@@ -47,7 +47,7 @@ public class ApplicationTest {
 
     date = new Date();
 
-    Event event = createOrGetEvent(REGULAR, TENNIS, date, "side1", "side2", "eventCode");
+    Event event = EventStore.INSTANCE.createOrGetEvent(REGULAR, TENNIS, date, "side1", "side2", "eventCode");
     HistoryRecord record = new HistoryRecord(date, Organisation.LANOS, 1.1, 2.1);
     event.addHistory(record);
   }
@@ -63,17 +63,6 @@ public class ApplicationTest {
   }
 
   @Test
-  public void mainPage() {
-    Result result = route(fakeRequest(GET, "/"));
-    String expectedResultBody = main.render().body();
-
-    assertThat(status(result)).isEqualTo(OK);
-    assertThat(charset(result)).isEqualTo("utf-8");
-    assertThat(contentType(result)).isEqualTo("text/html");
-    assertThat(contentAsString(result)).isEqualTo(expectedResultBody);
-  }
-
-  @Test
   public void getKofs() {
     Result result = route(fakeRequest(GET, "/get_calculations"));
 
@@ -84,5 +73,16 @@ public class ApplicationTest {
                                                   ",\"side1\":\"side1\",\"side2\":\"side2\",\"code\":\"eventCode\",\"history\":[{\"date\":" + date.getTime() +
                                                   ",\"organisation\":\"LANOS\",\"lowKof\":1.1,\"highKof\":2.1}],\"type\":\"REGULAR\",\"sport\":\"TENNIS\"," +
                                                   "\"removed\":false}]");
+  }
+
+  @Test
+  public void mainPage() {
+    Result result = route(fakeRequest(GET, "/"));
+    String expectedResultBody = main.render().body();
+
+    assertThat(status(result)).isEqualTo(OK);
+    assertThat(charset(result)).isEqualTo("utf-8");
+    assertThat(contentType(result)).isEqualTo("text/html");
+    assertThat(contentAsString(result)).isEqualTo(expectedResultBody);
   }
 }

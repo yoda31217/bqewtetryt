@@ -3,42 +3,39 @@ package models.event;
 import play.Logger;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import static com.google.common.collect.Lists.newArrayList;
-import static models.calc.Calcularium.calcularium;
+import static com.google.common.collect.Sets.newHashSet;
 import static play.Logger.of;
 
 public class EventStore {
 
-  static final         ConcurrentMap<Event, Event> EVENTS = new ConcurrentHashMap<Event, Event>();
-  private static final Logger.ALogger              LOG    = of(EventStore.class);
+  public static final EventStore INSTANCE = new EventStore();
+  Logger.ALogger LOG = of(EventStore.class);
+  final ConcurrentMap<Event, Event> events = new ConcurrentHashMap<Event, Event>();
 
-  private EventStore() {
-    throw new UnsupportedOperationException();
+  public EventStore() {
   }
 
-  public static List<Event> events() {
-    return newArrayList(EVENTS.keySet());
-  }
-
-  public static Event createOrGetEvent(EventType type, Sport sport, Date date, String side1, String side2, String code) {
+  public Event createOrGetEvent(EventType type, Sport sport, Date date, String side1, String side2, String code) {
     Event newEvent = new Event(type, sport, date, side1, side2, code);
-    Event oldEvent = EVENTS.putIfAbsent(newEvent, newEvent);
+    Event oldEvent = events.putIfAbsent(newEvent, newEvent);
 
     if (null != oldEvent) return oldEvent;
 
     LOG.debug("Adding new Event with Code: {}", newEvent.code());
-    calcularium().registerEvent(newEvent);
     return newEvent;
 
   }
 
-  public static void remove(Event event) {
-    EVENTS.remove(event);
-    event.markRemoved();
+  public Set<Event> events() {
+    return newHashSet(events.keySet());
+  }
+
+  public void remove(Event event) {
+    events.remove(event);
     LOG.debug("Removing old Event with Code: {}", event.code());
   }
 }

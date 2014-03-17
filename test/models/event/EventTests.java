@@ -3,7 +3,6 @@ package models.event;
 import java.util.Date;
 
 import static java.lang.Math.random;
-import static models.event.EventStore.EVENTS;
 import static models.event.EventType.REGULAR;
 import static models.event.Organisation.LANOS;
 import static models.event.Sport.TENNIS;
@@ -19,7 +18,7 @@ public final class EventTests {
   }
 
   public static void clearEvents() {
-    EVENTS.clear();
+    EventStore.INSTANCE.events.clear();
   }
 
   public static Event createEvent(EventType type, Sport sport, Date date, String side1, String side2, String code) {
