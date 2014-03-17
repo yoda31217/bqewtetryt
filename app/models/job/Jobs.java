@@ -8,7 +8,6 @@ import models.data.adapter.side.VolvoSideCodeAdapter;
 import models.data.parser.BParser;
 import models.data.parser.RegularVolvoParser;
 import models.data.parser.RetryExceptionParser;
-import models.event.EventStore;
 import models.notification.NotificationJob;
 import models.notification.TwitterNotifier;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -30,7 +29,7 @@ public final class Jobs {
     REMOVE_OLD_HISTORY_JOB = new RemoveOldHistoryJob(4);
     REMOVE_OLD_EVENT_JOB = new RemoveOldEventJob(Duration.create(2, "min").toMillis());
 
-    NOTIFICATION_JOB = new NotificationJob(new TwitterNotifier(TwitterFactory.getSingleton()), EventStore.INSTANCE);
+    NOTIFICATION_JOB = new NotificationJob(new TwitterNotifier(TwitterFactory.getSingleton()), EventJob.INSTANCE);
 
     REGULAR_VOLVO_TENNIS_JOB = createRegularVolvoTennisJob();
   }

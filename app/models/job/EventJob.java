@@ -16,8 +16,9 @@ import static play.Logger.of;
 
 public class EventJob implements Runnable {
 
-  private static final Logger.ALogger LOG = of(EventJob.class);
-  final Adapter adapter;
+  public static final  EventStore     INSTANCE = new EventStore();
+  private static final Logger.ALogger LOG      = of(EventJob.class);
+  final         Adapter                 adapter;
   final         String                  name;
   final         BParser                 parser;
   private final Predicate<AdaptedEvent> filter;
@@ -41,8 +42,8 @@ public class EventJob implements Runnable {
 
         if (!filter.apply(adaptedEvent)) continue;
 
-        Event event = EventStore.INSTANCE.createOrGetEvent(adaptedEvent.type, adaptedEvent.sport, adaptedEvent.eventDate, adaptedEvent.side1,
-                                                           adaptedEvent.side2, adaptedEvent.code);
+        Event event = INSTANCE.createOrGetEvent(adaptedEvent.type, adaptedEvent.sport, adaptedEvent.eventDate, adaptedEvent.side1, adaptedEvent.side2,
+                                                adaptedEvent.code);
         event.addHistory(new HistoryRecord(adaptedEvent.adoptedDate, adaptedEvent.organisation, adaptedEvent.lowKof, adaptedEvent.highKof));
 
       } catch (Exception e) {

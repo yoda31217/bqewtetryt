@@ -1,61 +1,40 @@
 package models.event;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
 
-import static models.event.EventTests.randomHistoryRecord;
-import static models.event.EventTests.randomSide;
 import static models.event.EventType.REGULAR;
+import static models.event.Organisation.LANOS;
 import static models.event.Sport.TENNIS;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class EventTest {
 
-  private Event event;
+  private Event event = new Event(REGULAR, TENNIS, new Date(), "SIDE1", "SIDE2", "event_code");
 
-  @Before
-  public void before() throws Exception {
-    event = new Event(REGULAR, TENNIS, new Date(), randomSide(), randomSide(), "event_code");
+  @Test
+  public void addHistory_always_addHistoryRecord() {
+    HistoryRecord record = new HistoryRecord(new Date(), LANOS, 1.0, 1.5);
+    event.addHistory(record);
+    assertThat(event.history()).containsOnly(record);
   }
 
   @Test
-  public void historyCollectionCopyCheck() {
+  public void history_always_returnCopy() {
     assertThat(event.history()).isNotSameAs(event.history);
   }
 
   @Test
-  public void addHistory() {
-    Date date = new Date();
-    Organisation organisation = Organisation.LANOS;
-    double lowKof = 1.0;
-    double highKof = 1.0;
-
-    HistoryRecord record = new HistoryRecord(date, organisation, lowKof, highKof);
-    event.addHistory(record);
-
-    assertThat(event.history()).containsOnly(record);
-    assertThat(date).isEqualTo(record.date());
-    assertThat(organisation).isEqualTo(record.organisation());
-    assertThat(lowKof).isEqualTo(record.lowKof());
-    assertThat(highKof).isEqualTo(record.highKof());
-  }
-
-  @Test
-  public void removeOldHistory() throws Exception {
-    HistoryRecord record = randomHistoryRecord();
-
-    event.addHistory(record);
-    assertThat(event.history()).containsExactly(record);
-
+  public void removeOldHistory_remove1of1records_remove1firstRecord() throws Exception {
+    event.addHistory(new HistoryRecord(new Date(), LANOS, 1.5, 2.5));
     event.removeOldHistory(0);
     assertThat(event.history()).hasSize(0);
   }
 
   @Test
-  public void removeOldHistory_1record_return1removedCount() throws Exception {
-    event.addHistory(randomHistoryRecord());
+  public void removeOldHistory_remove1of1records_return1removedCount() throws Exception {
+    event.addHistory(new HistoryRecord(new Date(), LANOS, 1.5, 2.5));
     int removedCount = event.removeOldHistory(0);
     assertThat(removedCount).isEqualTo(1);
   }

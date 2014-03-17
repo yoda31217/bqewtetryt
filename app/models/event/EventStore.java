@@ -12,8 +12,7 @@ import static play.Logger.of;
 
 public class EventStore {
 
-  public static final EventStore INSTANCE = new EventStore();
-  Logger.ALogger LOG = of(EventStore.class);
+  Logger.ALogger log = of(EventStore.class);
   final ConcurrentMap<Event, Event> events = new ConcurrentHashMap<Event, Event>();
 
   public EventStore() {
@@ -25,7 +24,7 @@ public class EventStore {
 
     if (null != oldEvent) return oldEvent;
 
-    LOG.debug("Adding new Event with Code: {}", newEvent.code());
+    log.debug("Adding new Event: {}", newEvent);
     return newEvent;
 
   }
@@ -36,6 +35,5 @@ public class EventStore {
 
   public void remove(Event event) {
     events.remove(event);
-    LOG.debug("Removing old Event with Code: {}", event.code());
   }
 }

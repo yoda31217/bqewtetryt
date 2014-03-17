@@ -99,13 +99,13 @@ public class EventJobTest {
     job.run();
 
     verifyStatic(never());
-    EventStore.INSTANCE.createOrGetEvent(any(EventType.class), any(Sport.class), any(Date.class), any(String.class), any(String.class), any(String.class));
+    EventJob.INSTANCE.createOrGetEvent(any(EventType.class), any(Sport.class), any(Date.class), any(String.class), any(String.class), any(String.class));
   }
 
   @Test
   public void run_regularEvent_parsedAndAdaptedAndRecorded() {
     mockStatic(EventStore.class);
-    when(EventStore.INSTANCE.createOrGetEvent(any(EventType.class), any(Sport.class), any(Date.class), any(String.class), any(String.class), any(String.class)))
+    when(EventJob.INSTANCE.createOrGetEvent(any(EventType.class), any(Sport.class), any(Date.class), any(String.class), any(String.class), any(String.class)))
       .thenReturn(event);
 
     when(parser.parse()).thenReturn(newArrayList(parsedEvent));
@@ -121,8 +121,8 @@ public class EventJobTest {
     verify(adapter).adapt(same(parsedEvent));
 
     verifyStatic();
-    EventStore.INSTANCE.createOrGetEvent(adaptedEvent.type, adaptedEvent.sport, adaptedEvent.eventDate, adaptedEvent.side1, adaptedEvent.side2,
-                                         adaptedEvent.code);
+    EventJob.INSTANCE.createOrGetEvent(adaptedEvent.type, adaptedEvent.sport, adaptedEvent.eventDate, adaptedEvent.side1, adaptedEvent.side2,
+                                       adaptedEvent.code);
 
     verify(event).addHistory(refEq(new HistoryRecord(adaptedEvent.adoptedDate, adaptedEvent.organisation, adaptedEvent.lowKof, adaptedEvent.highKof)));
   }

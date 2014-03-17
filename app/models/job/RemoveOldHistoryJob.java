@@ -1,7 +1,6 @@
 package models.job;
 
 import models.event.Event;
-import models.event.EventStore;
 import models.event.HistoryRecord;
 import play.Logger;
 
@@ -23,7 +22,7 @@ public class RemoveOldHistoryJob implements Runnable {
     //    LOG.debug("Removing old History");
 
     int removedHistoryCount = 0;
-    for (Event event : EventStore.INSTANCE.events()) {
+    for (Event event : EventJob.INSTANCE.events()) {
       List<HistoryRecord> history = event.history();
 
       if (newHistoryCount > history.size()) continue;

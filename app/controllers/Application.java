@@ -15,7 +15,7 @@ import java.util.Set;
 import static com.google.common.base.Strings.padEnd;
 import static java.util.Collections.sort;
 import static models.calc.Calculations.eventsToCalculations;
-import static models.event.EventStore.INSTANCE;
+import static models.job.EventJob.INSTANCE;
 import static models.util.Dates.toSecsFromNow;
 import static play.Logger.of;
 

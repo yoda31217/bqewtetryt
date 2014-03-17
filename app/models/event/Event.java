@@ -85,6 +85,19 @@ public class Event {
     return sport;
   }
 
+  @Override
+  public String toString() {
+    return "Event{" +
+           "code='" + code + '\'' +
+           ", date=" + date +
+           ", history=" + history +
+           ", side1='" + side1 + '\'' +
+           ", side2='" + side2 + '\'' +
+           ", sport=" + sport +
+           ", type=" + type +
+           '}';
+  }
+
   public EventType type() {
     return type;
   }

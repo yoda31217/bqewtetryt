@@ -1,7 +1,6 @@
 package models.job;
 
 import models.event.Event;
-import models.event.EventStore;
 import models.event.HistoryRecord;
 import play.Logger;
 
@@ -21,12 +20,12 @@ public class RemoveOldEventJob implements Runnable {
   public void run() {
     //    LOG.debug("Removing old Events");
 
-    for (Event event : EventStore.INSTANCE.events()) {
+    for (Event event : EventJob.INSTANCE.events()) {
 
       HistoryRecord lastHistoryRecord = event.history().get(event.history().size() - 1);
 
       boolean isLastHistoryRecordOld = toMillisFromNow(lastHistoryRecord.date()) > maxSilenceDelayInMillis;
-      if (isLastHistoryRecordOld) EventStore.INSTANCE.remove(event);
+      if (isLastHistoryRecordOld) EventJob.INSTANCE.remove(event);
     }
   }
 }
