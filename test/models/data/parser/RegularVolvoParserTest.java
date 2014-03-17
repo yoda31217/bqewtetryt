@@ -7,7 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.List;
 
-import static models.util.Conditions.isEqualToAsString;
+import static models.util.Conditions.equalToAsString;
 import static models.web_driver.WebDriverKeeper.initWebDriverEnv;
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -31,7 +31,7 @@ public class RegularVolvoParserTest {
   @Test
   public void parse_realDoc_eventAttrsParsed() {
     ParsedEvent expectedParsedEvent = new ParsedEvent("John Isner", "Ernests Gulbis", "14 Mar 22:30", "11/8", "4/7");
-    assertThat(parsedEvents.get(0)).is(isEqualToAsString(expectedParsedEvent));
+    assertThat(parsedEvents.get(0)).is(equalToAsString(expectedParsedEvent));
   }
 
   @Test

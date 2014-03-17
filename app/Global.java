@@ -16,7 +16,7 @@ import static models.job.Jobs.NOTIFICATION_JOB;
 import static models.job.Jobs.REGULAR_VOLVO_TENNIS_JOB;
 import static models.job.Jobs.REMOVE_OLD_EVENT_JOB;
 import static models.job.Jobs.REMOVE_OLD_HISTORY_JOB;
-import static models.util.BObjects.logAndStopExceptions;
+import static models.util.Runnables.createLogExRunnable;
 import static play.Logger.of;
 import static play.libs.Akka.system;
 
@@ -41,11 +41,11 @@ public class Global extends GlobalSettings {
 
     FiniteDuration oldEventOffset = Duration.create(20, "ms");
     FiniteDuration oldEventDelay = Duration.create(1, "min");
-    schedules.add(scheduler.schedule(oldEventOffset, oldEventDelay, logAndStopExceptions(REMOVE_OLD_EVENT_JOB), defaultDispatcher));
+    schedules.add(scheduler.schedule(oldEventOffset, oldEventDelay, createLogExRunnable(REMOVE_OLD_EVENT_JOB), defaultDispatcher));
 
     FiniteDuration oldHistoryOffset = Duration.create(30, "ms");
     FiniteDuration oldHistoryDelay = Duration.create(1, "min");
-    schedules.add(scheduler.schedule(oldHistoryOffset, oldHistoryDelay, logAndStopExceptions(REMOVE_OLD_HISTORY_JOB), defaultDispatcher));
+    schedules.add(scheduler.schedule(oldHistoryOffset, oldHistoryDelay, createLogExRunnable(REMOVE_OLD_HISTORY_JOB), defaultDispatcher));
 
     //            FiniteDuration lanosOffset = Duration.create(20, "sec");
     //            FiniteDuration lanosDelay = Duration.create(1, "min");
@@ -72,7 +72,7 @@ public class Global extends GlobalSettings {
 
     FiniteDuration regularVolvoTennisOffset = Duration.create(110, "ms");
     FiniteDuration regularVolvoTennisDelay = Duration.create(15000, "ms");
-    schedules.add(scheduler.schedule(regularVolvoTennisOffset, regularVolvoTennisDelay, logAndStopExceptions(REGULAR_VOLVO_TENNIS_JOB), defaultDispatcher));
+    schedules.add(scheduler.schedule(regularVolvoTennisOffset, regularVolvoTennisDelay, createLogExRunnable(REGULAR_VOLVO_TENNIS_JOB), defaultDispatcher));
 
     FiniteDuration liveVolvoVolleyballOffset = Duration.create(130, "ms");
     FiniteDuration liveVolvoVolleyballDelay = Duration.create(10000, "ms");
@@ -91,7 +91,7 @@ public class Global extends GlobalSettings {
 
     FiniteDuration notificationOffset = Duration.create(230, "ms");
     FiniteDuration notificationDelay = Duration.create(300, "ms");
-    schedules.add(scheduler.schedule(notificationOffset, notificationDelay, logAndStopExceptions(NOTIFICATION_JOB), defaultDispatcher));
+    schedules.add(scheduler.schedule(notificationOffset, notificationDelay, createLogExRunnable(NOTIFICATION_JOB), defaultDispatcher));
 
   }
 

@@ -18,7 +18,7 @@ import java.util.Date;
 import static models.event.EventTests.clearEvents;
 import static models.event.EventType.REGULAR;
 import static models.event.Sport.TENNIS;
-import static models.util.BObjects.callConstructor;
+import static models.util.Tests.callConstructor;
 import static org.fest.assertions.Assertions.assertThat;
 import static play.test.Helpers.GET;
 import static play.test.Helpers.OK;

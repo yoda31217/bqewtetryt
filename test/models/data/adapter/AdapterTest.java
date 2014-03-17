@@ -11,7 +11,7 @@ import java.util.Date;
 import static models.event.EventType.LIVE;
 import static models.event.Organisation.VOLVO;
 import static models.event.Sport.TENNIS;
-import static models.util.Conditions.isEqualToAsString;
+import static models.util.Conditions.equalToAsString;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.same;
@@ -39,7 +39,7 @@ public class AdapterTest {
 
     AdaptedEvent actualAdaptedEvent = adapter.adapt(parsedEvent);
 
-    assertThat(actualAdaptedEvent).is(isEqualToAsString(expectedAdaptedEvent));
+    assertThat(actualAdaptedEvent).is(equalToAsString(expectedAdaptedEvent));
   }
 
   @Test
@@ -49,6 +49,6 @@ public class AdapterTest {
 
     AdaptedEvent actualAdaptedEvent = adapter.adapt(parsedEvent);
 
-    assertThat(actualAdaptedEvent).is(isEqualToAsString(expectedAdaptedEvent));
+    assertThat(actualAdaptedEvent).is(equalToAsString(expectedAdaptedEvent));
   }
 }

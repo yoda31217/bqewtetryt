@@ -6,8 +6,11 @@ import java.util.Date;
 
 import static java.lang.System.currentTimeMillis;
 
-// todo: tests
-public class Dates {
+public final class Dates {
+
+  private Dates() {
+    throw new UnsupportedOperationException();
+  }
 
   public static Date create1secOldDate() {return new Date(new Date().getTime() - 1000);}
 

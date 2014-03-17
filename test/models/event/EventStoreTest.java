@@ -11,7 +11,7 @@ import static models.event.EventType.LIVE;
 import static models.event.EventType.REGULAR;
 import static models.event.Sport.BASKETBALL;
 import static models.event.Sport.TENNIS;
-import static models.util.BObjects.callConstructor;
+import static models.util.Tests.callConstructor;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class EventStoreTest {

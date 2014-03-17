@@ -3,7 +3,7 @@ package models.test;
 import org.junit.Test;
 
 import static models.test.BMatchers.reflectionEq;
-import static models.util.BObjects.callConstructor;
+import static models.util.Tests.callConstructor;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class BMatchersTest {

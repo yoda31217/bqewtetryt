@@ -5,8 +5,7 @@ import akka.dispatch.Dispatchers;
 import akka.dispatch.MessageDispatcher;
 import models.job.Jobs;
 import models.job.RemoveOldEventJob;
-import models.util.BObjects;
-import models.web_driver.WebDriverKeeper;
+import models.util.Runnables;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -30,7 +29,7 @@ import static models.job.Jobs.NOTIFICATION_JOB;
 import static models.job.Jobs.REMOVE_OLD_EVENT_JOB;
 import static models.job.Jobs.REMOVE_OLD_HISTORY_JOB;
 import static models.test.BMatchers.reflectionEq;
-import static models.util.BObjects.logAndStopExceptions;
+import static models.util.Runnables.createLogExRunnable;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Matchers.any;
@@ -41,7 +40,6 @@ import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
-import static org.powermock.api.mockito.PowerMockito.whenNew;
 import static play.Play.isProd;
 import static play.test.Helpers.fakeApplication;
 import static play.test.Helpers.start;
@@ -50,7 +48,7 @@ import static play.test.Helpers.stop;
 // TODO: logic of this class is too complex.
 @Ignore
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({GlobalTest.class, Global.class, Akka.class, ExecutionContext.class, BObjects.class, Play.class, WebDriverKeeper.class, Jobs.class})
+@PrepareForTest({GlobalTest.class, Global.class, Akka.class, ExecutionContext.class, Runnables.class, Play.class, Jobs.class})
 @PowerMockIgnore("org.apache.http.conn.ssl.*")
 public class GlobalTest {
 
@@ -71,7 +69,6 @@ public class GlobalTest {
   @Mock
   private Runnable                 wrappedRunnableMock;
   @Mock
-  private WebDriverKeeper          lanosWebDriverKeeperMock;
   private FakeApplication          fakeApplication;
 
   @Before
@@ -90,10 +87,8 @@ public class GlobalTest {
     when(schedulerMock.schedule(any(FiniteDuration.class), any(FiniteDuration.class), any(Runnable.class), any(ExecutionContext.class))).thenReturn(
       scheduleMock);
 
-    mockStatic(BObjects.class);
-    when(BObjects.logAndStopExceptions(any(Runnable.class))).thenReturn(wrappedRunnableMock);
-
-    whenNew(WebDriverKeeper.class).withAnyArguments().thenReturn(lanosWebDriverKeeperMock);
+    mockStatic(Runnables.class);
+    when(Runnables.createLogExRunnable(any(Runnable.class))).thenReturn(wrappedRunnableMock);
 
     fakeApplication = fakeApplication(new Global());
   }
@@ -114,7 +109,7 @@ public class GlobalTest {
 
     ArgumentCaptor<Runnable> argsCaptor = forClass(Runnable.class);
     verifyStatic(times(4));
-    logAndStopExceptions(argsCaptor.capture());
+    createLogExRunnable(argsCaptor.capture());
     List args = argsCaptor.getAllValues();
 
     assertThat(args.get(0)).satisfies(reflectionEq(new RemoveOldEventJob(maxSilenceDelayInMillis)));
@@ -135,7 +130,7 @@ public class GlobalTest {
 
     ArgumentCaptor<Runnable> jobArgsCaptor = forClass(Runnable.class);
     verifyStatic(times(9));
-    logAndStopExceptions(jobArgsCaptor.capture());
+    createLogExRunnable(jobArgsCaptor.capture());
     List jobs = jobArgsCaptor.getAllValues();
 
     assertThat(jobs).hasSize(9);
