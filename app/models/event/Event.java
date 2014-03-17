@@ -47,9 +47,7 @@ public class Event {
     if (!code.equals(event.code)) return false;
     if (date != null ? !date.equals(event.date) : event.date != null) return false;
     if (sport != event.sport) return false;
-    if (type != event.type) return false;
-
-    return true;
+    return type == event.type;
   }
 
   @Override
