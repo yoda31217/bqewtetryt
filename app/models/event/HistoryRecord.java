@@ -35,4 +35,14 @@ public final class HistoryRecord {
   public Organisation organisation() {
     return organisation;
   }
+
+  @Override
+  public String toString() {
+    return "HistoryRecord{" +
+           "date=" + date +
+           ", highKof=" + highKof +
+           ", lowKof=" + lowKof +
+           ", organisation=" + organisation +
+           '}';
+  }
 }

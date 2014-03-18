@@ -1,6 +1,7 @@
 package models.job;
 
 import models.event.Event;
+import models.event.EventStore;
 import models.event.HistoryRecord;
 import play.Logger;
 
@@ -10,26 +11,30 @@ import static play.Logger.of;
 
 public class RemoveOldHistoryJob implements Runnable {
 
-  private static final Logger.ALogger LOG = of(RemoveOldHistoryJob.class);
-  private final int newHistoryCount;
+  Logger.ALogger log = of(RemoveOldHistoryJob.class);
+  private final EventStore eventStore;
+  private final int        maxHistoryCount;
 
-  public RemoveOldHistoryJob(int newHistoryCount) {
-    this.newHistoryCount = newHistoryCount;
+  public RemoveOldHistoryJob(int maxHistoryCount, EventStore eventStore) {
+    this.maxHistoryCount = maxHistoryCount;
+    this.eventStore = eventStore;
   }
 
   @Override
   public void run() {
-    //    LOG.debug("Removing old History");
-
     int removedHistoryCount = 0;
-    for (Event event : EventJob.INSTANCE.events()) {
+
+    for (Event event : eventStore.events()) {
       List<HistoryRecord> history = event.history();
 
-      if (newHistoryCount > history.size()) continue;
+      if (maxHistoryCount > history.size()) continue;
 
-      removedHistoryCount += event.removeOldHistory(newHistoryCount);
+      List<HistoryRecord> oldRecordsToRemove = history.subList(0, history.size() - maxHistoryCount);
+      event.removeHistory(oldRecordsToRemove);
+
+      removedHistoryCount += oldRecordsToRemove.size();
     }
 
-    LOG.debug("Removed {} History Records", removedHistoryCount);
+    log.debug("Removed {} History Records", removedHistoryCount);
   }
 }

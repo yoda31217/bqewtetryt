@@ -1,6 +1,7 @@
 package controllers;
 
 import models.calc.Calculation;
+import models.event.EventStore;
 import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -15,7 +16,6 @@ import java.util.Set;
 import static com.google.common.base.Strings.padEnd;
 import static java.util.Collections.sort;
 import static models.calc.Calculations.eventsToCalculations;
-import static models.job.EventJob.INSTANCE;
 import static models.util.Dates.toSecsFromNow;
 import static play.Logger.of;
 
@@ -23,7 +23,8 @@ public class Application extends Controller {
 
   public static final  SimpleDateFormat DATE_FORMAT   = new SimpleDateFormat("dd-MM hh:mm");
   public static final  DecimalFormat    NUMBER_FORMAT = new DecimalFormat("0.000");
-  private static final Logger.ALogger LOG = of(Application.class);
+  public static final  EventStore       INSTANCE      = new EventStore();
+  private static final Logger.ALogger   LOG           = of(Application.class);
 
   private Application() {
     throw new UnsupportedOperationException();

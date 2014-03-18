@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.Date;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static models.event.EventType.REGULAR;
 import static models.event.Organisation.LANOS;
 import static models.event.Sport.TENNIS;
@@ -26,16 +27,12 @@ public class EventTest {
   }
 
   @Test
-  public void removeOldHistory_remove1of1records_remove1firstRecord() throws Exception {
-    event.addHistory(new HistoryRecord(new Date(), LANOS, 1.5, 2.5));
-    event.removeOldHistory(0);
-    assertThat(event.history()).hasSize(0);
-  }
+  public void removeHistory_remove1of1records_remove1record() throws Exception {
+    HistoryRecord record = new HistoryRecord(new Date(), LANOS, 1.5, 2.5);
+    event.addHistory(record);
 
-  @Test
-  public void removeOldHistory_remove1of1records_return1removedCount() throws Exception {
-    event.addHistory(new HistoryRecord(new Date(), LANOS, 1.5, 2.5));
-    int removedCount = event.removeOldHistory(0);
-    assertThat(removedCount).isEqualTo(1);
+    event.removeHistory(newArrayList(record));
+
+    assertThat(event.history()).hasSize(0);
   }
 }

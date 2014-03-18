@@ -63,13 +63,7 @@ public class Event {
     return newArrayList(history);
   }
 
-  public int removeOldHistory(int newSize) {
-    if (history.size() <= newSize) return 0;
-
-    List<HistoryRecord> recordsToRemove = newArrayList(history).subList(0, history.size() - newSize);
-    history.removeAll(recordsToRemove);
-    return recordsToRemove.size();
-  }
+  public void removeHistory(List<HistoryRecord> recordsToRemove) {history.removeAll(recordsToRemove);}
 
   public String side1() {
     return side1;

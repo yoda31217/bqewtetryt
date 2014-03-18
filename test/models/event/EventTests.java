@@ -1,10 +1,10 @@
 package models.event;
 
-import models.job.EventJob;
+import controllers.Application;
 
 public final class EventTests {
 
   public static void clearEvents() {
-    EventJob.INSTANCE.events.clear();
+    Application.INSTANCE.events.clear();
   }
 }

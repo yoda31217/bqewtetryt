@@ -13,7 +13,7 @@ import java.util.Iterator;
 
 import static java.lang.Double.parseDouble;
 
-public class Adapter {
+public class BAdapter {
 
   public static final Splitter KOF_SPLITTER = Splitter.on("/").omitEmptyStrings().trimResults();
   private final DateAdapter     dateAdapter;
@@ -22,7 +22,7 @@ public class Adapter {
   private final Sport           sport;
   private final EventType       type;
 
-  public Adapter(SideCodeAdapter sideCodeAdapter, DateAdapter dateAdapter, EventType type, Organisation organisation, Sport sport) {
+  public BAdapter(SideCodeAdapter sideCodeAdapter, DateAdapter dateAdapter, EventType type, Organisation organisation, Sport sport) {
     this.organisation = organisation;
     this.sideCodeAdapter = sideCodeAdapter;
     this.dateAdapter = dateAdapter;

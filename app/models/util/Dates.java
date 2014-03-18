@@ -8,11 +8,15 @@ import static java.lang.System.currentTimeMillis;
 
 public final class Dates {
 
+  public static final int SECS_IN_MILLIS = 1000;
+
   private Dates() {
     throw new UnsupportedOperationException();
   }
 
-  public static Date create1secOldDate() {return new Date(new Date().getTime() - 1000);}
+  public static Date create1secOldDate() {return new Date(new Date().getTime() - SECS_IN_MILLIS);}
+
+  public static Date create5secsOldDate() {return new Date(new Date().getTime() - 5 * SECS_IN_MILLIS);}
 
   public static Date parseDate(String dateText, SimpleDateFormat format) {
     try {

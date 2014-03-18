@@ -2,19 +2,24 @@ package models.job;
 
 import com.google.common.base.Predicate;
 import models.data.adapter.AdaptedEvent;
+import models.event.EventType;
 import models.event.Sport;
 
 import java.util.EnumSet;
-
-import static models.event.EventType.REGULAR;
-import static models.event.Sport.TENNIS;
+import java.util.List;
 
 public class EventFilter implements Predicate<AdaptedEvent> {
 
-  public static final EnumSet<Sport> ALLOWED_LIVE_SPORTS = EnumSet.of(TENNIS);
+  private EnumSet<Sport>     allowedSports;
+  private EnumSet<EventType> allowedTypes;
+
+  public EventFilter(List<Sport> sports, List<EventType> types) {
+    allowedSports = EnumSet.copyOf(sports);
+    allowedTypes = EnumSet.copyOf(types);
+  }
 
   @Override
   public boolean apply(AdaptedEvent event) {
-    return REGULAR.equals(event.type) && ALLOWED_LIVE_SPORTS.contains(event.sport);
+    return allowedTypes.contains(event.type) && allowedSports.contains(event.sport);
   }
 }

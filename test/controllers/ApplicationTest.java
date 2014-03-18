@@ -3,7 +3,6 @@ package controllers;
 import models.event.Event;
 import models.event.HistoryRecord;
 import models.event.Organisation;
-import models.job.EventJob;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -47,7 +46,7 @@ public class ApplicationTest {
 
     date = new Date();
 
-    Event event = EventJob.INSTANCE.createOrGetEvent(REGULAR, TENNIS, date, "side1", "side2", "eventCode");
+    Event event = Application.INSTANCE.createOrGetEvent(REGULAR, TENNIS, date, "side1", "side2", "eventCode");
     HistoryRecord record = new HistoryRecord(date, Organisation.LANOS, 1.1, 2.1);
     event.addHistory(record);
   }

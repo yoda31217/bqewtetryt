@@ -52,7 +52,8 @@ public class LoggerMock extends Logger.ALogger {
 
   @Override
   public void error(String message, Object... args) {
-    throw new UnsupportedOperationException("Please initialise this method of " + LoggerMock.class);
+    String fullMessage = arrayFormat(message, args).getMessage();
+    addLogRecord(fullMessage, ERROR, null);
   }
 
   @Override
@@ -117,6 +118,10 @@ public class LoggerMock extends Logger.ALogger {
 
   public void verifyError(String message, Throwable error) {
     verify(message, ERROR, error);
+  }
+
+  public void verifyError(String message) {
+    verify(message, ERROR, null);
   }
 
   public void verifyNoInteractions() {

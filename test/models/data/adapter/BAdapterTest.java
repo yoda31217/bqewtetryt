@@ -18,12 +18,12 @@ import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class AdapterTest {
+public class BAdapterTest {
 
   private static final Date            ADAPTED_EVENT_DATE  = new Date();
   private              DateAdapter     dateAdapterMock     = mock(DateAdapter.class);
   private              SideCodeAdapter sideCodeAdapterMock = mock(SideCodeAdapter.class);
-  private              Adapter         adapter             = new Adapter(sideCodeAdapterMock, dateAdapterMock, LIVE, VOLVO, TENNIS);
+  private              BAdapter        adapter             = new BAdapter(sideCodeAdapterMock, dateAdapterMock, LIVE, VOLVO, TENNIS);
 
   @Before
   public void before() {

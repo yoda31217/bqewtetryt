@@ -1,31 +1,37 @@
 package models.job;
 
 import models.event.Event;
+import models.event.EventStore;
 import models.event.HistoryRecord;
-import play.Logger;
+
+import java.util.List;
 
 import static models.util.Dates.toMillisFromNow;
-import static play.Logger.of;
 
 public class RemoveOldEventJob implements Runnable {
 
-  private static final Logger.ALogger LOG = of(RemoveOldEventJob.class);
-  private final long maxSilenceDelayInMillis;
+  private final EventStore eventStore;
+  private final long       maxLastHistoryRecordAgeInMillis;
 
-  public RemoveOldEventJob(long maxSilenceDelayInMillis) {
-    this.maxSilenceDelayInMillis = maxSilenceDelayInMillis;
+  public RemoveOldEventJob(long maxLastHistoryRecordAgeInMillis, EventStore eventStore) {
+    this.maxLastHistoryRecordAgeInMillis = maxLastHistoryRecordAgeInMillis;
+    this.eventStore = eventStore;
   }
 
   @Override
   public void run() {
-    //    LOG.debug("Removing old Events");
+    for (Event event : eventStore.events()) {
 
-    for (Event event : EventJob.INSTANCE.events()) {
+      List<HistoryRecord> history = event.history();
+      if (history.isEmpty()) {
+        eventStore.remove(event);
+        continue;
+      }
 
-      HistoryRecord lastHistoryRecord = event.history().get(event.history().size() - 1);
+      HistoryRecord lastHistoryRecord = history.get(history.size() - 1);
 
-      boolean isLastHistoryRecordOld = toMillisFromNow(lastHistoryRecord.date()) > maxSilenceDelayInMillis;
-      if (isLastHistoryRecordOld) EventJob.INSTANCE.remove(event);
+      boolean isLastHistoryRecordOld = toMillisFromNow(lastHistoryRecord.date()) > maxLastHistoryRecordAgeInMillis;
+      if (isLastHistoryRecordOld) eventStore.remove(event);
     }
   }
 }

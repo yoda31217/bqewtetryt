@@ -3,7 +3,7 @@ import akka.actor.Cancellable;
 import akka.actor.Scheduler;
 import akka.dispatch.Dispatchers;
 import akka.dispatch.MessageDispatcher;
-import models.job.Jobs;
+import controllers.Application;
 import models.job.RemoveOldEventJob;
 import models.util.Runnables;
 import org.junit.Before;
@@ -25,9 +25,6 @@ import scala.concurrent.duration.FiniteDuration;
 
 import java.util.List;
 
-import static models.job.Jobs.NOTIFICATION_JOB;
-import static models.job.Jobs.REMOVE_OLD_EVENT_JOB;
-import static models.job.Jobs.REMOVE_OLD_HISTORY_JOB;
 import static models.test.BMatchers.reflectionEq;
 import static models.util.Runnables.createLogExRunnable;
 import static org.fest.assertions.Assertions.assertThat;
@@ -48,28 +45,28 @@ import static play.test.Helpers.stop;
 // TODO: logic of this class is too complex.
 @Ignore
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({GlobalTest.class, Global.class, Akka.class, ExecutionContext.class, Runnables.class, Play.class, Jobs.class})
+@PrepareForTest({GlobalTest.class, Global.class, Akka.class, ExecutionContext.class, Runnables.class, Play.class})
 @PowerMockIgnore("org.apache.http.conn.ssl.*")
 public class GlobalTest {
 
   @Mock
   private ActorSystem              actorSystemMock;
   @Mock
-  private Scheduler                schedulerMock;
+  private ExecutionContextExecutor defaultDispatcherMock;
   @Mock
   private Dispatchers              dispatchersMock;
   @Mock
-  private ExecutionContextExecutor defaultDispatcherMock;
-  @Mock
-  private MessageDispatcher        volvoFetchingDispatcherMock;
+  private FakeApplication          fakeApplication;
   @Mock
   private MessageDispatcher        lanosFetchingDispatcherMock;
   @Mock
   private Cancellable              scheduleMock;
   @Mock
-  private Runnable                 wrappedRunnableMock;
+  private Scheduler                schedulerMock;
   @Mock
-  private FakeApplication          fakeApplication;
+  private MessageDispatcher        volvoFetchingDispatcherMock;
+  @Mock
+  private Runnable                 wrappedRunnableMock;
 
   @Before
   public void before() throws Exception {
@@ -112,7 +109,7 @@ public class GlobalTest {
     createLogExRunnable(argsCaptor.capture());
     List args = argsCaptor.getAllValues();
 
-    assertThat(args.get(0)).satisfies(reflectionEq(new RemoveOldEventJob(maxSilenceDelayInMillis)));
+    assertThat(args.get(0)).satisfies(reflectionEq(new RemoveOldEventJob(maxSilenceDelayInMillis, Application.INSTANCE)));
 
     verify(schedulerMock, times(4)).schedule(refEq(offset), refEq(delay), same(wrappedRunnableMock), same(defaultDispatcherMock));
 
@@ -134,8 +131,8 @@ public class GlobalTest {
     List jobs = jobArgsCaptor.getAllValues();
 
     assertThat(jobs).hasSize(9);
-    assertThat(jobs.get(0)).isSameAs(REMOVE_OLD_EVENT_JOB);
-    assertThat(jobs.get(1)).isSameAs(REMOVE_OLD_HISTORY_JOB);
+    assertThat(jobs.get(0)).isSameAs(Global.REMOVE_OLD_EVENT_JOB);
+    assertThat(jobs.get(1)).isSameAs(Global.REMOVE_OLD_HISTORY_JOB);
     //    assertThat(jobs.get(2)).isSameAs(LANOS_JOB);
     //    assertThat(jobs.get(3)).isSameAs(VOLVO_JOB);
     //    assertThat(jobs.get(2)).isSameAs(LANOS_SPORT_SELECTION_JOB);
@@ -144,7 +141,7 @@ public class GlobalTest {
     //    assertThat(jobs.get(5)).isSameAs(LIVE_VOLVO_VOLLEYBALL_JOB);
     //    assertThat(jobs.get(6)).isSameAs(LIVE_VOLVO_BASKETBALL_JOB);
     //    assertThat(jobs.get(7)).isSameAs(LIVE_VOLVO_TABLE_TENNIS_JOB);
-    assertThat(jobs.get(8)).isSameAs(NOTIFICATION_JOB);
+    assertThat(jobs.get(8)).isSameAs(Global.NOTIFICATION_JOB);
 
     ArgumentCaptor<FiniteDuration> durationArgsCaptor = forClass(FiniteDuration.class);
     ArgumentCaptor<ExecutionContext> executionContextArgsCaptor = forClass(ExecutionContext.class);

@@ -1,5 +1,20 @@
 import akka.actor.Cancellable;
 import akka.actor.Scheduler;
+import com.google.common.base.Predicate;
+import models.data.adapter.AdaptedEvent;
+import models.data.adapter.BAdapter;
+import models.data.adapter.date.VolvoDateAdapter;
+import models.data.adapter.side.VolvoSideCodeAdapter;
+import models.data.parser.BParser;
+import models.data.parser.RegularVolvoParser;
+import models.data.parser.RetryExceptionParser;
+import models.job.EventFilter;
+import models.job.EventJob;
+import models.job.RemoveOldEventJob;
+import models.job.RemoveOldHistoryJob;
+import models.notification.NotificationJob;
+import models.notification.TwitterNotifier;
+import org.openqa.selenium.chrome.ChromeDriver;
 import play.Application;
 import play.Configuration;
 import play.GlobalSettings;
@@ -7,27 +22,62 @@ import play.Logger;
 import scala.concurrent.ExecutionContext;
 import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
+import twitter4j.TwitterFactory;
 
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
-import static models.job.Jobs.NOTIFICATION_JOB;
-import static models.job.Jobs.REGULAR_VOLVO_TENNIS_JOB;
-import static models.job.Jobs.REMOVE_OLD_EVENT_JOB;
-import static models.job.Jobs.REMOVE_OLD_HISTORY_JOB;
+import static com.google.common.collect.Lists.newArrayList;
+import static models.event.EventType.REGULAR;
+import static models.event.Organisation.VOLVO;
+import static models.event.Sport.TENNIS;
 import static models.util.Runnables.createLogExRunnable;
+import static models.web_driver.WebDriverKeeper.initWebDriverEnv;
 import static play.Logger.of;
 import static play.libs.Akka.system;
 
 public class Global extends GlobalSettings {
 
+  static {
+    initWebDriverEnv();
+
+    EVENT_FILTER = new EventFilter(newArrayList(TENNIS), newArrayList(REGULAR));
+
+    REMOVE_OLD_HISTORY_JOB = new RemoveOldHistoryJob(4, controllers.Application.INSTANCE);
+    REMOVE_OLD_EVENT_JOB = new RemoveOldEventJob(Duration.create(2, "min").toMillis(), controllers.Application.INSTANCE);
+
+    NOTIFICATION_JOB = new NotificationJob(new TwitterNotifier(TwitterFactory.getSingleton()), controllers.Application.INSTANCE);
+
+    REGULAR_VOLVO_TENNIS_JOB = createRegularVolvoTennisJob();
+  }
+
+  public static final  Runnable                NOTIFICATION_JOB;
+  public static final  EventJob                REGULAR_VOLVO_TENNIS_JOB;
+  public static final  RemoveOldEventJob       REMOVE_OLD_EVENT_JOB;
+  public static final  Runnable                REMOVE_OLD_HISTORY_JOB;
+  private static final Predicate<AdaptedEvent> EVENT_FILTER;
   private static final Logger.ALogger    LOG       = of(GlobalSettings.class);
   private              List<Cancellable> schedules = new LinkedList<Cancellable>();
+
+  private static EventJob createRegularVolvoTennisJob() {
+    BParser parser = new RegularVolvoParser(getVolvoSite() + "/lite/?sv=2.3.2.3#!clt=9994;op=4;cid=13;cpid=13-1-50-2-163-0-0-0-1-0-0-4505-0-0-1-0-0-0-0",
+                                            new ChromeDriver());
+    parser = new RetryExceptionParser(parser, 3);
+    BAdapter adapter = new BAdapter(new VolvoSideCodeAdapter("&"), new VolvoDateAdapter(), REGULAR, VOLVO, TENNIS);
+    return new EventJob(controllers.Application.INSTANCE, parser, adapter, EVENT_FILTER, REGULAR + "_" + VOLVO + "_" + TENNIS);
+  }
+
+  private static String getVolvoSite() {return "http://www." + "b" + "e" + "t" + "3" + "6" + "5" + ".com";}
 
   @Override
   public <A> A getControllerInstance(Class<A> controllerClass) throws Exception {
     return super.getControllerInstance(controllerClass);
+  }
+
+  @Override
+  public Configuration onLoadConfig(Configuration config, File path, ClassLoader classloader) {
+    return super.onLoadConfig(config, path, classloader);
   }
 
   @Override
@@ -102,10 +152,5 @@ public class Global extends GlobalSettings {
     for (Cancellable schedule : schedules) {
       schedule.cancel();
     }
-  }
-
-  @Override
-  public Configuration onLoadConfig(Configuration config, File path, ClassLoader classloader) {
-    return super.onLoadConfig(config, path, classloader);
   }
 }
