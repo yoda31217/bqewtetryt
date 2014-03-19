@@ -1,3 +1,5 @@
+package configs;
+
 import org.junit.Test;
 
 public class GlobalTest {
