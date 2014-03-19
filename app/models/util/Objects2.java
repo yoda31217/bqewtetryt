@@ -8,6 +8,10 @@ import static com.google.common.collect.Lists.transform;
 
 public class Objects2 {
 
+  private Objects2() {
+    throw new UnsupportedOperationException();
+  }
+
   public static <T extends Enum<T>> List<T> enumsFromStrings(final Class<T> enumCLass, List<String> enumStrings) {
     return transform(enumStrings, new Function<String, T>() {
       @Override

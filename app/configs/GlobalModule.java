@@ -1,5 +1,6 @@
 package configs;
 
+import akka.actor.Scheduler;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -20,21 +21,24 @@ import twitter4j.TwitterFactory;
 
 import java.util.List;
 
-import static com.google.inject.Scopes.NO_SCOPE;
 import static com.google.inject.Scopes.SINGLETON;
 import static models.util.Objects2.enumsFromStrings;
+import static play.libs.Akka.system;
 
 class GlobalModule extends AbstractModule {
 
-  private final Configuration configuration;
+  private final Configuration   configuration;
+  private final List<WebDriver> createdWebDrivers;
 
-  public GlobalModule(Configuration configuration) {this.configuration = configuration;}
+  public GlobalModule(Configuration configuration, List<WebDriver> createdWebDrivers) {
+    this.configuration = configuration;
+    this.createdWebDrivers = createdWebDrivers;
+  }
 
   @Override
   protected void configure() {
     bind(EventStore.class).in(SINGLETON);
     bind(Twitter.class).toInstance(TwitterFactory.getSingleton());
-    bind(WebDriver.class).to(ChromeDriver.class).in(NO_SCOPE);
   }
 
   @Provides
@@ -75,5 +79,18 @@ class GlobalModule extends AbstractModule {
   @Singleton
   RemoveOldHistoryJob provideRemoveOldHistoryJob(EventStore eventStore) {
     return new RemoveOldHistoryJob(configuration.getInt("betty.job.remove_old_history.max_history_count"), eventStore);
+  }
+
+  @Provides
+  WebDriver provideWebDriver() {
+    ChromeDriver chromeDriver = new ChromeDriver();
+    createdWebDrivers.add(chromeDriver);
+    return chromeDriver;
+  }
+
+  @Provides
+  @Singleton
+  Scheduler provideScheduler() {
+    return system().scheduler();
   }
 }
