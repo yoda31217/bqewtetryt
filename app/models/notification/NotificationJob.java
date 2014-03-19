@@ -33,12 +33,25 @@ public class NotificationJob implements Runnable {
     Set<Calculation> currentForkCalculations = createCurrentForkCalculations();
     lastForkCalculations.addAll(currentForkCalculations);
 
-    Set<Calculation> newestForkCalculations = currentForkCalculations;
-    newestForkCalculations.removeAll(oldForkCalculations);
+    currentForkCalculations.removeAll(oldForkCalculations);
 
-    for (Calculation calculation : newestForkCalculations) {
+    for (Calculation calculation : currentForkCalculations) {
       notifier.notify(createMessage(calculation));
     }
+  }
+
+  private Set<Calculation> createCurrentForkCalculations() {
+    Set<Calculation> calculations = eventsToCalculations(eventStore.events());
+    return filter(calculations, createIsForkFilter());
+  }
+
+  private Predicate<Calculation> createIsForkFilter() {
+    return new Predicate<Calculation>() {
+      @Override
+      public boolean apply(Calculation calculation) {
+        return calculation.isFork();
+      }
+    };
   }
 
   private String createMessage(Calculation calculation) {
@@ -82,19 +95,5 @@ public class NotificationJob implements Runnable {
     messageBuilder.append(NUMBER_FORMAT.format(calculation.lowProfit()));
 
     return messageBuilder.toString();
-  }
-
-  private Set<Calculation> createCurrentForkCalculations() {
-    Set<Calculation> calculations = eventsToCalculations(eventStore.events());
-    return filter(calculations, createIsForkFilter());
-  }
-
-  private Predicate<Calculation> createIsForkFilter() {
-    return new Predicate<Calculation>() {
-      @Override
-      public boolean apply(Calculation calculation) {
-        return calculation.isFork();
-      }
-    };
   }
 }

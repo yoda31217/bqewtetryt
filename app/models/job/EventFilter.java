@@ -13,9 +13,9 @@ public class EventFilter implements Predicate<AdaptedEvent> {
   private EnumSet<Sport>     allowedSports;
   private EnumSet<EventType> allowedTypes;
 
-  public EventFilter(List<Sport> sports, List<EventType> types) {
-    allowedSports = EnumSet.copyOf(sports);
-    allowedTypes = EnumSet.copyOf(types);
+  public EventFilter(List<Sport> allowedSports, List<EventType> allowedTypes) {
+    this.allowedSports = EnumSet.copyOf(allowedSports);
+    this.allowedTypes = EnumSet.copyOf(allowedTypes);
   }
 
   @Override

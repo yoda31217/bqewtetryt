@@ -4,6 +4,7 @@ name := """betty"""
 version := "3.0.0-snapshot"
 
 libraryDependencies ++= Seq(
+  "com.google.inject" % "guice" % "3.0",
   "org.twitter4j" % "twitter4j-core" % "3.0.5",
   "org.powermock" % "powermock-module-junit4" % "1.5.1",
   "org.powermock" % "powermock-api-mockito" % "1.5.1",
