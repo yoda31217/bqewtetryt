@@ -1,7 +1,9 @@
 package models.data.parser;
 
+import models.util.SlowTestJUnit4Runner;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -11,6 +13,7 @@ import static models.util.Conditions.equalToAsString;
 import static models.web_driver.WebDriverKeeper.initWebDriverEnv;
 import static org.fest.assertions.Assertions.assertThat;
 
+@RunWith(SlowTestJUnit4Runner.class)
 public class RegularVolvoParserTest {
 
   private static List<ParsedEvent> parsedEvents;
