@@ -18,9 +18,10 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.google.inject.Guice.createInjector;
+import static java.lang.System.getenv;
+import static java.lang.System.setProperty;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static models.util.Runnables.createLogExRunnable;
-import static models.web_driver.WebDriverKeeper.initWebDriverEnv;
 import static play.libs.Akka.system;
 
 public class BGlobalSettings extends GlobalSettings {
@@ -43,7 +44,7 @@ public class BGlobalSettings extends GlobalSettings {
   public void onStart(Application app) {
     super.onStart(app);
 
-    initWebDriverEnv();
+    setProperty("webdriver.chrome.driver", getenv("WEB_DRIVER"));
 
     injector = createInjector(new GlobalModule(app.configuration(), createdWebDrivers));
     injector.injectMembers(this);

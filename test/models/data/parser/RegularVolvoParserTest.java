@@ -9,8 +9,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.List;
 
+import static java.lang.System.getenv;
+import static java.lang.System.setProperty;
 import static models.util.Conditions.equalToAsString;
-import static models.web_driver.WebDriverKeeper.initWebDriverEnv;
 import static org.fest.assertions.Assertions.assertThat;
 
 @RunWith(SlowTestJUnit4Runner.class)
@@ -20,7 +21,7 @@ public class RegularVolvoParserTest {
 
   @BeforeClass
   public static void beforeClass() throws Exception {
-    initWebDriverEnv();
+    setProperty("webdriver.chrome.driver", getenv("WEB_DRIVER"));
 
     WebDriver webDriver = new ChromeDriver();
     String url = RegularVolvoParserTest.class.getResource("/models/data/parser/RegularVolvoParserTest/Tennis Full List - Match Coupon   bet365 Sports.html")
