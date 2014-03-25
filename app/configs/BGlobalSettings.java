@@ -10,6 +10,7 @@ import models.notification.NotificationJob;
 import org.openqa.selenium.WebDriver;
 import play.Application;
 import play.GlobalSettings;
+import scala.concurrent.ExecutionContext;
 import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
 
@@ -32,7 +33,7 @@ public class BGlobalSettings extends GlobalSettings {
   @Inject NotificationJob       notificationJob;
   @Inject Scheduler             scheduler;
   Injector injector;
-  List<Cancellable> schedules         = new LinkedList<Cancellable>();
+  List<Cancellable> jobSchedules = new LinkedList<Cancellable>();
   List<WebDriver>   createdWebDrivers = new CopyOnWriteArrayList<WebDriver>();
 
   @Override
@@ -52,14 +53,16 @@ public class BGlobalSettings extends GlobalSettings {
     scheduleJob(app, "betty.job.remove_old_history.offset", "betty.job.remove_old_history.delay", removeOldHistoryJob);
     scheduleJob(app, "betty.job.remove_old_event.offset", "betty.job.remove_old_event.delay", removeOldEventJob);
     scheduleJob(app, "betty.job.notification.offset", "betty.job.notification.delay", notificationJob);
-    scheduleJob(app, "betty.job.regular_volvo_tennis.offset", "betty.job.regular_volvo_tennis.delay", regularVolvoTennisJob);
+
+    scheduleJob(app, "betty.job.regular_volvo_tennis.offset", "betty.job.regular_volvo_tennis.delay", regularVolvoTennisJob,
+                "contexts.fetch-regular-volvo-tennis");
   }
 
   @Override
   public void onStop(Application app) {
     super.onStop(app);
 
-    for (Cancellable schedule : schedules) {
+    for (Cancellable schedule : jobSchedules) {
       schedule.cancel();
     }
 
@@ -68,11 +71,19 @@ public class BGlobalSettings extends GlobalSettings {
     }
   }
 
-  private void scheduleJob(Application app, String offsetConfigKey, String delayConfigKey, Runnable job) {
+  private void scheduleJob(Application app, String offsetConfigKey, String delayConfigKey, Runnable job, ExecutionContext dispatcher) {
     FiniteDuration offset = Duration.create(app.configuration().getMilliseconds(offsetConfigKey), MILLISECONDS);
     FiniteDuration delay = Duration.create(app.configuration().getMilliseconds(delayConfigKey), MILLISECONDS);
 
-    Cancellable jobSchedule = system().scheduler().schedule(offset, delay, createLogExRunnable(job), system().dispatcher());
-    schedules.add(jobSchedule);
+    Cancellable jobSchedule = system().scheduler().schedule(offset, delay, createLogExRunnable(job), dispatcher);
+    jobSchedules.add(jobSchedule);
+  }
+
+  private void scheduleJob(Application app, String offsetConfigKey, String delayConfigKey, Runnable job) {
+    scheduleJob(app, offsetConfigKey, delayConfigKey, job, system().dispatcher());
+  }
+
+  private void scheduleJob(Application app, String offsetConfigKey, String delayConfigKey, Runnable job, String dispatcherId) {
+    scheduleJob(app, offsetConfigKey, delayConfigKey, job, system().dispatchers().lookup(dispatcherId));
   }
 }

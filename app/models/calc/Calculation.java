@@ -59,13 +59,9 @@ public class Calculation {
     calculateProfits();
   }
 
-  public String code() {
-    return event.code();
-  }
+  public String code() { return event.code(); }
 
-  public Date date() {
-    return event.date();
-  }
+  public Date date() { return event.date(); }
 
   @Override
   public boolean equals(Object o) {
@@ -78,9 +74,7 @@ public class Calculation {
   }
 
   @Override
-  public int hashCode() {
-    return event.hashCode();
-  }
+  public int hashCode() { return event.hashCode(); }
 
   public double highForkKof() { return highForkKof; }
 
@@ -108,21 +102,13 @@ public class Calculation {
 
   public double lowProfitMoney2() { return lowProfitMoney2; }
 
-  public String side1() {
-    return event.side1();
-  }
+  public String side1() { return event.side1(); }
 
-  public String side2() {
-    return event.side2();
-  }
+  public String side2() { return event.side2(); }
 
-  public Sport sport() {
-    return event.sport();
-  }
+  public Sport sport() { return event.sport(); }
 
-  public EventType type() {
-    return event.type();
-  }
+  public EventType type() { return event.type(); }
 
   private Map<Organisation, HistoryRecord> buildOrganisation2lastRecord() {
     Map<Organisation, HistoryRecord> organisation2lastRecord = new HashMap<Organisation, HistoryRecord>();
