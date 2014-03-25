@@ -13,14 +13,14 @@ import static com.google.common.collect.Sets.newHashSet;
 import static models.calc.Calculations.eventsToCalculations;
 import static models.util.Dates.toSecsFromNow;
 
-public class NotificationJob implements Runnable {
+public class TwitterNotificationJob implements Runnable {
 
   private static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("0.000");
   private final EventStore eventStore;
   private final Set<Calculation> lastForkCalculations = newCopyOnWriteArraySet();
   private final TwitterNotifier notifier;
 
-  public NotificationJob(TwitterNotifier notifier, EventStore eventStore) {
+  public TwitterNotificationJob(TwitterNotifier notifier, EventStore eventStore) {
     this.notifier = notifier;
     this.eventStore = eventStore;
   }

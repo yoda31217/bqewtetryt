@@ -6,7 +6,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import models.job.RemoveOldEventJob;
 import models.job.RemoveOldHistoryJob;
-import models.notification.NotificationJob;
+import models.notification.TwitterNotificationJob;
 import org.openqa.selenium.WebDriver;
 import play.Application;
 import play.GlobalSettings;
@@ -30,8 +30,8 @@ public class BGlobalSettings extends GlobalSettings {
   @Inject RemoveOldEventJob     removeOldEventJob;
   @Inject RemoveOldHistoryJob   removeOldHistoryJob;
   @Inject RegularVolvoTennisJob regularVolvoTennisJob;
-  @Inject NotificationJob       notificationJob;
-  @Inject Scheduler             scheduler;
+  @Inject TwitterNotificationJob notificationJob;
+  @Inject Scheduler              scheduler;
   Injector injector;
   List<Cancellable> jobSchedules = new LinkedList<Cancellable>();
   List<WebDriver>   createdWebDrivers = new CopyOnWriteArrayList<WebDriver>();
@@ -52,7 +52,7 @@ public class BGlobalSettings extends GlobalSettings {
 
     scheduleJob(app, "betty.job.remove_old_history.offset", "betty.job.remove_old_history.delay", removeOldHistoryJob);
     scheduleJob(app, "betty.job.remove_old_event.offset", "betty.job.remove_old_event.delay", removeOldEventJob);
-    scheduleJob(app, "betty.job.notification.offset", "betty.job.notification.delay", notificationJob);
+    scheduleJob(app, "betty.job.notification.offset", "betty.job.notification.delay", notificationJob, "contexts.notification");
 
     scheduleJob(app, "betty.job.regular_volvo_tennis.offset", "betty.job.regular_volvo_tennis.delay", regularVolvoTennisJob,
                 "contexts.fetch-regular-volvo-tennis");

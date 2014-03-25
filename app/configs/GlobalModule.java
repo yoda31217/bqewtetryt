@@ -11,7 +11,7 @@ import models.event.Sport;
 import models.job.EventFilter;
 import models.job.RemoveOldEventJob;
 import models.job.RemoveOldHistoryJob;
-import models.notification.NotificationJob;
+import models.notification.TwitterNotificationJob;
 import models.notification.TwitterNotifier;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -57,8 +57,8 @@ class GlobalModule extends AbstractModule {
 
   @Provides
   @Singleton
-  NotificationJob provideNotificationJob(Twitter twitter, EventStore eventStore) {
-    return new NotificationJob(new TwitterNotifier(twitter), eventStore);
+  TwitterNotificationJob provideNotificationJob(Twitter twitter, EventStore eventStore) {
+    return new TwitterNotificationJob(new TwitterNotifier(twitter), eventStore);
   }
 
   @Provides
