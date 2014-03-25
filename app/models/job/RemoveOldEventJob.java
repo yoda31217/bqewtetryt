@@ -3,13 +3,16 @@ package models.job;
 import models.event.Event;
 import models.event.EventStore;
 import models.event.HistoryRecord;
+import play.Logger;
 
 import java.util.List;
 
 import static models.util.Dates.toMillisFromNow;
+import static play.Logger.of;
 
 public class RemoveOldEventJob implements Runnable {
 
+  Logger.ALogger log = of(RemoveOldEventJob.class);
   private final EventStore eventStore;
   private final long       maxLastHistoryRecordAgeInMillis;
 
@@ -20,18 +23,26 @@ public class RemoveOldEventJob implements Runnable {
 
   @Override
   public void run() {
+    int removedCount = 0;
+
     for (Event event : eventStore.events()) {
 
       List<HistoryRecord> history = event.history();
       if (history.isEmpty()) {
         eventStore.remove(event);
+        removedCount++;
         continue;
       }
 
       HistoryRecord lastHistoryRecord = history.get(history.size() - 1);
-
       boolean isLastHistoryRecordOld = toMillisFromNow(lastHistoryRecord.date()) > maxLastHistoryRecordAgeInMillis;
-      if (isLastHistoryRecordOld) eventStore.remove(event);
+
+      if (isLastHistoryRecordOld) {
+        eventStore.remove(event);
+        removedCount++;
+      }
     }
+
+    if (0 < removedCount) log.info("Removed {} old Events.", removedCount);
   }
 }

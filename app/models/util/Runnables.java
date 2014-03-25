@@ -15,12 +15,11 @@ public final class Runnables {
 
   static class LogExRunnable implements Runnable {
 
-    ALogger log;
+    ALogger log = of(LogExRunnable.class);
     private final Runnable runnable;
 
     public LogExRunnable(Runnable runnable) {
       this.runnable = runnable;
-      log = of(LogExRunnable.class);
     }
 
     @Override

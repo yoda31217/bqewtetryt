@@ -39,7 +39,7 @@ public class EventJobTest {
   private BAdapter                adapterMock     = mock(BAdapter.class);
   private Predicate<AdaptedEvent> eventFilterMock = mock(Predicate.class);
   private EventStore              eventStoreMock  = mock(EventStore.class);
-  private EventJob                job             = new EventJob(eventStoreMock, parserMock, adapterMock, eventFilterMock, "JOB_NAME");
+  private EventJob                job             = new EventJob(eventStoreMock, parserMock, adapterMock, eventFilterMock);
   private LoggerMock              logMock         = new LoggerMock();
 
   @Before
@@ -68,8 +68,8 @@ public class EventJobTest {
 
     job.run();
 
-    logMock.verifyError("Failed to run job. Failed to process parsed event: " + parsedEvent.toString());
-    logMock.verifyError("Cause:", exception);
+    logMock.verifyError("Failed to process parsed event: " + parsedEvent.toString() + ".");
+    logMock.verifyError("Cause.", exception);
   }
 
   @Test

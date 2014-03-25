@@ -24,7 +24,7 @@ public class EventStore {
 
     if (null != oldEvent) return oldEvent;
 
-    log.debug("Adding new Event: {}", newEvent);
+    log.info("Adding new Event: {}.", newEvent.toString());
     return newEvent;
 
   }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static ch.qos.logback.classic.Level.ERROR;
+import static ch.qos.logback.classic.Level.INFO;
 import static ch.qos.logback.classic.Level.WARN;
 import static org.junit.Assert.fail;
 import static org.slf4j.helpers.MessageFormatter.arrayFormat;
@@ -63,7 +64,8 @@ public class LoggerMock extends Logger.ALogger {
 
   @Override
   public void info(String message, Object... args) {
-    throw new UnsupportedOperationException("Please initialise this method of " + LoggerMock.class);
+    String fullMessage = arrayFormat(message, args).getMessage();
+    addLogRecord(fullMessage, INFO, null);
   }
 
   @Override

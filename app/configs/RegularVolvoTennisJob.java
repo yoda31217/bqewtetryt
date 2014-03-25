@@ -29,7 +29,7 @@ public class RegularVolvoTennisJob implements Runnable {
     DateAdapter dateAdapter = new VolvoDateAdapter();
     BAdapter adapter = new BAdapter(sideCodeAdapter, dateAdapter, REGULAR, VOLVO, TENNIS);
 
-    delegate = new EventJob(eventStore, parser, adapter, eventFilter, REGULAR + "_" + VOLVO + "_" + TENNIS);
+    delegate = new EventJob(eventStore, parser, adapter, eventFilter);
   }
 
   @Override

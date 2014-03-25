@@ -16,38 +16,46 @@ import static play.Logger.of;
 
 public class EventJob implements Runnable {
 
-  Logger.ALogger log;
-  private final BAdapter   adapter;
-  private final BParser    parser;
-  private final EventStore eventStore;
+  Logger.ALogger log = of(EventJob.class);
+  private final BAdapter                adapter;
+  private final BParser                 parser;
+  private final EventStore              eventStore;
   private final Predicate<AdaptedEvent> filter;
 
-  public EventJob(EventStore eventStore, BParser parser, BAdapter adapter, Predicate<AdaptedEvent> filter, String name) {
+  public EventJob(EventStore eventStore, BParser parser, BAdapter adapter, Predicate<AdaptedEvent> filter) {
     this.eventStore = eventStore;
     this.parser = parser;
     this.adapter = adapter;
     this.filter = filter;
-    log = of(EventJob.class.getName() + "." + name);
   }
 
   @Override
   public void run() {
+    log.debug("Event Job start.");
+
     List<ParsedEvent> parsedEvents = parser.parse();
+    log.info("Parsed {} events.", parsedEvents.size());
+
     for (ParsedEvent parsedEvent : parsedEvents) {
+      processParsedEvent(parsedEvent);
+    }
 
-      try {
-        AdaptedEvent adaptedEvent = adapter.adapt(parsedEvent);
+    log.debug("Event Job end.");
+  }
 
-        if (!filter.apply(adaptedEvent)) continue;
+  private void processParsedEvent(ParsedEvent parsedEvent) {
+    try {
+      AdaptedEvent adaptedEvent = adapter.adapt(parsedEvent);
 
-        Event event = eventStore.createOrGetEvent(adaptedEvent.type, adaptedEvent.sport, adaptedEvent.eventDate, adaptedEvent.side1, adaptedEvent.side2,
-                                                  adaptedEvent.code);
-        event.addHistory(new HistoryRecord(adaptedEvent.adoptedDate, adaptedEvent.organisation, adaptedEvent.lowKof, adaptedEvent.highKof));
+      if (!filter.apply(adaptedEvent)) return;
 
-      } catch (Exception e) {
-        log.error("Failed to run job. Failed to process parsed event: {}", parsedEvent.toString());
-        log.error("Cause:", e);
-      }
+      Event event = eventStore.createOrGetEvent(adaptedEvent.type, adaptedEvent.sport, adaptedEvent.eventDate, adaptedEvent.side1, adaptedEvent.side2,
+                                                adaptedEvent.code);
+      event.addHistory(new HistoryRecord(adaptedEvent.adoptedDate, adaptedEvent.organisation, adaptedEvent.lowKof, adaptedEvent.highKof));
+
+    } catch (Exception e) {
+      log.error("Failed to process parsed event: {}.", parsedEvent.toString());
+      log.error("Cause.", e);
     }
   }
 }

@@ -6,7 +6,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import models.job.RemoveOldEventJob;
 import models.job.RemoveOldHistoryJob;
-import models.notification.TwitterNotificationJob;
+import models.notification.NotificationJob;
 import org.openqa.selenium.WebDriver;
 import play.Application;
 import play.GlobalSettings;
@@ -30,10 +30,10 @@ public class BGlobalSettings extends GlobalSettings {
   @Inject RemoveOldEventJob     removeOldEventJob;
   @Inject RemoveOldHistoryJob   removeOldHistoryJob;
   @Inject RegularVolvoTennisJob regularVolvoTennisJob;
-  @Inject TwitterNotificationJob notificationJob;
-  @Inject Scheduler              scheduler;
+  @Inject NotificationJob       notificationJob;
+  @Inject Scheduler             scheduler;
   Injector injector;
-  List<Cancellable> jobSchedules = new LinkedList<Cancellable>();
+  List<Cancellable> jobSchedules      = new LinkedList<Cancellable>();
   List<WebDriver>   createdWebDrivers = new CopyOnWriteArrayList<WebDriver>();
 
   @Override

@@ -22,9 +22,9 @@ import static org.mockito.Mockito.when;
 
 public class NotificationJobTest {
 
-  private EventStore             eventStoreMock = mock(EventStore.class);
-  private TwitterNotifier        notifierMock   = mock(TwitterNotifier.class);
-  private TwitterNotificationJob job            = new TwitterNotificationJob(notifierMock, eventStoreMock);
+  private EventStore      eventStoreMock = mock(EventStore.class);
+  private TwitterNotifier notifierMock   = mock(TwitterNotifier.class);
+  private NotificationJob job            = new NotificationJob(notifierMock, eventStoreMock);
 
   @Test
   public void run_newForkEventRunTwice_notifyOnlyOnce() throws TwitterException {

@@ -3,6 +3,7 @@ package models.notification;
 import com.google.common.base.Predicate;
 import models.calc.Calculation;
 import models.event.EventStore;
+import play.Logger;
 
 import java.text.DecimalFormat;
 import java.util.Set;
@@ -12,15 +13,17 @@ import static com.google.common.collect.Sets.newCopyOnWriteArraySet;
 import static com.google.common.collect.Sets.newHashSet;
 import static models.calc.Calculations.eventsToCalculations;
 import static models.util.Dates.toSecsFromNow;
+import static play.Logger.of;
 
-public class TwitterNotificationJob implements Runnable {
+public class NotificationJob implements Runnable {
 
+  Logger.ALogger log = of(NotificationJob.class);
   private static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("0.000");
   private final EventStore eventStore;
   private final Set<Calculation> lastForkCalculations = newCopyOnWriteArraySet();
   private final TwitterNotifier notifier;
 
-  public TwitterNotificationJob(TwitterNotifier notifier, EventStore eventStore) {
+  public NotificationJob(TwitterNotifier notifier, EventStore eventStore) {
     this.notifier = notifier;
     this.eventStore = eventStore;
   }
@@ -36,7 +39,10 @@ public class TwitterNotificationJob implements Runnable {
     currentForkCalculations.removeAll(oldForkCalculations);
 
     for (Calculation calculation : currentForkCalculations) {
-      notifier.notify(createMessage(calculation));
+
+      String message = createMessage(calculation);
+      log.info("Sending Notification: {}", message);
+      notifier.notify(message);
     }
   }
 

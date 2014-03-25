@@ -22,7 +22,7 @@ public class RemoveOldHistoryJob implements Runnable {
 
   @Override
   public void run() {
-    int removedHistoryCount = 0;
+    int removedCount = 0;
 
     for (Event event : eventStore.events()) {
       List<HistoryRecord> history = event.history();
@@ -32,9 +32,9 @@ public class RemoveOldHistoryJob implements Runnable {
       List<HistoryRecord> oldRecordsToRemove = history.subList(0, history.size() - maxHistoryCount);
       event.removeHistory(oldRecordsToRemove);
 
-      removedHistoryCount += oldRecordsToRemove.size();
+      removedCount += oldRecordsToRemove.size();
     }
 
-    log.debug("Removed {} History Records", removedHistoryCount);
+    if (0 < removedCount) log.info("Removed {} old History Records.", removedCount);
   }
 }
