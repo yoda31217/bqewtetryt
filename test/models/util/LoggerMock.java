@@ -6,6 +6,7 @@ import play.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ch.qos.logback.classic.Level.DEBUG;
 import static ch.qos.logback.classic.Level.ERROR;
 import static ch.qos.logback.classic.Level.INFO;
 import static ch.qos.logback.classic.Level.WARN;
@@ -28,7 +29,7 @@ public class LoggerMock extends Logger.ALogger {
 
   @Override
   public void debug(String message) {
-    throw new UnsupportedOperationException("Please initialise this method of " + LoggerMock.class);
+    addLogRecord(message, DEBUG, null);
   }
 
   @Override
