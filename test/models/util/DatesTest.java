@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static models.util.Dates.monthIndexFromRusName;
 import static models.util.Dates.parseDate;
 import static models.util.Dates.toSecsFromNow;
 import static models.util.Tests.callConstructor;
@@ -19,6 +20,23 @@ public class DatesTest {
   @Test(expected = UnsupportedOperationException.class)
   public void constructor_private_throwUnsupportedEx() throws Exception {
     callConstructor(Dates.class);
+  }
+
+  @Test
+  public void monthIndexFromRusName_novName_return10() {
+    int actualMonthIndex = monthIndexFromRusName("ноя");
+    assertThat(actualMonthIndex).isEqualTo(10);
+  }
+
+  @Test
+  public void monthIndexFromRusName_wrongName_throwEx() {
+    try {
+      monthIndexFromRusName("123");
+      fail("Should not reach this line.");
+
+    } catch (Exception ex) {
+      assertThat(ex).isInstanceOf(IllegalArgumentException.class).hasMessage("Failed to find index for russian month name: 123");
+    }
   }
 
   @Test
