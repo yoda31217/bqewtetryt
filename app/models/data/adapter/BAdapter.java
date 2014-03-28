@@ -1,7 +1,7 @@
 package models.data.adapter;
 
-import com.google.common.base.Splitter;
 import models.data.adapter.date.DateAdapter;
+import models.data.adapter.kof.KofAdapter;
 import models.data.adapter.side.SideCodeAdapter;
 import models.data.parser.ParsedEvent;
 import models.event.EventType;
@@ -9,20 +9,18 @@ import models.event.Organisation;
 import models.event.Sport;
 
 import java.util.Date;
-import java.util.Iterator;
-
-import static java.lang.Double.parseDouble;
 
 public class BAdapter {
 
-  public static final Splitter KOF_SPLITTER = Splitter.on("/").omitEmptyStrings().trimResults();
   private final DateAdapter     dateAdapter;
+  private final KofAdapter kofAdapter;
   private final Organisation    organisation;
   private final SideCodeAdapter sideCodeAdapter;
   private final Sport           sport;
   private final EventType       type;
 
-  public BAdapter(SideCodeAdapter sideCodeAdapter, DateAdapter dateAdapter, EventType type, Organisation organisation, Sport sport) {
+  public BAdapter(SideCodeAdapter sideCodeAdapter, DateAdapter dateAdapter, KofAdapter kofAdapter, EventType type, Organisation organisation, Sport sport) {
+    this.kofAdapter = kofAdapter;
     this.organisation = organisation;
     this.sideCodeAdapter = sideCodeAdapter;
     this.dateAdapter = dateAdapter;
@@ -34,8 +32,8 @@ public class BAdapter {
     String side1 = parsedEvent.side1;
     String side2 = parsedEvent.side2;
 
-    double lowKof = adaptKof(parsedEvent.lowKof);
-    double highKof = adaptKof(parsedEvent.highKof);
+    double lowKof = kofAdapter.adapt(parsedEvent.lowKof);
+    double highKof = kofAdapter.adapt(parsedEvent.highKof);
 
     if (lowKof > highKof) {
       double swapKof = lowKof;
@@ -53,10 +51,5 @@ public class BAdapter {
     Date adaptedDate = dateAdapter.adapt(parsedEvent.date);
 
     return new AdaptedEvent(type, sport, side1, side2, lowKof, highKof, organisation, adaptedDate, side1Code, side2Code);
-  }
-
-  private double adaptKof(String kofStr) {
-    Iterator<String> kofParts = KOF_SPLITTER.split(kofStr).iterator();
-    return 1 + parseDouble(kofParts.next()) / parseDouble(kofParts.next());
   }
 }
