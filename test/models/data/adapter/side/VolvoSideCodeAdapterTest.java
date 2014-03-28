@@ -13,49 +13,49 @@ public class VolvoSideCodeAdapterTest extends BaseSideCoderTest {
 
   @Before
   public void before() {
-    coder = new VolvoSideCodeAdapter("/");
+    codeAdapter = new VolvoSideCodeAdapter("/");
   }
 
   @Test
   public void adapt_basketballWithDigit2_removeDigit2() {
-    String code = coder.adapt("team 2", BASKETBALL);
+    String code = codeAdapter.adapt("team 2", BASKETBALL);
     assertThat(code).isEqualTo("team");
   }
 
   @Test
   public void adapt_basketballWithWomen_removeWomen() {
-    String code = coder.adapt("team women", BASKETBALL);
+    String code = codeAdapter.adapt("team women", BASKETBALL);
     assertThat(code).isEqualTo("team");
   }
 
   @Test
   public void adapt_onePlayerTableTennis_returnLastWord() {
-    String code = coder.adapt("firstword lastword", TABLE_TENNIS);
+    String code = codeAdapter.adapt("firstword lastword", TABLE_TENNIS);
     assertThat(code).isEqualTo("lastword");
   }
 
   @Test
   public void adapt_onePlayerTennis_returnLastWord() {
-    String code = coder.adapt("firstword lastword", TENNIS);
+    String code = codeAdapter.adapt("firstword lastword", TENNIS);
     assertThat(code).isEqualTo("lastword");
   }
 
   @Test
   public void adapt_oneWordTennis_returnWord() {
-    String code = coder.adapt("firstword", TENNIS);
+    String code = codeAdapter.adapt("firstword", TENNIS);
     assertThat(code).isEqualTo("firstword");
   }
 
   @Test
   public void adapt_tennisWithOneChar_returnOneLastCharCode() {
-    String code = coder.adapt("f s", TENNIS);
+    String code = codeAdapter.adapt("f s", TENNIS);
     assertThat(code).isEqualTo("s");
   }
 
   @Test
   public void adapt_tennisWithOnlyDigits_throwsArgEx() {
     try {
-      coder.adapt("123", TENNIS);
+      codeAdapter.adapt("123", TENNIS);
       fail();
 
     } catch (Exception ex) {
@@ -65,7 +65,7 @@ public class VolvoSideCodeAdapterTest extends BaseSideCoderTest {
 
   @Test
   public void adapt_twoPlayersTennis_returnLastWordsWithComa() {
-    String code = coder.adapt("firstword secondword / thidrword fourthword", TENNIS);
+    String code = codeAdapter.adapt("firstword secondword / thidrword fourthword", TENNIS);
     assertThat(code).isEqualTo("secondword,fourthword");
   }
 }
