@@ -5,12 +5,12 @@ import org.junit.Test;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-public class NivaSideCodeAdapterTest {
+public class KamazSideCodeAdapterTest {
 
-  private NivaSideCodeAdapter codeAdapter;
+  private KamazSideCodeAdapter codeAdapter;
 
   @Before
-  public void before() { codeAdapter = new NivaSideCodeAdapter(); }
+  public void before() { codeAdapter = new KamazSideCodeAdapter(); }
 
   @Test
   public void adapt_always_returnSame() {
