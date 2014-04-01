@@ -26,6 +26,7 @@ public class RegularNivaTennisParser implements BParser {
   public List<ParsedEvent> parse() {
     List<ParsedEvent> events = new LinkedList<ParsedEvent>();
 
+    //noinspection unchecked
     List<Map> eventObjects = (List<Map>) webDriver.executeScript("return window.bootstrapData.events;");
 
     for (Map eventObject : eventObjects) {
@@ -48,6 +49,7 @@ public class RegularNivaTennisParser implements BParser {
 
       String date = ((Map) eventObject.get("date")).get("sec").toString();
 
+      //noinspection unchecked
       List<Map> kofs = (List<Map>) eventObject.get("winnerOdds");
       if (2 < kofs.size()) throw new IllegalArgumentException("Failed to parse kofs: " + kofs + ".");
 
@@ -59,7 +61,7 @@ public class RegularNivaTennisParser implements BParser {
       return new ParsedEvent(side1, side2, date, lowKof, highKof);
 
     } catch (Exception ex) {
-      throw new IllegalArgumentException("Failed to parse event: " + eventObject + ".");
+      throw new IllegalArgumentException("Failed to parse event: " + eventObject + ".", ex);
     }
   }
 
@@ -73,8 +75,16 @@ public class RegularNivaTennisParser implements BParser {
   }
 
   private String parseSide(Map eventObject, String sideKey) {
+    //noinspection unchecked
     List<Map> sidePlayers = (List<Map>) eventObject.get(sideKey);
-    if (1 < sidePlayers.size()) throw new IllegalArgumentException("Failed to parse side: " + sidePlayers + ".");
+    if (2 < sidePlayers.size()) throw new IllegalArgumentException("Failed to parse side: " + sidePlayers + ".");
+
+    if (2 == sidePlayers.size()) {
+      String sidePlayer1 = ((Map) sidePlayers.get(0).get("name")).get("ru").toString();
+      String sidePlayer2 = ((Map) sidePlayers.get(1).get("name")).get("ru").toString();
+      return sidePlayer1 + "|" + sidePlayer2;
+    }
+
     return ((Map) sidePlayers.get(0).get("name")).get("ru").toString();
   }
 
