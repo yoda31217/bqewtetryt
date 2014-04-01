@@ -15,8 +15,12 @@ public class NivaDateAdapterTest {
   public void before() { adapter = new NivaDateAdapter(); }
 
   @Test
-  public void adapt_dayAndMonth_returnCurrentYearDateMidnight() {
-    Date actualDate = adapter.adapt("11 окт");
-    assertThat(actualDate).isEqualTo(new Date(new Date().getYear(), 9, 11));
+  public void adapt_dateInSecs_returnDate() {
+    long dateInMillis = new Date().getTime();
+    long dateInSecs = dateInMillis / 1000L;
+
+    Date actualDate = adapter.adapt(String.valueOf(dateInSecs));
+
+    assertThat(actualDate).isEqualTo(new Date(dateInSecs * 1000L));
   }
 }

@@ -19,7 +19,7 @@ import static models.util.Dates.toSecsFromNow;
 
 public class MainController extends Controller {
 
-  public static final SimpleDateFormat DATE_FORMAT   = new SimpleDateFormat("dd-MM hh:mm");
+  public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM HH:mm");
   public static final DecimalFormat    NUMBER_FORMAT = new DecimalFormat("0.000");
   public final EventStore eventStore;
 

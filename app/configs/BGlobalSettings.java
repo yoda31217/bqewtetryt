@@ -30,6 +30,7 @@ public class BGlobalSettings extends GlobalSettings {
   @Inject RemoveOldEventJob     removeOldEventJob;
   @Inject RemoveOldHistoryJob   removeOldHistoryJob;
   @Inject RegularVolvoTennisJob regularVolvoTennisJob;
+  @Inject RegularNivaTennisJob regularNivaTennisJob;
   @Inject NotificationJob       notificationJob;
   @Inject Scheduler             scheduler;
   Injector injector;
@@ -56,6 +57,8 @@ public class BGlobalSettings extends GlobalSettings {
 
     scheduleJob(app, "betty.job.regular_volvo_tennis.offset", "betty.job.regular_volvo_tennis.delay", regularVolvoTennisJob,
                 "contexts.fetch-regular-volvo-tennis");
+
+    scheduleJob(app, "betty.job.regular_niva_tennis.offset", "betty.job.regular_niva_tennis.delay", regularNivaTennisJob, "contexts.fetch-regular-niva-tennis");
   }
 
   @Override
