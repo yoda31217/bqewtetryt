@@ -30,7 +30,8 @@ public class BGlobalSettings extends GlobalSettings {
   @Inject RemoveOldEventJob     removeOldEventJob;
   @Inject RemoveOldHistoryJob   removeOldHistoryJob;
   @Inject RegularVolvoTennisJob regularVolvoTennisJob;
-  @Inject RegularNivaTennisJob regularNivaTennisJob;
+  @Inject RegularNivaTennisJob  regularNivaTennisJob;
+  @Inject RegularKamazTennisJob regularKamazTennisJob;
   @Inject NotificationJob       notificationJob;
   @Inject Scheduler             scheduler;
   Injector injector;
@@ -55,10 +56,13 @@ public class BGlobalSettings extends GlobalSettings {
     scheduleJob(app, "betty.job.remove_old_event.offset", "betty.job.remove_old_event.delay", removeOldEventJob);
     scheduleJob(app, "betty.job.notification.offset", "betty.job.notification.delay", notificationJob, "contexts.notification");
 
-    scheduleJob(app, "betty.job.regular_volvo_tennis.offset", "betty.job.regular_volvo_tennis.delay", regularVolvoTennisJob,
-                "contexts.fetch-regular-volvo-tennis");
+    //    scheduleJob(app, "betty.job.regular_volvo_tennis.offset", "betty.job.regular_volvo_tennis.delay", regularVolvoTennisJob,
+    //                "contexts.fetch-regular-volvo-tennis");
 
     scheduleJob(app, "betty.job.regular_niva_tennis.offset", "betty.job.regular_niva_tennis.delay", regularNivaTennisJob, "contexts.fetch-regular-niva-tennis");
+
+    scheduleJob(app, "betty.job.regular_kamaz_tennis.offset", "betty.job.regular_kamaz_tennis.delay", regularKamazTennisJob,
+                "contexts.fetch-regular-kamaz-tennis");
   }
 
   @Override

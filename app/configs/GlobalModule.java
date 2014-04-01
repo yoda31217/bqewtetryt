@@ -63,9 +63,9 @@ class GlobalModule extends AbstractModule {
 
   @Provides
   @Singleton
-  RegularVolvoTennisJob provideRegularVolvoTennisJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
-    String url = configuration.getString("betty.job.regular_volvo_tennis.url");
-    return new RegularVolvoTennisJob(url, eventStore, webDriver, eventFilter);
+  RegularKamazTennisJob provideRegularKamazTennisJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
+    String url = configuration.getString("betty.job.regular_kamaz_tennis.url");
+    return new RegularKamazTennisJob(url, eventStore, webDriver, eventFilter);
   }
 
   @Provides
@@ -73,6 +73,13 @@ class GlobalModule extends AbstractModule {
   RegularNivaTennisJob provideRegularNivaTennisJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
     String url = configuration.getString("betty.job.regular_niva_tennis.url");
     return new RegularNivaTennisJob(url, eventStore, webDriver, eventFilter);
+  }
+
+  @Provides
+  @Singleton
+  RegularVolvoTennisJob provideRegularVolvoTennisJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
+    String url = configuration.getString("betty.job.regular_volvo_tennis.url");
+    return new RegularVolvoTennisJob(url, eventStore, webDriver, eventFilter);
   }
 
   @Provides
@@ -89,15 +96,15 @@ class GlobalModule extends AbstractModule {
   }
 
   @Provides
+  @Singleton
+  Scheduler provideScheduler() {
+    return system().scheduler();
+  }
+
+  @Provides
   ChromeDriver provideWebDriver() {
     ChromeDriver chromeDriver = new ChromeDriver();
     createdWebDrivers.add(chromeDriver);
     return chromeDriver;
-  }
-
-  @Provides
-  @Singleton
-  Scheduler provideScheduler() {
-    return system().scheduler();
   }
 }
