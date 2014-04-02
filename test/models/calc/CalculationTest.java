@@ -285,4 +285,20 @@ public class CalculationTest {
     Calculation calculation = new Calculation(event);
     assertThat(calculation.type()).isEqualTo(LIVE);
   }
+
+  @Test
+  public void organisationsCountInHistory_eventWithoutHistory_return0() {
+    Calculation calculation = new Calculation(event);
+    assertThat(calculation.organisationsCountInHistory()).isZero();
+  }
+
+  @Test
+  public void organisationsCountInHistory_eventWith2organisationsInHistory_return2() {
+    event.addHistory(new HistoryRecord(new Date(), LANOS, 1.5, 2.8));
+    event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
+
+    Calculation calculation = new Calculation(event);
+
+    assertThat(calculation.organisationsCountInHistory()).isEqualTo(2);
+  }
 }

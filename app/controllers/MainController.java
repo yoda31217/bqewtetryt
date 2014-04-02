@@ -79,8 +79,8 @@ public class MainController extends Controller {
     response.append("  ");
   }
 
-  private void appendIsFork(StringBuilder response, Calculation calculation) {
-    String forkChar = calculation.isFork() ? "+" : "-";
+  private void appendIsForkOrOrganisationsCount(StringBuilder response, Calculation calculation) {
+    String forkChar = calculation.isFork() ? "+" : String.valueOf(calculation.organisationsCountInHistory());
     response.append(forkChar).append("  ");
   }
 
@@ -111,7 +111,7 @@ public class MainController extends Controller {
     for (Calculation calculation : calculations) {
 
       StringBuilder responseLine = new StringBuilder();
-      appendIsFork(responseLine, calculation);
+      appendIsForkOrOrganisationsCount(responseLine, calculation);
       appendType(responseLine, calculation);
       appendSport(responseLine, calculation);
       appendDate(responseLine, calculation);

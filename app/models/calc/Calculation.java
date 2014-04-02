@@ -28,9 +28,12 @@ public class Calculation {
   private double       lowProfit;
   private       double       lowProfitMoney1;
   private       double       lowProfitMoney2;
+  private int          organisationsCountInHistory;
 
   public Calculation(Event event) {
     this.event = event;
+
+    organisationsCountInHistory = 0;
 
     isFork = false;
 
@@ -53,6 +56,8 @@ public class Calculation {
     if (event.history().isEmpty()) return;
 
     Map<Organisation, HistoryRecord> organisation2lastRecord = buildOrganisation2lastRecord();
+    organisationsCountInHistory = organisation2lastRecord.keySet().size();
+
     calculateForkKofsAndOrganisations(organisation2lastRecord);
     calculateIsFork();
     calculateProfitMoneys();
@@ -101,6 +106,8 @@ public class Calculation {
   public double lowProfitMoney1() { return lowProfitMoney1; }
 
   public double lowProfitMoney2() { return lowProfitMoney2; }
+
+  public int organisationsCountInHistory() { return organisationsCountInHistory; }
 
   public String side1() { return event.side1(); }
 
