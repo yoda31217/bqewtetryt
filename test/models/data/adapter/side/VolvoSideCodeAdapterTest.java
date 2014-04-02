@@ -56,7 +56,7 @@ public class VolvoSideCodeAdapterTest extends BaseSideCoderTest {
   public void adapt_tennisWithOnlyDigits_throwsArgEx() {
     try {
       codeAdapter.adapt("123", TENNIS);
-      fail();
+      fail("Should not reach here.");
 
     } catch (Exception ex) {
       assertThat(ex).isInstanceOf(IllegalArgumentException.class).hasMessage("Failed to get last word from side: [123]");

@@ -44,4 +44,10 @@ public abstract class BaseSideCoderTest {
     String code = codeAdapter.adapt(" not trimmed ", UNKNOWN);
     assertThat(code).isEqualTo("not trimmed");
   }
+
+  @Test
+  public void adapt_anySport_transliterate() {
+    String code = codeAdapter.adapt("абвгдеёжзиклмнопрстуфхцчшщьыъэюя", UNKNOWN);
+    assertThat(code).isEqualTo("abvgdeegziklmnoprstufhcchshschyeyuya");
+  }
 }

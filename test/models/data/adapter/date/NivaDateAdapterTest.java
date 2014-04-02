@@ -16,11 +16,12 @@ public class NivaDateAdapterTest {
 
   @Test
   public void adapt_dateInSecs_returnDate() {
-    long dateInMillis = new Date().getTime();
-    long dateInSecs = dateInMillis / 1000L;
+    Date dateNow = new Date();
+    long inputDateInSecs = dateNow.getTime() / 1000L;
 
-    Date actualDate = adapter.adapt(String.valueOf(dateInSecs));
+    Date actualDate = adapter.adapt(String.valueOf(inputDateInSecs));
 
-    assertThat(actualDate).isEqualTo(new Date(dateInSecs * 1000L));
+    Date expectedDate = new Date(dateNow.getYear(), dateNow.getMonth(), dateNow.getDate());
+    assertThat(actualDate).isEqualTo(expectedDate);
   }
 }

@@ -8,6 +8,7 @@ public class NivaDateAdapter implements DateAdapter {
 
   @Override
   public Date adapt(String dateText) {
-    return new Date(parseLong(dateText) * 1000L);
+    Date parsedDate = new Date(parseLong(dateText) * 1000L);
+    return new Date(parsedDate.getYear(), parsedDate.getMonth(), parsedDate.getDate());
   }
 }
