@@ -15,13 +15,15 @@ import java.util.List;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.transform;
 
-public class RegularKamazTennisParser implements BParser {
+public class RegularKamazParser implements BParser {
 
   public static final Joiner TOURNAMENT_IDS_URL_PART_JOINER = Joiner.on(",").skipNulls();
   private final ChromeDriver webDriver;
   private final String       baseUrl;
+  private String sportStyleName;
 
-  public RegularKamazTennisParser(String url, ChromeDriver webDriver) {
+  public RegularKamazParser(String url, ChromeDriver webDriver, String sportStyleName) {
+    this.sportStyleName = sportStyleName;
     this.webDriver = webDriver;
     baseUrl = url;
 
@@ -78,7 +80,8 @@ public class RegularKamazTennisParser implements BParser {
   private void refreshPage(Document doc) {
     String url = baseUrl;
 
-    Elements tournamentEls = doc.select("#sideLeft > div.menu_sport > div.ms_body > ul.sportslist > li.sprt:has(a.sport2) > ul > li.cntr > ul > li.trnm");
+    Elements tournamentEls = doc.select(
+      "#sideLeft > div.menu_sport > div.ms_body > ul.sportslist > li.sprt:has(a." + sportStyleName + ") > ul > li.cntr > ul > li.trnm");
 
     if (!tournamentEls.isEmpty()) {
       List<String> tournamentIds = transformTournamentElsToIds(tournamentEls);

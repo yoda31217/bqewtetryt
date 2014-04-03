@@ -27,12 +27,14 @@ import static play.libs.Akka.system;
 
 public class BGlobalSettings extends GlobalSettings {
 
-  @Inject RemoveOldEventJob     removeOldEventJob;
-  @Inject RemoveOldHistoryJob   removeOldHistoryJob;
-  @Inject RegularNivaTennisJob  regularNivaTennisJob;
-  @Inject RegularKamazTennisJob regularKamazTennisJob;
-  @Inject NotificationJob       notificationJob;
-  @Inject Scheduler             scheduler;
+  @Inject RemoveOldEventJob         removeOldEventJob;
+  @Inject RemoveOldHistoryJob       removeOldHistoryJob;
+  @Inject RegularNivaTennisJob      regularNivaTennisJob;
+  @Inject RegularNivaVolleyballJob  regularNivaVolleyballJob;
+  @Inject RegularKamazTennisJob     regularKamazTennisJob;
+  @Inject RegularKamazVolleyballJob regularKamazVolleyballJob;
+  @Inject NotificationJob           notificationJob;
+  @Inject Scheduler                 scheduler;
   Injector injector;
   List<Cancellable> jobSchedules      = new LinkedList<Cancellable>();
   List<WebDriver>   createdWebDrivers = new CopyOnWriteArrayList<WebDriver>();
@@ -56,9 +58,13 @@ public class BGlobalSettings extends GlobalSettings {
     scheduleJob(app, "betty.job.notification.offset", "betty.job.notification.delay", notificationJob, "contexts.notification");
 
     scheduleJob(app, "betty.job.regular_niva_tennis.offset", "betty.job.regular_niva_tennis.delay", regularNivaTennisJob, "contexts.fetch-regular-niva-tennis");
+    scheduleJob(app, "betty.job.regular_niva_volleyball.offset", "betty.job.regular_niva_volleyball.delay", regularNivaVolleyballJob,
+                "contexts.fetch-regular-niva-volleyball");
 
     scheduleJob(app, "betty.job.regular_kamaz_tennis.offset", "betty.job.regular_kamaz_tennis.delay", regularKamazTennisJob,
                 "contexts.fetch-regular-kamaz-tennis");
+    scheduleJob(app, "betty.job.regular_kamaz_volleyball.offset", "betty.job.regular_kamaz_volleyball.delay", regularKamazVolleyballJob,
+                "contexts.fetch-regular-kamaz-volleyball");
   }
 
   @Override

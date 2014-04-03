@@ -17,20 +17,20 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import static models.event.EventType.REGULAR;
 import static models.event.Organisation.KAMAZ;
-import static models.event.Sport.TENNIS;
+import static models.event.Sport.VOLLEYBALL;
 
-public class RegularKamazTennisJob implements Runnable {
+public class RegularKamazVolleyballJob implements Runnable {
 
   private final Runnable delegate;
 
-  public RegularKamazTennisJob(String url, EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
-    BParser parser = new RegularKamazParser(url, webDriver, "sport2");
+  public RegularKamazVolleyballJob(String url, EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
+    BParser parser = new RegularKamazParser(url, webDriver, "sport51");
     parser = new RetryExceptionParser(parser, 3);
 
     SideCodeAdapter sideCodeAdapter = new KamazSideCodeAdapter();
     DateAdapter dateAdapter = new KamazDateAdapter();
     KofAdapter kofAdapter = new DecimalKofAdapter();
-    BAdapter adapter = new BAdapter(sideCodeAdapter, dateAdapter, kofAdapter, REGULAR, KAMAZ, TENNIS);
+    BAdapter adapter = new BAdapter(sideCodeAdapter, dateAdapter, kofAdapter, REGULAR, KAMAZ, VOLLEYBALL);
 
     delegate = new EventJob(eventStore, parser, adapter, eventFilter);
   }

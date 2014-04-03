@@ -8,14 +8,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static models.event.Sport.TENNIS;
 import static models.event.Sport.sportFromEngName;
 
-public class RegularNivaTennisParser implements BParser {
+public class RegularNivaParser implements BParser {
 
+  private final String url;
   private final ChromeDriver webDriver;
+  private final Sport  sport;
 
-  public RegularNivaTennisParser(String url, ChromeDriver webDriver) {
+  public RegularNivaParser(String url, ChromeDriver webDriver, Sport sport) {
+    this.sport = sport;
+    this.url = url;
     this.webDriver = webDriver;
 
     this.webDriver.get(url);
@@ -58,7 +61,7 @@ public class RegularNivaTennisParser implements BParser {
     List<Map> eventObjects = (List<Map>) webDriver.executeScript("return window.bootstrapData.events;");
 
     for (Map eventObject : eventObjects) {
-      if (TENNIS != parseSport(eventObject)) continue;
+      if (sport != parseSport(eventObject)) continue;
 
       ParsedEvent parsedEvent = parseEvent(eventObject);
       if (null == parsedEvent) continue;
@@ -98,7 +101,7 @@ public class RegularNivaTennisParser implements BParser {
   }
 
   private void refreshPage() {
-    webDriver.navigate().refresh();
+    webDriver.get(url);
 
     try {
       Thread.sleep(3000L);
