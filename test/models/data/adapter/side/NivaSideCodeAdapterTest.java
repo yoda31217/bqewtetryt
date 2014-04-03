@@ -34,4 +34,22 @@ public class NivaSideCodeAdapterTest extends BaseSideCoderTest {
     String code = codeAdapter.adapt("ee bcd|aaa fgh", TENNIS);
     assertThat(code).isEqualTo("aaa,ee");
   }
+
+  @Test
+  public void adapt_wordWithCTennis_returnWordWithS() {
+    String code = codeAdapter.adapt("playerc", TENNIS);
+    assertThat(code).isEqualTo("players");
+  }
+
+  @Test
+  public void adapt_wordWithSchTennis_returnWordWithS() {
+    String code = codeAdapter.adapt("playersch", TENNIS);
+    assertThat(code).isEqualTo("players");
+  }
+
+  @Test
+  public void adapt_wordWithShTennis_returnWordWithS() {
+    String code = codeAdapter.adapt("playersh", TENNIS);
+    assertThat(code).isEqualTo("players");
+  }
 }

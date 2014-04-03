@@ -43,6 +43,10 @@ public abstract class BaseSideCodeAdapter implements SideCodeAdapter {
 
   protected String removeWomen(String side) { return side.replaceAll("\\swomen", " "); }
 
+  protected String simplifyEng(String side) {
+    return side.replace("sch", "s").replace("sh", "s").replace('c', 's');
+  }
+
   protected String stripAccents(String side) {return StringUtils.stripAccents(side);}
 
   protected String stripHyphens(String side) { return side.replace('-', ' '); }

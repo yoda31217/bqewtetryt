@@ -19,6 +19,8 @@ public class KamazSideCodeAdapter extends BaseSideCodeAdapter {
 
   @Override
   protected String buildTennisCode(String side) {
+    side = simplifyEng(side);
+
     if (!side.contains(COOP_SEPARATOR)) return getLastWord(side);
 
     ArrayList<String> players = newArrayList(COOP_SPLITTER.split(side));
