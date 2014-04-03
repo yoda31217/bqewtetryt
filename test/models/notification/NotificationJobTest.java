@@ -6,6 +6,7 @@ import models.event.HistoryRecord;
 import org.junit.Test;
 import twitter4j.TwitterException;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static com.google.common.collect.Sets.newHashSet;
@@ -36,7 +37,8 @@ public class NotificationJobTest {
     job.run();
     job.run();
 
-    verify(notifierMock).notify(eq("L BB SIDE1 - SIDE2 1.500,L,1/3.200,V,0 0.667+0.333=0.067 0.688+0.312=0.031"));
+    String expectedMessageDatePrefix = new SimpleDateFormat("dd-MM").format(new Date());
+    verify(notifierMock).notify(eq(expectedMessageDatePrefix + " L BB SIDE1 - SIDE2 1.500,L,1/3.200,V,0 0.667+0.333=0.067 0.688+0.312=0.031"));
   }
 
   @Test
@@ -48,7 +50,8 @@ public class NotificationJobTest {
 
     job.run();
 
-    verify(notifierMock).notify(eq("L BB SIDE1 - SIDE2 1.500,L,1/3.200,V,0 0.667+0.333=0.067 0.688+0.312=0.031"));
+    String expectedMessageDatePrefix = new SimpleDateFormat("dd-MM").format(new Date());
+    verify(notifierMock).notify(eq(expectedMessageDatePrefix + " L BB SIDE1 - SIDE2 1.500,L,1/3.200,V,0 0.667+0.333=0.067 0.688+0.312=0.031"));
   }
 
   @Test

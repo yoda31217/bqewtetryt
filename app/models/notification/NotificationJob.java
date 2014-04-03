@@ -6,6 +6,7 @@ import models.event.EventStore;
 import play.Logger;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.filter;
@@ -19,6 +20,7 @@ public class NotificationJob implements Runnable {
 
   Logger.ALogger log = of(NotificationJob.class);
   private static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("0.000");
+  public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM");
   private final EventStore eventStore;
   private final Set<Calculation> lastForkCalculations = newCopyOnWriteArraySet();
   private final TwitterNotifier notifier;
@@ -63,6 +65,8 @@ public class NotificationJob implements Runnable {
   private String createMessage(Calculation calculation) {
     @SuppressWarnings("StringBufferReplaceableByString") StringBuilder messageBuilder = new StringBuilder();
 
+    messageBuilder.append(DATE_FORMAT.format(calculation.date()));
+    messageBuilder.append(" ");
     messageBuilder.append(calculation.type().label);
     messageBuilder.append(" ");
     messageBuilder.append(calculation.sport().label);
