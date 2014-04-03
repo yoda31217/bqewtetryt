@@ -13,14 +13,14 @@ public class KamazSideCodeAdapterTest extends BaseSideCoderTest {
 
   @Test
   public void adapt_2playersTennis_returnFirstWordsCommaSeparated() {
-    String code = codeAdapter.adapt("a. bbb / e. fff", TENNIS);
-    assertThat(code).isEqualTo("bbb,fff");
+    String code = codeAdapter.adapt("a. de / f. kl", TENNIS);
+    assertThat(code).isEqualTo("de,kl");
   }
 
   @Test
   public void adapt_2playersTennis_returnFirstWordsOrdered() {
-    String code = codeAdapter.adapt("a. fff / e. bb", TENNIS);
-    assertThat(code).isEqualTo("bb,fff");
+    String code = codeAdapter.adapt("a. kl / f. de", TENNIS);
+    assertThat(code).isEqualTo("de,kl");
   }
 
   @Test
@@ -45,6 +45,12 @@ public class KamazSideCodeAdapterTest extends BaseSideCoderTest {
   public void adapt_wordWithCTennis_returnWordWithS() {
     String code = codeAdapter.adapt("playerc", TENNIS);
     assertThat(code).isEqualTo("players");
+  }
+
+  @Test
+  public void adapt_wordWithLlTennis_returnWordWithL() {
+    String code = codeAdapter.adapt("playerll", TENNIS);
+    assertThat(code).isEqualTo("playerl");
   }
 
   @Test

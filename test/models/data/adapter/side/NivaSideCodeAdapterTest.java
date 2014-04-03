@@ -12,6 +12,18 @@ public class NivaSideCodeAdapterTest extends BaseSideCoderTest {
   public void before() { codeAdapter = new NivaSideCodeAdapter(); }
 
   @Test
+  public void adapt_2playersTennis_returnFirstWordsCommaSeparated() {
+    String code = codeAdapter.adapt("ab de|fg kl", TENNIS);
+    assertThat(code).isEqualTo("ab,fg");
+  }
+
+  @Test
+  public void adapt_2playersTennis_returnFirstWordsOrdered() {
+    String code = codeAdapter.adapt("fg de|ab kl", TENNIS);
+    assertThat(code).isEqualTo("ab,fg");
+  }
+
+  @Test
   public void adapt_apostropheAtTheEndTennis_returnWithoutApostrophe() {
     String code = codeAdapter.adapt("word'", TENNIS);
     assertThat(code).isEqualTo("word");
@@ -24,21 +36,15 @@ public class NivaSideCodeAdapterTest extends BaseSideCoderTest {
   }
 
   @Test
-  public void adapt_2playersTennis_returnFirstWordsCommaSeparated() {
-    String code = codeAdapter.adapt("aaa bcd|eee fgh", TENNIS);
-    assertThat(code).isEqualTo("aaa,eee");
-  }
-
-  @Test
-  public void adapt_2playersTennis_returnFirstWordsOrdered() {
-    String code = codeAdapter.adapt("ee bcd|aaa fgh", TENNIS);
-    assertThat(code).isEqualTo("aaa,ee");
-  }
-
-  @Test
   public void adapt_wordWithCTennis_returnWordWithS() {
     String code = codeAdapter.adapt("playerc", TENNIS);
     assertThat(code).isEqualTo("players");
+  }
+
+  @Test
+  public void adapt_wordWithLlTennis_returnWordWithL() {
+    String code = codeAdapter.adapt("playerll", TENNIS);
+    assertThat(code).isEqualTo("playerl");
   }
 
   @Test
@@ -51,5 +57,11 @@ public class NivaSideCodeAdapterTest extends BaseSideCoderTest {
   public void adapt_wordWithShTennis_returnWordWithS() {
     String code = codeAdapter.adapt("playersh", TENNIS);
     assertThat(code).isEqualTo("players");
+  }
+
+  @Test
+  public void adapt_comaSeparatedWordsTennis_reorderAndReturn() {
+    String code = codeAdapter.adapt("ab, de", TENNIS);
+    assertThat(code).isEqualTo("ab");
   }
 }

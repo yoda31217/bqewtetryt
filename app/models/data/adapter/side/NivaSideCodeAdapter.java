@@ -21,7 +21,15 @@ public class NivaSideCodeAdapter extends BaseSideCodeAdapter {
   protected String buildTennisCode(String side) {
     side = simplifyEng(side);
 
-    if (!side.contains(COOP_SEPARATOR)) return getLastWord(side);
+    if (!side.contains(COOP_SEPARATOR)) {
+
+      if (side.contains(",")) {
+        String[] sideParts = side.split(",");
+        side = sideParts[1] + " " + sideParts[0];
+      }
+
+      return getLastWord(side);
+    }
 
     ArrayList<String> players = newArrayList(COOP_SPLITTER.split(side));
     String playerCode1 = getFirstWord(players.get(0));
