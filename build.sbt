@@ -1,7 +1,7 @@
 
 name := """betty"""
 
-version := "3.2.0-snapshot"
+version := "3.3.0-snapshot"
 
 libraryDependencies ++= Seq(
   "com.google.inject" % "guice" % "3.0",
