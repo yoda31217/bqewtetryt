@@ -31,13 +31,16 @@ public class RegularKamazTennisParser implements BParser {
 
   @Override
   public List<ParsedEvent> parse() {
-    String html = webDriver.findElementByTagName("html").getAttribute("outerHTML");
-    Document doc = Jsoup.parse(html);
-
-    List<ParsedEvent> events = parseEvents(doc);
+    Document doc = parseDocument();
     refreshPage(doc);
 
-    return events;
+    doc = parseDocument();
+    return parseEvents(doc);
+  }
+
+  private Document parseDocument() {
+    String html = webDriver.findElementByTagName("html").getAttribute("outerHTML");
+    return Jsoup.parse(html);
   }
 
   private ParsedEvent parseEvent(Element eventEl) {
@@ -73,15 +76,24 @@ public class RegularKamazTennisParser implements BParser {
   }
 
   private void refreshPage(Document doc) {
+    String url = baseUrl;
+
     Elements tournamentEls = doc.select("#sideLeft > div.menu_sport > div.ms_body > ul.sportslist > li.sprt:has(a.sport2) > ul > li.cntr > ul > li.trnm");
 
-    if (tournamentEls.isEmpty()) {
-      webDriver.get(baseUrl);
-      return;
+    if (!tournamentEls.isEmpty()) {
+      List<String> tournamentIds = transformTournamentElsToIds(tournamentEls);
+      url += "#tour=" + TOURNAMENT_IDS_URL_PART_JOINER.join(tournamentIds);
+
     }
 
-    List<String> tournamentIds = transformTournamentElsToIds(tournamentEls);
-    webDriver.get(baseUrl + "#tour=" + TOURNAMENT_IDS_URL_PART_JOINER.join(tournamentIds));
+    webDriver.get(url);
+
+    try {
+      Thread.sleep(3000L);
+
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   private String selectElText(Element el, String cssSelector) {

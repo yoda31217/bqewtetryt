@@ -24,22 +24,8 @@ public class RegularNivaTennisParser implements BParser {
 
   @Override
   public List<ParsedEvent> parse() {
-    List<ParsedEvent> events = new LinkedList<ParsedEvent>();
-
-    //noinspection unchecked
-    List<Map> eventObjects = (List<Map>) webDriver.executeScript("return window.bootstrapData.events;");
-
-    for (Map eventObject : eventObjects) {
-      if (TENNIS != parseSport(eventObject)) continue;
-
-      ParsedEvent parsedEvent = parseEvent(eventObject);
-      if (null == parsedEvent) continue;
-
-      events.add(parsedEvent);
-    }
-
-    webDriver.navigate().refresh();
-    return events;
+    refreshPage();
+    return parseEvents();
   }
 
   private ParsedEvent parseEvent(Map eventObject) {
@@ -63,6 +49,24 @@ public class RegularNivaTennisParser implements BParser {
     } catch (Exception ex) {
       throw new IllegalArgumentException("Failed to parse event: " + eventObject + ".", ex);
     }
+  }
+
+  private List<ParsedEvent> parseEvents() {
+    List<ParsedEvent> events = new LinkedList<ParsedEvent>();
+
+    //noinspection unchecked
+    List<Map> eventObjects = (List<Map>) webDriver.executeScript("return window.bootstrapData.events;");
+
+    for (Map eventObject : eventObjects) {
+      if (TENNIS != parseSport(eventObject)) continue;
+
+      ParsedEvent parsedEvent = parseEvent(eventObject);
+      if (null == parsedEvent) continue;
+
+      events.add(parsedEvent);
+    }
+
+    return events;
   }
 
   private String parseKof(List<Map> kofs, String index) {
@@ -91,6 +95,17 @@ public class RegularNivaTennisParser implements BParser {
   private Sport parseSport(Map eventObject) {
     String engSportName = ((Map) eventObject.get("sport")).get("alias").toString();
     return sportFromEngName(engSportName);
+  }
+
+  private void refreshPage() {
+    webDriver.navigate().refresh();
+
+    try {
+      Thread.sleep(3000L);
+
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
   }
 }
 
