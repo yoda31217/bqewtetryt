@@ -9,10 +9,11 @@ import views.html.main;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 
 import static com.google.common.base.Strings.padEnd;
+import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Collections.sort;
 import static models.calc.Calculations.eventsToCalculations;
 import static models.util.Dates.toSecsFromNow;
@@ -28,10 +29,10 @@ public class MainController extends Controller {
   }
 
   public Result getCalculations() {
-    Set<Calculation> calculations = eventsToCalculations(eventStore.events());
+    List<Calculation> calculations = newArrayList(eventsToCalculations(eventStore.events()));
+    sort(calculations, createCalculationComparator());
 
     List<String> responseLines = buildResponseLines(calculations);
-    sort(responseLines);
 
     StringBuilder response = new StringBuilder();
     for (String responseLine : responseLines) {
@@ -105,7 +106,7 @@ public class MainController extends Controller {
     response.append(calculation.type().label).append("  ");
   }
 
-  private List<String> buildResponseLines(Set<Calculation> calculations) {
+  private List<String> buildResponseLines(List<Calculation> calculations) {
     List<String> responseLines = new ArrayList<String>(100);
 
     for (Calculation calculation : calculations) {
@@ -125,5 +126,25 @@ public class MainController extends Controller {
       responseLines.add(responseLine.toString());
     }
     return responseLines;
+  }
+
+  private Comparator<Calculation> createCalculationComparator() {
+    return new Comparator<Calculation>() {
+      @Override
+      public int compare(Calculation calc1, Calculation calc2) {
+        if (calc1.isFork() != calc2.isFork()) return calc1.isFork() ? -1 : +1;
+
+        if (calc1.organisationsCountInHistory() != calc2.organisationsCountInHistory())
+          return calc2.organisationsCountInHistory() - calc1.organisationsCountInHistory();
+
+        if (null != calc1.date() && null != calc2.date()) if (!calc1.date().equals(calc2.date())) return calc1.date().compareTo(calc2.date());
+
+        if (!calc1.type().equals(calc2.type())) return calc1.type().compareTo(calc2.type());
+
+        if (!calc1.sport().equals(calc2.sport())) return calc1.sport().compareTo(calc2.sport());
+
+        return calc1.code().compareTo(calc2.code());
+      }
+    };
   }
 }
