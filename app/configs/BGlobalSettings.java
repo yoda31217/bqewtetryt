@@ -29,7 +29,6 @@ public class BGlobalSettings extends GlobalSettings {
 
   @Inject RemoveOldEventJob     removeOldEventJob;
   @Inject RemoveOldHistoryJob   removeOldHistoryJob;
-  @Inject RegularVolvoTennisJob regularVolvoTennisJob;
   @Inject RegularNivaTennisJob  regularNivaTennisJob;
   @Inject RegularKamazTennisJob regularKamazTennisJob;
   @Inject NotificationJob       notificationJob;
@@ -56,9 +55,6 @@ public class BGlobalSettings extends GlobalSettings {
     scheduleJob(app, "betty.job.remove_old_event.offset", "betty.job.remove_old_event.delay", removeOldEventJob);
     scheduleJob(app, "betty.job.notification.offset", "betty.job.notification.delay", notificationJob, "contexts.notification");
 
-    //    scheduleJob(app, "betty.job.regular_volvo_tennis.offset", "betty.job.regular_volvo_tennis.delay", regularVolvoTennisJob,
-    //                "contexts.fetch-regular-volvo-tennis");
-
     scheduleJob(app, "betty.job.regular_niva_tennis.offset", "betty.job.regular_niva_tennis.delay", regularNivaTennisJob, "contexts.fetch-regular-niva-tennis");
 
     scheduleJob(app, "betty.job.regular_kamaz_tennis.offset", "betty.job.regular_kamaz_tennis.delay", regularKamazTennisJob,
@@ -82,7 +78,7 @@ public class BGlobalSettings extends GlobalSettings {
     FiniteDuration offset = Duration.create(app.configuration().getMilliseconds(offsetConfigKey), MILLISECONDS);
     FiniteDuration delay = Duration.create(app.configuration().getMilliseconds(delayConfigKey), MILLISECONDS);
 
-    Cancellable jobSchedule = system().scheduler().schedule(offset, delay, createLogExRunnable(job), dispatcher);
+    Cancellable jobSchedule = scheduler.schedule(offset, delay, createLogExRunnable(job), dispatcher);
     jobSchedules.add(jobSchedule);
   }
 

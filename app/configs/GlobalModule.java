@@ -77,13 +77,6 @@ class GlobalModule extends AbstractModule {
 
   @Provides
   @Singleton
-  RegularVolvoTennisJob provideRegularVolvoTennisJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
-    String url = configuration.getString("betty.job.regular_volvo_tennis.url");
-    return new RegularVolvoTennisJob(url, eventStore, webDriver, eventFilter);
-  }
-
-  @Provides
-  @Singleton
   RemoveOldEventJob provideRemoveOldEventJob(EventStore eventStore) {
     long maxLastHistoryRecordAgeInMillis = configuration.getMilliseconds("betty.job.remove_old_event.max_last_history_record_age");
     return new RemoveOldEventJob(maxLastHistoryRecordAgeInMillis, eventStore);
