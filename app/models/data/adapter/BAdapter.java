@@ -32,10 +32,8 @@ public class BAdapter {
   }
 
   public AdaptedEvent adapt(ParsedEvent parsedEvent) {
-    List<String> side1 = newArrayList(parsedEvent.side1);
-    //    List<String> side1 = newArrayList(coopSplitter.split(parsedEvent.side1));
-    List<String> side2 = newArrayList(parsedEvent.side2);
-    //    List<String> side2 = newArrayList(coopSplitter.split(parsedEvent.side2));
+    List<String> side1 = newArrayList(coopSplitter.split(parsedEvent.side1));
+    List<String> side2 = newArrayList(coopSplitter.split(parsedEvent.side2));
 
     double lowKof = kofAdapter.adapt(parsedEvent.lowKof);
     double highKof = kofAdapter.adapt(parsedEvent.highKof);

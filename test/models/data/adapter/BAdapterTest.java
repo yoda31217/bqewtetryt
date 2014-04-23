@@ -33,7 +33,14 @@ public class BAdapterTest {
   }
 
   @Test
-  public void adapt_eventWithBackwardKofsOrder_adaptEventWIthKofsFlipping() {
+  public void adapt_eventWith2playersSide1_splitPlayers() {
+    ParsedEvent parsedEvent = new ParsedEvent("SIDE1 PLAYER1 / SIDE1 PLAYER2", "SIDE2", "EVENT_DATE_TEXT", "1.5", "3.0");
+    AdaptedEvent actualAdaptedEvent = adapter.adapt(parsedEvent);
+    assertThat(actualAdaptedEvent.side1).isEqualTo(newArrayList("SIDE1 PLAYER1", "SIDE1 PLAYER2"));
+  }
+
+  @Test
+  public void adapt_eventWithBackwardKofsOrder_adaptFieldsWithKofsFlipping() {
     ParsedEvent parsedEvent = new ParsedEvent("SIDE1", "SIDE2", "EVENT_DATE_TEXT", "3.0", "1.5");
     AdaptedEvent expectedAdaptedEvent = new AdaptedEvent(LIVE, TENNIS, newArrayList("SIDE2"), newArrayList("SIDE1"), 1.5, 3.0, VOLVO, ADAPTED_EVENT_DATE);
 
@@ -43,7 +50,7 @@ public class BAdapterTest {
   }
 
   @Test
-  public void adapt_eventWithNormalKofsOrder_adaptEventNormally() {
+  public void adapt_eventWithNormalKofsOrder_adaptFieldsNormally() {
     ParsedEvent parsedEvent = new ParsedEvent("SIDE1", "SIDE2", "EVENT_DATE_TEXT", "1.5", "3.0");
     AdaptedEvent expectedAdaptedEvent = new AdaptedEvent(LIVE, TENNIS, newArrayList("SIDE1"), newArrayList("SIDE2"), 1.5, 3.0, VOLVO, ADAPTED_EVENT_DATE);
 
