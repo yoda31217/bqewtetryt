@@ -47,7 +47,7 @@ public class MainControllerTest {
     start(fakeApplication);
 
     Date eventDate = new Date();
-    Event event = eventStore.createOrGetEvent(REGULAR, TENNIS, eventDate, "SIDE1", "SIDE2");
+    Event event = eventStore.createOrFindEvent(REGULAR, TENNIS, eventDate, "SIDE1", "SIDE2");
     HistoryRecord record = new HistoryRecord(eventDate, LANOS, 1.1, 2.1);
     event.addHistory(record);
   }

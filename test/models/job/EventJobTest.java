@@ -47,7 +47,7 @@ public class EventJobTest {
     when(parserMock.parse()).thenReturn(newArrayList(parsedEvent));
     when(adapterMock.adapt(parsedEvent)).thenReturn(adaptedEvent);
     when(eventFilterMock.apply(same(adaptedEvent))).thenReturn(true);
-    when(eventStoreMock.createOrGetEvent(same(LIVE), same(TENNIS), eq(eventDate), eq("SIDE1"), eq("SIDE2"))).thenReturn(event);
+    when(eventStoreMock.createOrFindEvent(same(LIVE), same(TENNIS), eq(eventDate), eq("SIDE1"), eq("SIDE2"))).thenReturn(event);
     job.log = logMock;
   }
 

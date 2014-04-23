@@ -3,37 +3,42 @@ package models.event;
 import play.Logger;
 
 import java.util.Date;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-import static com.google.common.collect.Sets.newHashSet;
+import static com.google.common.collect.Lists.newArrayList;
 import static play.Logger.of;
 
 public class EventStore {
 
   Logger.ALogger log = of(EventStore.class);
-  final ConcurrentMap<Event, Event> events = new ConcurrentHashMap<Event, Event>();
+  final List<Event> events = new CopyOnWriteArrayList<Event>();
 
   public EventStore() {
   }
 
-  public Event createOrGetEvent(EventType type, Sport sport, Date date, String side1, String side2) {
-    Event newEvent = new Event(type, sport, date, side1, side2);
-    Event oldEvent = events.putIfAbsent(newEvent, newEvent);
+  public Event createOrFindEvent(EventType type, Sport sport, Date date, String side1, String side2) {
+    Event oldEvent = findEvent(type, sport, date, side1, side2);
 
     if (null != oldEvent) return oldEvent;
 
+    Event newEvent = new Event(type, sport, date, side1, side2);
     log.info("Adding new Event: {}.", newEvent.toString());
+    events.add(newEvent);
     return newEvent;
-
   }
 
-  public Set<Event> events() {
-    return newHashSet(events.keySet());
-  }
+  public List<Event> events() { return newArrayList(events); }
 
   public void remove(Event event) {
     events.remove(event);
+  }
+
+  private Event findEvent(EventType type, Sport sport, Date date, String side1, String side2) {
+    for (Event event : events)
+      if (event.type.equals(type) && event.sport.equals(sport) && event.date.equals(date) && event.side1.equals(side1) && event.side2.equals(side2))
+        return event;
+
+    return null;
   }
 }

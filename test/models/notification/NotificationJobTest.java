@@ -9,7 +9,7 @@ import twitter4j.TwitterException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.google.common.collect.Sets.newHashSet;
+import static com.google.common.collect.Lists.newArrayList;
 import static models.event.EventType.LIVE;
 import static models.event.Organisation.LANOS;
 import static models.event.Organisation.VOLVO;
@@ -32,7 +32,7 @@ public class NotificationJobTest {
     Event event = new Event(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2");
     event.addHistory(new HistoryRecord(create1secOldDate(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
-    when(eventStoreMock.events()).thenReturn(newHashSet(event));
+    when(eventStoreMock.events()).thenReturn(newArrayList(event));
 
     job.run();
     job.run();
@@ -46,7 +46,7 @@ public class NotificationJobTest {
     Event event = new Event(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2");
     event.addHistory(new HistoryRecord(create1secOldDate(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
-    when(eventStoreMock.events()).thenReturn(newHashSet(event));
+    when(eventStoreMock.events()).thenReturn(newArrayList(event));
 
     job.run();
 
@@ -59,7 +59,7 @@ public class NotificationJobTest {
     Event event = new Event(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2");
     event.addHistory(new HistoryRecord(create1secOldDate(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 2.9));
-    when(eventStoreMock.events()).thenReturn(newHashSet(event));
+    when(eventStoreMock.events()).thenReturn(newArrayList(event));
 
     job.run();
 

@@ -31,26 +31,6 @@ public class Event {
     return date;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    Event event = (Event) o;
-
-    if (date != null ? !date.equals(event.date) : event.date != null) return false;
-    if (sport != event.sport) return false;
-    return type == event.type;
-  }
-
-  @Override
-  public int hashCode() {
-    int result = date != null ? date.hashCode() : 0;
-    result = 31 * result + type.hashCode();
-    result = 31 * result + sport.hashCode();
-    return result;
-  }
-
   public List<HistoryRecord> history() {
     return newArrayList(history);
   }
@@ -72,7 +52,7 @@ public class Event {
   @Override
   public String toString() {
     return "Event{" +
-           ", date=" + date +
+           ", date='" + date + '\'' +
            ", history=" + history +
            ", side1='" + side1 + '\'' +
            ", side2='" + side2 + '\'' +

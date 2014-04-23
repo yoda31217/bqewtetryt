@@ -3,10 +3,9 @@ package models.calc;
 import com.google.common.base.Function;
 import models.event.Event;
 
-import java.util.Set;
+import java.util.List;
 
-import static com.google.common.collect.Collections2.transform;
-import static com.google.common.collect.Sets.newHashSet;
+import static com.google.common.collect.Lists.transform;
 
 public final class Calculations {
 
@@ -14,9 +13,7 @@ public final class Calculations {
     throw new UnsupportedOperationException();
   }
 
-  public static Set<Calculation> eventsToCalculations(Set<Event> events) {
-    return newHashSet(transform(events, createEventToCalculationTransformer()));
-  }
+  public static List<Calculation> eventsToCalculations(List<Event> events) { return transform(events, createEventToCalculationTransformer()); }
 
   private static Function<Event, Calculation> createEventToCalculationTransformer() {
     return new Function<Event, Calculation>() {

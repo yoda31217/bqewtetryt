@@ -7,9 +7,11 @@ import play.Logger;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Set;
 
-import static com.google.common.collect.Sets.filter;
+import static com.google.common.collect.Collections2.filter;
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newCopyOnWriteArraySet;
 import static com.google.common.collect.Sets.newHashSet;
 import static models.calc.Calculations.eventsToCalculations;
@@ -18,9 +20,9 @@ import static play.Logger.of;
 
 public class NotificationJob implements Runnable {
 
+  public static final  SimpleDateFormat DATE_FORMAT   = new SimpleDateFormat("dd-MM");
+  private static final DecimalFormat    NUMBER_FORMAT = new DecimalFormat("0.000");
   Logger.ALogger log = of(NotificationJob.class);
-  private static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("0.000");
-  public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM");
   private final EventStore eventStore;
   private final Set<Calculation> lastForkCalculations = newCopyOnWriteArraySet();
   private final TwitterNotifier notifier;
@@ -35,7 +37,7 @@ public class NotificationJob implements Runnable {
     Set<Calculation> oldForkCalculations = newHashSet(lastForkCalculations);
     lastForkCalculations.clear();
 
-    Set<Calculation> currentForkCalculations = createCurrentForkCalculations();
+    List<Calculation> currentForkCalculations = createCurrentForkCalculations();
     lastForkCalculations.addAll(currentForkCalculations);
 
     currentForkCalculations.removeAll(oldForkCalculations);
@@ -48,9 +50,9 @@ public class NotificationJob implements Runnable {
     }
   }
 
-  private Set<Calculation> createCurrentForkCalculations() {
-    Set<Calculation> calculations = eventsToCalculations(eventStore.events());
-    return filter(calculations, createIsForkFilter());
+  private List<Calculation> createCurrentForkCalculations() {
+    List<Calculation> calculations = eventsToCalculations(eventStore.events());
+    return newArrayList(filter(calculations, createIsForkFilter()));
   }
 
   private Predicate<Calculation> createIsForkFilter() {
