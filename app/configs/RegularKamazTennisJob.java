@@ -5,8 +5,6 @@ import models.data.adapter.date.DateAdapter;
 import models.data.adapter.date.KamazDateAdapter;
 import models.data.adapter.kof.DecimalKofAdapter;
 import models.data.adapter.kof.KofAdapter;
-import models.data.adapter.side.KamazSideCodeAdapter;
-import models.data.adapter.side.SideCodeAdapter;
 import models.data.parser.BParser;
 import models.data.parser.RegularKamazParser;
 import models.data.parser.RetryExceptionParser;
@@ -27,10 +25,9 @@ public class RegularKamazTennisJob implements Runnable {
     BParser parser = new RegularKamazParser(url, webDriver, "sport2");
     parser = new RetryExceptionParser(parser, 3);
 
-    SideCodeAdapter sideCodeAdapter = new KamazSideCodeAdapter();
     DateAdapter dateAdapter = new KamazDateAdapter();
     KofAdapter kofAdapter = new DecimalKofAdapter();
-    BAdapter adapter = new BAdapter(sideCodeAdapter, dateAdapter, kofAdapter, REGULAR, KAMAZ, TENNIS);
+    BAdapter adapter = new BAdapter(dateAdapter, kofAdapter, REGULAR, KAMAZ, TENNIS);
 
     delegate = new EventJob(eventStore, parser, adapter, eventFilter);
   }

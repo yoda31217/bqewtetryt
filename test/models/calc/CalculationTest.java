@@ -21,15 +21,7 @@ public class CalculationTest {
   private Event event;
 
   @Before
-  public void before() {
-    event = new Event(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2", "CODE");
-  }
-
-  @Test
-  public void code_anyEvent_codeFromEvent() {
-    Calculation calculation = new Calculation(event);
-    assertThat(calculation.code()).isEqualTo("CODE");
-  }
+  public void before() { event = new Event(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2"); }
 
   @Test
   public void date_anyEvent_dateFromEvent() {
@@ -263,6 +255,22 @@ public class CalculationTest {
   }
 
   @Test
+  public void organisationsCountInHistory_eventWith2organisationsInHistory_return2() {
+    event.addHistory(new HistoryRecord(new Date(), LANOS, 1.5, 2.8));
+    event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
+
+    Calculation calculation = new Calculation(event);
+
+    assertThat(calculation.organisationsCountInHistory()).isEqualTo(2);
+  }
+
+  @Test
+  public void organisationsCountInHistory_eventWithoutHistory_return0() {
+    Calculation calculation = new Calculation(event);
+    assertThat(calculation.organisationsCountInHistory()).isZero();
+  }
+
+  @Test
   public void side1_anyEvent_side1FromEvent() {
     Calculation calculation = new Calculation(event);
     assertThat(calculation.side1()).isEqualTo("SIDE1");
@@ -284,21 +292,5 @@ public class CalculationTest {
   public void type_anyEvent_typeFromEvent() {
     Calculation calculation = new Calculation(event);
     assertThat(calculation.type()).isEqualTo(LIVE);
-  }
-
-  @Test
-  public void organisationsCountInHistory_eventWithoutHistory_return0() {
-    Calculation calculation = new Calculation(event);
-    assertThat(calculation.organisationsCountInHistory()).isZero();
-  }
-
-  @Test
-  public void organisationsCountInHistory_eventWith2organisationsInHistory_return2() {
-    event.addHistory(new HistoryRecord(new Date(), LANOS, 1.5, 2.8));
-    event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
-
-    Calculation calculation = new Calculation(event);
-
-    assertThat(calculation.organisationsCountInHistory()).isEqualTo(2);
   }
 }

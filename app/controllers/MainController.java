@@ -46,11 +46,6 @@ public class MainController extends Controller {
     return ok(main.render());
   }
 
-  private StringBuilder appendCode(StringBuilder response, Calculation calculation) {
-    String code = calculation.code();
-    return response.append(padEnd(code, 50, ' '));
-  }
-
   private StringBuilder appendDate(StringBuilder response, Calculation calculation) {
     String formattedDate = DATE_FORMAT.format(calculation.date());
     return response.append(padEnd(formattedDate, 13, ' '));
@@ -116,7 +111,6 @@ public class MainController extends Controller {
       appendType(responseLine, calculation);
       appendSport(responseLine, calculation);
       appendDate(responseLine, calculation);
-      appendCode(responseLine, calculation);
       appendSides(responseLine, calculation);
       appendForkKofs(responseLine, calculation);
       appendHighProfitInfo(responseLine, calculation);
@@ -143,7 +137,7 @@ public class MainController extends Controller {
 
         if (!calc1.sport().equals(calc2.sport())) return calc1.sport().compareTo(calc2.sport());
 
-        return calc1.code().compareTo(calc2.code());
+        return calc1.side1().compareTo(calc2.side1());
       }
     };
   }

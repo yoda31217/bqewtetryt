@@ -32,8 +32,8 @@ import static org.powermock.api.mockito.PowerMockito.when;
 public class EventJobTest {
 
   private Date                    eventDate       = new Date();
-  private Event                   event           = new Event(LIVE, TENNIS, eventDate, "SIDE1", "SIDE2", "CODE1_CODE2");
-  private AdaptedEvent            adaptedEvent    = new AdaptedEvent(LIVE, TENNIS, "SIDE1", "SIDE2", 1.1, 2.2, VOLVO, eventDate, "CODE1", "CODE2");
+  private Event        event        = new Event(LIVE, TENNIS, eventDate, "SIDE1", "SIDE2");
+  private AdaptedEvent adaptedEvent = new AdaptedEvent(LIVE, TENNIS, "SIDE1", "SIDE2", 1.1, 2.2, VOLVO, eventDate);
   private ParsedEvent             parsedEvent     = new ParsedEvent("SIDE1", "SIDE2", "DATE_STRING", "1.1", "2.2");
   private BParser                 parserMock      = mock(BParser.class);
   private BAdapter                adapterMock     = mock(BAdapter.class);
@@ -47,7 +47,7 @@ public class EventJobTest {
     when(parserMock.parse()).thenReturn(newArrayList(parsedEvent));
     when(adapterMock.adapt(parsedEvent)).thenReturn(adaptedEvent);
     when(eventFilterMock.apply(same(adaptedEvent))).thenReturn(true);
-    when(eventStoreMock.createOrGetEvent(same(LIVE), same(TENNIS), eq(eventDate), eq("SIDE1"), eq("SIDE2"), eq("CODE1_CODE2"))).thenReturn(event);
+    when(eventStoreMock.createOrGetEvent(same(LIVE), same(TENNIS), eq(eventDate), eq("SIDE1"), eq("SIDE2"))).thenReturn(event);
     job.log = logMock;
   }
 

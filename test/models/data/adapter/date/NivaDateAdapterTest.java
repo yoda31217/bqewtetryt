@@ -15,13 +15,13 @@ public class NivaDateAdapterTest {
   public void before() { adapter = new NivaDateAdapter(); }
 
   @Test
-  public void adapt_dateInSecs_returnDate() {
+  public void adapt_dateInSecsStr_returnDate() {
     Date dateNow = new Date();
     long inputDateInSecs = dateNow.getTime() / 1000L;
 
     Date actualDate = adapter.adapt(String.valueOf(inputDateInSecs));
 
-    Date expectedDate = new Date(dateNow.getYear(), dateNow.getMonth(), dateNow.getDate());
+    Date expectedDate = new Date(dateNow.getYear(), dateNow.getMonth(), dateNow.getDate(), dateNow.getHours(), dateNow.getMinutes(), dateNow.getSeconds());
     assertThat(actualDate).isEqualTo(expectedDate);
   }
 }

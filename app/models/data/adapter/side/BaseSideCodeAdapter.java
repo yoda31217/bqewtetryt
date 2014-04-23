@@ -3,45 +3,30 @@ package models.data.adapter.side;
 import models.event.Sport;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.List;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.collect.Lists.newArrayList;
 
 public abstract class BaseSideCodeAdapter implements SideCodeAdapter {
 
-  private static final Pattern LAST_WORD_PATTERN  = Pattern.compile("^(.*[^a-z])?([a-z]+)[^a-z]*$");
-  private static final Pattern FIRST_WORD_PATTERN = Pattern.compile("^[^a-z]*([a-z]+).*$");
-
   @Override
-  public String adapt(String side, Sport sport) {
+  public List<List<String>> adapt(String side, Sport sport) {
     side = normalize(side);
-    side = buildBySport(side, sport);
-    return stripSpaces(side);
+    return buildBySport(side, sport);
   }
 
   public String normalize(String side) {
     side = stripUpperCase(side);
     side = stripAccents(side);
     side = transliterate(side);
-    side = stripHyphens(side);
-    side = stripSpaces(side);
     return side;
   }
 
-  protected abstract String buildBasketballCode(String side);
+  protected abstract List<List<String>> buildBasketballCode(String side);
 
-  protected abstract String buildTennisCode(String side);
+  protected abstract List<List<String>> buildTennisCode(String side);
 
-  protected String getFirstWord(String side) { return getByPattern(side, FIRST_WORD_PATTERN, "last word", 1); }
-
-  protected String getLastWord(String side) { return getByPattern(side, LAST_WORD_PATTERN, "last word", 2); }
-
-  protected String joinPlayerCodes(String playerCode1, String playerCode2) {return playerCode1 + "," + playerCode2;}
-
-  protected String removeDigit2(String side) { return side.replaceAll("\\s2", " "); }
-
-  protected String removeWomen(String side) { return side.replaceAll("\\swomen", " "); }
+  protected abstract List<List<String>> buildVolleyballCode(String side);
 
   protected String simplifyEng(String side) {
     return side.replace("sch", "s").replace("sh", "s").replace('c', 's').replaceAll("([a-z])\\1", "$1");
@@ -49,31 +34,25 @@ public abstract class BaseSideCodeAdapter implements SideCodeAdapter {
 
   protected String stripAccents(String side) {return StringUtils.stripAccents(side);}
 
-  protected String stripHyphens(String side) { return side.replace('-', ' '); }
-
-  protected String stripSpaces(String side) { return side.trim().replaceAll("\\s+", " "); }
-
   protected String stripUpperCase(String side) {return side.toLowerCase();}
 
-  private String buildBySport(String side, Sport sport) {
+  private List<List<String>> buildBySport(String side, Sport sport) {
     switch (sport) {
+
+      case VOLLEYBALL:
+        return buildVolleyballCode(side);
 
       case BASKETBALL:
         return buildBasketballCode(side);
 
       case TENNIS:
-      case TABLE_TENNIS:
         return buildTennisCode(side);
 
       default:
-        return side;
+        List<List<String>> sideCode = newArrayList();
+        sideCode.add(newArrayList(side));
+        return sideCode;
     }
-  }
-
-  private String getByPattern(String side, Pattern pattern, final String patternName, int groupNumber) {
-    Matcher matcher = pattern.matcher(side);
-    checkArgument(matcher.matches(), "Failed to get %s from side: [%s]", patternName, side);
-    return matcher.group(groupNumber);
   }
 
   private String transliterate(String side) {
@@ -106,7 +85,7 @@ public abstract class BaseSideCodeAdapter implements SideCodeAdapter {
           transliteratedSide.append('e');
           break;
         case 'ж':
-          transliteratedSide.append('g');
+          transliteratedSide.append('j');
           break;
         case 'з':
           transliteratedSide.append('z');

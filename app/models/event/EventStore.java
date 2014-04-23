@@ -18,8 +18,8 @@ public class EventStore {
   public EventStore() {
   }
 
-  public Event createOrGetEvent(EventType type, Sport sport, Date date, String side1, String side2, String code) {
-    Event newEvent = new Event(type, sport, date, side1, side2, code);
+  public Event createOrGetEvent(EventType type, Sport sport, Date date, String side1, String side2) {
+    Event newEvent = new Event(type, sport, date, side1, side2);
     Event oldEvent = events.putIfAbsent(newEvent, newEvent);
 
     if (null != oldEvent) return oldEvent;

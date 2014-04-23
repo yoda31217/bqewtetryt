@@ -20,54 +20,54 @@ public class EventStoreTest {
 
   @Test
   public void createAndGetEvent_2sameEventsWithNullDate_create1event() {
-    Event event = eventStore.createOrGetEvent(REGULAR, TENNIS, null, "SIDE1", "SIDE2", "CODE");
-    eventStore.createOrGetEvent(REGULAR, TENNIS, null, "SIDE1", "SIDE2", "CODE");
+    Event event = eventStore.createOrGetEvent(REGULAR, TENNIS, null, "SIDE1", "SIDE2");
+    eventStore.createOrGetEvent(REGULAR, TENNIS, null, "SIDE1", "SIDE2");
     assertThat(eventStore.events()).containsOnly(event);
   }
 
   @Test
   public void createAndGetEvent_2sameEvents_create1event() {
-    Event event = eventStore.createOrGetEvent(REGULAR, TENNIS, NOW_DATE, "SIDE1", "SIDE2", "CODE");
-    eventStore.createOrGetEvent(REGULAR, TENNIS, NOW_DATE, "SIDE1", "SIDE2", "CODE");
+    Event event = eventStore.createOrGetEvent(REGULAR, TENNIS, NOW_DATE, "SIDE1", "SIDE2");
+    eventStore.createOrGetEvent(REGULAR, TENNIS, NOW_DATE, "SIDE1", "SIDE2");
     assertThat(eventStore.events()).containsOnly(event);
   }
 
   @Test
   public void createOrGetEvent_2eventsWithDiffCodes_create2events() {
-    Event firstEvent = eventStore.createOrGetEvent(REGULAR, TENNIS, NOW_DATE, "SIDE1", "SIDE2", "code_2");
-    Event secondEvent = eventStore.createOrGetEvent(REGULAR, TENNIS, NOW_DATE, "SIDE1", "SIDE2", "CODE");
+    Event firstEvent = eventStore.createOrGetEvent(REGULAR, TENNIS, NOW_DATE, "SIDE1", "SIDE2");
+    Event secondEvent = eventStore.createOrGetEvent(REGULAR, TENNIS, NOW_DATE, "SIDE1", "SIDE2");
 
     assertThat(eventStore.events()).contains(secondEvent, firstEvent);
   }
 
   @Test
   public void createOrGetEvent_2eventsWithDiffDates_create2events() {
-    Event firstEvent = eventStore.createOrGetEvent(REGULAR, TENNIS, NOW_DATE, "SIDE1", "SIDE2", "code_2");
-    Event secondEvent = eventStore.createOrGetEvent(REGULAR, TENNIS, ONE_SEC_OLD_DATE, "SIDE1", "SIDE2", "CODE");
+    Event firstEvent = eventStore.createOrGetEvent(REGULAR, TENNIS, NOW_DATE, "SIDE1", "SIDE2");
+    Event secondEvent = eventStore.createOrGetEvent(REGULAR, TENNIS, ONE_SEC_OLD_DATE, "SIDE1", "SIDE2");
 
     assertThat(eventStore.events()).contains(secondEvent, firstEvent);
   }
 
   @Test
   public void createOrGetEvent_2eventsWithDiffSports_create2events() {
-    Event firstEvent = eventStore.createOrGetEvent(REGULAR, TENNIS, NOW_DATE, "SIDE1", "SIDE2", "CODE");
-    Event secondEvent = eventStore.createOrGetEvent(REGULAR, BASKETBALL, NOW_DATE, "SIDE1", "SIDE2", "CODE");
+    Event firstEvent = eventStore.createOrGetEvent(REGULAR, TENNIS, NOW_DATE, "SIDE1", "SIDE2");
+    Event secondEvent = eventStore.createOrGetEvent(REGULAR, BASKETBALL, NOW_DATE, "SIDE1", "SIDE2");
 
     assertThat(eventStore.events()).containsOnly(firstEvent, secondEvent);
   }
 
   @Test
   public void createOrGetEvent_2eventsWithDiffTypes_create2events() {
-    Event firstEvent = eventStore.createOrGetEvent(REGULAR, TENNIS, NOW_DATE, "SIDE1", "SIDE2", "CODE");
-    Event secondEvent = eventStore.createOrGetEvent(LIVE, TENNIS, NOW_DATE, "SIDE1", "SIDE2", "CODE");
+    Event firstEvent = eventStore.createOrGetEvent(REGULAR, TENNIS, NOW_DATE, "SIDE1", "SIDE2");
+    Event secondEvent = eventStore.createOrGetEvent(LIVE, TENNIS, NOW_DATE, "SIDE1", "SIDE2");
     assertThat(eventStore.events()).containsOnly(firstEvent, secondEvent);
   }
 
   @Test
   public void createOrGetEvent_newEvent_createWithSameFields() {
-    Event actualEvent = eventStore.createOrGetEvent(REGULAR, TENNIS, NOW_DATE, "SIDE1", "SIDE2", "CODE");
+    Event actualEvent = eventStore.createOrGetEvent(REGULAR, TENNIS, NOW_DATE, "SIDE1", "SIDE2");
 
-    Event expectedEvent = new Event(REGULAR, TENNIS, NOW_DATE, "SIDE1", "SIDE2", "CODE");
+    Event expectedEvent = new Event(REGULAR, TENNIS, NOW_DATE, "SIDE1", "SIDE2");
     assertThat(actualEvent).is(equalToAsString(expectedEvent));
   }
 
@@ -78,8 +78,9 @@ public class EventStoreTest {
 
   @Test
   public void remove_createdEvent_removeEvent() {
-    Event event = eventStore.createOrGetEvent(REGULAR, TENNIS, NOW_DATE, "SIDE1", "SIDE2", "CODE");
+    Event event = eventStore.createOrGetEvent(REGULAR, TENNIS, NOW_DATE, "SIDE1", "SIDE2");
     eventStore.remove(event);
     assertThat(eventStore.events()).isEmpty();
   }
+
 }

@@ -29,7 +29,7 @@ public class NotificationJobTest {
 
   @Test
   public void run_newForkEventRunTwice_notifyOnlyOnce() throws TwitterException {
-    Event event = new Event(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2", "CODE");
+    Event event = new Event(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2");
     event.addHistory(new HistoryRecord(create1secOldDate(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
     when(eventStoreMock.events()).thenReturn(newHashSet(event));
@@ -43,7 +43,7 @@ public class NotificationJobTest {
 
   @Test
   public void run_newForkEvent_notify() throws TwitterException {
-    Event event = new Event(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2", "CODE");
+    Event event = new Event(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2");
     event.addHistory(new HistoryRecord(create1secOldDate(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
     when(eventStoreMock.events()).thenReturn(newHashSet(event));
@@ -56,7 +56,7 @@ public class NotificationJobTest {
 
   @Test
   public void run_newNotForkEvent_notNotify() throws TwitterException {
-    Event event = new Event(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2", "CODE");
+    Event event = new Event(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2");
     event.addHistory(new HistoryRecord(create1secOldDate(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 2.9));
     when(eventStoreMock.events()).thenReturn(newHashSet(event));

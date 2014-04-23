@@ -15,9 +15,9 @@ public class KamazDateAdapterTest {
   public void before() { adapter = new KamazDateAdapter(); }
 
   @Test
-  public void adapt_kamazDate_returnDateWithoutHours() {
-    Date actualDate = adapter.adapt("02.04 - 04:05");
-    assertThat(actualDate).isEqualTo(new Date(new Date().getYear(), 3, 2));
+  public void adapt_kamazDateStr_returnDate() {
+    Date actualDate = adapter.adapt("02.04 - 14:05");
+    assertThat(actualDate).isEqualTo(new Date(new Date().getYear(), 3, 2, 14, 5, 0));
   }
 
   @Test

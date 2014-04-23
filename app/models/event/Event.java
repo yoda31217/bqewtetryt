@@ -8,29 +8,23 @@ import static com.google.common.collect.Lists.newArrayList;
 
 public class Event {
 
-  final String code;
-  final Date   date;
+  final Date date;
   final CopyOnWriteArrayList<HistoryRecord> history = new CopyOnWriteArrayList<HistoryRecord>();
   final String    side1;
   final String    side2;
   final Sport     sport;
   final EventType type;
 
-  public Event(EventType type, Sport sport, Date date, String side1, String side2, String code) {
+  public Event(EventType type, Sport sport, Date date, String side1, String side2) {
     this.type = type;
     this.sport = sport;
     this.date = date;
     this.side1 = side1;
     this.side2 = side2;
-    this.code = code;
   }
 
   public void addHistory(HistoryRecord record) {
     history.add(record);
-  }
-
-  public String code() {
-    return code;
   }
 
   public Date date() {
@@ -44,7 +38,6 @@ public class Event {
 
     Event event = (Event) o;
 
-    if (!code.equals(event.code)) return false;
     if (date != null ? !date.equals(event.date) : event.date != null) return false;
     if (sport != event.sport) return false;
     return type == event.type;
@@ -53,7 +46,6 @@ public class Event {
   @Override
   public int hashCode() {
     int result = date != null ? date.hashCode() : 0;
-    result = 31 * result + code.hashCode();
     result = 31 * result + type.hashCode();
     result = 31 * result + sport.hashCode();
     return result;
@@ -80,7 +72,6 @@ public class Event {
   @Override
   public String toString() {
     return "Event{" +
-           "code='" + code + '\'' +
            ", date=" + date +
            ", history=" + history +
            ", side1='" + side1 + '\'' +

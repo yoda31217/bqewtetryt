@@ -17,18 +17,18 @@ public class Calculation {
   private final Event        event;
   private       double       highForkKof;
   private       Date         highForkKofDate;
-  private Organisation highForkKofOrganisation;
-  private double       highProfit;
+  private       Organisation highForkKofOrganisation;
+  private       double       highProfit;
   private       double       highProfitMoney1;
   private       double       highProfitMoney2;
-  private boolean      isFork;
-  private double       lowForkKof;
-  private Date         lowForkKofDate;
-  private Organisation lowForkKofOrganisation;
-  private double       lowProfit;
+  private       boolean      isFork;
+  private       double       lowForkKof;
+  private       Date         lowForkKofDate;
+  private       Organisation lowForkKofOrganisation;
+  private       double       lowProfit;
   private       double       lowProfitMoney1;
   private       double       lowProfitMoney2;
-  private int          organisationsCountInHistory;
+  private       int          organisationsCountInHistory;
 
   public Calculation(Event event) {
     this.event = event;
@@ -63,8 +63,6 @@ public class Calculation {
     calculateProfitMoneys();
     calculateProfits();
   }
-
-  public String code() { return event.code(); }
 
   public Date date() { return event.date(); }
 

@@ -5,8 +5,6 @@ import models.data.adapter.date.DateAdapter;
 import models.data.adapter.date.NivaDateAdapter;
 import models.data.adapter.kof.DecimalKofAdapter;
 import models.data.adapter.kof.KofAdapter;
-import models.data.adapter.side.NivaSideCodeAdapter;
-import models.data.adapter.side.SideCodeAdapter;
 import models.data.parser.BParser;
 import models.data.parser.RegularNivaParser;
 import models.data.parser.RetryExceptionParser;
@@ -27,10 +25,9 @@ public class RegularNivaTennisJob implements Runnable {
     BParser parser = new RegularNivaParser(url, webDriver, TENNIS);
     parser = new RetryExceptionParser(parser, 3);
 
-    SideCodeAdapter sideCodeAdapter = new NivaSideCodeAdapter();
     DateAdapter dateAdapter = new NivaDateAdapter();
     KofAdapter kofAdapter = new DecimalKofAdapter();
-    BAdapter adapter = new BAdapter(sideCodeAdapter, dateAdapter, kofAdapter, REGULAR, NIVA, TENNIS);
+    BAdapter adapter = new BAdapter(dateAdapter, kofAdapter, REGULAR, NIVA, TENNIS);
 
     delegate = new EventJob(eventStore, parser, adapter, eventFilter);
   }

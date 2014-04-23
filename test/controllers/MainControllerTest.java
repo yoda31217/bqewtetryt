@@ -31,7 +31,6 @@ import static play.test.Helpers.stop;
 
 public class MainControllerTest {
 
-  private static Date            eventDate;
   private static FakeApplication fakeApplication;
 
   @AfterClass
@@ -47,8 +46,8 @@ public class MainControllerTest {
     fakeApplication = createFakeApplication(mainController);
     start(fakeApplication);
 
-    eventDate = new Date();
-    Event event = eventStore.createOrGetEvent(REGULAR, TENNIS, eventDate, "SIDE1", "SIDE2", "CODE");
+    Date eventDate = new Date();
+    Event event = eventStore.createOrGetEvent(REGULAR, TENNIS, eventDate, "SIDE1", "SIDE2");
     HistoryRecord record = new HistoryRecord(eventDate, LANOS, 1.1, 2.1);
     event.addHistory(record);
   }

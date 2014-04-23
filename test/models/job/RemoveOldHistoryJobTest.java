@@ -16,7 +16,7 @@ public class RemoveOldHistoryJobTest {
 
   private EventStore          eventStore = new EventStore();
   private RemoveOldHistoryJob job        = new RemoveOldHistoryJob(2, eventStore);
-  private Event               event      = eventStore.createOrGetEvent(REGULAR, TENNIS, new Date(), "SIDE1", "SIDE2", "CODE");
+  private Event event = eventStore.createOrGetEvent(REGULAR, TENNIS, new Date(), "SIDE1", "SIDE2");
 
   @Test
   public void run_1record_remains1record() {

@@ -2,7 +2,6 @@ package models.data.adapter;
 
 import models.data.adapter.date.DateAdapter;
 import models.data.adapter.kof.KofAdapter;
-import models.data.adapter.side.SideCodeAdapter;
 import models.data.parser.ParsedEvent;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,22 +14,18 @@ import static models.event.Sport.TENNIS;
 import static models.util.Conditions.equalToAsString;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class BAdapterTest {
 
-  private static final Date            ADAPTED_EVENT_DATE  = new Date();
-  private              DateAdapter     dateAdapterMock     = mock(DateAdapter.class);
-  private              SideCodeAdapter sideCodeAdapterMock = mock(SideCodeAdapter.class);
-  private KofAdapter kofAdapterMock = mock(KofAdapter.class);
-  private BAdapter   adapter        = new BAdapter(sideCodeAdapterMock, dateAdapterMock, kofAdapterMock, LIVE, VOLVO, TENNIS);
+  private static final Date        ADAPTED_EVENT_DATE = new Date();
+  private              DateAdapter dateAdapterMock    = mock(DateAdapter.class);
+  private              KofAdapter  kofAdapterMock     = mock(KofAdapter.class);
+  private              BAdapter    adapter            = new BAdapter(dateAdapterMock, kofAdapterMock, LIVE, VOLVO, TENNIS);
 
   @Before
   public void before() {
-    when(sideCodeAdapterMock.adapt(eq("SIDE1"), same(TENNIS))).thenReturn("SIDE1_CODE");
-    when(sideCodeAdapterMock.adapt(eq("SIDE2"), same(TENNIS))).thenReturn("SIDE2_CODE");
     when(dateAdapterMock.adapt(eq("EVENT_DATE_TEXT"))).thenReturn(ADAPTED_EVENT_DATE);
     when(kofAdapterMock.adapt(eq("1.5"))).thenReturn(1.5);
     when(kofAdapterMock.adapt(eq("3.0"))).thenReturn(3.0);
@@ -39,7 +34,7 @@ public class BAdapterTest {
   @Test
   public void adapt_eventWithBackwardKofsOrder_adaptEventWIthKofsFlipping() {
     ParsedEvent parsedEvent = new ParsedEvent("SIDE1", "SIDE2", "EVENT_DATE_TEXT", "3.0", "1.5");
-    AdaptedEvent expectedAdaptedEvent = new AdaptedEvent(LIVE, TENNIS, "SIDE2", "SIDE1", 1.5, 3.0, VOLVO, ADAPTED_EVENT_DATE, "SIDE2_CODE", "SIDE1_CODE");
+    AdaptedEvent expectedAdaptedEvent = new AdaptedEvent(LIVE, TENNIS, "SIDE2", "SIDE1", 1.5, 3.0, VOLVO, ADAPTED_EVENT_DATE);
 
     AdaptedEvent actualAdaptedEvent = adapter.adapt(parsedEvent);
 
@@ -49,7 +44,7 @@ public class BAdapterTest {
   @Test
   public void adapt_eventWithNormalKofsOrder_adaptEventNormally() {
     ParsedEvent parsedEvent = new ParsedEvent("SIDE1", "SIDE2", "EVENT_DATE_TEXT", "1.5", "3.0");
-    AdaptedEvent expectedAdaptedEvent = new AdaptedEvent(LIVE, TENNIS, "SIDE1", "SIDE2", 1.5, 3.0, VOLVO, ADAPTED_EVENT_DATE, "SIDE1_CODE", "SIDE2_CODE");
+    AdaptedEvent expectedAdaptedEvent = new AdaptedEvent(LIVE, TENNIS, "SIDE1", "SIDE2", 1.5, 3.0, VOLVO, ADAPTED_EVENT_DATE);
 
     AdaptedEvent actualAdaptedEvent = adapter.adapt(parsedEvent);
 

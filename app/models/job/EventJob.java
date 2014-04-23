@@ -49,8 +49,7 @@ public class EventJob implements Runnable {
 
       if (!filter.apply(adaptedEvent)) return;
 
-      Event event = eventStore.createOrGetEvent(adaptedEvent.type, adaptedEvent.sport, adaptedEvent.eventDate, adaptedEvent.side1, adaptedEvent.side2,
-                                                adaptedEvent.code);
+      Event event = eventStore.createOrGetEvent(adaptedEvent.type, adaptedEvent.sport, adaptedEvent.eventDate, adaptedEvent.side1, adaptedEvent.side2);
       event.addHistory(new HistoryRecord(adaptedEvent.adoptedDate, adaptedEvent.organisation, adaptedEvent.lowKof, adaptedEvent.highKof));
 
     } catch (Exception e) {
