@@ -8,6 +8,7 @@ import models.event.Sport;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static models.event.Organisation.UNKNOWN;
@@ -107,9 +108,9 @@ public class Calculation {
 
   public int organisationsCountInHistory() { return organisationsCountInHistory; }
 
-  public String side1() { return event.side1(); }
+  public List<String> side1() { return event.side1(); }
 
-  public String side2() { return event.side2(); }
+  public List<String> side2() { return event.side2(); }
 
   public Sport sport() { return event.sport(); }
 

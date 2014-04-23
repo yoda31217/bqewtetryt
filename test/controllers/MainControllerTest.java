@@ -13,6 +13,7 @@ import views.html.main;
 
 import java.util.Date;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static models.event.EventType.REGULAR;
 import static models.event.Organisation.LANOS;
 import static models.event.Sport.TENNIS;
@@ -47,7 +48,7 @@ public class MainControllerTest {
     start(fakeApplication);
 
     Date eventDate = new Date();
-    Event event = eventStore.createOrFindEvent(REGULAR, TENNIS, eventDate, "SIDE1", "SIDE2");
+    Event event = eventStore.createOrFindEvent(REGULAR, TENNIS, eventDate, newArrayList("SIDE1"), newArrayList("SIDE2"));
     HistoryRecord record = new HistoryRecord(eventDate, LANOS, 1.1, 2.1);
     event.addHistory(record);
   }
@@ -65,7 +66,7 @@ public class MainControllerTest {
   @Test
   public void getCalculations_always_returnFormatedCalculations() {
     Result result = route(fakeRequest(GET, "/get_calculations"));
-    assertThat(contentAsString(result)).contains("SIDE1 - SIDE2");
+    assertThat(contentAsString(result)).contains("[SIDE1] - [SIDE2]");
   }
 
   @Test

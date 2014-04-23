@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.util.Date;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static models.event.EventType.REGULAR;
 import static models.event.Organisation.LANOS;
 import static models.event.Sport.TENNIS;
@@ -20,7 +21,7 @@ public class RemoveOldEventJobTest {
 
   @Test
   public void run_eventWith5secOldHistory_removeEventsOlderThan4Sec() {
-    Event event = eventStore.createOrFindEvent(REGULAR, TENNIS, new Date(), "SIDE1", "SIDE2");
+    Event event = eventStore.createOrFindEvent(REGULAR, TENNIS, new Date(), newArrayList("SIDE1"), newArrayList("SIDE2"));
     event.addHistory(new HistoryRecord(create5secsOldDate(), LANOS, 1.5, 2.9));
 
     long maxSilenceDelayInMillis = 4 * SECS_IN_MILLIS;
@@ -31,7 +32,7 @@ public class RemoveOldEventJobTest {
 
   @Test
   public void run_eventWithNoRecords_removeEvent() {
-    eventStore.createOrFindEvent(REGULAR, TENNIS, new Date(), "SIDE1", "SIDE2");
+    eventStore.createOrFindEvent(REGULAR, TENNIS, new Date(), newArrayList("SIDE1"), newArrayList("SIDE2"));
     new RemoveOldEventJob(0, eventStore).run();
     assertThat(eventStore.events()).isEmpty();
   }

@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.util.Date;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static models.event.EventType.LIVE;
 import static models.event.Organisation.LANOS;
 import static models.event.Organisation.UNKNOWN;
@@ -21,7 +22,7 @@ public class CalculationTest {
   private Event event;
 
   @Before
-  public void before() { event = new Event(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2"); }
+  public void before() { event = new Event(LIVE, BASKETBALL, new Date(), newArrayList("SIDE1"), newArrayList("SIDE2")); }
 
   @Test
   public void date_anyEvent_dateFromEvent() {
@@ -273,13 +274,13 @@ public class CalculationTest {
   @Test
   public void side1_anyEvent_side1FromEvent() {
     Calculation calculation = new Calculation(event);
-    assertThat(calculation.side1()).isEqualTo("SIDE1");
+    assertThat(calculation.side1()).isEqualTo(newArrayList("SIDE1"));
   }
 
   @Test
   public void side2_anyEvent_side2FromEvent() {
     Calculation calculation = new Calculation(event);
-    assertThat(calculation.side2()).isEqualTo("SIDE2");
+    assertThat(calculation.side2()).isEqualTo(newArrayList("SIDE2"));
   }
 
   @Test

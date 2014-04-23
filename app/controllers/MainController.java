@@ -137,7 +137,7 @@ public class MainController extends Controller {
 
         if (!calc1.sport().equals(calc2.sport())) return calc1.sport().compareTo(calc2.sport());
 
-        return calc1.side1().compareTo(calc2.side1());
+        return 0;
       }
     };
   }

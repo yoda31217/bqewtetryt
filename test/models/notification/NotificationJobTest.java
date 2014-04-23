@@ -29,7 +29,7 @@ public class NotificationJobTest {
 
   @Test
   public void run_newForkEventRunTwice_notifyOnlyOnce() throws TwitterException {
-    Event event = new Event(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2");
+    Event event = new Event(LIVE, BASKETBALL, new Date(), newArrayList("SIDE1"), newArrayList("SIDE2"));
     event.addHistory(new HistoryRecord(create1secOldDate(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
     when(eventStoreMock.events()).thenReturn(newArrayList(event));
@@ -38,12 +38,12 @@ public class NotificationJobTest {
     job.run();
 
     String expectedMessageDatePrefix = new SimpleDateFormat("dd-MM").format(new Date());
-    verify(notifierMock).notify(eq(expectedMessageDatePrefix + " L BB SIDE1 - SIDE2 1.500,L,1/3.200,V,0 0.667+0.333=0.067 0.688+0.312=0.031"));
+    verify(notifierMock).notify(eq(expectedMessageDatePrefix + " L BB [SIDE1] - [SIDE2] 1.500,L,1/3.200,V,0 0.667+0.333=0.067 0.688+0.312=0.031"));
   }
 
   @Test
   public void run_newForkEvent_notify() throws TwitterException {
-    Event event = new Event(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2");
+    Event event = new Event(LIVE, BASKETBALL, new Date(), newArrayList("SIDE1"), newArrayList("SIDE2"));
     event.addHistory(new HistoryRecord(create1secOldDate(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
     when(eventStoreMock.events()).thenReturn(newArrayList(event));
@@ -51,12 +51,12 @@ public class NotificationJobTest {
     job.run();
 
     String expectedMessageDatePrefix = new SimpleDateFormat("dd-MM").format(new Date());
-    verify(notifierMock).notify(eq(expectedMessageDatePrefix + " L BB SIDE1 - SIDE2 1.500,L,1/3.200,V,0 0.667+0.333=0.067 0.688+0.312=0.031"));
+    verify(notifierMock).notify(eq(expectedMessageDatePrefix + " L BB [SIDE1] - [SIDE2] 1.500,L,1/3.200,V,0 0.667+0.333=0.067 0.688+0.312=0.031"));
   }
 
   @Test
   public void run_newNotForkEvent_notNotify() throws TwitterException {
-    Event event = new Event(LIVE, BASKETBALL, new Date(), "SIDE1", "SIDE2");
+    Event event = new Event(LIVE, BASKETBALL, new Date(), newArrayList("SIDE1"), newArrayList("SIDE2"));
     event.addHistory(new HistoryRecord(create1secOldDate(), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 2.9));
     when(eventStoreMock.events()).thenReturn(newArrayList(event));

@@ -27,7 +27,7 @@ public class RegularNivaTennisJob implements Runnable {
 
     DateAdapter dateAdapter = new NivaDateAdapter();
     KofAdapter kofAdapter = new DecimalKofAdapter();
-    BAdapter adapter = new BAdapter(dateAdapter, kofAdapter, REGULAR, NIVA, TENNIS);
+    BAdapter adapter = new BAdapter("|", dateAdapter, kofAdapter, REGULAR, NIVA, TENNIS);
 
     delegate = new EventJob(eventStore, parser, adapter, eventFilter);
   }

@@ -10,12 +10,12 @@ public class Event {
 
   final Date date;
   final CopyOnWriteArrayList<HistoryRecord> history = new CopyOnWriteArrayList<HistoryRecord>();
-  final String    side1;
-  final String    side2;
-  final Sport     sport;
-  final EventType type;
+  final List<String> side1;
+  final List<String> side2;
+  final Sport        sport;
+  final EventType    type;
 
-  public Event(EventType type, Sport sport, Date date, String side1, String side2) {
+  public Event(EventType type, Sport sport, Date date, List<String> side1, List<String> side2) {
     this.type = type;
     this.sport = sport;
     this.date = date;
@@ -37,11 +37,11 @@ public class Event {
 
   public void removeHistory(List<HistoryRecord> recordsToRemove) {history.removeAll(recordsToRemove);}
 
-  public String side1() {
+  public List<String> side1() {
     return side1;
   }
 
-  public String side2() {
+  public List<String> side2() {
     return side2;
   }
 

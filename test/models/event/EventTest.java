@@ -12,7 +12,7 @@ import static org.fest.assertions.Assertions.assertThat;
 
 public class EventTest {
 
-  private Event event = new Event(REGULAR, TENNIS, new Date(), "SIDE1", "SIDE2");
+  private Event event = new Event(REGULAR, TENNIS, new Date(), newArrayList("SIDE1"), newArrayList("SIDE2"));
 
   @Test
   public void addHistory_always_addHistoryRecord() {

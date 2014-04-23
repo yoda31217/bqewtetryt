@@ -27,7 +27,7 @@ public class RegularKamazTennisJob implements Runnable {
 
     DateAdapter dateAdapter = new KamazDateAdapter();
     KofAdapter kofAdapter = new DecimalKofAdapter();
-    BAdapter adapter = new BAdapter(dateAdapter, kofAdapter, REGULAR, KAMAZ, TENNIS);
+    BAdapter adapter = new BAdapter(" / ", dateAdapter, kofAdapter, REGULAR, KAMAZ, TENNIS);
 
     delegate = new EventJob(eventStore, parser, adapter, eventFilter);
   }

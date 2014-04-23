@@ -5,6 +5,7 @@ import models.event.Organisation;
 import models.event.Sport;
 
 import java.util.Date;
+import java.util.List;
 
 public class AdaptedEvent {
 
@@ -13,12 +14,13 @@ public class AdaptedEvent {
   public final double       highKof;
   public final double       lowKof;
   public final Organisation organisation;
-  public final String       side1;
-  public final String       side2;
+  public final List<String> side1;
+  public final List<String> side2;
   public final Sport        sport;
   public final EventType    type;
 
-  public AdaptedEvent(EventType type, Sport sport, String side1, String side2, double lowKof, double highKof, Organisation organisation, Date eventDate) {
+  public AdaptedEvent(EventType type, Sport sport, List<String> side1, List<String> side2, double lowKof, double highKof, Organisation organisation,
+                      Date eventDate) {
     this.type = type;
     this.sport = sport;
     this.side1 = side1;

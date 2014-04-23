@@ -17,7 +17,7 @@ public class EventStore {
   public EventStore() {
   }
 
-  public Event createOrFindEvent(EventType type, Sport sport, Date date, String side1, String side2) {
+  public Event createOrFindEvent(EventType type, Sport sport, Date date, List<String> side1, List<String> side2) {
     Event oldEvent = findEvent(type, sport, date, side1, side2);
 
     if (null != oldEvent) return oldEvent;
@@ -34,7 +34,7 @@ public class EventStore {
     events.remove(event);
   }
 
-  private Event findEvent(EventType type, Sport sport, Date date, String side1, String side2) {
+  private Event findEvent(EventType type, Sport sport, Date date, List<String> side1, List<String> side2) {
     for (Event event : events)
       if (event.type.equals(type) && event.sport.equals(sport) && event.date.equals(date) && event.side1.equals(side1) && event.side2.equals(side2))
         return event;

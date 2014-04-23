@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.util.Date;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static models.event.EventType.REGULAR;
 import static models.event.Organisation.LANOS;
 import static models.event.Sport.TENNIS;
@@ -16,7 +17,7 @@ public class RemoveOldHistoryJobTest {
 
   private EventStore          eventStore = new EventStore();
   private RemoveOldHistoryJob job        = new RemoveOldHistoryJob(2, eventStore);
-  private Event event = eventStore.createOrFindEvent(REGULAR, TENNIS, new Date(), "SIDE1", "SIDE2");
+  private Event event = eventStore.createOrFindEvent(REGULAR, TENNIS, new Date(), newArrayList("SIDE1"), newArrayList("SIDE2"));
 
   @Test
   public void run_1record_remains1record() {
