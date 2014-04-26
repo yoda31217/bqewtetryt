@@ -3,6 +3,7 @@ package models.calc;
 import models.event.Event;
 import models.event.HistoryRecord;
 import org.joda.time.DateTime;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,9 +13,9 @@ import static models.event.Organisation.LANOS;
 import static models.event.Organisation.UNKNOWN;
 import static models.event.Organisation.VOLVO;
 import static models.event.Sport.BASKETBALL;
-import static models.util.Conditions.oneSecOldDate;
-import static models.util.Dates.create1secOldDate;
 import static org.fest.assertions.Assertions.assertThat;
+import static org.joda.time.DateTimeUtils.setCurrentMillisFixed;
+import static org.joda.time.DateTimeUtils.setCurrentMillisSystem;
 
 public class CalculationTest {
 
@@ -22,6 +23,11 @@ public class CalculationTest {
 
   @Before
   public void before() { event = new Event(LIVE, BASKETBALL, new DateTime(), newArrayList("SIDE1"), newArrayList("SIDE2")); }
+
+  @After
+  public void after() throws Exception {
+    setCurrentMillisSystem();
+  }
 
   @Test
   public void date_anyEvent_dateFromEvent() {
@@ -31,19 +37,20 @@ public class CalculationTest {
 
   @Test
   public void highForkKofDate_eventWithoutHistory_returnNow() {
+    setCurrentMillisFixed(new DateTime().getMillis());
     Calculation calculation = new Calculation(event);
-    assertThat(calculation.highForkKofDate()).is(oneSecOldDate());
+    assertThat(calculation.highForkKofDate()).isEqualTo(new DateTime());
   }
 
   @Test
   public void highForkKofDate_forkEvent_highForkKofDateVolvo() {
-    DateTime volvoRecordDate = create1secOldDate();
     event.addHistory(new HistoryRecord(new DateTime(), LANOS, 1.5, 2.9));
+    DateTime volvoRecordDate = new DateTime();
     event.addHistory(new HistoryRecord(volvoRecordDate, VOLVO, 1.4, 3.2));
 
     Calculation calculation = new Calculation(event);
 
-    assertThat(calculation.highForkKofDate()).isEqualTo(volvoRecordDate);
+    assertThat(calculation.highForkKofDate()).isSameAs(volvoRecordDate);
   }
 
   @Test
@@ -158,20 +165,21 @@ public class CalculationTest {
   }
 
   @Test
-  public void lowForkKofDate_eventWithoutHistory_returnDefault() {
+  public void lowForkKofDate_eventWithoutHistory_returnNow() {
+    setCurrentMillisFixed(new DateTime().getMillis());
     Calculation calculation = new Calculation(event);
-    assertThat(calculation.lowForkKofDate()).is(oneSecOldDate());
+    assertThat(calculation.lowForkKofDate()).isEqualTo(new DateTime());
   }
 
   @Test
   public void lowForkKofDate_forkEvent_lowForkKofDateLanos() {
-    DateTime lanosRecordDate = create1secOldDate();
+    DateTime lanosRecordDate = new DateTime();
     event.addHistory(new HistoryRecord(lanosRecordDate, LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new DateTime(), VOLVO, 1.4, 3.2));
 
     Calculation calculation = new Calculation(event);
 
-    assertThat(calculation.lowForkKofDate()).isEqualTo(lanosRecordDate);
+    assertThat(calculation.lowForkKofDate()).isSameAs(lanosRecordDate);
   }
 
   @Test

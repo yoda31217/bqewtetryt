@@ -3,11 +3,12 @@ package models.job;
 import models.event.Event;
 import models.event.EventStore;
 import models.event.HistoryRecord;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import play.Logger;
 
 import java.util.List;
 
-import static models.util.Dates.toMillisFromNow;
 import static play.Logger.of;
 
 public class RemoveOldEventJob implements Runnable {
@@ -35,7 +36,7 @@ public class RemoveOldEventJob implements Runnable {
       }
 
       HistoryRecord lastHistoryRecord = history.get(history.size() - 1);
-      boolean isLastHistoryRecordOld = toMillisFromNow(lastHistoryRecord.date()) > maxLastHistoryRecordAgeInMillis;
+      boolean isLastHistoryRecordOld = new Duration(lastHistoryRecord.date(), new DateTime()).getMillis() > maxLastHistoryRecordAgeInMillis;
 
       if (isLastHistoryRecordOld) {
         eventStore.remove(event);

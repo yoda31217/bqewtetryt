@@ -3,6 +3,8 @@ package models.notification;
 import com.google.common.base.Predicate;
 import models.calc.Calculation;
 import models.event.EventStore;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import play.Logger;
@@ -16,7 +18,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newCopyOnWriteArraySet;
 import static com.google.common.collect.Sets.newHashSet;
 import static models.calc.Calculations.eventsToCalculations;
-import static models.util.Dates.toSecsFromNow;
 import static play.Logger.of;
 
 public class NotificationJob implements Runnable {
@@ -84,14 +85,14 @@ public class NotificationJob implements Runnable {
     messageBuilder.append(",");
     messageBuilder.append(calculation.lowForkKofOrganisation().label);
     messageBuilder.append(",");
-    messageBuilder.append(toSecsFromNow(calculation.lowForkKofDate()));
+    messageBuilder.append(new Duration(calculation.lowForkKofDate(), new DateTime()).getStandardSeconds());
     messageBuilder.append("/");
 
     messageBuilder.append(NUMBER_FORMAT.format(calculation.highForkKof()));
     messageBuilder.append(",");
     messageBuilder.append(calculation.highForkKofOrganisation().label);
     messageBuilder.append(",");
-    messageBuilder.append(toSecsFromNow(calculation.highForkKofDate()));
+    messageBuilder.append(new Duration(calculation.highForkKofDate(), new DateTime()).getStandardSeconds());
     messageBuilder.append(" ");
 
     messageBuilder.append(NUMBER_FORMAT.format(calculation.highProfitMoney1()));

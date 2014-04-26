@@ -4,14 +4,13 @@ import models.event.Event;
 import models.event.EventStore;
 import models.event.HistoryRecord;
 import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.junit.Test;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static models.event.EventType.REGULAR;
 import static models.event.Organisation.LANOS;
 import static models.event.Sport.TENNIS;
-import static models.util.Dates.SECS_IN_MILLIS;
-import static models.util.Dates.create5secsOldDate;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class RemoveOldEventJobTest {
@@ -21,10 +20,9 @@ public class RemoveOldEventJobTest {
   @Test
   public void run_eventWith5secOldHistory_removeEventsOlderThan4Sec() {
     Event event = eventStore.createOrFindEvent(REGULAR, TENNIS, new DateTime(), newArrayList("SIDE1"), newArrayList("SIDE2"));
-    event.addHistory(new HistoryRecord(create5secsOldDate(), LANOS, 1.5, 2.9));
+    event.addHistory(new HistoryRecord(new DateTime().minusSeconds(5), LANOS, 1.5, 2.9));
 
-    long maxSilenceDelayInMillis = 4 * SECS_IN_MILLIS;
-    new RemoveOldEventJob(maxSilenceDelayInMillis, eventStore).run();
+    new RemoveOldEventJob(Duration.standardSeconds(4).getMillis(), eventStore).run();
 
     assertThat(eventStore.events()).isEmpty();
   }

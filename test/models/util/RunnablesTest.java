@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static models.util.Runnables.LogExRunnable;
 import static models.util.Runnables.createLogExRunnable;
-import static models.util.Tests.callConstructor;
+import static models.util.Tests.callPrivateConstructor;
 
 public class RunnablesTest {
 
@@ -12,7 +12,7 @@ public class RunnablesTest {
 
   @Test(expected = UnsupportedOperationException.class)
   public void constructor_private_throwUnsupportedEx() throws Exception {
-    callConstructor(Runnables.class);
+    callPrivateConstructor(Runnables.class);
   }
 
   @Test

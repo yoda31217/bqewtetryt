@@ -12,7 +12,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import static models.event.EventType.LIVE;
 import static models.event.Organisation.VOLVO;
 import static models.event.Sport.TENNIS;
-import static models.util.Conditions.equalToAsString;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.joda.time.DateTimeUtils.setCurrentMillisFixed;
 import static org.joda.time.DateTimeUtils.setCurrentMillisSystem;
@@ -53,8 +52,8 @@ public class BAdapterTest {
 
     AdaptedEvent actualAdaptedEvent = adapter.adapt(parsedEvent);
 
-    assertThat(actualAdaptedEvent).is(equalToAsString(new AdaptedEvent(LIVE, TENNIS, newArrayList("SIDE2"), newArrayList("SIDE1"), 1.5, 3.0, VOLVO,
-                                                                       EVENT_DATE)));
+    AdaptedEvent expectedAdaptedEvent = new AdaptedEvent(LIVE, TENNIS, newArrayList("SIDE2"), newArrayList("SIDE1"), 1.5, 3.0, VOLVO, EVENT_DATE);
+    assertThat(actualAdaptedEvent.toString()).isEqualTo(expectedAdaptedEvent.toString());
   }
 
   @Test
@@ -64,7 +63,7 @@ public class BAdapterTest {
 
     AdaptedEvent actualAdaptedEvent = adapter.adapt(parsedEvent);
 
-    assertThat(actualAdaptedEvent).is(equalToAsString(new AdaptedEvent(LIVE, TENNIS, newArrayList("SIDE1"), newArrayList("SIDE2"), 1.5, 3.0, VOLVO,
-                                                                       EVENT_DATE)));
+    AdaptedEvent expectedAdaptedEvent = new AdaptedEvent(LIVE, TENNIS, newArrayList("SIDE1"), newArrayList("SIDE2"), 1.5, 3.0, VOLVO, EVENT_DATE);
+    assertThat(actualAdaptedEvent.toString()).isEqualTo(expectedAdaptedEvent.toString());
   }
 }

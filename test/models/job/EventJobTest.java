@@ -17,7 +17,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import static models.event.EventType.LIVE;
 import static models.event.Organisation.VOLVO;
 import static models.event.Sport.TENNIS;
-import static models.util.Conditions.listEqualToAsString;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.same;
@@ -80,6 +79,6 @@ public class EventJobTest {
   @Test
   public void run_regularEvent_historyAdded() {
     job.run();
-    assertThat(event.history()).is(listEqualToAsString(newArrayList(new HistoryRecord(adaptedEvent.adoptedDate, VOLVO, 1.1, 2.2))));
+    assertThat(event.history().toString()).isEqualTo(newArrayList(new HistoryRecord(adaptedEvent.adoptedDate, VOLVO, 1.1, 2.2)).toString());
   }
 }

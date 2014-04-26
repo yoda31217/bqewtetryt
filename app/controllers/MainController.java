@@ -2,6 +2,8 @@ package controllers;
 
 import models.calc.Calculation;
 import models.event.EventStore;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import play.mvc.Controller;
@@ -17,7 +19,6 @@ import static com.google.common.base.Strings.padEnd;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Collections.sort;
 import static models.calc.Calculations.eventsToCalculations;
-import static models.util.Dates.toSecsFromNow;
 
 public class MainController extends Controller {
 
@@ -57,13 +58,13 @@ public class MainController extends Controller {
     response.append(",");
     response.append(calculation.lowForkKofOrganisation().label);
     response.append(",");
-    response.append(padEnd(toSecsFromNow(calculation.lowForkKofDate()) + "", 5, ' '));
+    response.append(padEnd(new Duration(calculation.lowForkKofDate(), new DateTime()).getStandardSeconds() + "", 5, ' '));
     response.append("/");
     response.append(padEnd(NUMBER_FORMAT.format(calculation.highForkKof()), 7, ' '));
     response.append(",");
     response.append(calculation.highForkKofOrganisation().label);
     response.append(",");
-    response.append(padEnd(toSecsFromNow(calculation.highForkKofDate()) + "", 5, ' '));
+    response.append(padEnd(new Duration(calculation.highForkKofDate(), new DateTime()).getStandardSeconds() + "", 5, ' '));
     response.append("  ");
   }
 

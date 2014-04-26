@@ -9,14 +9,14 @@ import static com.google.common.collect.Lists.newArrayList;
 import static models.event.Sport.BASKETBALL;
 import static models.event.Sport.TENNIS;
 import static models.util.Objects2.enumsFromStrings;
-import static models.util.Tests.callConstructor;
+import static models.util.Tests.callPrivateConstructor;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class Objects2Test {
 
   @Test(expected = UnsupportedOperationException.class)
   public void constructor_private_throwUnsupportedEx() throws Exception {
-    callConstructor(Objects2.class);
+    callPrivateConstructor(Objects2.class);
   }
 
   @Test

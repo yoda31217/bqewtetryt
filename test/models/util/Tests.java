@@ -9,7 +9,7 @@ public class Tests {
     throw new UnsupportedOperationException();
   }
 
-  public static <T> T callConstructor(Class<T> clazz) throws Exception {
+  public static <T> T callPrivateConstructor(Class<T> clazz) throws Exception {
     Constructor<T> constructor = clazz.getDeclaredConstructor();
     constructor.setAccessible(true);
     try {
