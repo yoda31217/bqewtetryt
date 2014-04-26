@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import static models.event.Organisation.UNKNOWN;
+import static org.joda.time.DateTimeZone.UTC;
 
 public class Calculation {
 
@@ -39,11 +40,11 @@ public class Calculation {
     isFork = false;
 
     lowForkKof = 0.0;
-    lowForkKofDate = new DateTime();
+    lowForkKofDate = new DateTime(UTC);
     lowForkKofOrganisation = UNKNOWN;
 
     highForkKof = 0.0;
-    highForkKofDate = new DateTime();
+    highForkKofDate = new DateTime(UTC);
     highForkKofOrganisation = UNKNOWN;
 
     highProfitMoney1 = 0.0;

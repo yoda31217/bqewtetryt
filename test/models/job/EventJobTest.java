@@ -18,6 +18,7 @@ import static models.event.EventType.LIVE;
 import static models.event.Organisation.VOLVO;
 import static models.event.Sport.TENNIS;
 import static org.fest.assertions.Assertions.assertThat;
+import static org.joda.time.DateTimeZone.UTC;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.mock;
@@ -28,7 +29,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 public class EventJobTest {
 
-  private DateTime                eventDate       = new DateTime();
+  private DateTime                eventDate       = new DateTime(UTC);
   private Event                   event           = new Event(LIVE, TENNIS, eventDate, newArrayList("SIDE1"), newArrayList("SIDE2"));
   private AdaptedEvent            adaptedEvent    = new AdaptedEvent(LIVE, TENNIS, newArrayList("SIDE1"), newArrayList("SIDE2"), 1.1, 2.2, VOLVO, eventDate);
   private ParsedEvent             parsedEvent     = new ParsedEvent("SIDE1", "SIDE2", "DATE_STRING", "1.1", "2.2");

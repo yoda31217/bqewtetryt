@@ -1,10 +1,12 @@
 package models.data.adapter.date;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.joda.time.DateTimeZone.UTC;
 
 public class NivaDateAdapterTest {
 
@@ -15,11 +17,8 @@ public class NivaDateAdapterTest {
 
   @Test
   public void adapt_dateInSecsStr_returnDate() {
-    DateTime dateNow = new DateTime().withMillisOfSecond(0);
-    long inputDateInSecs = dateNow.getMillis() / 1000L;
-
-    DateTime actualDate = adapter.adapt(String.valueOf(inputDateInSecs));
-
-    assertThat(actualDate).isEqualTo(dateNow);
+    DateTime now = new DateTime(DateTimeZone.forID("Europe/Kiev")).withMillisOfSecond(0);
+    DateTime actualDate = adapter.adapt(String.valueOf(now.getMillis() / 1000L));
+    assertThat(actualDate).isEqualTo(now.withZone(UTC));
   }
 }

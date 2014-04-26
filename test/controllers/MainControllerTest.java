@@ -17,6 +17,7 @@ import static models.event.EventType.REGULAR;
 import static models.event.Organisation.LANOS;
 import static models.event.Sport.TENNIS;
 import static org.fest.assertions.Assertions.assertThat;
+import static org.joda.time.DateTimeZone.UTC;
 import static play.test.Helpers.GET;
 import static play.test.Helpers.OK;
 import static play.test.Helpers.charset;
@@ -46,9 +47,9 @@ public class MainControllerTest {
     fakeApplication = createFakeApplication(mainController);
     start(fakeApplication);
 
-    DateTime eventDate = new DateTime();
+    DateTime eventDate = new DateTime(2014, 4, 26, 8, 20, UTC);
     Event event = eventStore.createOrFindEvent(REGULAR, TENNIS, eventDate, newArrayList("SIDE1"), newArrayList("SIDE2"));
-    HistoryRecord record = new HistoryRecord(eventDate, LANOS, 1.1, 2.1);
+    HistoryRecord record = new HistoryRecord(new DateTime(UTC), LANOS, 1.1, 2.1);
     event.addHistory(record);
   }
 
@@ -63,7 +64,13 @@ public class MainControllerTest {
   }
 
   @Test
-  public void getCalculations_always_returnFormatedCalculations() {
+  public void getCalculations_always_returnFormatedCalculationsDates() {
+    Result result = route(fakeRequest(GET, "/get_calculations"));
+    assertThat(contentAsString(result)).contains("26-04 11:20");
+  }
+
+  @Test
+  public void getCalculations_always_returnFormatedCalculationsSides() {
     Result result = route(fakeRequest(GET, "/get_calculations"));
     assertThat(contentAsString(result)).contains("[SIDE1] - [SIDE2]");
   }

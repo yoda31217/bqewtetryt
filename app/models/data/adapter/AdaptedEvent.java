@@ -7,6 +7,8 @@ import org.joda.time.DateTime;
 
 import java.util.List;
 
+import static org.joda.time.DateTimeZone.UTC;
+
 public class AdaptedEvent {
 
   public final DateTime     adoptedDate;
@@ -29,7 +31,7 @@ public class AdaptedEvent {
     this.highKof = highKof;
     this.organisation = organisation;
     this.eventDate = eventDate;
-    this.adoptedDate = new DateTime();
+    this.adoptedDate = new DateTime(UTC);
   }
 
   @Override

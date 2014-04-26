@@ -9,16 +9,17 @@ import static models.event.EventType.REGULAR;
 import static models.event.Sport.BASKETBALL;
 import static models.event.Sport.TENNIS;
 import static org.fest.assertions.Assertions.assertThat;
+import static org.joda.time.DateTimeZone.UTC;
 
 public class EventStoreTest {
 
-  public static final DateTime   EVENT_DATE = new DateTime();
+  public static final DateTime   EVENT_DATE = new DateTime(UTC);
   private             EventStore eventStore = new EventStore();
 
   @Test
   public void createOrFindEvent_2eventsWithDiffDates_create2events() {
     Event firstEvent = eventStore.createOrFindEvent(REGULAR, TENNIS, EVENT_DATE, newArrayList("SIDE1"), newArrayList("SIDE2"));
-    Event secondEvent = eventStore.createOrFindEvent(REGULAR, TENNIS, new DateTime(), newArrayList("SIDE1"), newArrayList("SIDE2"));
+    Event secondEvent = eventStore.createOrFindEvent(REGULAR, TENNIS, new DateTime(UTC), newArrayList("SIDE1"), newArrayList("SIDE2"));
 
     assertThat(eventStore.events()).containsExactly(firstEvent, secondEvent);
   }

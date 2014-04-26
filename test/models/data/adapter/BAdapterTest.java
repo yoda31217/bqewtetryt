@@ -15,13 +15,14 @@ import static models.event.Sport.TENNIS;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.joda.time.DateTimeUtils.setCurrentMillisFixed;
 import static org.joda.time.DateTimeUtils.setCurrentMillisSystem;
+import static org.joda.time.DateTimeZone.UTC;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class BAdapterTest {
 
-  private static final DateTime    EVENT_DATE      = new DateTime();
+  private static final DateTime    EVENT_DATE      = new DateTime(UTC);
   private              DateAdapter dateAdapterMock = mock(DateAdapter.class);
   private              KofAdapter  kofAdapterMock  = mock(KofAdapter.class);
   private              BAdapter    adapter         = new BAdapter(" / ", dateAdapterMock, kofAdapterMock, LIVE, VOLVO, TENNIS);
@@ -47,7 +48,7 @@ public class BAdapterTest {
 
   @Test
   public void adapt_eventWithBackwardKofsOrder_adaptFieldsWithKofsFlipping() {
-    setCurrentMillisFixed(new DateTime().getMillis());
+    setCurrentMillisFixed(new DateTime(UTC).getMillis());
     ParsedEvent parsedEvent = new ParsedEvent("SIDE1", "SIDE2", "EVENT_DATE_TEXT", "3.0", "1.5");
 
     AdaptedEvent actualAdaptedEvent = adapter.adapt(parsedEvent);
@@ -58,7 +59,7 @@ public class BAdapterTest {
 
   @Test
   public void adapt_eventWithNormalKofsOrder_adaptFieldsNormally() {
-    setCurrentMillisFixed(new DateTime().getMillis());
+    setCurrentMillisFixed(new DateTime(UTC).getMillis());
     ParsedEvent parsedEvent = new ParsedEvent("SIDE1", "SIDE2", "EVENT_DATE_TEXT", "1.5", "3.0");
 
     AdaptedEvent actualAdaptedEvent = adapter.adapt(parsedEvent);

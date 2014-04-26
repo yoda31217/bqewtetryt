@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import static models.event.Organisation.LANOS;
 import static org.fest.assertions.Assertions.assertThat;
+import static org.joda.time.DateTimeZone.UTC;
 import static org.junit.Assert.fail;
 
 public class HistoryRecordTest {
@@ -12,7 +13,7 @@ public class HistoryRecordTest {
   @Test
   public void new_lowKofGreaterThanHighKof_throwIllegalArgEx() {
     try {
-      new HistoryRecord(new DateTime(), LANOS, 3.2, 1.5);
+      new HistoryRecord(new DateTime(UTC), LANOS, 3.2, 1.5);
       fail();
 
     } catch (Exception ex) {

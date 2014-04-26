@@ -19,10 +19,12 @@ import static com.google.common.base.Strings.padEnd;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Collections.sort;
 import static models.calc.Calculations.eventsToCalculations;
+import static org.joda.time.DateTimeZone.UTC;
+import static org.joda.time.DateTimeZone.forID;
 
 public class MainController extends Controller {
 
-  public static final DateTimeFormatter DATE_FORMAT   = DateTimeFormat.forPattern("dd-MM HH:mm");
+  public static final DateTimeFormatter DATE_FORMAT   = DateTimeFormat.forPattern("dd-MM HH:mm").withZone(forID("Europe/Kiev"));
   public static final DecimalFormat     NUMBER_FORMAT = new DecimalFormat("0.000");
   public final EventStore eventStore;
 
@@ -58,13 +60,13 @@ public class MainController extends Controller {
     response.append(",");
     response.append(calculation.lowForkKofOrganisation().label);
     response.append(",");
-    response.append(padEnd(new Duration(calculation.lowForkKofDate(), new DateTime()).getStandardSeconds() + "", 5, ' '));
+    response.append(padEnd(new Duration(calculation.lowForkKofDate(), new DateTime(UTC)).getStandardSeconds() + "", 5, ' '));
     response.append("/");
     response.append(padEnd(NUMBER_FORMAT.format(calculation.highForkKof()), 7, ' '));
     response.append(",");
     response.append(calculation.highForkKofOrganisation().label);
     response.append(",");
-    response.append(padEnd(new Duration(calculation.highForkKofDate(), new DateTime()).getStandardSeconds() + "", 5, ' '));
+    response.append(padEnd(new Duration(calculation.highForkKofDate(), new DateTime(UTC)).getStandardSeconds() + "", 5, ' '));
     response.append("  ");
   }
 

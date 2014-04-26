@@ -18,11 +18,13 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newCopyOnWriteArraySet;
 import static com.google.common.collect.Sets.newHashSet;
 import static models.calc.Calculations.eventsToCalculations;
+import static org.joda.time.DateTimeZone.UTC;
+import static org.joda.time.DateTimeZone.forID;
 import static play.Logger.of;
 
 public class NotificationJob implements Runnable {
 
-  public static final  DateTimeFormatter DATE_FORMAT   = DateTimeFormat.forPattern("dd-MM");
+  public static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.forPattern("dd-MM HH:mm").withZone(forID("Europe/Kiev"));
   private static final DecimalFormat     NUMBER_FORMAT = new DecimalFormat("0.000");
   Logger.ALogger log = of(NotificationJob.class);
   private final EventStore eventStore;
@@ -85,14 +87,14 @@ public class NotificationJob implements Runnable {
     messageBuilder.append(",");
     messageBuilder.append(calculation.lowForkKofOrganisation().label);
     messageBuilder.append(",");
-    messageBuilder.append(new Duration(calculation.lowForkKofDate(), new DateTime()).getStandardSeconds());
+    messageBuilder.append(new Duration(calculation.lowForkKofDate(), new DateTime(UTC)).getStandardSeconds());
     messageBuilder.append("/");
 
     messageBuilder.append(NUMBER_FORMAT.format(calculation.highForkKof()));
     messageBuilder.append(",");
     messageBuilder.append(calculation.highForkKofOrganisation().label);
     messageBuilder.append(",");
-    messageBuilder.append(new Duration(calculation.highForkKofDate(), new DateTime()).getStandardSeconds());
+    messageBuilder.append(new Duration(calculation.highForkKofDate(), new DateTime(UTC)).getStandardSeconds());
     messageBuilder.append(" ");
 
     messageBuilder.append(NUMBER_FORMAT.format(calculation.highProfitMoney1()));

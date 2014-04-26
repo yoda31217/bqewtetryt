@@ -9,6 +9,7 @@ import play.Logger;
 
 import java.util.List;
 
+import static org.joda.time.DateTimeZone.UTC;
 import static play.Logger.of;
 
 public class RemoveOldEventJob implements Runnable {
@@ -36,7 +37,7 @@ public class RemoveOldEventJob implements Runnable {
       }
 
       HistoryRecord lastHistoryRecord = history.get(history.size() - 1);
-      boolean isLastHistoryRecordOld = new Duration(lastHistoryRecord.date(), new DateTime()).getMillis() > maxLastHistoryRecordAgeInMillis;
+      boolean isLastHistoryRecordOld = new Duration(lastHistoryRecord.date(), new DateTime(UTC)).getMillis() > maxLastHistoryRecordAgeInMillis;
 
       if (isLastHistoryRecordOld) {
         eventStore.remove(event);
