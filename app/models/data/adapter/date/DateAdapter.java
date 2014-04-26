@@ -1,8 +1,8 @@
 package models.data.adapter.date;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 public interface DateAdapter {
 
-  Date adapt(String dateText);
+  DateTime adapt(String dateText);
 }

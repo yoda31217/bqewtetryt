@@ -3,14 +3,14 @@ package models.data.adapter;
 import models.event.EventType;
 import models.event.Organisation;
 import models.event.Sport;
+import org.joda.time.DateTime;
 
-import java.util.Date;
 import java.util.List;
 
 public class AdaptedEvent {
 
-  public final Date         adoptedDate;
-  public final Date         eventDate;
+  public final DateTime     adoptedDate;
+  public final DateTime     eventDate;
   public final double       highKof;
   public final double       lowKof;
   public final Organisation organisation;
@@ -20,7 +20,7 @@ public class AdaptedEvent {
   public final EventType    type;
 
   public AdaptedEvent(EventType type, Sport sport, List<String> side1, List<String> side2, double lowKof, double highKof, Organisation organisation,
-                      Date eventDate) {
+                      DateTime eventDate) {
     this.type = type;
     this.sport = sport;
     this.side1 = side1;
@@ -29,7 +29,7 @@ public class AdaptedEvent {
     this.highKof = highKof;
     this.organisation = organisation;
     this.eventDate = eventDate;
-    this.adoptedDate = new Date();
+    this.adoptedDate = new DateTime();
   }
 
   @Override

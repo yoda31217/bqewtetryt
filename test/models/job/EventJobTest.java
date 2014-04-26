@@ -9,11 +9,9 @@ import models.event.Event;
 import models.event.EventStore;
 import models.event.HistoryRecord;
 import models.util.LoggerMock;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Date;
-import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static models.event.EventType.LIVE;
@@ -31,9 +29,9 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 public class EventJobTest {
 
-  private Date                    eventDate       = new Date();
-  private Event        event        = new Event(LIVE, TENNIS, eventDate, newArrayList("SIDE1"), newArrayList("SIDE2"));
-  private AdaptedEvent adaptedEvent = new AdaptedEvent(LIVE, TENNIS, newArrayList("SIDE1"), newArrayList("SIDE2"), 1.1, 2.2, VOLVO, eventDate);
+  private DateTime                eventDate       = new DateTime();
+  private Event                   event           = new Event(LIVE, TENNIS, eventDate, newArrayList("SIDE1"), newArrayList("SIDE2"));
+  private AdaptedEvent            adaptedEvent    = new AdaptedEvent(LIVE, TENNIS, newArrayList("SIDE1"), newArrayList("SIDE2"), 1.1, 2.2, VOLVO, eventDate);
   private ParsedEvent             parsedEvent     = new ParsedEvent("SIDE1", "SIDE2", "DATE_STRING", "1.1", "2.2");
   private BParser                 parserMock      = mock(BParser.class);
   private BAdapter                adapterMock     = mock(BAdapter.class);
@@ -82,7 +80,6 @@ public class EventJobTest {
   @Test
   public void run_regularEvent_historyAdded() {
     job.run();
-    List<HistoryRecord> expectedHistory = newArrayList(new HistoryRecord(new Date(), VOLVO, 1.1, 2.2));
-    assertThat(event.history()).is(listEqualToAsString(expectedHistory));
+    assertThat(event.history()).is(listEqualToAsString(newArrayList(new HistoryRecord(adaptedEvent.adoptedDate, VOLVO, 1.1, 2.2))));
   }
 }

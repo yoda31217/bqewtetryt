@@ -2,12 +2,13 @@ package controllers;
 
 import models.calc.Calculation;
 import models.event.EventStore;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.main;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -20,8 +21,8 @@ import static models.util.Dates.toSecsFromNow;
 
 public class MainController extends Controller {
 
-  public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM HH:mm");
-  public static final DecimalFormat    NUMBER_FORMAT = new DecimalFormat("0.000");
+  public static final DateTimeFormatter DATE_FORMAT   = DateTimeFormat.forPattern("dd-MM HH:mm");
+  public static final DecimalFormat     NUMBER_FORMAT = new DecimalFormat("0.000");
   public final EventStore eventStore;
 
   public MainController(EventStore eventStore) {
@@ -47,7 +48,7 @@ public class MainController extends Controller {
   }
 
   private StringBuilder appendDate(StringBuilder response, Calculation calculation) {
-    String formattedDate = DATE_FORMAT.format(calculation.date());
+    String formattedDate = DATE_FORMAT.print(calculation.date());
     return response.append(padEnd(formattedDate, 13, ' '));
   }
 

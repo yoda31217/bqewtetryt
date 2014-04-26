@@ -3,10 +3,11 @@ package models.notification;
 import com.google.common.base.Predicate;
 import models.calc.Calculation;
 import models.event.EventStore;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import play.Logger;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Set;
 
@@ -20,8 +21,8 @@ import static play.Logger.of;
 
 public class NotificationJob implements Runnable {
 
-  public static final  SimpleDateFormat DATE_FORMAT   = new SimpleDateFormat("dd-MM");
-  private static final DecimalFormat    NUMBER_FORMAT = new DecimalFormat("0.000");
+  public static final  DateTimeFormatter DATE_FORMAT   = DateTimeFormat.forPattern("dd-MM");
+  private static final DecimalFormat     NUMBER_FORMAT = new DecimalFormat("0.000");
   Logger.ALogger log = of(NotificationJob.class);
   private final EventStore eventStore;
   private final Set<Calculation> lastForkCalculations = newCopyOnWriteArraySet();
@@ -67,7 +68,7 @@ public class NotificationJob implements Runnable {
   private String createMessage(Calculation calculation) {
     @SuppressWarnings("StringBufferReplaceableByString") StringBuilder messageBuilder = new StringBuilder();
 
-    messageBuilder.append(DATE_FORMAT.format(calculation.date()));
+    messageBuilder.append(DATE_FORMAT.print(calculation.date()));
     messageBuilder.append(" ");
     messageBuilder.append(calculation.type().label);
     messageBuilder.append(" ");

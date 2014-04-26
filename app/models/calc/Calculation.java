@@ -5,8 +5,8 @@ import models.event.EventType;
 import models.event.HistoryRecord;
 import models.event.Organisation;
 import models.event.Sport;
+import org.joda.time.DateTime;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,14 +17,14 @@ public class Calculation {
 
   private final Event        event;
   private       double       highForkKof;
-  private       Date         highForkKofDate;
+  private       DateTime     highForkKofDate;
   private       Organisation highForkKofOrganisation;
   private       double       highProfit;
   private       double       highProfitMoney1;
   private       double       highProfitMoney2;
   private       boolean      isFork;
   private       double       lowForkKof;
-  private       Date         lowForkKofDate;
+  private       DateTime     lowForkKofDate;
   private       Organisation lowForkKofOrganisation;
   private       double       lowProfit;
   private       double       lowProfitMoney1;
@@ -39,11 +39,11 @@ public class Calculation {
     isFork = false;
 
     lowForkKof = 0.0;
-    lowForkKofDate = new Date();
+    lowForkKofDate = new DateTime();
     lowForkKofOrganisation = UNKNOWN;
 
     highForkKof = 0.0;
-    highForkKofDate = new Date();
+    highForkKofDate = new DateTime();
     highForkKofOrganisation = UNKNOWN;
 
     highProfitMoney1 = 0.0;
@@ -65,7 +65,7 @@ public class Calculation {
     calculateProfits();
   }
 
-  public Date date() { return event.date(); }
+  public DateTime date() { return event.date(); }
 
   @Override
   public boolean equals(Object o) {
@@ -82,7 +82,7 @@ public class Calculation {
 
   public double highForkKof() { return highForkKof; }
 
-  public Date highForkKofDate() { return highForkKofDate; }
+  public DateTime highForkKofDate() { return highForkKofDate; }
 
   public Organisation highForkKofOrganisation() { return highForkKofOrganisation; }
 
@@ -96,7 +96,7 @@ public class Calculation {
 
   public double lowForkKof() { return lowForkKof; }
 
-  public Date lowForkKofDate() { return lowForkKofDate; }
+  public DateTime lowForkKofDate() { return lowForkKofDate; }
 
   public Organisation lowForkKofOrganisation() { return lowForkKofOrganisation; }
 

@@ -1,9 +1,8 @@
 package models.data.adapter.date;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Date;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -16,8 +15,8 @@ public class KamazDateAdapterTest {
 
   @Test
   public void adapt_kamazDateStr_returnDate() {
-    Date actualDate = adapter.adapt("02.04 - 14:05");
-    assertThat(actualDate).isEqualTo(new Date(new Date().getYear(), 3, 2, 14, 5, 0));
+    DateTime actualDate = adapter.adapt("02.04 - 14:05");
+    assertThat(actualDate).isEqualTo(new DateTime(new DateTime().getYear(), 4, 2, 14, 5, 0));
   }
 
   @Test

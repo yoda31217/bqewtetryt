@@ -1,8 +1,7 @@
 package models.event;
 
+import org.joda.time.DateTime;
 import org.junit.Test;
-
-import java.util.Date;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static models.event.EventType.LIVE;
@@ -15,9 +14,17 @@ import static org.fest.assertions.Assertions.assertThat;
 
 public class EventStoreTest {
 
-  public static final Date       NOW_DATE         = new Date();
-  public static final Date       ONE_SEC_OLD_DATE = create1secOldDate();
+  public static final DateTime   NOW_DATE         = new DateTime();
+  public static final DateTime   ONE_SEC_OLD_DATE = create1secOldDate();
   private             EventStore eventStore       = new EventStore();
+
+  @Test
+  public void createOrFindEvent_2eventsWithDiffDates_create2events() {
+    Event firstEvent = eventStore.createOrFindEvent(REGULAR, TENNIS, NOW_DATE, newArrayList("SIDE1"), newArrayList("SIDE2"));
+    Event secondEvent = eventStore.createOrFindEvent(REGULAR, TENNIS, ONE_SEC_OLD_DATE, newArrayList("SIDE1"), newArrayList("SIDE2"));
+
+    assertThat(eventStore.events()).containsExactly(firstEvent, secondEvent);
+  }
 
   @Test
   public void createOrFindEvent_2eventsWithDiffSide1_create2events() {
@@ -31,14 +38,6 @@ public class EventStoreTest {
   public void createOrFindEvent_2eventsWithDiffSide2_create2events() {
     Event firstEvent = eventStore.createOrFindEvent(REGULAR, TENNIS, NOW_DATE, newArrayList("SIDE1"), newArrayList("SIDE2"));
     Event secondEvent = eventStore.createOrFindEvent(REGULAR, TENNIS, ONE_SEC_OLD_DATE, newArrayList("SIDE1"), newArrayList("SIDE3"));
-
-    assertThat(eventStore.events()).containsExactly(firstEvent, secondEvent);
-  }
-
-  @Test
-  public void createOrFindEvent_2eventsWithDiffDates_create2events() {
-    Event firstEvent = eventStore.createOrFindEvent(REGULAR, TENNIS, NOW_DATE, newArrayList("SIDE1"), newArrayList("SIDE2"));
-    Event secondEvent = eventStore.createOrFindEvent(REGULAR, TENNIS, ONE_SEC_OLD_DATE, newArrayList("SIDE1"), newArrayList("SIDE2"));
 
     assertThat(eventStore.events()).containsExactly(firstEvent, secondEvent);
   }

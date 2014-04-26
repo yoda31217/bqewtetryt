@@ -1,8 +1,7 @@
 package models.util;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -15,9 +14,9 @@ public final class Dates {
     throw new UnsupportedOperationException();
   }
 
-  public static Date create1secOldDate() {return new Date(new Date().getTime() - SECS_IN_MILLIS);}
+  public static DateTime create1secOldDate() {return new DateTime().minusSeconds(1);}
 
-  public static Date create5secsOldDate() {return new Date(new Date().getTime() - 5 * SECS_IN_MILLIS);}
+  public static DateTime create5secsOldDate() {return new DateTime().minusSeconds(5);}
 
   public static int monthIndexFromRusName(String rusMonthName) {
     for (int i = 0; i < RUS_MONTH_NAMES.length; i++)
@@ -26,20 +25,15 @@ public final class Dates {
     throw new IllegalArgumentException("Failed to find index for russian month name: " + rusMonthName);
   }
 
-  public static Date parseDate(String dateText, SimpleDateFormat format) {
-    try {
-      return format.parse(dateText);
-
-    } catch (ParseException ex) {
-      throw new IllegalArgumentException("Failed to parse date string: " + dateText, ex);
-    }
+  public static DateTime parseDate(String dateText, DateTimeFormatter format) {
+    return format.parseDateTime(dateText);
   }
 
-  public static long toMillisFromNow(Date date) {
-    return currentTimeMillis() - date.getTime();
+  public static long toMillisFromNow(DateTime date) {
+    return currentTimeMillis() - date.getMillis();
   }
 
-  public static long toSecsFromNow(Date date) {
+  public static long toSecsFromNow(DateTime date) {
     return toMillisFromNow(date) / 1000L;
   }
 }

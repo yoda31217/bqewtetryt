@@ -3,6 +3,7 @@ package controllers;
 import models.event.Event;
 import models.event.EventStore;
 import models.event.HistoryRecord;
+import org.joda.time.DateTime;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -10,8 +11,6 @@ import play.GlobalSettings;
 import play.mvc.Result;
 import play.test.FakeApplication;
 import views.html.main;
-
-import java.util.Date;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static models.event.EventType.REGULAR;
@@ -47,7 +46,7 @@ public class MainControllerTest {
     fakeApplication = createFakeApplication(mainController);
     start(fakeApplication);
 
-    Date eventDate = new Date();
+    DateTime eventDate = new DateTime();
     Event event = eventStore.createOrFindEvent(REGULAR, TENNIS, eventDate, newArrayList("SIDE1"), newArrayList("SIDE2"));
     HistoryRecord record = new HistoryRecord(eventDate, LANOS, 1.1, 2.1);
     event.addHistory(record);

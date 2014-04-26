@@ -3,9 +3,8 @@ package models.job;
 import models.event.Event;
 import models.event.EventStore;
 import models.event.HistoryRecord;
+import org.joda.time.DateTime;
 import org.junit.Test;
-
-import java.util.Date;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static models.event.EventType.REGULAR;
@@ -17,11 +16,11 @@ public class RemoveOldHistoryJobTest {
 
   private EventStore          eventStore = new EventStore();
   private RemoveOldHistoryJob job        = new RemoveOldHistoryJob(2, eventStore);
-  private Event event = eventStore.createOrFindEvent(REGULAR, TENNIS, new Date(), newArrayList("SIDE1"), newArrayList("SIDE2"));
+  private Event               event      = eventStore.createOrFindEvent(REGULAR, TENNIS, new DateTime(), newArrayList("SIDE1"), newArrayList("SIDE2"));
 
   @Test
   public void run_1record_remains1record() {
-    HistoryRecord record = new HistoryRecord(new Date(), LANOS, 1.5, 2.5);
+    HistoryRecord record = new HistoryRecord(new DateTime(), LANOS, 1.5, 2.5);
     event.addHistory(record);
 
     job.run();
@@ -32,7 +31,7 @@ public class RemoveOldHistoryJobTest {
   @Test
   public void run_20records_remains2records() {
     for (int i = 0; i < 20; i++) {
-      event.addHistory(new HistoryRecord(new Date(), LANOS, 1.5, 2.5));
+      event.addHistory(new HistoryRecord(new DateTime(), LANOS, 1.5, 2.5));
     }
 
     job.run();
@@ -42,8 +41,8 @@ public class RemoveOldHistoryJobTest {
 
   @Test
   public void run_2records_remains2records() {
-    HistoryRecord firstRecord = new HistoryRecord(new Date(), LANOS, 1.5, 2.5);
-    HistoryRecord secondRecord = new HistoryRecord(new Date(), LANOS, 1.5, 2.5);
+    HistoryRecord firstRecord = new HistoryRecord(new DateTime(), LANOS, 1.5, 2.5);
+    HistoryRecord secondRecord = new HistoryRecord(new DateTime(), LANOS, 1.5, 2.5);
     event.addHistory(firstRecord);
     event.addHistory(secondRecord);
 
@@ -54,9 +53,9 @@ public class RemoveOldHistoryJobTest {
 
   @Test
   public void run_3records_remains2lastRecords() {
-    HistoryRecord firstRecord = new HistoryRecord(new Date(), LANOS, 1.5, 2.5);
-    HistoryRecord secondRecord = new HistoryRecord(new Date(), LANOS, 1.5, 2.5);
-    HistoryRecord thirdRecord = new HistoryRecord(new Date(), LANOS, 1.5, 2.5);
+    HistoryRecord firstRecord = new HistoryRecord(new DateTime(), LANOS, 1.5, 2.5);
+    HistoryRecord secondRecord = new HistoryRecord(new DateTime(), LANOS, 1.5, 2.5);
+    HistoryRecord thirdRecord = new HistoryRecord(new DateTime(), LANOS, 1.5, 2.5);
     event.addHistory(firstRecord);
     event.addHistory(secondRecord);
     event.addHistory(thirdRecord);

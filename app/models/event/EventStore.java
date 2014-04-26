@@ -1,8 +1,8 @@
 package models.event;
 
+import org.joda.time.DateTime;
 import play.Logger;
 
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -17,7 +17,7 @@ public class EventStore {
   public EventStore() {
   }
 
-  public Event createOrFindEvent(EventType type, Sport sport, Date date, List<String> side1, List<String> side2) {
+  public Event createOrFindEvent(EventType type, Sport sport, DateTime date, List<String> side1, List<String> side2) {
     Event oldEvent = findEvent(type, sport, date, side1, side2);
 
     if (null != oldEvent) return oldEvent;
@@ -34,7 +34,7 @@ public class EventStore {
     events.remove(event);
   }
 
-  private Event findEvent(EventType type, Sport sport, Date date, List<String> side1, List<String> side2) {
+  private Event findEvent(EventType type, Sport sport, DateTime date, List<String> side1, List<String> side2) {
     for (Event event : events)
       if (event.type.equals(type) && event.sport.equals(sport) && event.date.equals(date) && event.side1.equals(side1) && event.side2.equals(side2))
         return event;

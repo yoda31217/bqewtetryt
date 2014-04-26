@@ -1,6 +1,7 @@
 package models.event;
 
-import java.util.Date;
+import org.joda.time.DateTime;
+
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -8,14 +9,14 @@ import static com.google.common.collect.Lists.newArrayList;
 
 public class Event {
 
-  final Date date;
+  final DateTime date;
   final CopyOnWriteArrayList<HistoryRecord> history = new CopyOnWriteArrayList<HistoryRecord>();
   final List<String> side1;
   final List<String> side2;
   final Sport        sport;
   final EventType    type;
 
-  public Event(EventType type, Sport sport, Date date, List<String> side1, List<String> side2) {
+  public Event(EventType type, Sport sport, DateTime date, List<String> side1, List<String> side2) {
     this.type = type;
     this.sport = sport;
     this.date = date;
@@ -27,9 +28,7 @@ public class Event {
     history.add(record);
   }
 
-  public Date date() {
-    return date;
-  }
+  public DateTime date() { return date; }
 
   public List<HistoryRecord> history() {
     return newArrayList(history);

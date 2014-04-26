@@ -3,11 +3,10 @@ package models.notification;
 import models.event.Event;
 import models.event.EventStore;
 import models.event.HistoryRecord;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.junit.Test;
 import twitter4j.TwitterException;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static models.event.EventType.LIVE;
@@ -29,36 +28,36 @@ public class NotificationJobTest {
 
   @Test
   public void run_newForkEventRunTwice_notifyOnlyOnce() throws TwitterException {
-    Event event = new Event(LIVE, BASKETBALL, new Date(), newArrayList("SIDE1"), newArrayList("SIDE2"));
+    Event event = new Event(LIVE, BASKETBALL, new DateTime(), newArrayList("SIDE1"), newArrayList("SIDE2"));
     event.addHistory(new HistoryRecord(create1secOldDate(), LANOS, 1.5, 2.9));
-    event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
+    event.addHistory(new HistoryRecord(new DateTime(), VOLVO, 1.4, 3.2));
     when(eventStoreMock.events()).thenReturn(newArrayList(event));
 
     job.run();
     job.run();
 
-    String expectedMessageDatePrefix = new SimpleDateFormat("dd-MM").format(new Date());
+    String expectedMessageDatePrefix = DateTimeFormat.forPattern("dd-MM").print(new DateTime());
     verify(notifierMock).notify(eq(expectedMessageDatePrefix + " L BB [SIDE1] - [SIDE2] 1.500,L,1/3.200,V,0 0.667+0.333=0.067 0.688+0.312=0.031"));
   }
 
   @Test
   public void run_newForkEvent_notify() throws TwitterException {
-    Event event = new Event(LIVE, BASKETBALL, new Date(), newArrayList("SIDE1"), newArrayList("SIDE2"));
+    Event event = new Event(LIVE, BASKETBALL, new DateTime(), newArrayList("SIDE1"), newArrayList("SIDE2"));
     event.addHistory(new HistoryRecord(create1secOldDate(), LANOS, 1.5, 2.9));
-    event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 3.2));
+    event.addHistory(new HistoryRecord(new DateTime(), VOLVO, 1.4, 3.2));
     when(eventStoreMock.events()).thenReturn(newArrayList(event));
 
     job.run();
 
-    String expectedMessageDatePrefix = new SimpleDateFormat("dd-MM").format(new Date());
+    String expectedMessageDatePrefix = DateTimeFormat.forPattern("dd-MM").print(new DateTime());
     verify(notifierMock).notify(eq(expectedMessageDatePrefix + " L BB [SIDE1] - [SIDE2] 1.500,L,1/3.200,V,0 0.667+0.333=0.067 0.688+0.312=0.031"));
   }
 
   @Test
   public void run_newNotForkEvent_notNotify() throws TwitterException {
-    Event event = new Event(LIVE, BASKETBALL, new Date(), newArrayList("SIDE1"), newArrayList("SIDE2"));
+    Event event = new Event(LIVE, BASKETBALL, new DateTime(), newArrayList("SIDE1"), newArrayList("SIDE2"));
     event.addHistory(new HistoryRecord(create1secOldDate(), LANOS, 1.5, 2.9));
-    event.addHistory(new HistoryRecord(new Date(), VOLVO, 1.4, 2.9));
+    event.addHistory(new HistoryRecord(new DateTime(), VOLVO, 1.4, 2.9));
     when(eventStoreMock.events()).thenReturn(newArrayList(event));
 
     job.run();

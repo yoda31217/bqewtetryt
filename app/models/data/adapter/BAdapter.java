@@ -7,15 +7,15 @@ import models.data.parser.ParsedEvent;
 import models.event.EventType;
 import models.event.Organisation;
 import models.event.Sport;
+import org.joda.time.DateTime;
 
-import java.util.Date;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 
 public class BAdapter {
 
-  public final Splitter coopSplitter;
+  public final  Splitter     coopSplitter;
   private final DateAdapter  dateAdapter;
   private final KofAdapter   kofAdapter;
   private final Organisation organisation;
@@ -48,8 +48,8 @@ public class BAdapter {
       side2 = swapSide;
     }
 
-    Date adaptedDate = dateAdapter.adapt(parsedEvent.date);
+    DateTime eventDate = dateAdapter.adapt(parsedEvent.date);
 
-    return new AdaptedEvent(type, sport, side1, side2, lowKof, highKof, organisation, adaptedDate);
+    return new AdaptedEvent(type, sport, side1, side2, lowKof, highKof, organisation, eventDate);
   }
 }

@@ -1,8 +1,8 @@
 package models.util;
 
 import org.fest.assertions.Condition;
+import org.joda.time.DateTime;
 
-import java.util.Date;
 import java.util.List;
 
 public final class Conditions {
@@ -32,15 +32,15 @@ public final class Conditions {
   }
 
   public static Condition<Object> oneSecOldDate() {
-    long oneSecOldMillis = new Date().getTime() - 1 * ONE_SEC_IN_MILLIS;
-    return createGeDateCondition(oneSecOldMillis).as("1 second old from now as a maximum: " + new Date(oneSecOldMillis));
+    long oneSecOldMillis = new DateTime().minusSeconds(1).getMillis();
+    return createGeDateCondition(oneSecOldMillis).as("1 second old from now as a maximum: " + new DateTime(oneSecOldMillis));
   }
 
   private static Condition<Object> createGeDateCondition(final long dateFromInMillis) {
     return new Condition<Object>() {
       @Override
       public boolean matches(Object actualDate) {
-        return dateFromInMillis <= ((Date) actualDate).getTime();
+        return dateFromInMillis <= ((DateTime) actualDate).getMillis();
       }
     };
   }

@@ -1,13 +1,13 @@
 package models.data.adapter.date;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 import static java.lang.Long.parseLong;
 
 public class NivaDateAdapter implements DateAdapter {
 
   @Override
-  public Date adapt(String dateText) {
-    return new Date(parseLong(dateText) * 1000L);
+  public DateTime adapt(String dateText) {
+    return new DateTime(parseLong(dateText) * 1000L);
   }
 }

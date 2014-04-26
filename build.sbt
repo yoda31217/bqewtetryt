@@ -11,6 +11,7 @@ libraryDependencies ++= Seq(
   "org.mockito" % "mockito-all" % "1.9.5",
   "org.jsoup" % "jsoup" % "1.7.3",
   "org.seleniumhq.selenium" % "selenium-java" % "2.32.0",
+  "joda-time" % "joda-time" % "2.3",
   "org.webjars" %% "webjars-play" % "2.2.0",
   "org.webjars" % "bootstrap" % "2.3.1")
 
