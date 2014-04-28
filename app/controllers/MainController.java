@@ -94,7 +94,7 @@ public class MainController extends Controller {
 
   private StringBuilder appendSides(StringBuilder response, Calculation calculation) {
     String sidesText = calculation.side1() + " - " + calculation.side2();
-    return response.append(padEnd(sidesText, 85, ' '));
+    return response.append(padEnd(sidesText, 125, ' '));
   }
 
   private StringBuilder appendSport(StringBuilder response, Calculation calculation) {

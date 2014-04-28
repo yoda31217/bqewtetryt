@@ -51,7 +51,7 @@ public class Event {
   @Override
   public String toString() {
     return "Event{" +
-           ", date='" + date + '\'' +
+           "date='" + date + '\'' +
            ", history=" + history +
            ", side1='" + side1 + '\'' +
            ", side2='" + side2 + '\'' +
