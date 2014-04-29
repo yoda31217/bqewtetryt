@@ -15,6 +15,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.collect.Collections2.filter;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newLinkedList;
+import static java.lang.Math.max;
 import static org.apache.commons.lang3.StringUtils.getLevenshteinDistance;
 import static org.apache.commons.lang3.StringUtils.stripAccents;
 import static play.Logger.of;
@@ -55,17 +56,53 @@ public class EventStore {
     return currentDuration.compareTo(ALLOWED_DURATION) <= 0;
   }
 
-  private boolean areSidesSimilar(List<String> side1, List<String> side2, Event event) {
-    return isSideSimilar(side1, event.side1) && isSideSimilar(side2, event.side2);
-  }
-
   private boolean areTypeAndSportEqual(EventType type, Sport sport, Event event) {return event.type.equals(type) && event.sport.equals(sport);}
 
-  private Event findEvent(EventType type, Sport sport, DateTime date, List<String> side1, List<String> side2) {
-    for (Event event : events)
-      if (areTypeAndSportEqual(type, sport, event) && areDatesSimilar(date, event) && areSidesSimilar(side1, side2, event)) return event;
+  private int calculatePlayerSimilarity(String player, String eventPlayer) {
+    List<String> normalizedEventPlayerParts = normalizePlayer(eventPlayer);
+    List<String> normalizedPlayerParts = normalizePlayer(player);
 
-    return null;
+    int similarity = 0;
+
+    for (String normalizedEventPlayerPart : normalizedEventPlayerParts)
+      for (String normalizedPlayerPart : normalizedPlayerParts)
+        if (isPlayerPartSimilar(normalizedEventPlayerPart, normalizedPlayerPart)) similarity += normalizedEventPlayerPart.length();
+
+    return similarity;
+  }
+
+  private int calculateSideSimilarity(List<String> side, List<String> eventSide) {
+    if (eventSide.size() != side.size()) return 0;
+
+    if (1 == eventSide.size()) return calculatePlayerSimilarity(side.get(0), eventSide.get(0));
+
+    int normalStrategySimilarity = calculatePlayerSimilarity(side.get(0), eventSide.get(0)) + calculatePlayerSimilarity(side.get(1), eventSide.get(1));
+    int flippedStrategySimilarity = calculatePlayerSimilarity(side.get(0), eventSide.get(1)) + calculatePlayerSimilarity(side.get(1), eventSide.get(0));
+    return max(normalStrategySimilarity, flippedStrategySimilarity);
+  }
+
+  private int calculateSidesSimilarity(List<String> side1, List<String> side2, Event event) {
+    int side1similarity = calculateSideSimilarity(side1, event.side1);
+    int side2similarity = calculateSideSimilarity(side2, event.side2);
+    return (0 == side1similarity || 0 == side2similarity) ? 0 : side1similarity + side2similarity;
+  }
+
+  private Event findEvent(EventType type, Sport sport, DateTime date, List<String> side1, List<String> side2) {
+    Event candidateEvent = null;
+    int candidateEventSimilarity = 0;
+
+    for (Event newCandidateEvent : events) {
+      if (!areTypeAndSportEqual(type, sport, newCandidateEvent) || !areDatesSimilar(date, newCandidateEvent)) continue;
+
+      int newCandidateEventSimilarity = calculateSidesSimilarity(side1, side2, newCandidateEvent);
+
+      if (newCandidateEventSimilarity > candidateEventSimilarity) {
+        candidateEvent = newCandidateEvent;
+        candidateEventSimilarity = newCandidateEventSimilarity;
+      }
+    }
+
+    return 0 == candidateEventSimilarity ? null : candidateEvent;
   }
 
   private boolean isPlayerPartSimilar(String eventPlayerPart, String playerPart) {
@@ -73,27 +110,6 @@ public class EventStore {
 
     int levenshteinDistance = getLevenshteinDistance(eventPlayerPart, playerPart);
     return eventPlayerPart.length() >= 6 && levenshteinDistance <= 1 || eventPlayerPart.length() >= 8 && levenshteinDistance <= 2;
-  }
-
-  private boolean isPlayerSimilar(String player, String eventPlayer) {
-    List<String> normalizedEventPlayerParts = normalizePlayer(eventPlayer);
-    List<String> normalizedPlayerParts = normalizePlayer(player);
-
-    for (String normalizedEventPlayerPart : normalizedEventPlayerParts) {
-      for (String normalizedPlayerPart : normalizedPlayerParts) {
-        if (isPlayerPartSimilar(normalizedEventPlayerPart, normalizedPlayerPart)) return true;
-      }
-    }
-    return false;
-  }
-
-  private boolean isSideSimilar(List<String> side, List<String> eventSide) {
-    if (eventSide.size() != side.size()) return false;
-
-    if (1 == eventSide.size()) return isPlayerSimilar(side.get(0), eventSide.get(0));
-
-    return (isPlayerSimilar(side.get(0), eventSide.get(0)) && isPlayerSimilar(side.get(1), eventSide.get(1))) || //
-           (isPlayerSimilar(side.get(0), eventSide.get(1)) && isPlayerSimilar(side.get(1), eventSide.get(0)));
   }
 
   private List<String> normalizePlayer(String player) {
@@ -106,7 +122,7 @@ public class EventStore {
     return newLinkedList(filter(newArrayList(PLAYER_NAME_SPLITTER.split(player)), new Predicate<String>() {
       @Override
       public boolean apply(String playerPart) {
-        return playerPart.length() > 2;
+        return playerPart.length() > 1;
       }
     }));
   }

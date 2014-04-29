@@ -28,6 +28,15 @@ public class EventStore_BaseTest {
   }
 
   @Test
+  public void createOrFindEvent_2eventsWithSimilarSide1_returnBestMatch() {
+    eventStore.events.add(new Event(REGULAR, TENNIS, eventDate, newArrayList("one two"), newArrayList("SideTwo")));
+    eventStore.events.add(new Event(REGULAR, TENNIS, eventDate, newArrayList("one three"), newArrayList("SideTwo")));
+    Event candidateEvent = eventStore.createOrFindEvent(REGULAR, TENNIS, eventDate, newArrayList("one three"), newArrayList("SideTwo"));
+
+    assertThat(candidateEvent).isSameAs(eventStore.events.get(1));
+  }
+
+  @Test
   public void createOrFindEvent_2eventsWithDiffSide2_create2events() {
     Event firstEvent = eventStore.createOrFindEvent(REGULAR, TENNIS, eventDate, newArrayList("SideOne"), newArrayList("SideTwo"));
     Event secondEvent = eventStore.createOrFindEvent(REGULAR, TENNIS, eventDate, newArrayList("SideOne"), newArrayList("SideThree"));

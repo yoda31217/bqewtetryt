@@ -78,6 +78,7 @@ public class EventStore_SimilarPlayerTest {
     data.add(new String[]{"Марина Заневска", "M. Заневська"});
     data.add(new String[]{"Сталь Бельско-Бяла", "Бельско-Бяла"});
     data.add(new String[]{"Мушинянка", "Мушинианка Мушина"});
+    data.add(new String[]{"Юе-Юе Ху", "Юе-Юе Ху"});
     return data;
   }
 
