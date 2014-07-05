@@ -31,8 +31,10 @@ public class BGlobalSettings extends GlobalSettings {
   @Inject RemoveOldHistoryJob       removeOldHistoryJob;
   @Inject RegularNivaTennisJob      regularNivaTennisJob;
   @Inject RegularNivaVolleyballJob  regularNivaVolleyballJob;
+  @Inject RegularNivaBaseballJob    regularNivaBaseballJob;
   @Inject RegularKamazTennisJob     regularKamazTennisJob;
   @Inject RegularKamazVolleyballJob regularKamazVolleyballJob;
+  @Inject RegularKamazBaseballJob   regularKamazBaseballJob;
   @Inject NotificationJob           notificationJob;
   @Inject Scheduler                 scheduler;
   Injector injector;
@@ -60,11 +62,15 @@ public class BGlobalSettings extends GlobalSettings {
     scheduleJob(app, "betty.job.regular_niva_tennis.offset", "betty.job.regular_niva_tennis.delay", regularNivaTennisJob, "contexts.fetch-regular-niva-tennis");
     scheduleJob(app, "betty.job.regular_niva_volleyball.offset", "betty.job.regular_niva_volleyball.delay", regularNivaVolleyballJob,
                 "contexts.fetch-regular-niva-volleyball");
+    scheduleJob(app, "betty.job.regular_niva_baseball.offset", "betty.job.regular_niva_baseball.delay", regularNivaBaseballJob,
+                "contexts.fetch-regular-niva-baseball");
 
     scheduleJob(app, "betty.job.regular_kamaz_tennis.offset", "betty.job.regular_kamaz_tennis.delay", regularKamazTennisJob,
                 "contexts.fetch-regular-kamaz-tennis");
     scheduleJob(app, "betty.job.regular_kamaz_volleyball.offset", "betty.job.regular_kamaz_volleyball.delay", regularKamazVolleyballJob,
                 "contexts.fetch-regular-kamaz-volleyball");
+    scheduleJob(app, "betty.job.regular_kamaz_baseball.offset", "betty.job.regular_kamaz_baseball.delay", regularKamazBaseballJob,
+                "contexts.fetch-regular-kamaz-baseball");
   }
 
   @Override

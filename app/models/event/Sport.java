@@ -3,6 +3,7 @@ package models.event;
 public enum Sport {
   UNKNOWN("UK", "Unknown"),
   TENNIS("TE", "Tennis"),
+  BASEBALL("BL", "Baseball"),
   VOLLEYBALL("VB", "Volleyball"),
   TABLE_TENNIS("TT", "Table Tennis"),
   BASKETBALL("BB", "Basketball");

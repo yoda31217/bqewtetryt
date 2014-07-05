@@ -63,6 +63,13 @@ class GlobalModule extends AbstractModule {
 
   @Provides
   @Singleton
+  RegularKamazBaseballJob provideRegularKamazBaseballJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
+    String url = configuration.getString("betty.job.regular_kamaz_baseball.url");
+    return new RegularKamazBaseballJob(url, eventStore, webDriver, eventFilter);
+  }
+
+  @Provides
+  @Singleton
   RegularKamazTennisJob provideRegularKamazTennisJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
     String url = configuration.getString("betty.job.regular_kamaz_tennis.url");
     return new RegularKamazTennisJob(url, eventStore, webDriver, eventFilter);
@@ -73,6 +80,13 @@ class GlobalModule extends AbstractModule {
   RegularKamazVolleyballJob provideRegularKamazVolleyballJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
     String url = configuration.getString("betty.job.regular_kamaz_volleyball.url");
     return new RegularKamazVolleyballJob(url, eventStore, webDriver, eventFilter);
+  }
+
+  @Provides
+  @Singleton
+  RegularNivaBaseballJob provideRegularNivaBaseballJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
+    String url = configuration.getString("betty.job.regular_niva_baseball.url");
+    return new RegularNivaBaseballJob(url, eventStore, webDriver, eventFilter);
   }
 
   @Provides
