@@ -2,44 +2,39 @@ package configs;
 
 import akka.actor.Cancellable;
 import akka.actor.Scheduler;
-import com.google.inject.Inject;
+import akka.dispatch.MessageDispatcher;
 import com.google.inject.Injector;
+import com.google.inject.Key;
 import models.job.RemoveOldEventJob;
 import models.job.RemoveOldHistoryJob;
 import models.notification.NotificationJob;
-import org.openqa.selenium.WebDriver;
 import play.Application;
 import play.GlobalSettings;
 import scala.concurrent.ExecutionContext;
 import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
 
+import javax.inject.Inject;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.google.inject.Guice.createInjector;
+import static com.google.inject.name.Names.named;
 import static java.lang.System.getenv;
 import static java.lang.System.setProperty;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static models.util.Runnables.createLogExRunnable;
+import static models.util.Runnables.wrapLogExRunnable;
 import static play.libs.Akka.system;
 
 public class BGlobalSettings extends GlobalSettings {
 
-  @Inject RemoveOldEventJob         removeOldEventJob;
-  @Inject RemoveOldHistoryJob       removeOldHistoryJob;
-  @Inject RegularNivaTennisJob      regularNivaTennisJob;
-  @Inject RegularNivaVolleyballJob  regularNivaVolleyballJob;
-  @Inject RegularNivaBaseballJob    regularNivaBaseballJob;
-  @Inject RegularKamazTennisJob     regularKamazTennisJob;
-  @Inject RegularKamazVolleyballJob regularKamazVolleyballJob;
-  @Inject RegularKamazBaseballJob   regularKamazBaseballJob;
-  @Inject NotificationJob           notificationJob;
-  @Inject Scheduler                 scheduler;
+  @Inject Scheduler           scheduler;
+  @Inject NotificationJob     notificationJob;
+  @Inject RemoveOldEventJob   removeOldEventJob;
+  @Inject RemoveOldHistoryJob removeOldHistoryJob;
   Injector injector;
-  List<Cancellable> jobSchedules      = new LinkedList<Cancellable>();
-  List<WebDriver>   createdWebDrivers = new CopyOnWriteArrayList<WebDriver>();
+  List<Cancellable> jobSchedules = new LinkedList<Cancellable>();
+  private GlobalModule injectorModule;
 
   @Override
   public <A> A getControllerInstance(Class<A> controllerClass) throws Exception {
@@ -52,25 +47,19 @@ public class BGlobalSettings extends GlobalSettings {
 
     setProperty("webdriver.chrome.driver", getenv("WEB_DRIVER"));
 
-    injector = createInjector(new GlobalModule(app.configuration(), createdWebDrivers));
+    injectorModule = new GlobalModule(app.configuration());
+    injector = createInjector(injectorModule);
     injector.injectMembers(this);
 
-    scheduleJob(app, "betty.job.remove_old_history.offset", "betty.job.remove_old_history.delay", removeOldHistoryJob);
-    scheduleJob(app, "betty.job.remove_old_event.offset", "betty.job.remove_old_event.delay", removeOldEventJob);
-    scheduleJob(app, "betty.job.notification.offset", "betty.job.notification.delay", notificationJob, "contexts.notification");
+    scheduleJobWithSystemDispatcher(app, "remove-old-history", removeOldHistoryJob);
+    scheduleJobWithSystemDispatcher(app, "remove-old-event", removeOldEventJob);
 
-    scheduleJob(app, "betty.job.regular_niva_tennis.offset", "betty.job.regular_niva_tennis.delay", regularNivaTennisJob, "contexts.fetch-regular-niva-tennis");
-    scheduleJob(app, "betty.job.regular_niva_volleyball.offset", "betty.job.regular_niva_volleyball.delay", regularNivaVolleyballJob,
-                "contexts.fetch-regular-niva-volleyball");
-    scheduleJob(app, "betty.job.regular_niva_baseball.offset", "betty.job.regular_niva_baseball.delay", regularNivaBaseballJob,
-                "contexts.fetch-regular-niva-baseball");
+    scheduleJobWithCustomDispatcher(app, "notification", notificationJob);
 
-    scheduleJob(app, "betty.job.regular_kamaz_tennis.offset", "betty.job.regular_kamaz_tennis.delay", regularKamazTennisJob,
-                "contexts.fetch-regular-kamaz-tennis");
-    scheduleJob(app, "betty.job.regular_kamaz_volleyball.offset", "betty.job.regular_kamaz_volleyball.delay", regularKamazVolleyballJob,
-                "contexts.fetch-regular-kamaz-volleyball");
-    scheduleJob(app, "betty.job.regular_kamaz_baseball.offset", "betty.job.regular_kamaz_baseball.delay", regularKamazBaseballJob,
-                "contexts.fetch-regular-kamaz-baseball");
+    List<String> enabledEventJobNames = app.configuration().getStringList("betty.jobs.enabled-event-jobs");
+    for (String eventJobName : enabledEventJobNames) {
+      scheduleJobWithCustomDispatcher(app, eventJobName, getEventJob(eventJobName));
+    }
   }
 
   @Override
@@ -81,24 +70,38 @@ public class BGlobalSettings extends GlobalSettings {
       schedule.cancel();
     }
 
-    for (WebDriver webDriver : createdWebDrivers) {
-      webDriver.close();
-    }
+    injectorModule.destroy();
   }
 
-  private void scheduleJob(Application app, String offsetConfigKey, String delayConfigKey, Runnable job, ExecutionContext dispatcher) {
-    FiniteDuration offset = Duration.create(app.configuration().getMilliseconds(offsetConfigKey), MILLISECONDS);
-    FiniteDuration delay = Duration.create(app.configuration().getMilliseconds(delayConfigKey), MILLISECONDS);
+  private String buildDelayConfigKey(String configKeyClassifier) {return "betty.jobs." + configKeyClassifier + ".delay";}
 
-    Cancellable jobSchedule = scheduler.schedule(offset, delay, createLogExRunnable(job), dispatcher);
+  private String buildOffsetConfigKey(String configKeyClassifier) {return "betty.jobs." + configKeyClassifier + ".offset";}
+
+  private FiniteDuration getDurationFromAppConfig(Application app, String configKey) {
+    return Duration.create(app.configuration().getMilliseconds(configKey), MILLISECONDS);
+  }
+
+  private Runnable getEventJob(String eventJobName) {return injector.getInstance(Key.get(Runnable.class, named(eventJobName)));}
+
+  private void scheduleJob(Application app, String offsetConfigKey, String delayConfigKey, Runnable job, ExecutionContext dispatcher) {
+    FiniteDuration offset = getDurationFromAppConfig(app, offsetConfigKey);
+    FiniteDuration delay = getDurationFromAppConfig(app, delayConfigKey);
+
+    Cancellable jobSchedule = scheduler.schedule(offset, delay, wrapLogExRunnable(job), dispatcher);
     jobSchedules.add(jobSchedule);
   }
 
-  private void scheduleJob(Application app, String offsetConfigKey, String delayConfigKey, Runnable job) {
-    scheduleJob(app, offsetConfigKey, delayConfigKey, job, system().dispatcher());
+  private void scheduleJobWithCustomDispatcher(Application app, String eventJobName, Runnable job) {
+    String offsetConfigKey = buildOffsetConfigKey(eventJobName);
+    String delayConfigKey = buildDelayConfigKey(eventJobName);
+    MessageDispatcher dispatcher = system().dispatchers().lookup("contexts." + eventJobName);
+    scheduleJob(app, offsetConfigKey, delayConfigKey, job, dispatcher);
   }
 
-  private void scheduleJob(Application app, String offsetConfigKey, String delayConfigKey, Runnable job, String dispatcherId) {
-    scheduleJob(app, offsetConfigKey, delayConfigKey, job, system().dispatchers().lookup(dispatcherId));
+  private void scheduleJobWithSystemDispatcher(Application app, String eventJobName, Runnable job) {
+    String offsetConfigKey = buildOffsetConfigKey(eventJobName);
+    String delayConfigKey = buildDelayConfigKey(eventJobName);
+    ExecutionContext dispatcher = system().dispatcher();
+    scheduleJob(app, offsetConfigKey, delayConfigKey, job, dispatcher);
   }
 }

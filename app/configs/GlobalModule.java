@@ -5,10 +5,21 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import controllers.MainController;
+import models.data.adapter.BAdapter;
+import models.data.adapter.date.DateAdapter;
+import models.data.adapter.date.KamazDateAdapter;
+import models.data.adapter.date.NivaDateAdapter;
+import models.data.adapter.kof.DecimalKofAdapter;
+import models.data.adapter.kof.KofAdapter;
+import models.data.parser.BParser;
+import models.data.parser.RegularKamazParser;
+import models.data.parser.RegularNivaParser;
+import models.data.parser.RetryExceptionParser;
 import models.event.EventStore;
 import models.event.EventType;
 import models.event.Sport;
 import models.job.EventFilter;
+import models.job.EventJob;
 import models.job.RemoveOldEventJob;
 import models.job.RemoveOldHistoryJob;
 import models.notification.NotificationJob;
@@ -19,33 +30,47 @@ import play.Configuration;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 
+import javax.inject.Named;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.google.inject.Scopes.SINGLETON;
+import static models.event.EventType.REGULAR;
+import static models.event.Organisation.KAMAZ;
+import static models.event.Organisation.NIVA;
+import static models.event.Sport.BASEBALL;
+import static models.event.Sport.TENNIS;
+import static models.event.Sport.VOLLEYBALL;
 import static models.util.Objects2.enumsFromStrings;
 import static play.libs.Akka.system;
 
 class GlobalModule extends AbstractModule {
 
-  private final Configuration   configuration;
-  private final List<WebDriver> createdWebDrivers;
+  private final Configuration configuration;
+  private final List<WebDriver> createdWebDrivers = new CopyOnWriteArrayList<WebDriver>();
 
-  public GlobalModule(Configuration configuration, List<WebDriver> createdWebDrivers) {
+  public GlobalModule(Configuration configuration) {
     this.configuration = configuration;
-    this.createdWebDrivers = createdWebDrivers;
+  }
+
+  public void destroy() {
+    for (WebDriver webDriver : createdWebDrivers) {
+      webDriver.close();
+    }
   }
 
   @Override
   protected void configure() {
     bind(EventStore.class).in(SINGLETON);
     bind(Twitter.class).toInstance(TwitterFactory.getSingleton());
+    bind(Scheduler.class).toInstance(system().scheduler());
   }
 
   @Provides
   @Singleton
   EventFilter provideEventFilter() {
-    List<Sport> allowedSports = enumsFromStrings(Sport.class, configuration.getStringList("betty.job.filter.allowed_sports"));
-    List<EventType> allowedTypes = enumsFromStrings(EventType.class, configuration.getStringList("betty.job.filter.allowed_types"));
+    List<Sport> allowedSports = enumsFromStrings(Sport.class, configuration.getStringList("betty.jobs.filter.allowed-sports"));
+    List<EventType> allowedTypes = enumsFromStrings(EventType.class, configuration.getStringList("betty.jobs.filter.allowed-types"));
     return new EventFilter(allowedSports, allowedTypes);
   }
 
@@ -63,63 +88,58 @@ class GlobalModule extends AbstractModule {
 
   @Provides
   @Singleton
-  RegularKamazBaseballJob provideRegularKamazBaseballJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
-    String url = configuration.getString("betty.job.regular_kamaz_baseball.url");
-    return new RegularKamazBaseballJob(url, eventStore, webDriver, eventFilter);
+  @Named("regular-kamaz-baseball")
+  Runnable provideRegularKamazBaseballJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
+    return createRegularKamazJob(eventStore, webDriver, eventFilter, BASEBALL, "sport26");
   }
 
   @Provides
   @Singleton
-  RegularKamazTennisJob provideRegularKamazTennisJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
-    String url = configuration.getString("betty.job.regular_kamaz_tennis.url");
-    return new RegularKamazTennisJob(url, eventStore, webDriver, eventFilter);
+  @Named("regular-kamaz-tennis")
+  Runnable provideRegularKamazTennisJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
+    return createRegularKamazJob(eventStore, webDriver, eventFilter, TENNIS, "sport2");
   }
 
   @Provides
   @Singleton
-  RegularKamazVolleyballJob provideRegularKamazVolleyballJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
-    String url = configuration.getString("betty.job.regular_kamaz_volleyball.url");
-    return new RegularKamazVolleyballJob(url, eventStore, webDriver, eventFilter);
+  @Named("regular-kamaz-volleyball")
+  Runnable provideRegularKamazVolleyballJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
+    return createRegularKamazJob(eventStore, webDriver, eventFilter, VOLLEYBALL, "sport51");
   }
 
   @Provides
   @Singleton
-  RegularNivaBaseballJob provideRegularNivaBaseballJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
-    String url = configuration.getString("betty.job.regular_niva_baseball.url");
-    return new RegularNivaBaseballJob(url, eventStore, webDriver, eventFilter);
+  @Named("regular-niva-baseball")
+  Runnable provideRegularNivaBaseballJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
+    return createRegularNivaJob(eventStore, webDriver, eventFilter, "Baseball", BASEBALL);
   }
 
   @Provides
   @Singleton
-  RegularNivaTennisJob provideRegularNivaTennisJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
-    String url = configuration.getString("betty.job.regular_niva_tennis.url");
-    return new RegularNivaTennisJob(url, eventStore, webDriver, eventFilter);
+  @Named("regular-niva-tennis")
+  Runnable provideRegularNivaTennisJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
+    return createRegularNivaJob(eventStore, webDriver, eventFilter, "Tennis", TENNIS);
   }
 
   @Provides
   @Singleton
-  RegularNivaVolleyballJob provideRegularNivaVolleyballJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
-    String url = configuration.getString("betty.job.regular_niva_volleyball.url");
-    return new RegularNivaVolleyballJob(url, eventStore, webDriver, eventFilter);
+  @Named("regular-niva-volleyball")
+  Runnable provideRegularNivaVolleyballJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
+    return createRegularNivaJob(eventStore, webDriver, eventFilter, "Volleyball", VOLLEYBALL);
   }
 
   @Provides
   @Singleton
   RemoveOldEventJob provideRemoveOldEventJob(EventStore eventStore) {
-    long maxLastHistoryRecordAgeInMillis = configuration.getMilliseconds("betty.job.remove_old_event.max_last_history_record_age");
+    long maxLastHistoryRecordAgeInMillis = configuration.getMilliseconds("betty.jobs.remove-old-event.max-last-history-record-age");
     return new RemoveOldEventJob(maxLastHistoryRecordAgeInMillis, eventStore);
   }
 
   @Provides
   @Singleton
   RemoveOldHistoryJob provideRemoveOldHistoryJob(EventStore eventStore) {
-    return new RemoveOldHistoryJob(configuration.getInt("betty.job.remove_old_history.max_history_count"), eventStore);
-  }
-
-  @Provides
-  @Singleton
-  Scheduler provideScheduler() {
-    return system().scheduler();
+    Integer maxHistoryCount = configuration.getInt("betty.jobs.remove-old-history.max-history-count");
+    return new RemoveOldHistoryJob(maxHistoryCount, eventStore);
   }
 
   @Provides
@@ -127,5 +147,27 @@ class GlobalModule extends AbstractModule {
     ChromeDriver chromeDriver = new ChromeDriver();
     createdWebDrivers.add(chromeDriver);
     return chromeDriver;
+  }
+
+  private Runnable createRegularKamazJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, Sport sport, String sportStyleName) {
+    BParser parser = new RegularKamazParser("https://www.favbet.com/ru/bets/", webDriver, sportStyleName);
+    parser = new RetryExceptionParser(parser, 3);
+
+    DateAdapter dateAdapter = new KamazDateAdapter();
+    KofAdapter kofAdapter = new DecimalKofAdapter();
+    BAdapter adapter = new BAdapter(" / ", dateAdapter, kofAdapter, REGULAR, KAMAZ, sport);
+
+    return new EventJob(eventStore, parser, adapter, eventFilter);
+  }
+
+  private Runnable createRegularNivaJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, String urlPart, Sport sport) {
+    BParser parser = new RegularNivaParser("https://igra.msl.ua/sportliga/uk/sports/" + urlPart, webDriver, sport);
+    parser = new RetryExceptionParser(parser, 3);
+
+    DateAdapter dateAdapter = new NivaDateAdapter();
+    KofAdapter kofAdapter = new DecimalKofAdapter();
+    BAdapter adapter = new BAdapter("|", dateAdapter, kofAdapter, REGULAR, NIVA, sport);
+
+    return new EventJob(eventStore, parser, adapter, eventFilter);
   }
 }

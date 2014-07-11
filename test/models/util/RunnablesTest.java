@@ -3,7 +3,7 @@ package models.util;
 import org.junit.Test;
 
 import static models.util.Runnables.LogExRunnable;
-import static models.util.Runnables.createLogExRunnable;
+import static models.util.Runnables.wrapLogExRunnable;
 import static models.util.Tests.callPrivateConstructor;
 
 public class RunnablesTest {
@@ -16,8 +16,8 @@ public class RunnablesTest {
   }
 
   @Test
-  public void createLogExRunnable_doNotThrowExInRun_logNothing() {
-    Runnable runnable = createLogExRunnable(new Runnable() {
+  public void wrapLogExRunnable_doNotThrowExInRun_logNothing() {
+    Runnable runnable = wrapLogExRunnable(new Runnable() {
       @Override
       public void run() {
       }
@@ -29,10 +29,10 @@ public class RunnablesTest {
   }
 
   @Test
-  public void createLogExRunnable_throwExInRun_logEx() {
+  public void wrapLogExRunnable_throwExInRun_logEx() {
     final RuntimeException exception = new RuntimeException("Test exception to log and stop.");
 
-    Runnable runnable = createLogExRunnable(new Runnable() {
+    Runnable runnable = wrapLogExRunnable(new Runnable() {
       @Override
       public void run() {
         throw exception;
@@ -41,6 +41,6 @@ public class RunnablesTest {
     ((LogExRunnable) runnable).log = logMock;
     runnable.run();
 
-    logMock.verifyError("Unknown exception wrapped and stopped.", exception);
+    logMock.verifyError("Unknown exception wrapped and propagation stopped.", exception);
   }
 }

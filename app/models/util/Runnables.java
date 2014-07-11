@@ -9,7 +9,7 @@ public final class Runnables {
     throw new UnsupportedOperationException();
   }
 
-  public static Runnable createLogExRunnable(final Runnable runnable) {
+  public static Runnable wrapLogExRunnable(Runnable runnable) {
     return new LogExRunnable(runnable);
   }
 
@@ -28,7 +28,7 @@ public final class Runnables {
         runnable.run();
 
       } catch (RuntimeException ex) {
-        log.error("Unknown exception wrapped and stopped.", ex);
+        log.error("Unknown exception wrapped and propagation stopped.", ex);
       }
     }
   }
