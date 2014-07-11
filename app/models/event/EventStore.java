@@ -23,7 +23,7 @@ import static play.Logger.of;
 public class EventStore {
 
   public static final  Splitter PLAYER_NAME_SPLITTER = Splitter.on(Pattern.compile("[^a-z]+")).omitEmptyStrings();
-  private static final Duration ALLOWED_DURATION     = new Period().withHours(2).toStandardDuration();
+  private static final Duration ALLOWED_DURATION     = new Period().withHours(4).toStandardDuration();
   Logger.ALogger log = of(EventStore.class);
   final List<Event> events = new CopyOnWriteArrayList<Event>();
 

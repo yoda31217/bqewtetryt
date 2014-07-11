@@ -84,18 +84,18 @@ public class EventStore_BaseTest {
   }
 
   @Test
-  public void createOrFindEvent_2eventsWithMore2hoursDiffDates_create2event_1() {
+  public void createOrFindEvent_2eventsWithMore4hoursDiffDates_create2event_1() {
     Event firstEvent = eventStore.createOrFindEvent(REGULAR, TENNIS, eventDate, newArrayList("SideOne"), newArrayList("SideTwo"));
-    Event secondEvent = eventStore.createOrFindEvent(REGULAR, TENNIS, new DateTime(UTC).plusHours(2).plusSeconds(1), newArrayList("SideOne"), newArrayList(
+    Event secondEvent = eventStore.createOrFindEvent(REGULAR, TENNIS, new DateTime(UTC).plusHours(4).plusSeconds(1), newArrayList("SideOne"), newArrayList(
       "SideTwo"));
 
     assertThat(eventStore.events()).containsExactly(firstEvent, secondEvent);
   }
 
   @Test
-  public void createOrFindEvent_2eventsWithMore2hoursDiffDates_create2event_2() {
+  public void createOrFindEvent_2eventsWithMore4hoursDiffDates_create2event_2() {
     Event firstEvent = eventStore.createOrFindEvent(REGULAR, TENNIS, eventDate, newArrayList("SideOne"), newArrayList("SideTwo"));
-    Event secondEvent = eventStore.createOrFindEvent(REGULAR, TENNIS, new DateTime(UTC).minusHours(2).minusSeconds(1), newArrayList("SideOne"), newArrayList(
+    Event secondEvent = eventStore.createOrFindEvent(REGULAR, TENNIS, new DateTime(UTC).minusHours(4).minusSeconds(1), newArrayList("SideOne"), newArrayList(
       "SideTwo"));
 
     assertThat(eventStore.events()).containsExactly(firstEvent, secondEvent);

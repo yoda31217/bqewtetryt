@@ -3,6 +3,7 @@ package models.data.adapter;
 import com.google.common.base.Splitter;
 import models.data.adapter.date.DateAdapter;
 import models.data.adapter.kof.KofAdapter;
+import models.data.adapter.sport.SportAdapter;
 import models.data.parser.ParsedEvent;
 import models.event.EventType;
 import models.event.Organisation;
@@ -15,20 +16,20 @@ import static com.google.common.collect.Lists.newArrayList;
 
 public class BAdapter {
 
-  public final  Splitter     coopSplitter;
+  private final Splitter     coopSplitter;
   private final DateAdapter  dateAdapter;
   private final KofAdapter   kofAdapter;
   private final Organisation organisation;
-  private final Sport        sport;
   private final EventType    type;
+  private final SportAdapter sportAdapter;
 
-  public BAdapter(String coopSeparator, DateAdapter dateAdapter, KofAdapter kofAdapter, EventType type, Organisation organisation, Sport sport) {
+  public BAdapter(String coopSeparator, DateAdapter dateAdapter, KofAdapter kofAdapter, SportAdapter sportAdapter, EventType type, Organisation organisation) {
+    this.sportAdapter = sportAdapter;
     coopSplitter = Splitter.on(coopSeparator).omitEmptyStrings().trimResults();
     this.kofAdapter = kofAdapter;
     this.organisation = organisation;
     this.dateAdapter = dateAdapter;
     this.type = type;
-    this.sport = sport;
   }
 
   public AdaptedEvent adapt(ParsedEvent parsedEvent) {
@@ -49,6 +50,8 @@ public class BAdapter {
     }
 
     DateTime eventDate = dateAdapter.adapt(parsedEvent.date);
+
+    Sport sport = sportAdapter.adapt(parsedEvent.sport);
 
     return new AdaptedEvent(type, sport, side1, side2, lowKof, highKof, organisation, eventDate);
   }

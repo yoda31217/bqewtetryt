@@ -7,8 +7,14 @@ public class ParsedEvent {
   public final String lowKof;
   public final String side1;
   public final String side2;
+  public final String sport;
 
   public ParsedEvent(String side1, String side2, String date, String lowKof, String highKof) {
+    this(null, side1, side2, date, lowKof, highKof);
+  }
+
+  public ParsedEvent(String sport, String side1, String side2, String date, String lowKof, String highKof) {
+    this.sport = sport;
     this.side1 = side1;
     this.side2 = side2;
     this.date = date;
@@ -19,7 +25,8 @@ public class ParsedEvent {
   @Override
   public String toString() {
     return "ParsedEvent{" +
-           "side1='" + side1 + '\'' +
+           "sport='" + sport + '\'' +
+           ",side1='" + side1 + '\'' +
            ", side2='" + side2 + '\'' +
            ", date='" + date + '\'' +
            ", lowKof='" + lowKof + '\'' +
