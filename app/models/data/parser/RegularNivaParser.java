@@ -12,13 +12,13 @@ import static models.event.Sport.sportFromEngName;
 
 public class RegularNivaParser implements BParser {
 
-  private final String url;
+  private final String       url;
   private final ChromeDriver webDriver;
-  private final Sport  sport;
+  private final Sport        sport;
 
-  public RegularNivaParser(String url, ChromeDriver webDriver, Sport sport) {
+  public RegularNivaParser(String urlPart, ChromeDriver webDriver, Sport sport) {
     this.sport = sport;
-    this.url = url;
+    this.url = "https://igra.msl.ua/sportliga/uk/sports/" + urlPart;
     this.webDriver = webDriver;
 
     this.webDriver.get(url);

@@ -11,12 +11,14 @@ import models.data.adapter.date.KamazDateAdapter;
 import models.data.adapter.date.NivaDateAdapter;
 import models.data.adapter.date.NowDateAdapter;
 import models.data.adapter.kof.DecimalKofAdapter;
+import models.data.adapter.kof.FractionalKofAdapter;
 import models.data.adapter.kof.KofAdapter;
 import models.data.adapter.sport.ConstantSportAdapter;
 import models.data.adapter.sport.EngTextSportAdapter;
 import models.data.adapter.sport.SportAdapter;
 import models.data.parser.BParser;
 import models.data.parser.LiveKamazParser;
+import models.data.parser.LiveVolvoParser;
 import models.data.parser.RegularKamazParser;
 import models.data.parser.RegularNivaParser;
 import models.data.parser.RetryExceptionParser;
@@ -27,10 +29,11 @@ import models.job.EventFilter;
 import models.job.EventJob;
 import models.job.RemoveOldEventJob;
 import models.job.RemoveOldHistoryJob;
+import models.notification.MessyNotifier;
 import models.notification.NotificationJob;
-import models.notification.TwitterNotifier;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import play.Configuration;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
@@ -44,7 +47,9 @@ import static models.event.EventType.LIVE;
 import static models.event.EventType.REGULAR;
 import static models.event.Organisation.KAMAZ;
 import static models.event.Organisation.NIVA;
+import static models.event.Organisation.VOLVO;
 import static models.event.Sport.BASEBALL;
+import static models.event.Sport.BEACH_VOLLEYBALL;
 import static models.event.Sport.TENNIS;
 import static models.event.Sport.VOLLEYBALL;
 import static models.util.Objects2.enumsFromStrings;
@@ -84,7 +89,7 @@ class GlobalModule extends AbstractModule {
   @Singleton
   @Named("live-kamaz")
   Runnable provideLiveKamazJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
-    BParser parser = new LiveKamazParser("https://www.favbet.com/en/live/", webDriver);
+    BParser parser = new LiveKamazParser(webDriver);
     parser = new RetryExceptionParser(parser, 3);
 
     DateAdapter dateAdapter = new NowDateAdapter();
@@ -97,14 +102,46 @@ class GlobalModule extends AbstractModule {
 
   @Provides
   @Singleton
+  @Named("live-volvo-beach-volleyball")
+  Runnable provideLiveVolvoBeachVolleyballJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter) {
+    return createLiveVolvoJob(eventStore, webDriver, eventFilter, BEACH_VOLLEYBALL, "sport_95");
+  }
+
+  @Provides
+  @Singleton
+  @Named("live-volvo-tennis")
+  Runnable provideLiveVolvoTennisJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter) {
+    return createLiveVolvoJob(eventStore, webDriver, eventFilter, TENNIS, "sport_13");
+  }
+
+  @Provides
+  @Singleton
+  @Named("live-volvo-volleyball")
+  Runnable provideLiveVolvoVolleyballJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter) {
+    return createLiveVolvoJob(eventStore, webDriver, eventFilter, VOLLEYBALL, "sport_91");
+  }
+
+  @Provides
+  @Singleton
   MainController provideMainController(EventStore eventStore) {
     return new MainController(eventStore);
   }
 
   @Provides
+  @Named("mobile")
+  ChromeDriver provideMobileWebDriver() {
+    ChromeOptions options = new ChromeOptions();
+    options.addArguments(
+      "--user-agent=Mozilla/5.0 (iPad; CPU OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53");
+    ChromeDriver chromeDriver = new ChromeDriver(options);
+    createdWebDrivers.add(chromeDriver);
+    return chromeDriver;
+  }
+
+  @Provides
   @Singleton
   NotificationJob provideNotificationJob(Twitter twitter, EventStore eventStore) {
-    return new NotificationJob(new TwitterNotifier(twitter), eventStore);
+    return new NotificationJob(new MessyNotifier(), eventStore);
   }
 
   @Provides
@@ -170,8 +207,20 @@ class GlobalModule extends AbstractModule {
     return chromeDriver;
   }
 
+  private Runnable createLiveVolvoJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, Sport sport, String sportCode) {
+    BParser parser = new LiveVolvoParser(webDriver, sportCode);
+    parser = new RetryExceptionParser(parser, 3);
+
+    DateAdapter dateAdapter = new NowDateAdapter();
+    KofAdapter kofAdapter = new FractionalKofAdapter();
+    SportAdapter sportAdapter = new ConstantSportAdapter(sport);
+    BAdapter adapter = new BAdapter("/", dateAdapter, kofAdapter, sportAdapter, LIVE, VOLVO);
+
+    return new EventJob(eventStore, parser, adapter, eventFilter);
+  }
+
   private Runnable createRegularKamazJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, Sport sport, String sportStyleName) {
-    BParser parser = new RegularKamazParser("https://www.favbet.com/ru/bets/", webDriver, sportStyleName);
+    BParser parser = new RegularKamazParser(webDriver, sportStyleName);
     parser = new RetryExceptionParser(parser, 3);
 
     DateAdapter dateAdapter = new KamazDateAdapter();
@@ -183,7 +232,7 @@ class GlobalModule extends AbstractModule {
   }
 
   private Runnable createRegularNivaJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, String urlPart, Sport sport) {
-    BParser parser = new RegularNivaParser("https://igra.msl.ua/sportliga/uk/sports/" + urlPart, webDriver, sport);
+    BParser parser = new RegularNivaParser(urlPart, webDriver, sport);
     parser = new RetryExceptionParser(parser, 3);
 
     DateAdapter dateAdapter = new NivaDateAdapter();

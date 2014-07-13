@@ -1,40 +1,30 @@
 package models.event;
 
-import java.util.List;
-
-import static java.util.Arrays.asList;
-
 public enum Sport {
-  UNKNOWN("UK", asList("unknown")),
-  TENNIS("TE", asList("tennis")),
-  BASEBALL("BL", asList("baseball")),
-  VOLLEYBALL("VB", asList("volleyball")),
-  TABLE_TENNIS("TT", asList("table", "tennis")),
-  BASKETBALL("BB", asList("basketball"));
+  UNKNOWN("UK", "unknown"),
+  TENNIS("TE", "tennis"),
+  BASEBALL("BL", "baseball"),
+  VOLLEYBALL("VB", "volleyball"),
+  BEACH_VOLLEYBALL("BV", "beach volleyball"),
+  TABLE_TENNIS("TT", "table tennis"),
+  BASKETBALL("BB", "basketball");
 
-  public final  String       label;
-  private final List<String> engNameParts;
+  public final  String label;
+  private final String engName;
 
-  Sport(String label, List<String> engNameParts) {
+  Sport(String label, String engName) {
     this.label = label;
-    this.engNameParts = engNameParts;
+    this.engName = engName;
   }
 
   public static Sport sportFromEngName(String unknownSportEngName) {
     if (null == unknownSportEngName) return UNKNOWN;
 
-    unknownSportEngName = unknownSportEngName.toLowerCase();
+    unknownSportEngName = unknownSportEngName.trim().toLowerCase();
 
     for (Sport sportCandidate : values())
-      if (isCandidateEqualToUnknownSport(unknownSportEngName, sportCandidate)) return sportCandidate;
+      if (sportCandidate.engName.equals(unknownSportEngName)) return sportCandidate;
 
     return UNKNOWN;
-  }
-
-  private static boolean isCandidateEqualToUnknownSport(String unknownSportEngName, Sport sportCandidate) {
-    for (String sportCandidateEngNamePart : sportCandidate.engNameParts)
-      if (!unknownSportEngName.contains(sportCandidateEngNamePart)) return false;
-
-    return true;
   }
 }

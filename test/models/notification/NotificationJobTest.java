@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 public class NotificationJobTest {
 
   private EventStore      eventStoreMock = mock(EventStore.class);
-  private TwitterNotifier notifierMock   = mock(TwitterNotifier.class);
+  private BNotifier       notifierMock   = mock(BNotifier.class);
   private NotificationJob job            = new NotificationJob(notifierMock, eventStoreMock);
   private DateTime        eventDate      = new DateTime(2014, 4, 26, 8, 20, UTC);
   private Event           event          = new Event(LIVE, BASKETBALL, eventDate, newArrayList("SIDE1"), newArrayList("SIDE2"));

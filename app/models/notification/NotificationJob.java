@@ -24,14 +24,14 @@ import static play.Logger.of;
 
 public class NotificationJob implements Runnable {
 
-  public static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.forPattern("dd-MM HH:mm").withZone(forID("Europe/Kiev"));
+  public static final  DateTimeFormatter DATE_FORMAT   = DateTimeFormat.forPattern("dd-MM HH:mm").withZone(forID("Europe/Kiev"));
   private static final DecimalFormat     NUMBER_FORMAT = new DecimalFormat("0.000");
   Logger.ALogger log = of(NotificationJob.class);
   private final EventStore eventStore;
   private final Set<Calculation> lastForkCalculations = newCopyOnWriteArraySet();
-  private final TwitterNotifier notifier;
+  private final BNotifier notifier;
 
-  public NotificationJob(TwitterNotifier notifier, EventStore eventStore) {
+  public NotificationJob(BNotifier notifier, EventStore eventStore) {
     this.notifier = notifier;
     this.eventStore = eventStore;
   }

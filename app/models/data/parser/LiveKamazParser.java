@@ -19,10 +19,10 @@ public class LiveKamazParser implements BParser {
   public static final Splitter SPORT_NAME_SPLITTER = Splitter.on('|');
   private final ChromeDriver webDriver;
 
-  public LiveKamazParser(String url, ChromeDriver webDriver) {
+  public LiveKamazParser(ChromeDriver webDriver) {
     this.webDriver = webDriver;
 
-    this.webDriver.get(url);
+    this.webDriver.get("https://www.favbet.com/en/live/");
     this.webDriver.manage().window().setSize(new Dimension(1800, 1000));
   }
 

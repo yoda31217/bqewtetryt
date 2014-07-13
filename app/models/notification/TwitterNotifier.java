@@ -6,7 +6,7 @@ import twitter4j.TwitterException;
 
 import static play.Logger.of;
 
-public class TwitterNotifier {
+public class TwitterNotifier implements BNotifier {
 
   Logger.ALogger log = of(TwitterNotifier.class);
   private final Twitter twitter;
@@ -15,6 +15,7 @@ public class TwitterNotifier {
     this.twitter = twitter;
   }
 
+  @Override
   public void notify(String message) {
     try {
       twitter.updateStatus(message);

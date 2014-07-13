@@ -20,12 +20,12 @@ public class RegularKamazParser implements BParser {
   public static final Joiner TOURNAMENT_IDS_URL_PART_JOINER = Joiner.on(",").skipNulls();
   private final ChromeDriver webDriver;
   private final String       baseUrl;
-  private String sportStyleName;
+  private       String       sportStyleName;
 
-  public RegularKamazParser(String url, ChromeDriver webDriver, String sportStyleName) {
+  public RegularKamazParser(ChromeDriver webDriver, String sportStyleName) {
     this.sportStyleName = sportStyleName;
     this.webDriver = webDriver;
-    baseUrl = url;
+    baseUrl = "https://www.favbet.com/ru/bets/";
 
     this.webDriver.get(baseUrl);
     this.webDriver.manage().window().setSize(new Dimension(1800, 1000));
