@@ -9,10 +9,14 @@ import models.data.adapter.BAdapter;
 import models.data.adapter.date.DateAdapter;
 import models.data.adapter.date.KamazDateAdapter;
 import models.data.adapter.date.NivaDateAdapter;
+import models.data.adapter.date.NowDateAdapter;
 import models.data.adapter.kof.DecimalKofAdapter;
 import models.data.adapter.kof.KofAdapter;
 import models.data.adapter.sport.ConstantSportAdapter;
+import models.data.adapter.sport.EngTextSportAdapter;
+import models.data.adapter.sport.SportAdapter;
 import models.data.parser.BParser;
+import models.data.parser.LiveKamazParser;
 import models.data.parser.RegularKamazParser;
 import models.data.parser.RegularNivaParser;
 import models.data.parser.RetryExceptionParser;
@@ -36,6 +40,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.google.inject.Scopes.SINGLETON;
+import static models.event.EventType.LIVE;
 import static models.event.EventType.REGULAR;
 import static models.event.Organisation.KAMAZ;
 import static models.event.Organisation.NIVA;
@@ -79,15 +84,15 @@ class GlobalModule extends AbstractModule {
   @Singleton
   @Named("live-kamaz")
   Runnable provideLiveKamazJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
-    //    BParser parser = new RegularKamazParser("https://www.favbet.com/ru/bets/", webDriver, "sport51");
-    //    parser = new RetryExceptionParser(parser, 3);
-    //
-    //    DateAdapter dateAdapter = new KamazDateAdapter();
-    //    KofAdapter kofAdapter = new DecimalKofAdapter();
-    //    BAdapter adapter = new BAdapter(" / ", dateAdapter, kofAdapter, sportAdapterMock, REGULAR, KAMAZ, VOLLEYBALL);
-    //
-    //    return new EventJob(eventStore, parser, adapter, eventFilter);
-    return null;
+    BParser parser = new LiveKamazParser("https://www.favbet.com/en/live/", webDriver);
+    parser = new RetryExceptionParser(parser, 3);
+
+    DateAdapter dateAdapter = new NowDateAdapter();
+    KofAdapter kofAdapter = new DecimalKofAdapter();
+    SportAdapter sportAdapter = new EngTextSportAdapter();
+    BAdapter adapter = new BAdapter(" / ", dateAdapter, kofAdapter, sportAdapter, LIVE, KAMAZ);
+
+    return new EventJob(eventStore, parser, adapter, eventFilter);
   }
 
   @Provides
@@ -171,7 +176,7 @@ class GlobalModule extends AbstractModule {
 
     DateAdapter dateAdapter = new KamazDateAdapter();
     KofAdapter kofAdapter = new DecimalKofAdapter();
-    ConstantSportAdapter sportAdapter = new ConstantSportAdapter(sport);
+    SportAdapter sportAdapter = new ConstantSportAdapter(sport);
     BAdapter adapter = new BAdapter(" / ", dateAdapter, kofAdapter, sportAdapter, REGULAR, KAMAZ);
 
     return new EventJob(eventStore, parser, adapter, eventFilter);
@@ -183,7 +188,7 @@ class GlobalModule extends AbstractModule {
 
     DateAdapter dateAdapter = new NivaDateAdapter();
     KofAdapter kofAdapter = new DecimalKofAdapter();
-    ConstantSportAdapter sportAdapter = new ConstantSportAdapter(sport);
+    SportAdapter sportAdapter = new ConstantSportAdapter(sport);
     BAdapter adapter = new BAdapter("|", dateAdapter, kofAdapter, sportAdapter, REGULAR, NIVA);
 
     return new EventJob(eventStore, parser, adapter, eventFilter);

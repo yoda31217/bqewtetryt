@@ -1,25 +1,40 @@
 package models.event;
 
+import java.util.List;
+
+import static java.util.Arrays.asList;
+
 public enum Sport {
-  UNKNOWN("UK", "Unknown"),
-  TENNIS("TE", "Tennis"),
-  BASEBALL("BL", "Baseball"),
-  VOLLEYBALL("VB", "Volleyball"),
-  TABLE_TENNIS("TT", "Table Tennis"),
-  BASKETBALL("BB", "Basketball");
+  UNKNOWN("UK", asList("unknown")),
+  TENNIS("TE", asList("tennis")),
+  BASEBALL("BL", asList("baseball")),
+  VOLLEYBALL("VB", asList("volleyball")),
+  TABLE_TENNIS("TT", asList("table", "tennis")),
+  BASKETBALL("BB", asList("basketball"));
 
-  public final  String label;
-  private final String engName;
+  public final  String       label;
+  private final List<String> engNameParts;
 
-  Sport(String label, String engName) {
+  Sport(String label, List<String> engNameParts) {
     this.label = label;
-    this.engName = engName;
+    this.engNameParts = engNameParts;
   }
 
-  public static Sport sportFromEngName(String engName) {
-    for (Sport sport : values()) {
-      if (sport.engName.equals(engName)) return sport;
-    }
+  public static Sport sportFromEngName(String unknownSportEngName) {
+    if (null == unknownSportEngName) return UNKNOWN;
+
+    unknownSportEngName = unknownSportEngName.toLowerCase();
+
+    for (Sport sportCandidate : values())
+      if (isCandidateEqualToUnknownSport(unknownSportEngName, sportCandidate)) return sportCandidate;
+
     return UNKNOWN;
+  }
+
+  private static boolean isCandidateEqualToUnknownSport(String unknownSportEngName, Sport sportCandidate) {
+    for (String sportCandidateEngNamePart : sportCandidate.engNameParts)
+      if (!unknownSportEngName.contains(sportCandidateEngNamePart)) return false;
+
+    return true;
   }
 }
