@@ -63,7 +63,7 @@ public class LiveKamazParser implements BParser {
 
       String sportStr = parseSportStr(sportEl);
 
-      Elements eventEls = sportEl.select("ul.tourfull > li > ul.mrk-head > li.col21 > ul.mrk-itm");
+      Elements eventEls = sportEl.select("li > ul.mrk-head > li.col21 > ul.mrk-itm");
       for (Element eventEl : eventEls) {
 
         ParsedEvent parsedEvent = parseEvent(eventEl, sportStr);

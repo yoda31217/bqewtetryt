@@ -1,5 +1,6 @@
 package models.data.parser;
 
+import com.google.common.base.Function;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,6 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
+import static com.google.common.collect.Lists.transform;
 import static java.util.Collections.emptyList;
 
 public class LiveVolvoParser implements BParser {
@@ -50,17 +52,23 @@ public class LiveVolvoParser implements BParser {
   }
 
   private ParsedEvent parseEvent(Element eventEl) {
-    String side1 = selectElText(eventEl, "div.RowContainer > div.Row:nth-child(1) > div.teams");
+    List<String> sides = selectElsTexts(eventEl, "div.RowContainer > div.Row > div.teams");
+    if (2 > sides.size()) return null;
+
+    List<String> kofs = selectElsTexts(eventEl, "div.OverviewMarket > div.Participant > span.Odds");
+    if (2 > kofs.size()) return null;
+
+    String side1 = sides.get(0);
     if (null == side1) return null;
 
-    String lowKof = selectElText(eventEl, "div.OverviewMarket > div.Participant:nth-child(1) > span.Odds");
+    String lowKof = kofs.get(0);
     if (null == lowKof) return null;
     if ("SP".equals(lowKof)) return null;
 
-    String side2 = selectElText(eventEl, "div.RowContainer > div.Row:nth-child(2) > div.teams");
+    String side2 = sides.get(1);
     if (null == side2) return null;
 
-    String highKof = selectElText(eventEl, "div.OverviewMarket > div.Participant:nth-child(2) > span.Odds");
+    String highKof = kofs.get(1);
     if (null == highKof) return null;
     if ("SP".equals(highKof)) return null;
 
@@ -82,14 +90,23 @@ public class LiveVolvoParser implements BParser {
     return events;
   }
 
-  private String selectElText(Element el, String cssSelector) {
-    Elements els = el.select(cssSelector);
-    if (els.isEmpty()) return null;
+  private String selectElText(Element parentEl, String cssSelector) {
+    List<String> elsTexts = selectElsTexts(parentEl, cssSelector);
 
-    String elText = els.get(0).text();
-    if (isNullOrEmpty(elText)) return null;
+    if (elsTexts.isEmpty()) return null;
 
-    return elText;
+    return elsTexts.get(0);
+  }
+
+  private List<String> selectElsTexts(Element parentEl, String cssSelector) {
+    return transform(parentEl.select(cssSelector), new Function<Element, String>() {
+
+      @Override
+      public String apply(Element el) {
+        String elText = el.text();
+        return (isNullOrEmpty(elText)) ? null : elText;
+      }
+    });
   }
 
   private void selectSport() {
