@@ -102,6 +102,13 @@ class GlobalModule extends AbstractModule {
 
   @Provides
   @Singleton
+  @Named("live-volvo-baseball")
+  Runnable provideLiveVolvoBaseballJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter) {
+    return createLiveVolvoJob(eventStore, webDriver, eventFilter, BASEBALL, "sport_18");
+  }
+
+  @Provides
+  @Singleton
   @Named("live-volvo-beach-volleyball")
   Runnable provideLiveVolvoBeachVolleyballJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter) {
     return createLiveVolvoJob(eventStore, webDriver, eventFilter, BEACH_VOLLEYBALL, "sport_95");

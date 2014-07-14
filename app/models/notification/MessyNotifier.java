@@ -21,6 +21,7 @@ public class MessyNotifier implements BNotifier {
       HttpPost post = new HttpPost("http://messy-app.appspot.com/post_message");
       post.setEntity(new StringEntity(message));
       httpClient.execute(post);
+      post.reset();
 
     } catch (Exception ex) {
       log.warn("Failed to send message to Messy-app: {}. Error message: {}.", message, ex.getMessage());
