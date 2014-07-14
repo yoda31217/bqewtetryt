@@ -3,8 +3,6 @@ package models.notification;
 import com.google.common.base.Predicate;
 import models.calc.Calculation;
 import models.event.EventStore;
-import org.joda.time.DateTime;
-import org.joda.time.Duration;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import play.Logger;
@@ -18,7 +16,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newCopyOnWriteArraySet;
 import static com.google.common.collect.Sets.newHashSet;
 import static models.calc.Calculations.eventsToCalculations;
-import static org.joda.time.DateTimeZone.UTC;
 import static org.joda.time.DateTimeZone.forID;
 import static play.Logger.of;
 
@@ -72,43 +69,39 @@ public class NotificationJob implements Runnable {
     @SuppressWarnings("StringBufferReplaceableByString") StringBuilder messageBuilder = new StringBuilder();
 
     messageBuilder.append(DATE_FORMAT.print(calculation.date()));
-    messageBuilder.append(" ");
+    messageBuilder.append(" <kbd>");
     messageBuilder.append(calculation.type().label);
-    messageBuilder.append(" ");
+    messageBuilder.append("</kbd> <span class=\"label label-danger\">");
     messageBuilder.append(calculation.sport().label);
-    messageBuilder.append(" ");
 
+    messageBuilder.append("</span>\n<span class=\"text-primary\">");
     messageBuilder.append(calculation.side1());
-    messageBuilder.append(" - ");
+    messageBuilder.append("</span> - <span class=\"text-success\">");
     messageBuilder.append(calculation.side2());
-    messageBuilder.append(" ");
 
+    messageBuilder.append("</span>\n<span class=\"label label-primary\">");
     messageBuilder.append(NUMBER_FORMAT.format(calculation.lowForkKof()));
-    messageBuilder.append(",");
+    messageBuilder.append("</span> <span class=\"label label-primary\">");
     messageBuilder.append(calculation.lowForkKofOrganisation().label);
-    messageBuilder.append(",");
-    messageBuilder.append(new Duration(calculation.lowForkKofDate(), new DateTime(UTC)).getStandardSeconds());
-    messageBuilder.append("/");
-
+    messageBuilder.append("</span> - <span class=\"label label-success\">");
     messageBuilder.append(NUMBER_FORMAT.format(calculation.highForkKof()));
-    messageBuilder.append(",");
+    messageBuilder.append("</span> <span class=\"label label-success\">");
     messageBuilder.append(calculation.highForkKofOrganisation().label);
-    messageBuilder.append(",");
-    messageBuilder.append(new Duration(calculation.highForkKofDate(), new DateTime(UTC)).getStandardSeconds());
-    messageBuilder.append(" ");
 
+    messageBuilder.append("</span>\n<strong class=\"text-primary\">");
     messageBuilder.append(NUMBER_FORMAT.format(calculation.highProfitMoney1()));
-    messageBuilder.append("+");
+    messageBuilder.append("</strong> + <strong class=\"text-success\">");
     messageBuilder.append(NUMBER_FORMAT.format(calculation.highProfitMoney2()));
-    messageBuilder.append("=");
+    messageBuilder.append("</strong> = <strong class=\"text-success\">");
     messageBuilder.append(NUMBER_FORMAT.format(calculation.highProfit()));
-    messageBuilder.append(" ");
 
+    messageBuilder.append("</strong>\n<strong class=\"text-primary\">");
     messageBuilder.append(NUMBER_FORMAT.format(calculation.lowProfitMoney1()));
-    messageBuilder.append("+");
+    messageBuilder.append("</strong> + <strong class=\"text-success\">");
     messageBuilder.append(NUMBER_FORMAT.format(calculation.lowProfitMoney2()));
-    messageBuilder.append("=");
+    messageBuilder.append("</strong> = <strong class=\"text-primary\">");
     messageBuilder.append(NUMBER_FORMAT.format(calculation.lowProfit()));
+    messageBuilder.append("</strong>");
 
     return messageBuilder.toString();
   }
