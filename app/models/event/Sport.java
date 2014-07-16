@@ -2,6 +2,7 @@ package models.event;
 
 public enum Sport {
   UNKNOWN("UK", "unknown"),
+  BADMINTON("BT", "badminton"),
   TENNIS("TE", "tennis"),
   BASEBALL("BL", "baseball"),
   VOLLEYBALL("VB", "volleyball"),

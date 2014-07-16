@@ -23,7 +23,7 @@ public class LiveKamazParser implements BParser {
     this.webDriver = webDriver;
 
     this.webDriver.get("https://www.favbet.com/en/live/");
-    this.webDriver.manage().window().setSize(new Dimension(1800, 1000));
+    this.webDriver.manage().window().setSize(new Dimension(50, 50));
   }
 
   @Override
@@ -43,13 +43,13 @@ public class LiveKamazParser implements BParser {
     String side1 = selectElText(eventEl, "li.bets_fullmark_body.m_1 span");
     if (null == side1) return null;
 
-    String lowKof = selectElText(eventEl, "li.bets_fullmark_body.m_1 button");
+    String lowKof = selectElText(eventEl, "li.bets_fullmark_body.m_1 button:not([disabled])");
     if (null == lowKof) return null;
 
     String side2 = selectElText(eventEl, "li.bets_fullmark_body.m_2 span");
     if (null == side2) return null;
 
-    String highKof = selectElText(eventEl, "li.bets_fullmark_body.m_2 button");
+    String highKof = selectElText(eventEl, "li.bets_fullmark_body.m_2 button:not([disabled])");
     if (null == highKof) return null;
 
     return new ParsedEvent(sportStr, side1, side2, date, lowKof, highKof);

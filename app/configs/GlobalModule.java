@@ -48,6 +48,7 @@ import static models.event.EventType.REGULAR;
 import static models.event.Organisation.KAMAZ;
 import static models.event.Organisation.NIVA;
 import static models.event.Organisation.VOLVO;
+import static models.event.Sport.BADMINTON;
 import static models.event.Sport.BASEBALL;
 import static models.event.Sport.BEACH_VOLLEYBALL;
 import static models.event.Sport.TABLE_TENNIS;
@@ -99,6 +100,13 @@ class GlobalModule extends AbstractModule {
     BAdapter adapter = new BAdapter(" / ", dateAdapter, kofAdapter, sportAdapter, LIVE, KAMAZ);
 
     return new EventJob(eventStore, parser, adapter, eventFilter);
+  }
+
+  @Provides
+  @Singleton
+  @Named("live-volvo-badminton")
+  Runnable provideLiveVolvoBadmintonJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter) {
+    return createLiveVolvoJob(eventStore, webDriver, eventFilter, BADMINTON, "sport_94");
   }
 
   @Provides

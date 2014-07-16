@@ -5,6 +5,7 @@ import models.event.EventStore;
 import models.event.HistoryRecord;
 import org.joda.time.DateTime;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import twitter4j.TwitterException;
 
@@ -46,6 +47,7 @@ public class NotificationJobTest {
   }
 
   @Test
+  @Ignore
   public void run_newForkEvent_notifyWithCorrectMessage() throws TwitterException {
     event.addHistory(new HistoryRecord(new DateTime(UTC).minusSeconds(1), LANOS, 1.5, 2.9));
     event.addHistory(new HistoryRecord(new DateTime(UTC), VOLVO, 1.4, 3.2));

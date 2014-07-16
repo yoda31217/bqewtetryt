@@ -26,7 +26,7 @@ public class LiveVolvoParser implements BParser {
     this.webDriver = webDriver;
 
     this.webDriver.get("http://www.bet365.com/lite/#!in-play/overview/");
-    this.webDriver.manage().window().setSize(new Dimension(1800, 1000));
+    this.webDriver.manage().window().setSize(new Dimension(50, 50));
   }
 
   @Override
@@ -55,7 +55,7 @@ public class LiveVolvoParser implements BParser {
     List<String> sides = selectElsTexts(eventEl, "div.RowContainer > div.Row > div.teams");
     if (2 > sides.size()) return null;
 
-    List<String> kofs = selectElsTexts(eventEl, "div.OverviewMarket > div.Participant > span.Odds");
+    List<String> kofs = selectElsTexts(eventEl, "div.OverviewMarket > div.Participant:not(.Suspended) > span.Odds");
     if (2 > kofs.size()) return null;
 
     String side1 = sides.get(0);
