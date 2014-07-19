@@ -1,5 +1,6 @@
 package models.event;
 
+import models.calc.Calculator;
 import org.joda.time.DateTime;
 import play.Logger;
 
@@ -15,11 +16,14 @@ public class EventStore {
   Logger.ALogger log = of(EventStore.class);
   final         List<Event>      events           = new CopyOnWriteArrayList<Event>();
   private final EventStoreFinder eventStoreFinder = new EventStoreFinder(events);
+  private final Calculator calculator;
 
-  public EventStore() { }
+  public EventStore(Calculator calculator) { this.calculator = calculator;}
 
   public void addHistory(Event event, DateTime date, EventOrganisation organisation, double lowKof, double highKof) {
-    event.addHistory(new EventHistoryRecord(date, organisation, lowKof, highKof));
+    EventHistoryRecord historyRecord = new EventHistoryRecord(date, organisation, lowKof, highKof);
+    event.addHistory(historyRecord);
+    calculator.notifyEventHistoryAdded(event, historyRecord);
   }
 
   public Event createOrFindEvent(EventType type, EventSport sport, DateTime date, List<String> side1, List<String> side2) {
@@ -33,13 +37,17 @@ public class EventStore {
     Event newEvent = new Event(type, sport, date, side1, side2);
     log.info("Adding new Event: {}.", newEvent.toString());
     events.add(newEvent);
+    calculator.notifyEventAdded(newEvent);
 
     return newEvent;
   }
 
   public List<Event> events() { return newArrayList(events); }
 
-  public void remove(Event event) { events.remove(event); }
+  public void remove(Event event) {
+    events.remove(event);
+    calculator.notifyEventRemoved(event);
+  }
 
   public void removeHistory(Event event, List<EventHistoryRecord> records) {event.removeHistory(records);}
 }

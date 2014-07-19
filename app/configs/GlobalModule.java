@@ -5,6 +5,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import controllers.MainController;
+import models.calc.Calculator;
 import models.data.adapter.BAdapter;
 import models.data.adapter.date.DateAdapter;
 import models.data.adapter.date.KamazDateAdapter;
@@ -74,7 +75,7 @@ class GlobalModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    bind(EventStore.class).in(SINGLETON);
+    bind(Calculator.class).in(SINGLETON);
     bind(Twitter.class).toInstance(TwitterFactory.getSingleton());
     bind(Scheduler.class).toInstance(system().scheduler());
   }
@@ -85,6 +86,12 @@ class GlobalModule extends AbstractModule {
     List<EventSport> allowedSports = enumsFromStrings(EventSport.class, configuration.getStringList("betty.jobs.filter.allowed-sports"));
     List<EventType> allowedTypes = enumsFromStrings(EventType.class, configuration.getStringList("betty.jobs.filter.allowed-types"));
     return new EventFilter(allowedSports, allowedTypes);
+  }
+
+  @Provides
+  @Singleton
+  EventStore provideEventStore(Calculator calculator) {
+    return new EventStore(calculator);
   }
 
   @Provides

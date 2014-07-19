@@ -1,5 +1,6 @@
 package models.job;
 
+import models.calc.Calculator;
 import models.event.Event;
 import models.event.EventStore;
 import org.joda.time.DateTime;
@@ -13,10 +14,11 @@ import static models.event.EventTests.addHistory;
 import static models.event.EventType.REGULAR;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.joda.time.DateTimeZone.UTC;
+import static org.mockito.Mockito.mock;
 
 public class RemoveOldEventJobTest {
 
-  private EventStore eventStore = new EventStore();
+  private EventStore eventStore = new EventStore(mock(Calculator.class));
 
   @Test
   public void run_eventWith5secOldHistory_removeEventsOlderThan4Sec() {

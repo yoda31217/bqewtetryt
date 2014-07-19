@@ -1,5 +1,6 @@
 package models.event;
 
+import models.calc.Calculator;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,16 +14,17 @@ import static models.event.EventSport.TENNIS;
 import static models.event.EventType.REGULAR;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.joda.time.DateTimeZone.UTC;
+import static org.mockito.Mockito.mock;
 
 @RunWith(Parameterized.class)
-public class EventStore_SimilarPlayerTest {
+public class EventStore_FinderSimilarPlayerNamesTest {
 
   private DateTime   eventDate;
   private EventStore eventStore;
   private String     originalPlayer;
   private String     similarPlayer;
 
-  public EventStore_SimilarPlayerTest(String originalPlayer, String similarPlayer) {
+  public EventStore_FinderSimilarPlayerNamesTest(String originalPlayer, String similarPlayer) {
     this.originalPlayer = originalPlayer;
     this.similarPlayer = similarPlayer;
   }
@@ -30,7 +32,7 @@ public class EventStore_SimilarPlayerTest {
   @Before
   public void before() throws Exception {
     eventDate = new DateTime(UTC);
-    eventStore = new EventStore();
+    eventStore = new EventStore(mock(Calculator.class));
   }
 
   @Parameterized.Parameters

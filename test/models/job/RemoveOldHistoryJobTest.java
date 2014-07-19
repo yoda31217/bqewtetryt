@@ -1,5 +1,6 @@
 package models.job;
 
+import models.calc.Calculator;
 import models.event.Event;
 import models.event.EventHistoryRecord;
 import models.event.EventStore;
@@ -13,10 +14,11 @@ import static models.event.EventTests.addHistory;
 import static models.event.EventType.REGULAR;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.joda.time.DateTimeZone.UTC;
+import static org.mockito.Mockito.mock;
 
 public class RemoveOldHistoryJobTest {
 
-  private EventStore          eventStore = new EventStore();
+  private EventStore          eventStore = new EventStore(mock(Calculator.class));
   private RemoveOldHistoryJob job        = new RemoveOldHistoryJob(2, eventStore);
   private Event               event      = eventStore.createOrFindEvent(REGULAR, TENNIS, new DateTime(UTC), newArrayList("SIDE1"), newArrayList("SIDE2"));
 
