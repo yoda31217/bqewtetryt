@@ -1,17 +1,17 @@
 package models.data.adapter.sport;
 
-import models.event.Sport;
+import models.event.EventSport;
 
 public class ConstantSportAdapter implements SportAdapter {
 
-  private final Sport sport;
+  private final EventSport sport;
 
-  public ConstantSportAdapter(Sport sport) {
+  public ConstantSportAdapter(EventSport sport) {
     this.sport = sport;
   }
 
   @Override
-  public Sport adapt(String sportStr) {
+  public EventSport adapt(String sportStr) {
     return sport;
   }
 }

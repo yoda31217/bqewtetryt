@@ -9,8 +9,8 @@ import org.junit.runners.Parameterized;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static models.event.EventSport.TENNIS;
 import static models.event.EventType.REGULAR;
-import static models.event.Sport.TENNIS;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.joda.time.DateTimeZone.UTC;
 

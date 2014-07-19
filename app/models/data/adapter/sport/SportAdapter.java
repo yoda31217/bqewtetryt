@@ -1,8 +1,8 @@
 package models.data.adapter.sport;
 
-import models.event.Sport;
+import models.event.EventSport;
 
 public interface SportAdapter {
 
-  Sport adapt(String sportStr);
+  EventSport adapt(String sportStr);
 }

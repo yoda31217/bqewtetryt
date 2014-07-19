@@ -22,9 +22,9 @@ import models.data.parser.LiveVolvoParser;
 import models.data.parser.RegularKamazParser;
 import models.data.parser.RegularNivaParser;
 import models.data.parser.RetryExceptionParser;
+import models.event.EventSport;
 import models.event.EventStore;
 import models.event.EventType;
-import models.event.Sport;
 import models.job.EventFilter;
 import models.job.EventJob;
 import models.job.RemoveOldEventJob;
@@ -43,17 +43,17 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.google.inject.Scopes.SINGLETON;
+import static models.event.EventOrganisation.KAMAZ;
+import static models.event.EventOrganisation.NIVA;
+import static models.event.EventOrganisation.VOLVO;
+import static models.event.EventSport.BADMINTON;
+import static models.event.EventSport.BASEBALL;
+import static models.event.EventSport.BEACH_VOLLEYBALL;
+import static models.event.EventSport.TABLE_TENNIS;
+import static models.event.EventSport.TENNIS;
+import static models.event.EventSport.VOLLEYBALL;
 import static models.event.EventType.LIVE;
 import static models.event.EventType.REGULAR;
-import static models.event.Organisation.KAMAZ;
-import static models.event.Organisation.NIVA;
-import static models.event.Organisation.VOLVO;
-import static models.event.Sport.BADMINTON;
-import static models.event.Sport.BASEBALL;
-import static models.event.Sport.BEACH_VOLLEYBALL;
-import static models.event.Sport.TABLE_TENNIS;
-import static models.event.Sport.TENNIS;
-import static models.event.Sport.VOLLEYBALL;
 import static models.util.Objects2.enumsFromStrings;
 import static play.libs.Akka.system;
 
@@ -82,7 +82,7 @@ class GlobalModule extends AbstractModule {
   @Provides
   @Singleton
   EventFilter provideEventFilter() {
-    List<Sport> allowedSports = enumsFromStrings(Sport.class, configuration.getStringList("betty.jobs.filter.allowed-sports"));
+    List<EventSport> allowedSports = enumsFromStrings(EventSport.class, configuration.getStringList("betty.jobs.filter.allowed-sports"));
     List<EventType> allowedTypes = enumsFromStrings(EventType.class, configuration.getStringList("betty.jobs.filter.allowed-types"));
     return new EventFilter(allowedSports, allowedTypes);
   }
@@ -230,7 +230,7 @@ class GlobalModule extends AbstractModule {
     return chromeDriver;
   }
 
-  private Runnable createLiveVolvoJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, Sport sport, String sportCode) {
+  private Runnable createLiveVolvoJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, EventSport sport, String sportCode) {
     BParser parser = new LiveVolvoParser(webDriver, sportCode);
     parser = new RetryExceptionParser(parser, 3);
 
@@ -242,7 +242,7 @@ class GlobalModule extends AbstractModule {
     return new EventJob(eventStore, parser, adapter, eventFilter);
   }
 
-  private Runnable createRegularKamazJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, Sport sport, String sportStyleName) {
+  private Runnable createRegularKamazJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, EventSport sport, String sportStyleName) {
     BParser parser = new RegularKamazParser(webDriver, sportStyleName);
     parser = new RetryExceptionParser(parser, 3);
 
@@ -254,7 +254,7 @@ class GlobalModule extends AbstractModule {
     return new EventJob(eventStore, parser, adapter, eventFilter);
   }
 
-  private Runnable createRegularNivaJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, String urlPart, Sport sport) {
+  private Runnable createRegularNivaJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, String urlPart, EventSport sport) {
     BParser parser = new RegularNivaParser(urlPart, webDriver, sport);
     parser = new RetryExceptionParser(parser, 3);
 

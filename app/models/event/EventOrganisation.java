@@ -1,6 +1,6 @@
 package models.event;
 
-public enum Organisation {
+public enum EventOrganisation {
   LANOS("L"),
   VOLVO("V"),
   NIVA("N"),
@@ -9,7 +9,7 @@ public enum Organisation {
 
   public final String label;
 
-  Organisation(String label) {
+  EventOrganisation(String label) {
     this.label = label;
   }
 }

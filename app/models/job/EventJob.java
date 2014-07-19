@@ -7,7 +7,6 @@ import models.data.parser.BParser;
 import models.data.parser.ParsedEvent;
 import models.event.Event;
 import models.event.EventStore;
-import models.event.HistoryRecord;
 import play.Logger;
 
 import java.util.List;
@@ -50,7 +49,7 @@ public class EventJob implements Runnable {
       if (!filter.apply(adaptedEvent)) return;
 
       Event event = eventStore.createOrFindEvent(adaptedEvent.type, adaptedEvent.sport, adaptedEvent.eventDate, adaptedEvent.side1, adaptedEvent.side2);
-      event.addHistory(new HistoryRecord(adaptedEvent.adoptedDate, adaptedEvent.organisation, adaptedEvent.lowKof, adaptedEvent.highKof));
+      eventStore.addHistory(event, adaptedEvent.adoptedDate, adaptedEvent.organisation, adaptedEvent.lowKof, adaptedEvent.highKof);
 
     } catch (Exception e) {
       log.error("Failed to process parsed event: {}.", parsedEvent.toString());

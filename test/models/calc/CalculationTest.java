@@ -1,18 +1,18 @@
 package models.calc;
 
 import models.event.Event;
-import models.event.HistoryRecord;
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static models.event.EventOrganisation.LANOS;
+import static models.event.EventOrganisation.UNKNOWN;
+import static models.event.EventOrganisation.VOLVO;
+import static models.event.EventSport.BASKETBALL;
+import static models.event.EventTests.addHistory;
 import static models.event.EventType.LIVE;
-import static models.event.Organisation.LANOS;
-import static models.event.Organisation.UNKNOWN;
-import static models.event.Organisation.VOLVO;
-import static models.event.Sport.BASKETBALL;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.joda.time.DateTimeUtils.setCurrentMillisFixed;
 import static org.joda.time.DateTimeUtils.setCurrentMillisSystem;
@@ -45,9 +45,9 @@ public class CalculationTest {
 
   @Test
   public void highForkKofDate_forkEvent_highForkKofDateVolvo() {
-    event.addHistory(new HistoryRecord(new DateTime(UTC), LANOS, 1.5, 2.9));
+    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.9);
     DateTime volvoRecordDate = new DateTime(UTC);
-    event.addHistory(new HistoryRecord(volvoRecordDate, VOLVO, 1.4, 3.2));
+    addHistory(event, volvoRecordDate, VOLVO, 1.4, 3.2);
 
     Calculation calculation = new Calculation(event);
 
@@ -62,8 +62,8 @@ public class CalculationTest {
 
   @Test
   public void highForkKofOrganisation_forkEvent_highForkKofOrganisationVolvo() {
-    event.addHistory(new HistoryRecord(new DateTime(UTC), LANOS, 1.5, 2.9));
-    event.addHistory(new HistoryRecord(new DateTime(UTC), VOLVO, 1.4, 3.2));
+    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.9);
+    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
 
     Calculation calculation = new Calculation(event);
 
@@ -78,8 +78,8 @@ public class CalculationTest {
 
   @Test
   public void highForkKof_forkEvent_highForkKofVolvo() {
-    event.addHistory(new HistoryRecord(new DateTime(UTC), LANOS, 1.5, 2.9));
-    event.addHistory(new HistoryRecord(new DateTime(UTC), VOLVO, 1.4, 3.2));
+    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.9);
+    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
 
     Calculation calculation = new Calculation(event);
 
@@ -94,8 +94,8 @@ public class CalculationTest {
 
   @Test
   public void highProfitMoney1_forkEvent_highProfitMoney1() {
-    event.addHistory(new HistoryRecord(new DateTime(UTC), LANOS, 1.5, 2.8));
-    event.addHistory(new HistoryRecord(new DateTime(UTC), VOLVO, 1.4, 3.2));
+    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.8);
+    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
 
     Calculation calculation = new Calculation(event);
 
@@ -110,8 +110,8 @@ public class CalculationTest {
 
   @Test
   public void highProfitMoney2_forkEvent_highProfitMoney2() {
-    event.addHistory(new HistoryRecord(new DateTime(UTC), LANOS, 1.5, 2.8));
-    event.addHistory(new HistoryRecord(new DateTime(UTC), VOLVO, 1.4, 3.2));
+    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.8);
+    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
 
     Calculation calculation = new Calculation(event);
 
@@ -126,8 +126,8 @@ public class CalculationTest {
 
   @Test
   public void highProfit_forkEvent_highProfit() {
-    event.addHistory(new HistoryRecord(new DateTime(UTC), LANOS, 1.5, 2.8));
-    event.addHistory(new HistoryRecord(new DateTime(UTC), VOLVO, 1.4, 3.2));
+    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.8);
+    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
 
     Calculation calculation = new Calculation(event);
 
@@ -136,8 +136,8 @@ public class CalculationTest {
 
   @Test
   public void isFork_forkEvent_isForkTrue() {
-    event.addHistory(new HistoryRecord(new DateTime(UTC), LANOS, 1.5, 2.9));
-    event.addHistory(new HistoryRecord(new DateTime(UTC), VOLVO, 1.4, 3.2));
+    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.9);
+    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
 
     Calculation calculation = new Calculation(event);
 
@@ -146,9 +146,9 @@ public class CalculationTest {
 
   @Test
   public void isFork_forkThenNotForkEvent_isForkFalse() {
-    event.addHistory(new HistoryRecord(new DateTime(UTC), LANOS, 1.5, 2.8));
-    event.addHistory(new HistoryRecord(new DateTime(UTC), VOLVO, 1.4, 3.2));
-    event.addHistory(new HistoryRecord(new DateTime(UTC), VOLVO, 1.4, 2.9));
+    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.8);
+    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
+    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 2.9);
 
     Calculation calculation = new Calculation(event);
 
@@ -157,8 +157,8 @@ public class CalculationTest {
 
   @Test
   public void isFork_notForkEvent_isForkFalse() {
-    event.addHistory(new HistoryRecord(new DateTime(UTC), LANOS, 1.5, 2.8));
-    event.addHistory(new HistoryRecord(new DateTime(UTC), VOLVO, 1.4, 2.9));
+    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.8);
+    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 2.9);
 
     Calculation calculation = new Calculation(event);
 
@@ -175,8 +175,8 @@ public class CalculationTest {
   @Test
   public void lowForkKofDate_forkEvent_lowForkKofDateLanos() {
     DateTime lanosRecordDate = new DateTime(UTC);
-    event.addHistory(new HistoryRecord(lanosRecordDate, LANOS, 1.5, 2.9));
-    event.addHistory(new HistoryRecord(new DateTime(UTC), VOLVO, 1.4, 3.2));
+    addHistory(event, lanosRecordDate, LANOS, 1.5, 2.9);
+    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
 
     Calculation calculation = new Calculation(event);
 
@@ -191,8 +191,8 @@ public class CalculationTest {
 
   @Test
   public void lowForkKofOrganisation_forkEvent_lowForkKofOrganisationLanos() {
-    event.addHistory(new HistoryRecord(new DateTime(UTC), LANOS, 1.5, 2.9));
-    event.addHistory(new HistoryRecord(new DateTime(UTC), VOLVO, 1.4, 3.2));
+    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.9);
+    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
 
     Calculation calculation = new Calculation(event);
 
@@ -207,8 +207,8 @@ public class CalculationTest {
 
   @Test
   public void lowForkKof_forkEvent_lowForkKofLanos() {
-    event.addHistory(new HistoryRecord(new DateTime(UTC), LANOS, 1.5, 2.9));
-    event.addHistory(new HistoryRecord(new DateTime(UTC), VOLVO, 1.4, 3.2));
+    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.9);
+    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
 
     Calculation calculation = new Calculation(event);
 
@@ -223,8 +223,8 @@ public class CalculationTest {
 
   @Test
   public void lowProfitMoney1_forkEvent_lowProfitMoney1() {
-    event.addHistory(new HistoryRecord(new DateTime(UTC), LANOS, 1.5, 2.8));
-    event.addHistory(new HistoryRecord(new DateTime(UTC), VOLVO, 1.4, 3.2));
+    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.8);
+    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
 
     Calculation calculation = new Calculation(event);
 
@@ -239,8 +239,8 @@ public class CalculationTest {
 
   @Test
   public void lowProfitMoney2_forkEvent_lowProfitMoney2() {
-    event.addHistory(new HistoryRecord(new DateTime(UTC), LANOS, 1.5, 2.8));
-    event.addHistory(new HistoryRecord(new DateTime(UTC), VOLVO, 1.4, 3.2));
+    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.8);
+    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
 
     Calculation calculation = new Calculation(event);
 
@@ -255,8 +255,8 @@ public class CalculationTest {
 
   @Test
   public void lowProfit_forkEvent_lowProfit() {
-    event.addHistory(new HistoryRecord(new DateTime(UTC), LANOS, 1.5, 2.8));
-    event.addHistory(new HistoryRecord(new DateTime(UTC), VOLVO, 1.4, 3.2));
+    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.8);
+    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
 
     Calculation calculation = new Calculation(event);
 
@@ -265,8 +265,8 @@ public class CalculationTest {
 
   @Test
   public void organisationsCountInHistory_eventWith2organisationsInHistory_return2() {
-    event.addHistory(new HistoryRecord(new DateTime(UTC), LANOS, 1.5, 2.8));
-    event.addHistory(new HistoryRecord(new DateTime(UTC), VOLVO, 1.4, 3.2));
+    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.8);
+    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
 
     Calculation calculation = new Calculation(event);
 

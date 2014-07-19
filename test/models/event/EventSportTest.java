@@ -2,13 +2,13 @@ package models.event;
 
 import org.junit.Test;
 
-import static models.event.Sport.BEACH_VOLLEYBALL;
-import static models.event.Sport.TENNIS;
-import static models.event.Sport.UNKNOWN;
-import static models.event.Sport.sportFromEngName;
+import static models.event.EventSport.BEACH_VOLLEYBALL;
+import static models.event.EventSport.TENNIS;
+import static models.event.EventSport.UNKNOWN;
+import static models.event.EventSport.sportFromEngName;
 import static org.fest.assertions.Assertions.assertThat;
 
-public class SportTest {
+public class EventSportTest {
 
   @Test
   public void sportFromEngName_beachVolleyballSportName_returnBeachVolleyball() {

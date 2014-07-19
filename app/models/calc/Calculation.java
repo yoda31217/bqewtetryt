@@ -1,36 +1,36 @@
 package models.calc;
 
 import models.event.Event;
+import models.event.EventHistoryRecord;
+import models.event.EventOrganisation;
+import models.event.EventSport;
 import models.event.EventType;
-import models.event.HistoryRecord;
-import models.event.Organisation;
-import models.event.Sport;
 import org.joda.time.DateTime;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static models.event.Organisation.UNKNOWN;
+import static models.event.EventOrganisation.UNKNOWN;
 import static org.joda.time.DateTimeZone.UTC;
 
 public class Calculation {
 
-  private final Event        event;
-  private       double       highForkKof;
-  private       DateTime     highForkKofDate;
-  private       Organisation highForkKofOrganisation;
-  private       double       highProfit;
-  private       double       highProfitMoney1;
-  private       double       highProfitMoney2;
-  private       boolean      isFork;
-  private       double       lowForkKof;
-  private       DateTime     lowForkKofDate;
-  private       Organisation lowForkKofOrganisation;
-  private       double       lowProfit;
-  private       double       lowProfitMoney1;
-  private       double       lowProfitMoney2;
-  private       int          organisationsCountInHistory;
+  private final Event             event;
+  private       double            highForkKof;
+  private       DateTime          highForkKofDate;
+  private       EventOrganisation highForkKofOrganisation;
+  private       double            highProfit;
+  private       double            highProfitMoney1;
+  private       double            highProfitMoney2;
+  private       boolean           isFork;
+  private       double            lowForkKof;
+  private       DateTime          lowForkKofDate;
+  private       EventOrganisation lowForkKofOrganisation;
+  private       double            lowProfit;
+  private       double            lowProfitMoney1;
+  private       double            lowProfitMoney2;
+  private       int               organisationsCountInHistory;
 
   public Calculation(Event event) {
     this.event = event;
@@ -57,7 +57,7 @@ public class Calculation {
 
     if (event.history().isEmpty()) return;
 
-    Map<Organisation, HistoryRecord> organisation2lastRecord = buildOrganisation2lastRecord();
+    Map<EventOrganisation, EventHistoryRecord> organisation2lastRecord = buildOrganisation2lastRecord();
     organisationsCountInHistory = organisation2lastRecord.keySet().size();
 
     calculateForkKofsAndOrganisations(organisation2lastRecord);
@@ -85,7 +85,7 @@ public class Calculation {
 
   public DateTime highForkKofDate() { return highForkKofDate; }
 
-  public Organisation highForkKofOrganisation() { return highForkKofOrganisation; }
+  public EventOrganisation highForkKofOrganisation() { return highForkKofOrganisation; }
 
   public double highProfit() { return highProfit; }
 
@@ -99,7 +99,7 @@ public class Calculation {
 
   public DateTime lowForkKofDate() { return lowForkKofDate; }
 
-  public Organisation lowForkKofOrganisation() { return lowForkKofOrganisation; }
+  public EventOrganisation lowForkKofOrganisation() { return lowForkKofOrganisation; }
 
   public double lowProfit() { return lowProfit; }
 
@@ -113,20 +113,20 @@ public class Calculation {
 
   public List<String> side2() { return event.side2(); }
 
-  public Sport sport() { return event.sport(); }
+  public EventSport sport() { return event.sport(); }
 
   public EventType type() { return event.type(); }
 
-  private Map<Organisation, HistoryRecord> buildOrganisation2lastRecord() {
-    Map<Organisation, HistoryRecord> organisation2lastRecord = new HashMap<Organisation, HistoryRecord>();
-    for (HistoryRecord historyRecord : event.history()) {
+  private Map<EventOrganisation, EventHistoryRecord> buildOrganisation2lastRecord() {
+    Map<EventOrganisation, EventHistoryRecord> organisation2lastRecord = new HashMap<EventOrganisation, EventHistoryRecord>();
+    for (EventHistoryRecord historyRecord : event.history()) {
       organisation2lastRecord.put(historyRecord.organisation(), historyRecord);
     }
     return organisation2lastRecord;
   }
 
-  private void calculateForkKofsAndOrganisations(Map<Organisation, HistoryRecord> organisation2lastRecord) {
-    for (HistoryRecord organisationLastRecord : organisation2lastRecord.values()) {
+  private void calculateForkKofsAndOrganisations(Map<EventOrganisation, EventHistoryRecord> organisation2lastRecord) {
+    for (EventHistoryRecord organisationLastRecord : organisation2lastRecord.values()) {
 
       if ((null == lowForkKofOrganisation) || (organisationLastRecord.lowKof() > lowForkKof)) {
         lowForkKof = organisationLastRecord.lowKof();

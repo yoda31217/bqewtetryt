@@ -1,8 +1,8 @@
 package models.job;
 
 import models.event.Event;
+import models.event.EventHistoryRecord;
 import models.event.EventStore;
-import models.event.HistoryRecord;
 import play.Logger;
 
 import java.util.List;
@@ -25,16 +25,17 @@ public class RemoveOldHistoryJob implements Runnable {
     int removedCount = 0;
 
     for (Event event : eventStore.events()) {
-      List<HistoryRecord> history = event.history();
+      List<EventHistoryRecord> history = event.history();
 
       if (maxHistoryCount > history.size()) continue;
 
-      List<HistoryRecord> oldRecordsToRemove = history.subList(0, history.size() - maxHistoryCount);
-      event.removeHistory(oldRecordsToRemove);
+      List<EventHistoryRecord> oldRecordsToRemove = history.subList(0, history.size() - maxHistoryCount);
+      eventStore.removeHistory(event, oldRecordsToRemove);
 
       removedCount += oldRecordsToRemove.size();
     }
 
     if (0 < removedCount) log.info("Removed {} old History Records.", removedCount);
   }
+
 }

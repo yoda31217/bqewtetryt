@@ -7,17 +7,15 @@ import models.data.parser.BParser;
 import models.data.parser.ParsedEvent;
 import models.event.Event;
 import models.event.EventStore;
-import models.event.HistoryRecord;
 import models.util.LoggerMock;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static models.event.EventOrganisation.VOLVO;
+import static models.event.EventSport.TENNIS;
 import static models.event.EventType.LIVE;
-import static models.event.Organisation.VOLVO;
-import static models.event.Sport.TENNIS;
-import static org.fest.assertions.Assertions.assertThat;
 import static org.joda.time.DateTimeZone.UTC;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.same;
@@ -80,6 +78,6 @@ public class EventJobTest {
   @Test
   public void run_regularEvent_historyAdded() {
     job.run();
-    assertThat(event.history().toString()).isEqualTo(newArrayList(new HistoryRecord(adaptedEvent.adoptedDate, VOLVO, 1.1, 2.2)).toString());
+    verify(eventStoreMock).addHistory(same(event), eq(adaptedEvent.adoptedDate), eq(VOLVO), eq(1.1), eq(2.2));
   }
 }

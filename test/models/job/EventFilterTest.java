@@ -4,11 +4,11 @@ import models.data.adapter.AdaptedEvent;
 import org.junit.Test;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static models.event.EventSport.TABLE_TENNIS;
+import static models.event.EventSport.TENNIS;
+import static models.event.EventSport.UNKNOWN;
 import static models.event.EventType.LIVE;
 import static models.event.EventType.REGULAR;
-import static models.event.Sport.TABLE_TENNIS;
-import static models.event.Sport.TENNIS;
-import static models.event.Sport.UNKNOWN;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class EventFilterTest {

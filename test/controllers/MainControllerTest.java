@@ -1,8 +1,8 @@
 package controllers;
 
 import models.event.Event;
+import models.event.EventHistoryRecord;
 import models.event.EventStore;
-import models.event.HistoryRecord;
 import org.joda.time.DateTime;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -13,9 +13,10 @@ import play.test.FakeApplication;
 import views.html.main;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static models.event.EventOrganisation.LANOS;
+import static models.event.EventSport.TENNIS;
+import static models.event.EventTests.addHistory;
 import static models.event.EventType.REGULAR;
-import static models.event.Organisation.LANOS;
-import static models.event.Sport.TENNIS;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.joda.time.DateTimeZone.UTC;
 import static play.test.Helpers.GET;
@@ -49,8 +50,8 @@ public class MainControllerTest {
 
     DateTime eventDate = new DateTime(2014, 4, 26, 8, 20, UTC);
     Event event = eventStore.createOrFindEvent(REGULAR, TENNIS, eventDate, newArrayList("SIDE1"), newArrayList("SIDE2"));
-    HistoryRecord record = new HistoryRecord(new DateTime(UTC), LANOS, 1.1, 2.1);
-    event.addHistory(record);
+    EventHistoryRecord record = new EventHistoryRecord(new DateTime(UTC), LANOS, 1.1, 2.1);
+    addHistory(event, record);
   }
 
   private static FakeApplication createFakeApplication(final MainController mainController) {

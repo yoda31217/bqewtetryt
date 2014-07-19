@@ -1,8 +1,8 @@
 package models.job;
 
 import models.event.Event;
+import models.event.EventHistoryRecord;
 import models.event.EventStore;
-import models.event.HistoryRecord;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import play.Logger;
@@ -29,14 +29,15 @@ public class RemoveOldEventJob implements Runnable {
 
     for (Event event : eventStore.events()) {
 
-      List<HistoryRecord> history = event.history();
+      List<EventHistoryRecord> history = event.history();
+
       if (history.isEmpty()) {
         eventStore.remove(event);
         removedCount++;
         continue;
       }
 
-      HistoryRecord lastHistoryRecord = history.get(history.size() - 1);
+      EventHistoryRecord lastHistoryRecord = history.get(history.size() - 1);
       boolean isLastHistoryRecordOld = new Duration(lastHistoryRecord.date(), new DateTime(UTC)).getMillis() > maxLastHistoryRecordAgeInMillis;
 
       if (isLastHistoryRecordOld) {

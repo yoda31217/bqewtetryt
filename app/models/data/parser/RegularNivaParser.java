@@ -1,6 +1,6 @@
 package models.data.parser;
 
-import models.event.Sport;
+import models.event.EventSport;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -8,15 +8,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static models.event.Sport.sportFromEngName;
+import static models.event.EventSport.sportFromEngName;
 
 public class RegularNivaParser implements BParser {
 
   private final String       url;
   private final ChromeDriver webDriver;
-  private final Sport        sport;
+  private final EventSport   sport;
 
-  public RegularNivaParser(String urlPart, ChromeDriver webDriver, Sport sport) {
+  public RegularNivaParser(String urlPart, ChromeDriver webDriver, EventSport sport) {
     this.sport = sport;
     this.url = "https://igra.msl.ua/sportliga/uk/sports/" + urlPart;
     this.webDriver = webDriver;
@@ -95,7 +95,7 @@ public class RegularNivaParser implements BParser {
     return ((Map) sidePlayers.get(0).get("name")).get("ru").toString();
   }
 
-  private Sport parseSport(Map eventObject) {
+  private EventSport parseSport(Map eventObject) {
     String engSportName = ((Map) eventObject.get("sport")).get("alias").toString();
     return sportFromEngName(engSportName);
   }

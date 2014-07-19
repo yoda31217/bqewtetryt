@@ -6,10 +6,10 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static models.event.EventSport.BASKETBALL;
+import static models.event.EventSport.TENNIS;
 import static models.event.EventType.LIVE;
 import static models.event.EventType.REGULAR;
-import static models.event.Sport.BASKETBALL;
-import static models.event.Sport.TENNIS;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.joda.time.DateTimeZone.UTC;
 import static org.junit.Assert.fail;

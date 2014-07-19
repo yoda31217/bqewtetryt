@@ -4,14 +4,14 @@ import org.joda.time.DateTime;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-public final class HistoryRecord {
+public final class EventHistoryRecord {
 
-  final DateTime     date;
-  final double       highKof;
-  final double       lowKof;
-  final Organisation organisation;
+  final DateTime          date;
+  final double            highKof;
+  final double            lowKof;
+  final EventOrganisation organisation;
 
-  public HistoryRecord(DateTime date, Organisation organisation, double lowKof, double highKof) {
+  public EventHistoryRecord(DateTime date, EventOrganisation organisation, double lowKof, double highKof) {
     checkArgument(lowKof <= highKof, "First kof cannot be greater than second: %s, %s", lowKof, highKof);
 
     this.date = date;
@@ -30,7 +30,7 @@ public final class HistoryRecord {
     return lowKof;
   }
 
-  public Organisation organisation() {
+  public EventOrganisation organisation() {
     return organisation;
   }
 

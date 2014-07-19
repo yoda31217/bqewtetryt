@@ -10,9 +10,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static models.event.EventOrganisation.VOLVO;
+import static models.event.EventSport.TENNIS;
 import static models.event.EventType.LIVE;
-import static models.event.Organisation.VOLVO;
-import static models.event.Sport.TENNIS;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.joda.time.DateTimeUtils.setCurrentMillisFixed;
 import static org.joda.time.DateTimeUtils.setCurrentMillisSystem;

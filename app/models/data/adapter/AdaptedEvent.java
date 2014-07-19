@@ -1,8 +1,8 @@
 package models.data.adapter;
 
+import models.event.EventOrganisation;
+import models.event.EventSport;
 import models.event.EventType;
-import models.event.Organisation;
-import models.event.Sport;
 import org.joda.time.DateTime;
 
 import java.util.List;
@@ -11,17 +11,17 @@ import static org.joda.time.DateTimeZone.UTC;
 
 public class AdaptedEvent {
 
-  public final DateTime     adoptedDate;
-  public final DateTime     eventDate;
-  public final double       highKof;
-  public final double       lowKof;
-  public final Organisation organisation;
-  public final List<String> side1;
-  public final List<String> side2;
-  public final Sport        sport;
-  public final EventType    type;
+  public final DateTime          adoptedDate;
+  public final DateTime          eventDate;
+  public final double            highKof;
+  public final double            lowKof;
+  public final EventOrganisation organisation;
+  public final List<String>      side1;
+  public final List<String>      side2;
+  public final EventSport        sport;
+  public final EventType         type;
 
-  public AdaptedEvent(EventType type, Sport sport, List<String> side1, List<String> side2, double lowKof, double highKof, Organisation organisation,
+  public AdaptedEvent(EventType type, EventSport sport, List<String> side1, List<String> side2, double lowKof, double highKof, EventOrganisation organisation,
                       DateTime eventDate) {
     this.type = type;
     this.sport = sport;

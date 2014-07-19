@@ -1,6 +1,6 @@
 package models.event;
 
-public enum Sport {
+public enum EventSport {
   UNKNOWN("UK", "unknown"),
   BADMINTON("BT", "badminton"),
   TENNIS("TE", "tennis"),
@@ -13,17 +13,17 @@ public enum Sport {
   public final  String label;
   private final String engName;
 
-  Sport(String label, String engName) {
+  EventSport(String label, String engName) {
     this.label = label;
     this.engName = engName;
   }
 
-  public static Sport sportFromEngName(String unknownSportEngName) {
+  public static EventSport sportFromEngName(String unknownSportEngName) {
     if (null == unknownSportEngName) return UNKNOWN;
 
     unknownSportEngName = unknownSportEngName.trim().toLowerCase();
 
-    for (Sport sportCandidate : values())
+    for (EventSport sportCandidate : values())
       if (sportCandidate.engName.equals(unknownSportEngName)) return sportCandidate;
 
     return UNKNOWN;

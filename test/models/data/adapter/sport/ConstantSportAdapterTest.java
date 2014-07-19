@@ -2,7 +2,7 @@ package models.data.adapter.sport;
 
 import org.junit.Test;
 
-import static models.event.Sport.TENNIS;
+import static models.event.EventSport.TENNIS;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class ConstantSportAdapterTest {

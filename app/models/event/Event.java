@@ -10,13 +10,13 @@ import static com.google.common.collect.Lists.newArrayList;
 public class Event {
 
   final DateTime date;
-  final CopyOnWriteArrayList<HistoryRecord> history = new CopyOnWriteArrayList<HistoryRecord>();
+  final CopyOnWriteArrayList<EventHistoryRecord> history = new CopyOnWriteArrayList<EventHistoryRecord>();
   final List<String> side1;
   final List<String> side2;
-  final Sport        sport;
+  final EventSport   sport;
   final EventType    type;
 
-  public Event(EventType type, Sport sport, DateTime date, List<String> side1, List<String> side2) {
+  public Event(EventType type, EventSport sport, DateTime date, List<String> side1, List<String> side2) {
     this.type = type;
     this.sport = sport;
     this.date = date;
@@ -24,17 +24,11 @@ public class Event {
     this.side2 = side2;
   }
 
-  public void addHistory(HistoryRecord record) {
-    history.add(record);
-  }
-
   public DateTime date() { return date; }
 
-  public List<HistoryRecord> history() {
+  public List<EventHistoryRecord> history() {
     return newArrayList(history);
   }
-
-  public void removeHistory(List<HistoryRecord> recordsToRemove) {history.removeAll(recordsToRemove);}
 
   public List<String> side1() {
     return side1;
@@ -44,7 +38,7 @@ public class Event {
     return side2;
   }
 
-  public Sport sport() {
+  public EventSport sport() {
     return sport;
   }
 
@@ -63,4 +57,8 @@ public class Event {
   public EventType type() {
     return type;
   }
+
+  void addHistory(EventHistoryRecord record) { history.add(record); }
+
+  void removeHistory(List<EventHistoryRecord> recordsToRemove) {history.removeAll(recordsToRemove);}
 }
