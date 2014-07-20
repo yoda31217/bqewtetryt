@@ -1,305 +1,100 @@
 package models.calc;
 
 import models.event.Event;
-import org.joda.time.DateTime;
-import org.junit.After;
-import org.junit.Before;
+import models.event.EventHistoryRecord;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static models.calc.Calculation.calculate;
+import static models.event.EventOrganisation.KAMAZ;
 import static models.event.EventOrganisation.LANOS;
-import static models.event.EventOrganisation.UNKNOWN;
-import static models.event.EventOrganisation.VOLVO;
-import static models.event.EventSport.BASKETBALL;
-import static models.event.EventTests.addHistory;
+import static models.event.EventSport.UNKNOWN;
 import static models.event.EventType.LIVE;
 import static org.fest.assertions.Assertions.assertThat;
+import static org.joda.time.DateTime.now;
 import static org.joda.time.DateTimeUtils.setCurrentMillisFixed;
 import static org.joda.time.DateTimeUtils.setCurrentMillisSystem;
 import static org.joda.time.DateTimeZone.UTC;
 
 public class CalculationTest {
 
-  private Event event;
+  private final Event event = new Event(LIVE, UNKNOWN, now(UTC), newArrayList("player1"), newArrayList("player2"));
 
-  @Before
-  public void before() { event = new Event(LIVE, BASKETBALL, new DateTime(UTC), newArrayList("SIDE1"), newArrayList("SIDE2")); }
+  @BeforeClass
+  public static void setUpClass() throws Exception {
+    setCurrentMillisFixed(now(UTC).getMillis());
+  }
 
-  @After
-  public void after() throws Exception {
+  @AfterClass
+  public static void tearDownClass() throws Exception {
     setCurrentMillisSystem();
   }
 
   @Test
-  public void date_anyEvent_dateFromEvent() {
-    Calculation calculation = new Calculation(event);
-    assertThat(calculation.date()).isEqualTo(event.date());
+  public void calculate_from2newHistoryRecord_returnNewForkCalculation() {
+    Calculation calculation = calculate(event);
+    calculation = calculation.calculate(new EventHistoryRecord(now(UTC), KAMAZ, 1.85, 1.85));
+    calculation = calculation.calculate(new EventHistoryRecord(now(UTC), LANOS, 1.5, 3.85));
+    assertThat(toString(calculation)).isEqualTo("Calculation2{, highForkKof=3.85, highForkKofDate=" + now(UTC) +
+                                                ", highForkKofOrganisation=LANOS, highProfit=0.768918918918919, highProfitMoney1=0.5405405405405405, " +
+                                                "highProfitMoney2=0.4594594594594595, isFork=true, lowForkKof=1.85, lowForkKofDate=" + now(UTC) +
+                                                ", lowForkKofOrganisation=KAMAZ, lowProfit=0.3694805194805195, lowProfitMoney1=0.7402597402597403, " +
+                                                "lowProfitMoney2=0.2597402597402597, forkStateChangeDate=" + now(UTC) + "}");
   }
 
   @Test
-  public void highForkKofDate_eventWithoutHistory_returnNow() {
-    setCurrentMillisFixed(new DateTime(UTC).getMillis());
-    Calculation calculation = new Calculation(event);
-    assertThat(calculation.highForkKofDate()).isEqualTo(new DateTime(UTC));
+  public void calculate_fromEvent_returnEmptyCalculation() {
+    assertThat(toString(calculate(event))).isEqualTo("Calculation2{, highForkKof=0.0, highForkKofDate=" + now(UTC) +
+                                                     ", highForkKofOrganisation=UNKNOWN, highProfit=0.0, highProfitMoney1=0.0, highProfitMoney2=0.0, " +
+                                                     "isFork=false, lowForkKof=0.0, lowForkKofDate=" + now(UTC) +
+                                                     ", lowForkKofOrganisation=UNKNOWN, lowProfit=0.0, lowProfitMoney1=0.0, lowProfitMoney2=0.0, " +
+                                                     "forkStateChangeDate=" + now(UTC) + "}");
   }
 
   @Test
-  public void highForkKofDate_forkEvent_highForkKofDateVolvo() {
-    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.9);
-    DateTime volvoRecordDate = new DateTime(UTC);
-    addHistory(event, volvoRecordDate, VOLVO, 1.4, 3.2);
-
-    Calculation calculation = new Calculation(event);
-
-    assertThat(calculation.highForkKofDate()).isSameAs(volvoRecordDate);
+  public void calculate_fromNewHistoryRecordWithSmallKof_returnNewCalculationWithKofFromPreviousOrganisation() {
+    Calculation calculation = calculate(event);
+    calculation = calculation.calculate(new EventHistoryRecord(now(UTC), KAMAZ, 1.5, 1.85));
+    calculation = calculation.calculate(new EventHistoryRecord(now(UTC), LANOS, 1.4, 3.85));
+    calculation = calculation.calculate(new EventHistoryRecord(now(UTC), LANOS, 1.4, 1.6));
+    assertThat(toString(calculation)).isEqualTo("Calculation2{, highForkKof=1.85, highForkKofDate=" + now(UTC) +
+                                                ", highForkKofOrganisation=KAMAZ, highProfit=-0.3833333333333333, highProfitMoney1=0.6666666666666666, " +
+                                                "highProfitMoney2=0.3333333333333333, isFork=false, lowForkKof=1.5, lowForkKofDate=" +
+                                                now(UTC) +
+                                                ", lowForkKofOrganisation=KAMAZ, lowProfit=-0.31081081081081074, lowProfitMoney1=0.4594594594594595, " +
+                                                "lowProfitMoney2=0.5405405405405405, forkStateChangeDate=" +
+                                                now(UTC) + "}");
   }
 
   @Test
-  public void highForkKofOrganisation_eventWithoutHistory_returnUnknown() {
-    Calculation calculation = new Calculation(event);
-    assertThat(calculation.highForkKofOrganisation()).isSameAs(UNKNOWN);
+  public void calculate_fromNewHistoryRecord_returnNewNotForkCalculation() {
+    Calculation calculation = calculate(event);
+    calculation = calculation.calculate(new EventHistoryRecord(now(UTC), KAMAZ, 1.85, 1.85));
+    assertThat(toString(calculation)).isEqualTo("Calculation2{, highForkKof=1.85, highForkKofDate=" + now(UTC) +
+                                                ", highForkKofOrganisation=KAMAZ, highProfit=-0.1499999999999999, highProfitMoney1=0.5405405405405405, " +
+                                                "highProfitMoney2=0.4594594594594595, isFork=false, lowForkKof=1.85, lowForkKofDate=" + now(UTC) +
+                                                ", lowForkKofOrganisation=KAMAZ, lowProfit=-0.1499999999999999, lowProfitMoney1=0.4594594594594595, " +
+                                                "lowProfitMoney2=0.5405405405405405, forkStateChangeDate=" + now(UTC) + "}");
   }
 
-  @Test
-  public void highForkKofOrganisation_forkEvent_highForkKofOrganisationVolvo() {
-    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.9);
-    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
-
-    Calculation calculation = new Calculation(event);
-
-    assertThat(calculation.highForkKofOrganisation()).isEqualTo(VOLVO);
-  }
-
-  @Test
-  public void highForkKof_eventWithoutHistory_returnZero() {
-    Calculation calculation = new Calculation(event);
-    assertThat(calculation.highForkKof()).isEqualTo(0.0);
-  }
-
-  @Test
-  public void highForkKof_forkEvent_highForkKofVolvo() {
-    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.9);
-    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
-
-    Calculation calculation = new Calculation(event);
-
-    assertThat(calculation.highForkKof()).isEqualTo(3.2);
-  }
-
-  @Test
-  public void highProfitMoney1_eventWithoutHistory_returnZero() {
-    Calculation calculation = new Calculation(event);
-    assertThat(calculation.highProfitMoney1()).isEqualTo(0.0);
-  }
-
-  @Test
-  public void highProfitMoney1_forkEvent_highProfitMoney1() {
-    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.8);
-    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
-
-    Calculation calculation = new Calculation(event);
-
-    assertThat(calculation.highProfitMoney1()).isEqualTo(1.0 / 1.5);
-  }
-
-  @Test
-  public void highProfitMoney2_eventWithoutHistory_returnZero() {
-    Calculation calculation = new Calculation(event);
-    assertThat(calculation.highProfitMoney2()).isEqualTo(0.0);
-  }
-
-  @Test
-  public void highProfitMoney2_forkEvent_highProfitMoney2() {
-    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.8);
-    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
-
-    Calculation calculation = new Calculation(event);
-
-    assertThat(calculation.highProfitMoney2()).isEqualTo(0.5 / 1.5);
-  }
-
-  @Test
-  public void highProfit_eventWithoutHistory_returnZero() {
-    Calculation calculation = new Calculation(event);
-    assertThat(calculation.highProfit()).isEqualTo(0.0);
-  }
-
-  @Test
-  public void highProfit_forkEvent_highProfit() {
-    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.8);
-    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
-
-    Calculation calculation = new Calculation(event);
-
-    assertThat(calculation.highProfit()).isEqualTo(0.5 / 1.5 * 3.2 - 1.0);
-  }
-
-  @Test
-  public void isFork_forkEvent_isForkTrue() {
-    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.9);
-    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
-
-    Calculation calculation = new Calculation(event);
-
-    assertThat(calculation.isFork()).isTrue();
-  }
-
-  @Test
-  public void isFork_forkThenNotForkEvent_isForkFalse() {
-    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.8);
-    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
-    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 2.9);
-
-    Calculation calculation = new Calculation(event);
-
-    assertThat(calculation.isFork()).isFalse();
-  }
-
-  @Test
-  public void isFork_notForkEvent_isForkFalse() {
-    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.8);
-    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 2.9);
-
-    Calculation calculation = new Calculation(event);
-
-    assertThat(calculation.isFork()).isFalse();
-  }
-
-  @Test
-  public void lowForkKofDate_eventWithoutHistory_returnNow() {
-    setCurrentMillisFixed(new DateTime(UTC).getMillis());
-    Calculation calculation = new Calculation(event);
-    assertThat(calculation.lowForkKofDate()).isEqualTo(new DateTime(UTC));
-  }
-
-  @Test
-  public void lowForkKofDate_forkEvent_lowForkKofDateLanos() {
-    DateTime lanosRecordDate = new DateTime(UTC);
-    addHistory(event, lanosRecordDate, LANOS, 1.5, 2.9);
-    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
-
-    Calculation calculation = new Calculation(event);
-
-    assertThat(calculation.lowForkKofDate()).isSameAs(lanosRecordDate);
-  }
-
-  @Test
-  public void lowForkKofOrganisation_eventWithoutHistory_returnUnknown() {
-    Calculation calculation = new Calculation(event);
-    assertThat(calculation.lowForkKofOrganisation()).isSameAs(UNKNOWN);
-  }
-
-  @Test
-  public void lowForkKofOrganisation_forkEvent_lowForkKofOrganisationLanos() {
-    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.9);
-    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
-
-    Calculation calculation = new Calculation(event);
-
-    assertThat(calculation.lowForkKofOrganisation()).isEqualTo(LANOS);
-  }
-
-  @Test
-  public void lowForkKof_eventWithoutHistory_returnZero() {
-    Calculation calculation = new Calculation(event);
-    assertThat(calculation.lowForkKof()).isEqualTo(0.0);
-  }
-
-  @Test
-  public void lowForkKof_forkEvent_lowForkKofLanos() {
-    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.9);
-    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
-
-    Calculation calculation = new Calculation(event);
-
-    assertThat(calculation.lowForkKof()).isEqualTo(1.5);
-  }
-
-  @Test
-  public void lowProfitMoney1_eventWithoutHistory_returnZero() {
-    Calculation calculation = new Calculation(event);
-    assertThat(calculation.lowProfitMoney1()).isEqualTo(0.0);
-  }
-
-  @Test
-  public void lowProfitMoney1_forkEvent_lowProfitMoney1() {
-    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.8);
-    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
-
-    Calculation calculation = new Calculation(event);
-
-    assertThat(calculation.lowProfitMoney1()).isEqualTo(2.2 / 3.2);
-  }
-
-  @Test
-  public void lowProfitMoney2_eventWithoutHistory_returnZero() {
-    Calculation calculation = new Calculation(event);
-    assertThat(calculation.lowProfitMoney2()).describedAs("lowProfitMoney2").isEqualTo(0.0);
-  }
-
-  @Test
-  public void lowProfitMoney2_forkEvent_lowProfitMoney2() {
-    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.8);
-    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
-
-    Calculation calculation = new Calculation(event);
-
-    assertThat(calculation.lowProfitMoney2()).isEqualTo(1.0 / 3.2);
-  }
-
-  @Test
-  public void lowProfit_eventWithoutHistory_returnZero() {
-    Calculation calculation = new Calculation(event);
-    assertThat(calculation.lowProfit()).isEqualTo(0.0);
-  }
-
-  @Test
-  public void lowProfit_forkEvent_lowProfit() {
-    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.8);
-    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
-
-    Calculation calculation = new Calculation(event);
-
-    assertThat(calculation.lowProfit()).isEqualTo(2.2 / 3.2 * 1.5 - 1.0);
-  }
-
-  @Test
-  public void organisationsCountInHistory_eventWith2organisationsInHistory_return2() {
-    addHistory(event, new DateTime(UTC), LANOS, 1.5, 2.8);
-    addHistory(event, new DateTime(UTC), VOLVO, 1.4, 3.2);
-
-    Calculation calculation = new Calculation(event);
-
-    assertThat(calculation.organisationsCountInHistory()).isEqualTo(2);
-  }
-
-  @Test
-  public void organisationsCountInHistory_eventWithoutHistory_return0() {
-    Calculation calculation = new Calculation(event);
-    assertThat(calculation.organisationsCountInHistory()).isZero();
-  }
-
-  @Test
-  public void side1_anyEvent_side1FromEvent() {
-    Calculation calculation = new Calculation(event);
-    assertThat(calculation.side1()).isEqualTo(newArrayList("SIDE1"));
-  }
-
-  @Test
-  public void side2_anyEvent_side2FromEvent() {
-    Calculation calculation = new Calculation(event);
-    assertThat(calculation.side2()).isEqualTo(newArrayList("SIDE2"));
-  }
-
-  @Test
-  public void sport_anyEvent_sportFromEvent() {
-    Calculation calculation = new Calculation(event);
-    assertThat(calculation.sport()).isEqualTo(BASKETBALL);
-  }
-
-  @Test
-  public void type_anyEvent_typeFromEvent() {
-    Calculation calculation = new Calculation(event);
-    assertThat(calculation.type()).isEqualTo(LIVE);
+  public String toString(Calculation calculation) {
+    return "Calculation2{" +
+           ", highForkKof=" + calculation.highForkKof +
+           ", highForkKofDate=" + calculation.highForkKofDate +
+           ", highForkKofOrganisation=" + calculation.highForkKofOrganisation +
+           ", highProfit=" + calculation.highProfit +
+           ", highProfitMoney1=" + calculation.highProfitMoney1 +
+           ", highProfitMoney2=" + calculation.highProfitMoney2 +
+           ", isFork=" + calculation.isFork +
+           ", lowForkKof=" + calculation.lowForkKof +
+           ", lowForkKofDate=" + calculation.lowForkKofDate +
+           ", lowForkKofOrganisation=" + calculation.lowForkKofOrganisation +
+           ", lowProfit=" + calculation.lowProfit +
+           ", lowProfitMoney1=" + calculation.lowProfitMoney1 +
+           ", lowProfitMoney2=" + calculation.lowProfitMoney2 +
+           ", forkStateChangeDate=" + calculation.forkStateChangeDate +
+           '}';
   }
 }

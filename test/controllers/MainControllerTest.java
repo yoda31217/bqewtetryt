@@ -20,7 +20,6 @@ import static models.event.EventTests.addHistory;
 import static models.event.EventType.REGULAR;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.joda.time.DateTimeZone.UTC;
-import static org.mockito.Mockito.mock;
 import static play.test.Helpers.GET;
 import static play.test.Helpers.OK;
 import static play.test.Helpers.charset;
@@ -44,8 +43,9 @@ public class MainControllerTest {
 
   @BeforeClass
   public static void beforeClass() {
-    EventStore eventStore = new EventStore(mock(Calculator.class));
-    MainController mainController = new MainController(eventStore);
+    Calculator calculator = new Calculator();
+    EventStore eventStore = new EventStore(calculator);
+    MainController mainController = new MainController(calculator);
 
     fakeApplication = createFakeApplication(mainController);
     start(fakeApplication);

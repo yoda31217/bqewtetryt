@@ -153,8 +153,8 @@ class GlobalModule extends AbstractModule {
 
   @Provides
   @Singleton
-  MainController provideMainController(EventStore eventStore) {
-    return new MainController(eventStore);
+  MainController provideMainController(Calculator calculator) {
+    return new MainController(calculator);
   }
 
   @Provides
@@ -170,8 +170,8 @@ class GlobalModule extends AbstractModule {
 
   @Provides
   @Singleton
-  NotificationJob provideNotificationJob(Twitter twitter, EventStore eventStore) {
-    return new NotificationJob(new MessyNotifier(), eventStore);
+  NotificationJob provideNotificationJob(Calculator calculator) {
+    return new NotificationJob(new MessyNotifier(), calculator);
   }
 
   @Provides
