@@ -11,6 +11,7 @@ import play.Logger;
 
 import java.util.List;
 
+import static java.lang.System.currentTimeMillis;
 import static play.Logger.of;
 
 public class EventJob implements Runnable {
@@ -31,14 +32,16 @@ public class EventJob implements Runnable {
   @Override
   public void run() {
     log.debug("Event Job start.");
+    long startMillis = currentTimeMillis();
 
     List<ParsedEvent> parsedEvents = parser.parse();
-    log.info("Parsed {} events.", parsedEvents.size());
 
     for (ParsedEvent parsedEvent : parsedEvents) {
       processParsedEvent(parsedEvent);
     }
 
+    long durationMillis = currentTimeMillis() - startMillis;
+    log.info("Processed {} events in {} ms.", parsedEvents.size(), durationMillis);
     log.debug("Event Job end.");
   }
 
