@@ -94,7 +94,7 @@ public class CalculationTest {
            ", lowProfit=" + calculation.lowProfit +
            ", lowProfitMoney1=" + calculation.lowProfitMoney1 +
            ", lowProfitMoney2=" + calculation.lowProfitMoney2 +
-           ", forkStateChangeDate=" + calculation.forkStateChangeDate +
+           ", forkStateChangeDate=" + calculation.notifiableStateChangeDate +
            '}';
   }
 }

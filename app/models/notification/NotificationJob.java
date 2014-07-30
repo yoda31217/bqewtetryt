@@ -97,8 +97,8 @@ public class NotificationJob implements Runnable {
 
       @Override
       public boolean apply(Calculation calculation) {
-        long forkStateChangeSecondsAgo = new Duration(calculation.forkStateChangeDate, now).getStandardSeconds();
-        return calculation.isFork && (0.02 <= calculation.lowProfit) && (3 <= forkStateChangeSecondsAgo);
+        long notifiableStateChangeMillisAgo = new Duration(calculation.notifiableStateChangeDate, now).getMillis();
+        return calculation.isNotifiable && (3_000 <= notifiableStateChangeMillisAgo);
       }
     };
   }

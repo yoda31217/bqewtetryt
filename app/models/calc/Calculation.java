@@ -31,7 +31,8 @@ public final class Calculation {
   public final double                                     lowProfitMoney1;
   public final double                                     lowProfitMoney2;
   public final Map<EventOrganisation, EventHistoryRecord> organisation2lastHistoryRecord;
-  public final DateTime                                   forkStateChangeDate;
+  public final DateTime                                   notifiableStateChangeDate;
+  public final boolean                                    isNotifiable;
 
   public Calculation(Calculation calculation, EventHistoryRecord historyRecord) {
     event = calculation.event;
@@ -77,8 +78,10 @@ public final class Calculation {
 
     isFork = ((1.0 / (lowForkKof - 1.0) + 1.0) < highForkKof);
 
-    if (calculation.isFork != isFork) forkStateChangeDate = historyRecord.date();
-    else forkStateChangeDate = calculation.forkStateChangeDate;
+    isNotifiable = isFork && (0.02 <= lowProfit);
+
+    if (calculation.isNotifiable != isNotifiable) notifiableStateChangeDate = historyRecord.date();
+    else notifiableStateChangeDate = calculation.notifiableStateChangeDate;
   }
 
   private Calculation(Event event) {
@@ -102,8 +105,10 @@ public final class Calculation {
 
     isFork = false;
 
+    isNotifiable = false;
+
     organisation2lastHistoryRecord = emptyMap();
-    forkStateChangeDate = now(UTC);
+    notifiableStateChangeDate = now(UTC);
   }
 
   public static Calculation calculate(Event event) {

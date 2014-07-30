@@ -2,8 +2,17 @@
 
   <conversionRule conversionWord="coloredLevel" converterClass="play.api.Logger$ColoredLevel"/>
 
-  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+  <appender name="APP_LOG" class="ch.qos.logback.core.FileAppender">
+    <append>false</append>
     <file>${application.home}/logs/application.log</file>
+    <encoder>
+      <pattern>%date [%level] %thread %logger %message %xException%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="NOTIFICATION_LOG" class="ch.qos.logback.core.FileAppender">
+    <append>false</append>
+    <file>${application.home}/logs/notification.log</file>
     <encoder>
       <pattern>%date [%level] %thread %logger %message %xException%n</pattern>
     </encoder>
@@ -15,16 +24,13 @@
     </encoder>
   </appender>
 
-  <logger name="play" level="INFO"/>
-  <logger name="application" level="INFO"/>
-
-  <logger name="controllers" level="INFO"/>
-  <logger name="models" level="INFO"/>
-  <logger name="configs" level="INFO"/>
+  <logger name="models.notification" level="INFO">
+    <appender-ref ref="NOTIFICATION_LOG"/>
+  </logger>
 
   <root level="INFO">
     <appender-ref ref="STDOUT"/>
-    <appender-ref ref="FILE"/>
+    <appender-ref ref="APP_LOG"/>
   </root>
 
 </configuration>
