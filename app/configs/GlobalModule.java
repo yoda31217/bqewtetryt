@@ -49,6 +49,7 @@ import static models.event.EventOrganisation.NIVA;
 import static models.event.EventOrganisation.VOLVO;
 import static models.event.EventSport.BADMINTON;
 import static models.event.EventSport.BASEBALL;
+import static models.event.EventSport.BASKETBALL;
 import static models.event.EventSport.BEACH_VOLLEYBALL;
 import static models.event.EventSport.TABLE_TENNIS;
 import static models.event.EventSport.TENNIS;
@@ -149,6 +150,13 @@ class GlobalModule extends AbstractModule {
   @Named("live-volvo-volleyball")
   Runnable provideLiveVolvoVolleyballJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter) {
     return createLiveVolvoJob(eventStore, webDriver, eventFilter, VOLLEYBALL, "sport_91");
+  }
+
+  @Provides
+  @Singleton
+  @Named("live-volvo-basketball")
+  Runnable provideLiveVolvoBasketballJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter) {
+    return createLiveVolvoJob(eventStore, webDriver, eventFilter, BASKETBALL, "sport_16");
   }
 
   @Provides

@@ -15,6 +15,7 @@ import java.util.List;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
+import static java.lang.String.format;
 import static java.util.Collections.emptyList;
 import static org.joda.time.DateTime.now;
 import static org.joda.time.DateTimeZone.UTC;
@@ -40,8 +41,38 @@ public class LiveKamazParser implements BParser {
       return emptyList();
     }
 
+    expandEventsIfNeeded();
+
     Document doc = parseDocument();
     return parseEvents(doc);
+  }
+
+  private void expandEventsIfNeeded() {
+    String expanderCssSelector =
+      "#content > div.content > div.livediv > ul.betlist > li.tour-bl li[data-eventid] ul.mrk-head > li.col5 > div.but-m > button" + ".icon.more.close";
+    webDriver.executeScript(format("$('%s').click();", expanderCssSelector));
+  }
+
+  private ParsedEvent parseBasketballEvent(Element eventEl, String sportStr) {
+    String date = null;
+
+    String side1 = selectElText(eventEl, "ul.result_type > li[data-result_type_weigh=0] > ul.market_groups > li[data-marketgroupsid=5] > ul.markets > li >" +
+                                         " ul > li.bets_fullmark_body:nth-child(1) > label > span");
+    if (null == side1) return null;
+
+    String lowKof = selectElText(eventEl, "ul.result_type > li[data-result_type_weigh=0] > ul.market_groups > li[data-marketgroupsid=5] > ul.markets > li >" +
+                                          " ul > li.bets_fullmark_body:nth-child(1) > label > button");
+    if (null == lowKof) return null;
+
+    String side2 = selectElText(eventEl, "ul.result_type > li[data-result_type_weigh=0] > ul.market_groups > li[data-marketgroupsid=5] > ul.markets > li >" +
+                                         " ul > li.bets_fullmark_body:nth-child(2) > label > span");
+    if (null == side2) return null;
+
+    String highKof = selectElText(eventEl, "ul.result_type > li[data-result_type_weigh=0] > ul.market_groups > li[data-marketgroupsid=5] > ul.markets > li >" +
+                                           " ul > li.bets_fullmark_body:nth-child(2) > label > button");
+    if (null == highKof) return null;
+
+    return new ParsedEvent(sportStr, side1, side2, date, lowKof, highKof);
   }
 
   private Document parseDocument() {
@@ -52,16 +83,16 @@ public class LiveKamazParser implements BParser {
   private ParsedEvent parseEvent(Element eventEl, String sportStr) {
     String date = null;
 
-    String side1 = selectElText(eventEl, "li.bets_fullmark_body.m_1 span");
+    String side1 = selectElText(eventEl, "ul.mrk-head > li.col21 > ul.mrk-itm li.bets_fullmark_body.m_1 span");
     if (null == side1) return null;
 
-    String lowKof = selectElText(eventEl, "li.bets_fullmark_body.m_1 button:not([disabled])");
+    String lowKof = selectElText(eventEl, "ul.mrk-head > li.col21 > ul.mrk-itm li.bets_fullmark_body.m_1 button:not([disabled])");
     if (null == lowKof) return null;
 
-    String side2 = selectElText(eventEl, "li.bets_fullmark_body.m_2 span");
+    String side2 = selectElText(eventEl, "ul.mrk-head > li.col21 > ul.mrk-itm li.bets_fullmark_body.m_2 span");
     if (null == side2) return null;
 
-    String highKof = selectElText(eventEl, "li.bets_fullmark_body.m_2 button:not([disabled])");
+    String highKof = selectElText(eventEl, "ul.mrk-head > li.col21 > ul.mrk-itm li.bets_fullmark_body.m_2 button:not([disabled])");
     if (null == highKof) return null;
 
     return new ParsedEvent(sportStr, side1, side2, date, lowKof, highKof);
@@ -75,10 +106,10 @@ public class LiveKamazParser implements BParser {
 
       String sportStr = parseSportStr(sportEl);
 
-      Elements eventEls = sportEl.select("li > ul.mrk-head > li.col21 > ul.mrk-itm");
+      Elements eventEls = sportEl.select("li[data-eventid]:has(ul.mrk-head)");
       for (Element eventEl : eventEls) {
 
-        ParsedEvent parsedEvent = parseEvent(eventEl, sportStr);
+        ParsedEvent parsedEvent = "Basketball".equals(sportStr) ? parseBasketballEvent(eventEl, sportStr) : parseEvent(eventEl, sportStr);
         if (null == parsedEvent) continue;
 
         events.add(parsedEvent);
@@ -111,6 +142,6 @@ public class LiveKamazParser implements BParser {
     String elText = els.get(0).text();
     if (isNullOrEmpty(elText)) return null;
 
-    return elText;
+    return elText.trim();
   }
 }
