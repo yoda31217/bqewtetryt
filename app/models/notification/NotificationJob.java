@@ -1,14 +1,20 @@
 package models.notification;
 
+import com.google.common.base.Predicate;
 import models.calc.Calculation;
 import models.calc.Calculator;
+import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import play.Logger;
 
 import java.text.DecimalFormat;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
+import static com.google.common.collect.Collections2.filter;
+import static com.google.common.collect.Sets.newHashSet;
 import static org.joda.time.DateTime.now;
 import static org.joda.time.DateTimeZone.UTC;
 import static org.joda.time.DateTimeZone.forID;
@@ -21,6 +27,7 @@ public class NotificationJob implements Runnable {
   Logger.ALogger log = of(NotificationJob.class);
   private final BNotifier  notifier;
   private final Calculator calculator;
+  private final Set<Calculation> previouslyNotifiedCalculations = new CopyOnWriteArraySet<Calculation>();
 
   public NotificationJob(BNotifier notifier, Calculator calculator) {
     this.notifier = notifier;
@@ -29,11 +36,17 @@ public class NotificationJob implements Runnable {
 
   @Override
   public void run() {
-    for (Calculation calculation : calculator.calculations()) {
-      if (calculation.isFork && new Duration(calculation.forkStateChangeDate, now(UTC)).getStandardSeconds() >= 3) {
-        log.info("Sending fork Notification: {}", calculation.event.toString());
-        notifier.notify(createMessage(calculation));
-      }
+    Set<Calculation> previouslyNotifiedCalculations = newHashSet(this.previouslyNotifiedCalculations);
+    Set<Calculation> newNotifiableCalculations = getNotifiableCalculations();
+
+    this.previouslyNotifiedCalculations.clear();
+    this.previouslyNotifiedCalculations.addAll(newNotifiableCalculations);
+
+    newNotifiableCalculations.removeAll(previouslyNotifiedCalculations);
+
+    for (Calculation calculation : newNotifiableCalculations) {
+      log.info("Sending fork Notification: {}", calculation.event.toString());
+      notifier.notify(createMessage(calculation));
     }
   }
 
@@ -76,5 +89,21 @@ public class NotificationJob implements Runnable {
     messageBuilder.append("</strong>");
 
     return messageBuilder.toString();
+  }
+
+  private Predicate<Calculation> createNotifiableCalculationFilter() {
+    final DateTime now = now(UTC);
+    return new Predicate<Calculation>() {
+
+      @Override
+      public boolean apply(Calculation calculation) {
+        long forkStateChangeSecondsAgo = new Duration(calculation.forkStateChangeDate, now).getStandardSeconds();
+        return calculation.isFork && (0.02 <= calculation.lowProfit) && (3 <= forkStateChangeSecondsAgo);
+      }
+    };
+  }
+
+  private Set<Calculation> getNotifiableCalculations() {
+    return newHashSet(filter(calculator.calculations(), createNotifiableCalculationFilter()));
   }
 }

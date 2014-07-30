@@ -36,7 +36,7 @@ public final class Calculation {
   public Calculation(Calculation calculation, EventHistoryRecord historyRecord) {
     event = calculation.event;
 
-    this.organisation2lastHistoryRecord = updateOrganisation2lastHistoryRecord(calculation, historyRecord);
+    this.organisation2lastHistoryRecord = calculateOrganisation2lastHistoryRecord(event);
 
     double lowForkKof = 0.0;
     EventOrganisation lowForkKofOrganisation = null;
@@ -122,22 +122,20 @@ public final class Calculation {
     Calculation that = (Calculation) o;
 
     if (!event.equals(that.event)) return false;
-    if (!organisation2lastHistoryRecord.equals(that.organisation2lastHistoryRecord)) return false;
 
     return true;
   }
 
   @Override
   public int hashCode() {
-    int result = event.hashCode();
-    result = 31 * result + organisation2lastHistoryRecord.hashCode();
-    return result;
+    return event.hashCode();
   }
 
-  private Map<EventOrganisation, EventHistoryRecord> updateOrganisation2lastHistoryRecord(Calculation calculation, EventHistoryRecord historyRecord) {
-    Map<EventOrganisation, EventHistoryRecord> organisation2lastHistoryRecord = new HashMap<EventOrganisation, EventHistoryRecord>(
-      calculation.organisation2lastHistoryRecord);
-    organisation2lastHistoryRecord.put(historyRecord.organisation(), historyRecord);
+  private Map<EventOrganisation, EventHistoryRecord> calculateOrganisation2lastHistoryRecord(Event event) {
+    Map<EventOrganisation, EventHistoryRecord> organisation2lastHistoryRecord = new HashMap<EventOrganisation, EventHistoryRecord>();
+    for (EventHistoryRecord historyRecord : event.history()) {
+      organisation2lastHistoryRecord.put(historyRecord.organisation(), historyRecord);
+    }
     return unmodifiableMap(organisation2lastHistoryRecord);
   }
 }

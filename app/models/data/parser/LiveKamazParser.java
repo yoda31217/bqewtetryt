@@ -1,6 +1,8 @@
 package models.data.parser;
 
 import com.google.common.base.Splitter;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,21 +15,31 @@ import java.util.List;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
+import static java.util.Collections.emptyList;
+import static org.joda.time.DateTime.now;
+import static org.joda.time.DateTimeZone.UTC;
 
 public class LiveKamazParser implements BParser {
 
-  public static final Splitter SPORT_NAME_SPLITTER = Splitter.on('|');
-  private final ChromeDriver webDriver;
+  private static final long     REFRESH_DELAY_IN_MILLIS = 10 * 60 * 1000L;
+  private static final Splitter SPORT_NAME_SPLITTER     = Splitter.on('|');
+  private final    ChromeDriver webDriver;
+  private volatile DateTime     lastRefreshDate;
 
   public LiveKamazParser(ChromeDriver webDriver) {
     this.webDriver = webDriver;
 
     this.webDriver.get("https://www.favbet.com/en/live/");
     this.webDriver.manage().window().setSize(new Dimension(50, 50));
+    this.lastRefreshDate = now(UTC);
   }
 
   @Override
   public List<ParsedEvent> parse() {
+    if (refreshIfNeeded()) {
+      return emptyList();
+    }
+
     Document doc = parseDocument();
     return parseEvents(doc);
   }
@@ -79,6 +91,17 @@ public class LiveKamazParser implements BParser {
   private String parseSportStr(Element sportEl) {
     String rawSportStr = selectElText(sportEl, "div.t_name b");
     return newArrayList(SPORT_NAME_SPLITTER.split(rawSportStr)).get(0).trim();
+  }
+
+  private boolean refreshIfNeeded() {
+    DateTime now = now(UTC);
+    boolean isRefreshNeeded = REFRESH_DELAY_IN_MILLIS <= new Duration(lastRefreshDate, now).getMillis();
+
+    if (isRefreshNeeded) {
+      webDriver.navigate().refresh();
+      lastRefreshDate = now;
+    }
+    return isRefreshNeeded;
   }
 
   private String selectElText(Element el, String cssSelector) {

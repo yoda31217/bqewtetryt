@@ -44,19 +44,23 @@ public class EventSportTest {
   //    //      parsedEvents = parser.parse();
   //    //      parsedEvents = parser.parse();
   //  }
+
+  //    @Test
+  //    public void test2() {
+  //      setProperty("webdriver.chrome.driver", getenv("WEB_DRIVER"));
   //
-  //  @Test
-  //  public void test2() {
-  //    setProperty("webdriver.chrome.driver", getenv("WEB_DRIVER"));
+  //      ChromeOptions options = new ChromeOptions();
+  //  //    options.addArguments(
+  //  //      "--user-agent=Mozilla/5.0 (iPad; CPU OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53");
+  //      ChromeDriver chromeDriver = new ChromeDriver(options);
   //
-  //    ChromeOptions options = new ChromeOptions();
-  ////    options.addArguments(
-  ////      "--user-agent=Mozilla/5.0 (iPad; CPU OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53");
-  //    ChromeDriver chromeDriver = new ChromeDriver(options);
+  //      LiveKamazParser parser = new LiveKamazParser(chromeDriver);
+  //      List<ParsedEvent> parsedEvents = parser.parse();
+  //      //      parsedEvents = parser.parse();
+  //      //      parsedEvents = parser.parse();
   //
-  //    LiveKamazParser parser = new LiveKamazParser(chromeDriver);
-  //    List<ParsedEvent> parsedEvents = parser.parse();
-  //    //      parsedEvents = parser.parse();
-  //    //      parsedEvents = parser.parse();
-  //  }
+  //
+  //      #content > div > div.livediv > ul > li:nth-child(3) > ul > li > ul > li.col5 > div.but-m > button
+  //
+  //    }
 }

@@ -4,7 +4,9 @@ import models.event.Event;
 import models.event.EventHistoryRecord;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static models.calc.Calculation.calculate;
 
@@ -12,8 +14,8 @@ public class Calculator {
 
   final List<Calculation> calculations = new ArrayList<Calculation>(200);
 
-  public synchronized List<Calculation> calculations() {
-    return new ArrayList<Calculation>(calculations);
+  public synchronized Set<Calculation> calculations() {
+    return new HashSet<Calculation>(calculations);
   }
 
   public synchronized void notifyEventAdded(Event event) {

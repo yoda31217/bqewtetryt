@@ -16,6 +16,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.google.common.base.Strings.padEnd;
+import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Collections.sort;
 import static org.joda.time.DateTimeZone.UTC;
 import static org.joda.time.DateTimeZone.forID;
@@ -31,7 +32,7 @@ public class MainController extends Controller {
   }
 
   public Result getCalculations() {
-    List<Calculation> calculations = calculator.calculations();
+    List<Calculation> calculations = newArrayList(calculator.calculations());
     sort(calculations, createCalculationComparator());
 
     List<String> responseLines = buildResponseLines(calculations);
