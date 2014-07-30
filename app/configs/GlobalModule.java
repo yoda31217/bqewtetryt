@@ -126,6 +126,13 @@ class GlobalModule extends AbstractModule {
 
   @Provides
   @Singleton
+  @Named("live-volvo-basketball")
+  Runnable provideLiveVolvoBasketballJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter) {
+    return createLiveVolvoJob(eventStore, webDriver, eventFilter, BASKETBALL, "sport_18");
+  }
+
+  @Provides
+  @Singleton
   @Named("live-volvo-beach-volleyball")
   Runnable provideLiveVolvoBeachVolleyballJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter) {
     return createLiveVolvoJob(eventStore, webDriver, eventFilter, BEACH_VOLLEYBALL, "sport_95");
@@ -150,13 +157,6 @@ class GlobalModule extends AbstractModule {
   @Named("live-volvo-volleyball")
   Runnable provideLiveVolvoVolleyballJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter) {
     return createLiveVolvoJob(eventStore, webDriver, eventFilter, VOLLEYBALL, "sport_91");
-  }
-
-  @Provides
-  @Singleton
-  @Named("live-volvo-basketball")
-  Runnable provideLiveVolvoBasketballJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter) {
-    return createLiveVolvoJob(eventStore, webDriver, eventFilter, BASKETBALL, "sport_16");
   }
 
   @Provides
