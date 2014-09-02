@@ -44,7 +44,7 @@ public class BAdapterTest {
 
   @Test
   public void adapt_eventWith2playersSide1_splitPlayers() {
-    ParsedEvent parsedEvent = new ParsedEvent("SIDE1 PLAYER1 / SIDE1 PLAYER2", "SIDE2", "EVENT_DATE_TEXT", "1.5", "3.0");
+    ParsedEvent parsedEvent = new ParsedEvent("", "SIDE1 PLAYER1 / SIDE1 PLAYER2", "SIDE2", "EVENT_DATE_TEXT", "1.5", "3.0");
     AdaptedEvent actualAdaptedEvent = adapter.adapt(parsedEvent);
     assertThat(actualAdaptedEvent.side1).isEqualTo(newArrayList("SIDE1 PLAYER1", "SIDE1 PLAYER2"));
   }
@@ -52,22 +52,22 @@ public class BAdapterTest {
   @Test
   public void adapt_eventWithBackwardKofsOrder_adaptFieldsWithKofsFlipping() {
     setCurrentMillisFixed(new DateTime(UTC).getMillis());
-    ParsedEvent parsedEvent = new ParsedEvent("TENNIS", "SIDE1", "SIDE2", "EVENT_DATE_TEXT", "3.0", "1.5");
+    ParsedEvent parsedEvent = new ParsedEvent("", "TENNIS", "SIDE1", "SIDE2", "EVENT_DATE_TEXT", "3.0", "1.5");
 
     AdaptedEvent actualAdaptedEvent = adapter.adapt(parsedEvent);
 
-    AdaptedEvent expectedAdaptedEvent = new AdaptedEvent(LIVE, TENNIS, newArrayList("SIDE2"), newArrayList("SIDE1"), 1.5, 3.0, VOLVO, EVENT_DATE);
+    AdaptedEvent expectedAdaptedEvent = new AdaptedEvent("", LIVE, TENNIS, newArrayList("SIDE2"), newArrayList("SIDE1"), 1.5, 3.0, VOLVO, EVENT_DATE);
     assertThat(actualAdaptedEvent.toString()).isEqualTo(expectedAdaptedEvent.toString());
   }
 
   @Test
   public void adapt_eventWithNormalKofsOrder_adaptFieldsNormally() {
     setCurrentMillisFixed(new DateTime(UTC).getMillis());
-    ParsedEvent parsedEvent = new ParsedEvent("TENNIS", "SIDE1", "SIDE2", "EVENT_DATE_TEXT", "1.5", "3.0");
+    ParsedEvent parsedEvent = new ParsedEvent("", "TENNIS", "SIDE1", "SIDE2", "EVENT_DATE_TEXT", "1.5", "3.0");
 
     AdaptedEvent actualAdaptedEvent = adapter.adapt(parsedEvent);
 
-    AdaptedEvent expectedAdaptedEvent = new AdaptedEvent(LIVE, TENNIS, newArrayList("SIDE1"), newArrayList("SIDE2"), 1.5, 3.0, VOLVO, EVENT_DATE);
+    AdaptedEvent expectedAdaptedEvent = new AdaptedEvent("", LIVE, TENNIS, newArrayList("SIDE1"), newArrayList("SIDE2"), 1.5, 3.0, VOLVO, EVENT_DATE);
     assertThat(actualAdaptedEvent.toString()).isEqualTo(expectedAdaptedEvent.toString());
   }
 }

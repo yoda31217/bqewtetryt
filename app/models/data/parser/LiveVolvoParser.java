@@ -47,11 +47,17 @@ public class LiveVolvoParser implements BParser {
   }
 
   private Document parseDocument() {
+    this.webDriver.executeScript("$('#sbMCN div.FixtureList div.Fixture:not([fqlb])').each(function(){" +
+                                 "this.setAttribute('fqlb', this.wrapper.stem.data.ID.split('_')[0]);" +
+                                 "});");
     String html = webDriver.findElementByTagName("html").getAttribute("outerHTML");
     return Jsoup.parse(html);
   }
 
   private ParsedEvent parseEvent(Element eventEl) {
+    String externalId = eventEl.attr("fqlb");
+    if (null == externalId) return null;
+
     List<String> sides = selectElsTexts(eventEl, "div.RowContainer > div.Row > div.teams");
     if (2 > sides.size()) return null;
 
@@ -72,13 +78,13 @@ public class LiveVolvoParser implements BParser {
     if (null == highKof) return null;
     if ("SP".equals(highKof)) return null;
 
-    return new ParsedEvent(side1, side2, null, lowKof, highKof);
+    return new ParsedEvent(externalId, side1, side2, null, lowKof, highKof);
   }
 
   private List<ParsedEvent> parseEvents(Document doc) {
     List<ParsedEvent> events = new LinkedList<ParsedEvent>();
 
-    Elements eventEls = doc.select("#sbMCN div.FixtureList.PC_2 > div.Fixture");
+    Elements eventEls = doc.select("#sbMCN div.FixtureList div.Fixture");
     for (Element eventEl : eventEls) {
 
       ParsedEvent parsedEvent = parseEvent(eventEl);

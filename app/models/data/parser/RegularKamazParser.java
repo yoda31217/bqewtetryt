@@ -61,7 +61,7 @@ public class RegularKamazParser implements BParser {
     String highKof = selectElText(eventEl, "li.col21 > ul > li.bets_fullmark_body.m_2 > label > button");
     if (null == highKof) return null;
 
-    return new ParsedEvent(side1, side2, date, lowKof, highKof);
+    return new ParsedEvent("", side1, side2, date, lowKof, highKof);
   }
 
   private List<ParsedEvent> parseEvents(Document doc) {

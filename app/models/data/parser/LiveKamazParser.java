@@ -41,7 +41,7 @@ public class LiveKamazParser implements BParser {
       return emptyList();
     }
 
-    expandEventsIfNeeded();
+    //expandEventsIfNeeded();
 
     Document doc = parseDocument();
     return parseEvents(doc);
@@ -72,7 +72,7 @@ public class LiveKamazParser implements BParser {
                                            " ul > li.bets_fullmark_body:nth-child(2) > label > button");
     if (null == highKof) return null;
 
-    return new ParsedEvent(sportStr, side1, side2, date, lowKof, highKof);
+    return new ParsedEvent("", sportStr, side1, side2, date, lowKof, highKof);
   }
 
   private Document parseDocument() {
@@ -82,6 +82,9 @@ public class LiveKamazParser implements BParser {
 
   private ParsedEvent parseEvent(Element eventEl, String sportStr) {
     String date = null;
+
+    String externalId = selectElAttr(eventEl, "ul.mrk-head > li.col0", "data-eventid");
+    if (null == externalId) return null;
 
     String side1 = selectElText(eventEl, "ul.mrk-head > li.col21 > ul.mrk-itm li.bets_fullmark_body.m_1 span");
     if (null == side1) return null;
@@ -95,7 +98,7 @@ public class LiveKamazParser implements BParser {
     String highKof = selectElText(eventEl, "ul.mrk-head > li.col21 > ul.mrk-itm li.bets_fullmark_body.m_2 button:not([disabled])");
     if (null == highKof) return null;
 
-    return new ParsedEvent(sportStr, side1, side2, date, lowKof, highKof);
+    return new ParsedEvent(externalId, sportStr, side1, side2, date, lowKof, highKof);
   }
 
   private List<ParsedEvent> parseEvents(Document doc) {
@@ -109,7 +112,8 @@ public class LiveKamazParser implements BParser {
       Elements eventEls = sportEl.select("li[data-eventid]:has(ul.mrk-head)");
       for (Element eventEl : eventEls) {
 
-        ParsedEvent parsedEvent = "Basketball".equals(sportStr) ? parseBasketballEvent(eventEl, sportStr) : parseEvent(eventEl, sportStr);
+        // ParsedEvent parsedEvent = "Basketball".equals(sportStr) ? parseBasketballEvent(eventEl, sportStr) : parseEvent(eventEl, sportStr);
+        ParsedEvent parsedEvent = parseEvent(eventEl, sportStr);
         if (null == parsedEvent) continue;
 
         events.add(parsedEvent);
@@ -133,6 +137,16 @@ public class LiveKamazParser implements BParser {
       lastRefreshDate = now;
     }
     return isRefreshNeeded;
+  }
+
+  private String selectElAttr(Element el, String cssSelector, String attrName) {
+    Elements els = el.select(cssSelector);
+    if (els.isEmpty()) return null;
+
+    String attrText = els.get(0).attr(attrName);
+    if (isNullOrEmpty(attrText)) return null;
+
+    return attrText.trim();
   }
 
   private String selectElText(Element el, String cssSelector) {

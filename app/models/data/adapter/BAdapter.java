@@ -34,6 +34,8 @@ public class BAdapter {
   }
 
   public AdaptedEvent adapt(ParsedEvent parsedEvent) {
+    String externalId = parsedEvent.externalId;
+
     List<String> side1 = newArrayList(coopSplitter.split(parsedEvent.side1));
     List<String> side2 = newArrayList(coopSplitter.split(parsedEvent.side2));
 
@@ -54,6 +56,6 @@ public class BAdapter {
 
     EventSport sport = sportAdapter.adapt(parsedEvent.sport);
 
-    return new AdaptedEvent(type, sport, side1, side2, lowKof, highKof, organisation, eventDate);
+    return new AdaptedEvent(externalId, type, sport, side1, side2, lowKof, highKof, organisation, eventDate);
   }
 }

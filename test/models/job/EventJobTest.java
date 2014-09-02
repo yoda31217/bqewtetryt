@@ -29,8 +29,9 @@ public class EventJobTest {
 
   private DateTime                eventDate       = new DateTime(UTC);
   private Event                   event           = new Event(LIVE, TENNIS, eventDate, newArrayList("SIDE1"), newArrayList("SIDE2"));
-  private AdaptedEvent            adaptedEvent    = new AdaptedEvent(LIVE, TENNIS, newArrayList("SIDE1"), newArrayList("SIDE2"), 1.1, 2.2, VOLVO, eventDate);
-  private ParsedEvent             parsedEvent     = new ParsedEvent("SIDE1", "SIDE2", "DATE_STRING", "1.1", "2.2");
+  private AdaptedEvent            adaptedEvent    = new AdaptedEvent("", LIVE, TENNIS, newArrayList("SIDE1"), newArrayList("SIDE2"), 1.1, 2.2, VOLVO,
+                                                                     eventDate);
+  private ParsedEvent             parsedEvent     = new ParsedEvent("", "SIDE1", "SIDE2", "DATE_STRING", "1.1", "2.2");
   private BParser                 parserMock      = mock(BParser.class);
   private BAdapter                adapterMock     = mock(BAdapter.class);
   private Predicate<AdaptedEvent> eventFilterMock = mock(Predicate.class);

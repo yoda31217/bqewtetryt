@@ -47,7 +47,7 @@ public class RegularNivaParser implements BParser {
 
       if (null == lowKof || null == highKof) return null;
 
-      return new ParsedEvent(side1, side2, date, lowKof, highKof);
+      return new ParsedEvent("", side1, side2, date, lowKof, highKof);
 
     } catch (Exception ex) {
       throw new IllegalArgumentException("Failed to parse event: " + eventObject + ".", ex);

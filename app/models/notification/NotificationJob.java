@@ -59,12 +59,22 @@ public class NotificationJob implements Runnable {
     messageBuilder.append("</kbd> <span class=\"label label-danger\">");
     messageBuilder.append(calculation.event.sport().label);
 
-    messageBuilder.append("</span>\n<span class=\"text-primary\">");
+    messageBuilder.append("</span>\n<button type=\"button\" class=\"btn btn-warning\" messy-type=\"event-sides\" messy-data=\"");
+    messageBuilder.append(calculation.event.sport().label);
+    messageBuilder.append(':');
+    messageBuilder.append(calculation.lowForkKofOrganisation.label);
+    messageBuilder.append(':');
+    messageBuilder.append(calculation.event.getExternalId(calculation.lowForkKofOrganisation));
+    messageBuilder.append(':');
+    messageBuilder.append(calculation.highForkKofOrganisation.label);
+    messageBuilder.append(':');
+    messageBuilder.append(calculation.event.getExternalId(calculation.highForkKofOrganisation));
+    messageBuilder.append("\">");
     messageBuilder.append(calculation.event.side1());
-    messageBuilder.append("</span> - <span class=\"text-success\">");
+    messageBuilder.append(" - ");
     messageBuilder.append(calculation.event.side2());
 
-    messageBuilder.append("</span>\n<span class=\"label label-primary\">");
+    messageBuilder.append("</button>\n<span class=\"label label-primary\">");
     messageBuilder.append(NUMBER_FORMAT.format(calculation.lowForkKof));
     messageBuilder.append("</span> <span class=\"label label-primary\">");
     messageBuilder.append(calculation.lowForkKofOrganisation.label);
@@ -80,12 +90,31 @@ public class NotificationJob implements Runnable {
     messageBuilder.append("</strong> = <strong class=\"text-success\">");
     messageBuilder.append(NUMBER_FORMAT.format(calculation.highProfit));
 
-    messageBuilder.append("</strong>\n<strong class=\"text-primary\">");
+    messageBuilder.append("</strong>   <strong class=\"text-primary\">");
+    messageBuilder.append(NUMBER_FORMAT.format(calculation.highRoundedProfitMoney1));
+    messageBuilder.append("</strong> + <strong class=\"text-success\">");
+    messageBuilder.append(NUMBER_FORMAT.format(calculation.highRoundedProfitMoney2));
+    messageBuilder.append("</strong> = <strong class=\"text-primary\">");
+    messageBuilder.append(NUMBER_FORMAT.format(calculation.highRoundedProfit1));
+    messageBuilder.append("</strong> + <span class=\"label label-success\">");
+    messageBuilder.append(NUMBER_FORMAT.format(calculation.highRoundedProfit2));
+
+    messageBuilder.append("</span>\n<strong class=\"text-primary\">");
     messageBuilder.append(NUMBER_FORMAT.format(calculation.lowProfitMoney1));
     messageBuilder.append("</strong> + <strong class=\"text-success\">");
     messageBuilder.append(NUMBER_FORMAT.format(calculation.lowProfitMoney2));
     messageBuilder.append("</strong> = <strong class=\"text-primary\">");
     messageBuilder.append(NUMBER_FORMAT.format(calculation.lowProfit));
+
+    messageBuilder.append("</strong>   <strong class=\"text-primary\">");
+    messageBuilder.append(NUMBER_FORMAT.format(calculation.lowRoundedProfitMoney1));
+    messageBuilder.append("</strong> + <strong class=\"text-success\">");
+    messageBuilder.append(NUMBER_FORMAT.format(calculation.lowRoundedProfitMoney2));
+    messageBuilder.append("</strong> = <span class=\"label label-primary\">");
+    messageBuilder.append(NUMBER_FORMAT.format(calculation.lowRoundedProfit1));
+    messageBuilder.append("</span> + <strong class=\"text-success\">");
+    messageBuilder.append(NUMBER_FORMAT.format(calculation.lowRoundedProfit2));
+
     messageBuilder.append("</strong>");
 
     return messageBuilder.toString();

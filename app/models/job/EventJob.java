@@ -53,6 +53,7 @@ public class EventJob implements Runnable {
 
       Event event = eventStore.createOrFindEvent(adaptedEvent.type, adaptedEvent.sport, adaptedEvent.eventDate, adaptedEvent.side1, adaptedEvent.side2);
       eventStore.addHistory(event, adaptedEvent.adoptedDate, adaptedEvent.organisation, adaptedEvent.lowKof, adaptedEvent.highKof);
+      event.registerExternalId(adaptedEvent.organisation, adaptedEvent.externalId);
 
     } catch (Exception e) {
       log.error("Failed to process parsed event: {}.", parsedEvent.toString());

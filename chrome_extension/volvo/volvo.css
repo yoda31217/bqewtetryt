@@ -1,0 +1,4 @@
+#sbMCN div.FixtureList.PC_2 > div.Fixture > div.OverviewMarket > div.Participant.Suspended > span.Odds {
+  color: lightblue;
+  opacity: 1.0;
+}

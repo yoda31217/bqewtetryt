@@ -1,0 +1,41 @@
+{
+  "manifest_version": 2,
+
+  "version": "1.0",
+
+  "name": "Betty Helper Toolbar",
+  "description": "Betty Helper Toolbar",
+
+  "background": {
+    "scripts": ["background/background.js"],
+    "persistent": true
+  },
+
+  "browser_action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": "meta/icon.png"
+  },
+
+  "permissions": [
+    "notifications",
+    "tabs",
+    "activeTab"
+  ],
+
+  "content_scripts": [
+    {
+      "matches": ["https://www.favbet.com/en/live/*"],
+      "js": ["kamaz/kamaz.js", "external/jquery-1.9.0/jquery-1.9.0.min.js"]
+    },
+    {
+      "matches": ["http://www.bet365.com/lite/*"],
+      "js": ["volvo/volvo.js", "external/jquery-1.9.0/jquery-1.9.0.min.js"],
+      "css": ["volvo/volvo.css"]
+    },
+    {
+      //            "matches": ["file:///Users/yoda31217/*"],
+      "matches": ["http://messy-app.appspot.com/*"],
+      "js": ["external/jquery-1.9.0/jquery-1.9.0.min.js", "messy/messy.js"]
+    }
+  ]
+}

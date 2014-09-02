@@ -11,6 +11,7 @@ import static org.joda.time.DateTimeZone.UTC;
 
 public class AdaptedEvent {
 
+  public final String            externalId;
   public final DateTime          adoptedDate;
   public final DateTime          eventDate;
   public final double            highKof;
@@ -21,8 +22,8 @@ public class AdaptedEvent {
   public final EventSport        sport;
   public final EventType         type;
 
-  public AdaptedEvent(EventType type, EventSport sport, List<String> side1, List<String> side2, double lowKof, double highKof, EventOrganisation organisation,
-                      DateTime eventDate) {
+  public AdaptedEvent(String externalId, EventType type, EventSport sport, List<String> side1, List<String> side2, double lowKof, double highKof,
+                      EventOrganisation organisation, DateTime eventDate) {
     this.type = type;
     this.sport = sport;
     this.side1 = side1;
@@ -32,12 +33,14 @@ public class AdaptedEvent {
     this.organisation = organisation;
     this.eventDate = eventDate;
     this.adoptedDate = new DateTime(UTC);
+    this.externalId = externalId;
   }
 
   @Override
   public String toString() {
     return "AdaptedEvent{" +
-           "adoptedDate=" + adoptedDate +
+           "externalId='" + externalId + '\'' +
+           ", adoptedDate=" + adoptedDate +
            ", eventDate=" + eventDate +
            ", highKof=" + highKof +
            ", lowKof=" + lowKof +
