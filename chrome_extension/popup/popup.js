@@ -15,6 +15,7 @@ $(document).ready(function () {
   };
 
   $('#identifyKamazButton').click(createOnIdentifyClickHandler('K'));
+  $('#identifyFordButton').click(createOnIdentifyClickHandler('F'));
   $('#identifyVolvoButton').click(createOnIdentifyClickHandler('V'));
 
 });

@@ -61,10 +61,4 @@ chrome.runtime.onMessage.addListener(function (message) {
   else {
     onInfoHandler('Unhandled message type: ' + message.type + ' and message: ' + message.text + '.');
   }
-
-  //  chrome.tabs.update(kamazTabId, {active: true}, function (tab) {
-  //    chrome.tabs.sendMessage(tab.id, message, function () {
-  //    });
-  //  })
-
 });
