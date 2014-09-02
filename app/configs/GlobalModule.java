@@ -18,6 +18,7 @@ import models.data.adapter.sport.ConstantSportAdapter;
 import models.data.adapter.sport.EngTextSportAdapter;
 import models.data.adapter.sport.SportAdapter;
 import models.data.parser.BParser;
+import models.data.parser.LiveFordParser;
 import models.data.parser.LiveKamazParser;
 import models.data.parser.LiveVolvoParser;
 import models.data.parser.RegularKamazParser;
@@ -44,6 +45,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.google.inject.Scopes.SINGLETON;
+import static models.event.EventOrganisation.FORD;
 import static models.event.EventOrganisation.KAMAZ;
 import static models.event.EventOrganisation.NIVA;
 import static models.event.EventOrganisation.VOLVO;
@@ -106,6 +108,21 @@ class GlobalModule extends AbstractModule {
     KofAdapter kofAdapter = new DecimalKofAdapter();
     SportAdapter sportAdapter = new EngTextSportAdapter();
     BAdapter adapter = new BAdapter(" / ", dateAdapter, kofAdapter, sportAdapter, LIVE, KAMAZ);
+
+    return new EventJob(eventStore, parser, adapter, eventFilter);
+  }
+
+  @Provides
+  @Singleton
+  @Named("live-ford")
+  Runnable provideLiveFordJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
+    BParser parser = new LiveFordParser(webDriver);
+    parser = new RetryExceptionParser(parser, 3);
+
+    DateAdapter dateAdapter = new NowDateAdapter();
+    KofAdapter kofAdapter = new FractionalKofAdapter();
+    SportAdapter sportAdapter = new EngTextSportAdapter();
+    BAdapter adapter = new BAdapter("/", dateAdapter, kofAdapter, sportAdapter, LIVE, FORD);
 
     return new EventJob(eventStore, parser, adapter, eventFilter);
   }

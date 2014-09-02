@@ -5,6 +5,7 @@ public enum EventOrganisation {
   VOLVO("V"),
   NIVA("N"),
   KAMAZ("K"),
+  FORD("F"),
   UNKNOWN("U");
 
   public final String label;
