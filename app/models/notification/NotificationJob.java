@@ -1,5 +1,6 @@
 package models.notification;
 
+import com.codahale.metrics.Histogram;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
 import com.google.common.base.Predicate;
@@ -31,12 +32,16 @@ public class NotificationJob implements Runnable {
   private final BNotifier  notifier;
   private final Calculator calculator;
   private final Set<Calculation> previouslyNotifiedCalculations = new CopyOnWriteArraySet<Calculation>();
-  private final Timer timerMetric;
+  private final Timer     timerMetric;
+  private final Histogram forkLowProfitHistogramMetric;
+  private final Histogram forkHighProfitHistogramMetric;
 
   public NotificationJob(BNotifier notifier, Calculator calculator, MetricRegistry metricRegistry) {
     this.notifier = notifier;
     this.calculator = calculator;
     timerMetric = metricRegistry.timer(name(this.getClass(), "timer"));
+    forkLowProfitHistogramMetric = metricRegistry.histogram(name(this.getClass(), "fork", "low_profit", "histogram"));
+    forkHighProfitHistogramMetric = metricRegistry.histogram(name(this.getClass(), "fork", "high_profit", "histogram"));
   }
 
   @Override
@@ -142,7 +147,11 @@ public class NotificationJob implements Runnable {
     newNotifiableCalculations.removeAll(previouslyNotifiedCalculations);
 
     for (Calculation calculation : newNotifiableCalculations) {
+
       log.info("Sending fork Notification: {}", calculation.event.toString());
+      forkLowProfitHistogramMetric.update((int) (calculation.lowProfit * 1000.0));
+      forkHighProfitHistogramMetric.update((int) (calculation.highProfit * 1000.0));
+
       notifier.notify(createMessage(calculation));
     }
   }

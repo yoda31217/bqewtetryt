@@ -69,6 +69,8 @@ public class LiveFordParser implements BParser {
     if (null == sidesStr) return null;
 
     String[] sides = sidesStr.split("( v | @ )");
+    if (2 > sides.length) return null;
+
     String side1 = sides[0];
     String side2 = sides[1];
 

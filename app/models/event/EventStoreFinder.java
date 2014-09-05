@@ -1,5 +1,7 @@
 package models.event;
 
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Timer;
 import com.google.common.base.Predicate;
 import com.google.common.base.Splitter;
 import org.joda.time.DateTime;
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static com.codahale.metrics.MetricRegistry.name;
 import static com.google.common.collect.Collections2.filter;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.lang.Math.max;
@@ -21,10 +24,24 @@ public class EventStoreFinder {
   private static final Splitter PLAYER_NAME_SPLITTER = Splitter.on(Pattern.compile("[^a-z]+")).omitEmptyStrings();
   private static final Duration ALLOWED_DURATION     = new Period().withHours(4).toStandardDuration();
   private final List<Event> events;
+  private final Timer       timerMetric;
 
-  public EventStoreFinder(List<Event> events) { this.events = events; }
+  public EventStoreFinder(List<Event> events, MetricRegistry metricRegistry) {
+    this.events = events;
+    timerMetric = metricRegistry.timer(name(this.getClass(), "timer"));
+  }
 
   Event findEvent(EventType type, EventSport sport, DateTime date, List<String> side1, List<String> side2) {
+    Timer.Context context = timerMetric.time();
+    try {
+      return doFindEvent(type, sport, date, side1, side2);
+
+    } finally {
+      context.stop();
+    }
+  }
+
+  private Event doFindEvent(EventType type, EventSport sport, DateTime date, List<String> side1, List<String> side2) {
     Event candidateEvent = null;
     int candidateEventSimilarity = 0;
 

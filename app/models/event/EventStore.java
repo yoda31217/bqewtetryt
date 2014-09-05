@@ -1,5 +1,6 @@
 package models.event;
 
+import com.codahale.metrics.MetricRegistry;
 import models.calc.Calculator;
 import org.joda.time.DateTime;
 import play.Logger;
@@ -15,10 +16,13 @@ public class EventStore {
 
   Logger.ALogger log = of(EventStore.class);
   final         List<Event>      events           = new CopyOnWriteArrayList<Event>();
-  private final EventStoreFinder eventStoreFinder = new EventStoreFinder(events);
-  private final Calculator calculator;
+  private final EventStoreFinder eventStoreFinder;
+  private final Calculator       calculator;
 
-  public EventStore(Calculator calculator) { this.calculator = calculator;}
+  public EventStore(Calculator calculator, MetricRegistry metricRegistry) {
+    this.calculator = calculator;
+    eventStoreFinder = new EventStoreFinder(events, metricRegistry);
+  }
 
   public void addHistory(Event event, DateTime date, EventOrganisation organisation, double lowKof, double highKof) {
     EventHistoryRecord historyRecord = new EventHistoryRecord(date, organisation, lowKof, highKof);

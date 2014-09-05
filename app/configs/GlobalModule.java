@@ -99,8 +99,8 @@ class GlobalModule extends AbstractModule {
 
   @Provides
   @Singleton
-  EventStore provideEventStore(Calculator calculator) {
-    return new EventStore(calculator);
+  EventStore provideEventStore(Calculator calculator, MetricRegistry metricRegistry) {
+    return new EventStore(calculator, metricRegistry);
   }
 
   @Provides
