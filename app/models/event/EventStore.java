@@ -35,7 +35,7 @@ public class EventStore {
     if (null != oldEvent) return oldEvent;
 
     Event newEvent = new Event(type, sport, date, side1, side2);
-    log.info("Adding new Event: {}.", newEvent.toString());
+    log.debug("Adding new Event: {}.", newEvent.toString());
     events.add(newEvent);
     calculator.notifyEventAdded(newEvent);
 

@@ -1,6 +1,7 @@
 package configs;
 
 import akka.actor.Scheduler;
+import com.codahale.metrics.MetricRegistry;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -44,7 +45,6 @@ import javax.inject.Named;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static com.google.inject.Scopes.SINGLETON;
 import static models.event.EventOrganisation.FORD;
 import static models.event.EventOrganisation.KAMAZ;
 import static models.event.EventOrganisation.NIVA;
@@ -78,9 +78,15 @@ class GlobalModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    bind(Calculator.class).in(SINGLETON);
     bind(Twitter.class).toInstance(TwitterFactory.getSingleton());
     bind(Scheduler.class).toInstance(system().scheduler());
+    bind(MetricRegistry.class).toInstance(new MetricRegistry());
+  }
+
+  @Provides
+  @Singleton
+  Calculator provideCalculator(MetricRegistry metricRegistry) {
+    return new Calculator(metricRegistry);
   }
 
   @Provides
@@ -99,24 +105,9 @@ class GlobalModule extends AbstractModule {
 
   @Provides
   @Singleton
-  @Named("live-kamaz")
-  Runnable provideLiveKamazJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
-    BParser parser = new LiveKamazParser(webDriver);
-    parser = new RetryExceptionParser(parser, 3);
-
-    DateAdapter dateAdapter = new NowDateAdapter();
-    KofAdapter kofAdapter = new DecimalKofAdapter();
-    SportAdapter sportAdapter = new EngTextSportAdapter();
-    BAdapter adapter = new BAdapter(" / ", dateAdapter, kofAdapter, sportAdapter, LIVE, KAMAZ);
-
-    return new EventJob(eventStore, parser, adapter, eventFilter);
-  }
-
-  @Provides
-  @Singleton
   @Named("live-ford")
-  Runnable provideLiveFordJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
-    BParser parser = new LiveFordParser(webDriver);
+  Runnable provideLiveFordJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, MetricRegistry metricRegistry) {
+    BParser parser = new LiveFordParser(webDriver, metricRegistry);
     parser = new RetryExceptionParser(parser, 3);
 
     DateAdapter dateAdapter = new NowDateAdapter();
@@ -124,56 +115,76 @@ class GlobalModule extends AbstractModule {
     SportAdapter sportAdapter = new EngTextSportAdapter();
     BAdapter adapter = new BAdapter("/", dateAdapter, kofAdapter, sportAdapter, LIVE, FORD);
 
-    return new EventJob(eventStore, parser, adapter, eventFilter);
+    return new EventJob(eventStore, parser, adapter, eventFilter, metricRegistry, LIVE, FORD);
+  }
+
+  @Provides
+  @Singleton
+  @Named("live-kamaz")
+  Runnable provideLiveKamazJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, MetricRegistry metricRegistry) {
+    BParser parser = new LiveKamazParser(webDriver, metricRegistry);
+    parser = new RetryExceptionParser(parser, 3);
+
+    DateAdapter dateAdapter = new NowDateAdapter();
+    KofAdapter kofAdapter = new DecimalKofAdapter();
+    SportAdapter sportAdapter = new EngTextSportAdapter();
+    BAdapter adapter = new BAdapter(" / ", dateAdapter, kofAdapter, sportAdapter, LIVE, KAMAZ);
+
+    return new EventJob(eventStore, parser, adapter, eventFilter, metricRegistry, LIVE, KAMAZ);
   }
 
   @Provides
   @Singleton
   @Named("live-volvo-badminton")
-  Runnable provideLiveVolvoBadmintonJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter) {
-    return createLiveVolvoJob(eventStore, webDriver, eventFilter, BADMINTON, "sport_94");
+  Runnable provideLiveVolvoBadmintonJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter,
+                                        MetricRegistry metricRegistry) {
+    return createLiveVolvoJob(eventStore, webDriver, eventFilter, BADMINTON, "sport_94", metricRegistry);
   }
 
   @Provides
   @Singleton
   @Named("live-volvo-baseball")
-  Runnable provideLiveVolvoBaseballJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter) {
-    return createLiveVolvoJob(eventStore, webDriver, eventFilter, BASEBALL, "sport_16");
+  Runnable provideLiveVolvoBaseballJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter, MetricRegistry metricRegistry) {
+    return createLiveVolvoJob(eventStore, webDriver, eventFilter, BASEBALL, "sport_16", metricRegistry);
   }
 
   @Provides
   @Singleton
   @Named("live-volvo-basketball")
-  Runnable provideLiveVolvoBasketballJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter) {
-    return createLiveVolvoJob(eventStore, webDriver, eventFilter, BASKETBALL, "sport_18");
+  Runnable provideLiveVolvoBasketballJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter,
+                                         MetricRegistry metricRegistry) {
+    return createLiveVolvoJob(eventStore, webDriver, eventFilter, BASKETBALL, "sport_18", metricRegistry);
   }
 
   @Provides
   @Singleton
   @Named("live-volvo-beach-volleyball")
-  Runnable provideLiveVolvoBeachVolleyballJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter) {
-    return createLiveVolvoJob(eventStore, webDriver, eventFilter, BEACH_VOLLEYBALL, "sport_95");
+  Runnable provideLiveVolvoBeachVolleyballJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter,
+                                              MetricRegistry metricRegistry) {
+    return createLiveVolvoJob(eventStore, webDriver, eventFilter, BEACH_VOLLEYBALL, "sport_95", metricRegistry);
   }
 
   @Provides
   @Singleton
   @Named("live-volvo-table-tennis")
-  Runnable provideLiveVolvoTableTennisJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter) {
-    return createLiveVolvoJob(eventStore, webDriver, eventFilter, TABLE_TENNIS, "sport_92");
+  Runnable provideLiveVolvoTableTennisJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter,
+                                          MetricRegistry metricRegistry) {
+    return createLiveVolvoJob(eventStore, webDriver, eventFilter, TABLE_TENNIS, "sport_92", metricRegistry);
   }
 
   @Provides
   @Singleton
   @Named("live-volvo-tennis")
-  Runnable provideLiveVolvoTennisJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter) {
-    return createLiveVolvoJob(eventStore, webDriver, eventFilter, TENNIS, "sport_13");
+  Runnable provideLiveVolvoTennisJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter, MetricRegistry metricRegistry) {
+    return createLiveVolvoJob(eventStore, webDriver, eventFilter, TENNIS, "sport_13", metricRegistry);
   }
 
   @Provides
   @Singleton
   @Named("live-volvo-volleyball")
-  Runnable provideLiveVolvoVolleyballJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter) {
-    return createLiveVolvoJob(eventStore, webDriver, eventFilter, VOLLEYBALL, "sport_91");
+  Runnable provideLiveVolvoVolleyballJob(EventStore eventStore, @Named("mobile") ChromeDriver webDriver, EventFilter eventFilter,
+                                         MetricRegistry metricRegistry) {
+    return createLiveVolvoJob(eventStore, webDriver, eventFilter, VOLLEYBALL, "sport_91", metricRegistry);
   }
 
   @Provides
@@ -195,64 +206,64 @@ class GlobalModule extends AbstractModule {
 
   @Provides
   @Singleton
-  NotificationJob provideNotificationJob(Calculator calculator) {
-    return new NotificationJob(new MessyNotifier(), calculator);
+  NotificationJob provideNotificationJob(Calculator calculator, MetricRegistry metricRegistry) {
+    return new NotificationJob(new MessyNotifier(metricRegistry), calculator, metricRegistry);
   }
 
   @Provides
   @Singleton
   @Named("regular-kamaz-baseball")
-  Runnable provideRegularKamazBaseballJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
-    return createRegularKamazJob(eventStore, webDriver, eventFilter, BASEBALL, "sport26");
+  Runnable provideRegularKamazBaseballJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, MetricRegistry metricRegistry) {
+    return createRegularKamazJob(eventStore, webDriver, eventFilter, BASEBALL, "sport26", metricRegistry);
   }
 
   @Provides
   @Singleton
   @Named("regular-kamaz-tennis")
-  Runnable provideRegularKamazTennisJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
-    return createRegularKamazJob(eventStore, webDriver, eventFilter, TENNIS, "sport2");
+  Runnable provideRegularKamazTennisJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, MetricRegistry metricRegistry) {
+    return createRegularKamazJob(eventStore, webDriver, eventFilter, TENNIS, "sport2", metricRegistry);
   }
 
   @Provides
   @Singleton
   @Named("regular-kamaz-volleyball")
-  Runnable provideRegularKamazVolleyballJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
-    return createRegularKamazJob(eventStore, webDriver, eventFilter, VOLLEYBALL, "sport51");
+  Runnable provideRegularKamazVolleyballJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, MetricRegistry metricRegistry) {
+    return createRegularKamazJob(eventStore, webDriver, eventFilter, VOLLEYBALL, "sport51", metricRegistry);
   }
 
   @Provides
   @Singleton
   @Named("regular-niva-baseball")
-  Runnable provideRegularNivaBaseballJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
-    return createRegularNivaJob(eventStore, webDriver, eventFilter, "Baseball", BASEBALL);
+  Runnable provideRegularNivaBaseballJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, MetricRegistry metricRegistry) {
+    return createRegularNivaJob(eventStore, webDriver, eventFilter, "Baseball", BASEBALL, metricRegistry);
   }
 
   @Provides
   @Singleton
   @Named("regular-niva-tennis")
-  Runnable provideRegularNivaTennisJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
-    return createRegularNivaJob(eventStore, webDriver, eventFilter, "Tennis", TENNIS);
+  Runnable provideRegularNivaTennisJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, MetricRegistry metricRegistry) {
+    return createRegularNivaJob(eventStore, webDriver, eventFilter, "Tennis", TENNIS, metricRegistry);
   }
 
   @Provides
   @Singleton
   @Named("regular-niva-volleyball")
-  Runnable provideRegularNivaVolleyballJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter) {
-    return createRegularNivaJob(eventStore, webDriver, eventFilter, "Volleyball", VOLLEYBALL);
+  Runnable provideRegularNivaVolleyballJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, MetricRegistry metricRegistry) {
+    return createRegularNivaJob(eventStore, webDriver, eventFilter, "Volleyball", VOLLEYBALL, metricRegistry);
   }
 
   @Provides
   @Singleton
-  RemoveOldEventJob provideRemoveOldEventJob(EventStore eventStore) {
+  RemoveOldEventJob provideRemoveOldEventJob(EventStore eventStore, MetricRegistry metricRegistry) {
     long maxLastHistoryRecordAgeInMillis = configuration.getMilliseconds("betty.jobs.remove-old-event.max-last-history-record-age");
-    return new RemoveOldEventJob(maxLastHistoryRecordAgeInMillis, eventStore);
+    return new RemoveOldEventJob(maxLastHistoryRecordAgeInMillis, eventStore, metricRegistry);
   }
 
   @Provides
   @Singleton
-  RemoveOldHistoryJob provideRemoveOldHistoryJob(EventStore eventStore) {
+  RemoveOldHistoryJob provideRemoveOldHistoryJob(EventStore eventStore, MetricRegistry metricRegistry) {
     Integer maxHistoryCount = configuration.getInt("betty.jobs.remove-old-history.max-history-count");
-    return new RemoveOldHistoryJob(maxHistoryCount, eventStore);
+    return new RemoveOldHistoryJob(maxHistoryCount, eventStore, metricRegistry);
   }
 
   @Provides
@@ -262,8 +273,9 @@ class GlobalModule extends AbstractModule {
     return chromeDriver;
   }
 
-  private Runnable createLiveVolvoJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, EventSport sport, String sportCode) {
-    BParser parser = new LiveVolvoParser(webDriver, sportCode);
+  private Runnable createLiveVolvoJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, EventSport sport, String sportCode,
+                                      MetricRegistry metricRegistry) {
+    BParser parser = new LiveVolvoParser(webDriver, sportCode, metricRegistry);
     parser = new RetryExceptionParser(parser, 3);
 
     DateAdapter dateAdapter = new NowDateAdapter();
@@ -271,10 +283,11 @@ class GlobalModule extends AbstractModule {
     SportAdapter sportAdapter = new ConstantSportAdapter(sport);
     BAdapter adapter = new BAdapter("/", dateAdapter, kofAdapter, sportAdapter, LIVE, VOLVO);
 
-    return new EventJob(eventStore, parser, adapter, eventFilter);
+    return new EventJob(eventStore, parser, adapter, eventFilter, metricRegistry, LIVE, VOLVO);
   }
 
-  private Runnable createRegularKamazJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, EventSport sport, String sportStyleName) {
+  private Runnable createRegularKamazJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, EventSport sport, String sportStyleName,
+                                         MetricRegistry metricRegistry) {
     BParser parser = new RegularKamazParser(webDriver, sportStyleName);
     parser = new RetryExceptionParser(parser, 3);
 
@@ -283,10 +296,11 @@ class GlobalModule extends AbstractModule {
     SportAdapter sportAdapter = new ConstantSportAdapter(sport);
     BAdapter adapter = new BAdapter(" / ", dateAdapter, kofAdapter, sportAdapter, REGULAR, KAMAZ);
 
-    return new EventJob(eventStore, parser, adapter, eventFilter);
+    return new EventJob(eventStore, parser, adapter, eventFilter, metricRegistry, REGULAR, KAMAZ);
   }
 
-  private Runnable createRegularNivaJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, String urlPart, EventSport sport) {
+  private Runnable createRegularNivaJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, String urlPart, EventSport sport,
+                                        MetricRegistry metricRegistry) {
     BParser parser = new RegularNivaParser(urlPart, webDriver, sport);
     parser = new RetryExceptionParser(parser, 3);
 
@@ -295,6 +309,6 @@ class GlobalModule extends AbstractModule {
     SportAdapter sportAdapter = new ConstantSportAdapter(sport);
     BAdapter adapter = new BAdapter("|", dateAdapter, kofAdapter, sportAdapter, REGULAR, NIVA);
 
-    return new EventJob(eventStore, parser, adapter, eventFilter);
+    return new EventJob(eventStore, parser, adapter, eventFilter, metricRegistry, REGULAR, NIVA);
   }
 }

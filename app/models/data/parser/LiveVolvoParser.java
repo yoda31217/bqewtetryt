@@ -1,5 +1,7 @@
 package models.data.parser;
 
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Timer;
 import com.google.common.base.Function;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,6 +14,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.codahale.metrics.MetricRegistry.name;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.transform;
 import static java.util.Collections.emptyList;
@@ -20,13 +23,15 @@ public class LiveVolvoParser implements BParser {
 
   private final ChromeDriver webDriver;
   private final String       sportCode;
+  private final Timer timerMetric;
 
-  public LiveVolvoParser(ChromeDriver webDriver, String sportCode) {
+  public LiveVolvoParser(ChromeDriver webDriver, String sportCode, MetricRegistry metricRegistry) {
     this.sportCode = sportCode;
     this.webDriver = webDriver;
 
     this.webDriver.get("http://www.bet365.com/lite/#!in-play/overview/");
     this.webDriver.manage().window().setSize(new Dimension(50, 50));
+    timerMetric = metricRegistry.timer(name(this.getClass(), "timer"));
   }
 
   @Override
@@ -36,8 +41,14 @@ public class LiveVolvoParser implements BParser {
       return emptyList();
     }
 
-    Document doc = parseDocument();
-    return parseEvents(doc);
+    Timer.Context timer = timerMetric.time();
+    try {
+      Document doc = parseDocument();
+      return parseEvents(doc);
+
+    } finally {
+      timer.stop();
+    }
   }
 
   private boolean isSportSelected() {

@@ -1,5 +1,7 @@
 package models.data.parser;
 
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Timer;
 import com.google.common.base.Splitter;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -7,12 +9,14 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.codahale.metrics.MetricRegistry.name;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.lang.String.format;
@@ -26,13 +30,19 @@ public class LiveKamazParser implements BParser {
   private static final Splitter SPORT_NAME_SPLITTER     = Splitter.on('|');
   private final    ChromeDriver webDriver;
   private volatile DateTime     lastRefreshDate;
+  private final    Timer        timerMetric;
 
-  public LiveKamazParser(ChromeDriver webDriver) {
+  public LiveKamazParser(ChromeDriver webDriver, MetricRegistry metricRegistry) {
     this.webDriver = webDriver;
 
     this.webDriver.get("https://www.favbet.com/en/live/");
+    Cookie langCookie = new Cookie("LANG", "en", "www.favbet.com", "/", now().plusYears(10).toDate());
+    this.webDriver.manage().addCookie(langCookie);
+    this.webDriver.get("https://www.favbet.com/en/live/");
     this.webDriver.manage().window().setSize(new Dimension(50, 50));
+
     this.lastRefreshDate = now(UTC);
+    timerMetric = metricRegistry.timer(name(this.getClass(), "timer"));
   }
 
   @Override
@@ -43,8 +53,14 @@ public class LiveKamazParser implements BParser {
 
     //expandEventsIfNeeded();
 
-    Document doc = parseDocument();
-    return parseEvents(doc);
+    Timer.Context timer = timerMetric.time();
+    try {
+      Document doc = parseDocument();
+      return parseEvents(doc);
+
+    } finally {
+      timer.stop();
+    }
   }
 
   private void expandEventsIfNeeded() {

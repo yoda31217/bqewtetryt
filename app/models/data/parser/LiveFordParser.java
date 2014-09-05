@@ -1,5 +1,7 @@
 package models.data.parser;
 
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Timer;
 import com.google.common.base.Function;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -13,6 +15,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.codahale.metrics.MetricRegistry.name;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.transform;
 import static java.util.Collections.emptyList;
@@ -24,13 +27,15 @@ public class LiveFordParser implements BParser {
   private static final long REFRESH_DELAY_IN_MILLIS = 10 * 60 * 1000L;
   private final    ChromeDriver webDriver;
   private volatile DateTime     lastRefreshDate;
+  private final    Timer        timerMetric;
 
-  public LiveFordParser(ChromeDriver webDriver) {
+  public LiveFordParser(ChromeDriver webDriver, MetricRegistry metricRegistry) {
     this.webDriver = webDriver;
 
     this.webDriver.get("http://sports.williamhill.com/bet/en-gb/betlive/all");
     this.webDriver.manage().window().setSize(new Dimension(50, 50));
     this.lastRefreshDate = now(UTC);
+    timerMetric = metricRegistry.timer(name(this.getClass(), "timer"));
   }
 
   @Override
@@ -39,8 +44,14 @@ public class LiveFordParser implements BParser {
       return emptyList();
     }
 
-    Document doc = parseDocument();
-    return parseEvents(doc);
+    Timer.Context timer = timerMetric.time();
+    try {
+      Document doc = parseDocument();
+      return parseEvents(doc);
+
+    } finally {
+      timer.stop();
+    }
   }
 
   private Document parseDocument() {
@@ -57,7 +68,7 @@ public class LiveFordParser implements BParser {
     String sidesStr = selectElText(eventEl, "td.CentrePad > a > span");
     if (null == sidesStr) return null;
 
-    String[] sides = sidesStr.split(" v ");
+    String[] sides = sidesStr.split("( v | @ )");
     String side1 = sides[0];
     String side2 = sides[1];
 
@@ -101,7 +112,8 @@ public class LiveFordParser implements BParser {
 
     if (isNullOrEmpty(eventElId)) return null;
 
-    return eventElId.split("_")[2];
+    String[] externalIdParts = eventElId.split("_");
+    return externalIdParts[externalIdParts.length - 1];
   }
 
   private String parseSportStr(Element sportEl) {

@@ -1,5 +1,7 @@
 package models.notification;
 
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Timer;
 import com.google.common.base.Predicate;
 import models.calc.Calculation;
 import models.calc.Calculator;
@@ -13,6 +15,7 @@ import java.text.DecimalFormat;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import static com.codahale.metrics.MetricRegistry.name;
 import static com.google.common.collect.Collections2.filter;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.joda.time.DateTime.now;
@@ -28,25 +31,22 @@ public class NotificationJob implements Runnable {
   private final BNotifier  notifier;
   private final Calculator calculator;
   private final Set<Calculation> previouslyNotifiedCalculations = new CopyOnWriteArraySet<Calculation>();
+  private final Timer timerMetric;
 
-  public NotificationJob(BNotifier notifier, Calculator calculator) {
+  public NotificationJob(BNotifier notifier, Calculator calculator, MetricRegistry metricRegistry) {
     this.notifier = notifier;
     this.calculator = calculator;
+    timerMetric = metricRegistry.timer(name(this.getClass(), "timer"));
   }
 
   @Override
   public void run() {
-    Set<Calculation> previouslyNotifiedCalculations = newHashSet(this.previouslyNotifiedCalculations);
-    Set<Calculation> newNotifiableCalculations = getNotifiableCalculations();
+    Timer.Context context = timerMetric.time();
+    try {
+      doRun();
 
-    this.previouslyNotifiedCalculations.clear();
-    this.previouslyNotifiedCalculations.addAll(newNotifiableCalculations);
-
-    newNotifiableCalculations.removeAll(previouslyNotifiedCalculations);
-
-    for (Calculation calculation : newNotifiableCalculations) {
-      log.info("Sending fork Notification: {}", calculation.event.toString());
-      notifier.notify(createMessage(calculation));
+    } finally {
+      context.stop();
     }
   }
 
@@ -130,6 +130,21 @@ public class NotificationJob implements Runnable {
         return calculation.isNotifiable && (3_000 <= notifiableStateChangeMillisAgo);
       }
     };
+  }
+
+  private void doRun() {
+    Set<Calculation> previouslyNotifiedCalculations = newHashSet(this.previouslyNotifiedCalculations);
+    Set<Calculation> newNotifiableCalculations = getNotifiableCalculations();
+
+    this.previouslyNotifiedCalculations.clear();
+    this.previouslyNotifiedCalculations.addAll(newNotifiableCalculations);
+
+    newNotifiableCalculations.removeAll(previouslyNotifiedCalculations);
+
+    for (Calculation calculation : newNotifiableCalculations) {
+      log.info("Sending fork Notification: {}", calculation.event.toString());
+      notifier.notify(createMessage(calculation));
+    }
   }
 
   private Set<Calculation> getNotifiableCalculations() {

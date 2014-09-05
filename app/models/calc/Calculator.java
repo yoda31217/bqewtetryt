@@ -1,5 +1,7 @@
 package models.calc;
 
+import com.codahale.metrics.Meter;
+import com.codahale.metrics.MetricRegistry;
 import models.event.Event;
 import models.event.EventHistoryRecord;
 
@@ -8,17 +10,24 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.codahale.metrics.MetricRegistry.name;
 import static models.calc.Calculation.calculate;
 
 public class Calculator {
 
   final List<Calculation> calculations = new ArrayList<Calculation>(200);
+  private final Meter addEventMeterMetric;
+
+  public Calculator(MetricRegistry metricRegistry) {
+    addEventMeterMetric = metricRegistry.meter(name(this.getClass(), "event", "add", "meter"));
+  }
 
   public synchronized Set<Calculation> calculations() {
     return new HashSet<Calculation>(calculations);
   }
 
   public synchronized void notifyEventAdded(Event event) {
+    addEventMeterMetric.mark();
     calculations.add(calculate(event));
   }
 
