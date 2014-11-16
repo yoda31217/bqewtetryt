@@ -1,5 +1,6 @@
 package controllers;
 
+import com.codahale.metrics.MetricRegistry;
 import models.calc.Calculator;
 import models.event.Event;
 import models.event.EventHistoryRecord;
@@ -20,6 +21,7 @@ import static models.event.EventTests.addHistory;
 import static models.event.EventType.REGULAR;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.joda.time.DateTimeZone.UTC;
+import static org.mockito.Mockito.mock;
 import static play.test.Helpers.GET;
 import static play.test.Helpers.OK;
 import static play.test.Helpers.charset;
@@ -43,15 +45,15 @@ public class MainControllerTest {
 
   @BeforeClass
   public static void beforeClass() {
-    Calculator calculator = new Calculator();
-    EventStore eventStore = new EventStore(calculator);
+    Calculator calculator = new Calculator(mock(MetricRegistry.class));
+    EventStore eventStore = new EventStore(calculator, mock(MetricRegistry.class));
     MainController mainController = new MainController(calculator);
 
     fakeApplication = createFakeApplication(mainController);
     start(fakeApplication);
 
     DateTime eventDate = new DateTime(2014, 4, 26, 8, 20, UTC);
-    Event event = eventStore.createOrFindEvent(REGULAR, TENNIS, eventDate, newArrayList("SIDE1"), newArrayList("SIDE2"));
+    Event event = eventStore.createOrFindEvent(null, REGULAR, TENNIS, eventDate, newArrayList("SIDE1"), newArrayList("SIDE2"));
     EventHistoryRecord record = new EventHistoryRecord(new DateTime(UTC), LANOS, 1.1, 2.1);
     addHistory(event, record);
   }

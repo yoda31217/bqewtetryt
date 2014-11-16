@@ -16,12 +16,13 @@ import models.data.adapter.kof.DecimalKofAdapter;
 import models.data.adapter.kof.FractionalKofAdapter;
 import models.data.adapter.kof.KofAdapter;
 import models.data.adapter.sport.ConstantSportAdapter;
-import models.data.adapter.sport.EngTextSportAdapter;
+import models.data.adapter.sport.LiveFordSportAdapter;
+import models.data.adapter.sport.LiveKamazSportAdapter;
 import models.data.adapter.sport.SportAdapter;
 import models.data.parser.BParser;
-import models.data.parser.LiveFordParser;
-import models.data.parser.LiveKamazParser;
-import models.data.parser.LiveVolvoParser;
+import models.data.parser.LiveFordParser2;
+import models.data.parser.LiveKamazParser2;
+import models.data.parser.LiveVolvoParser2;
 import models.data.parser.RegularKamazParser;
 import models.data.parser.RegularNivaParser;
 import models.data.parser.RetryExceptionParser;
@@ -107,12 +108,12 @@ class GlobalModule extends AbstractModule {
   @Singleton
   @Named("live-ford")
   Runnable provideLiveFordJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, MetricRegistry metricRegistry) {
-    BParser parser = new LiveFordParser(webDriver, metricRegistry);
+    BParser parser = new LiveFordParser2(webDriver, metricRegistry);
     parser = new RetryExceptionParser(parser, 3);
 
     DateAdapter dateAdapter = new NowDateAdapter();
     KofAdapter kofAdapter = new FractionalKofAdapter();
-    SportAdapter sportAdapter = new EngTextSportAdapter();
+    SportAdapter sportAdapter = new LiveFordSportAdapter();
     BAdapter adapter = new BAdapter("/", dateAdapter, kofAdapter, sportAdapter, LIVE, FORD);
 
     return new EventJob(eventStore, parser, adapter, eventFilter, metricRegistry, LIVE, FORD);
@@ -122,12 +123,12 @@ class GlobalModule extends AbstractModule {
   @Singleton
   @Named("live-kamaz")
   Runnable provideLiveKamazJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, MetricRegistry metricRegistry) {
-    BParser parser = new LiveKamazParser(webDriver, metricRegistry);
+    BParser parser = new LiveKamazParser2(webDriver, metricRegistry);
     parser = new RetryExceptionParser(parser, 3);
 
     DateAdapter dateAdapter = new NowDateAdapter();
     KofAdapter kofAdapter = new DecimalKofAdapter();
-    SportAdapter sportAdapter = new EngTextSportAdapter();
+    SportAdapter sportAdapter = new LiveKamazSportAdapter();
     BAdapter adapter = new BAdapter(" / ", dateAdapter, kofAdapter, sportAdapter, LIVE, KAMAZ);
 
     return new EventJob(eventStore, parser, adapter, eventFilter, metricRegistry, LIVE, KAMAZ);
@@ -275,7 +276,7 @@ class GlobalModule extends AbstractModule {
 
   private Runnable createLiveVolvoJob(EventStore eventStore, ChromeDriver webDriver, EventFilter eventFilter, EventSport sport, String sportCode,
                                       MetricRegistry metricRegistry) {
-    BParser parser = new LiveVolvoParser(webDriver, sportCode, metricRegistry);
+    BParser parser = new LiveVolvoParser2(webDriver, sportCode, metricRegistry);
     parser = new RetryExceptionParser(parser, 3);
 
     DateAdapter dateAdapter = new NowDateAdapter();

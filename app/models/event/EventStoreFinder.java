@@ -31,32 +31,14 @@ public class EventStoreFinder {
     timerMetric = metricRegistry.timer(name(this.getClass(), "timer"));
   }
 
-  Event findEvent(EventType type, EventSport sport, DateTime date, List<String> side1, List<String> side2) {
+  Event findEvent(String externalId, EventType type, EventSport sport, DateTime date, List<String> side1, List<String> side2) {
     Timer.Context context = timerMetric.time();
     try {
-      return doFindEvent(type, sport, date, side1, side2);
+      return doFindEvent(externalId, type, sport, date, side1, side2);
 
     } finally {
       context.stop();
     }
-  }
-
-  private Event doFindEvent(EventType type, EventSport sport, DateTime date, List<String> side1, List<String> side2) {
-    Event candidateEvent = null;
-    int candidateEventSimilarity = 0;
-
-    for (Event newCandidateEvent : events) {
-      if (!areTypeAndSportEqual(type, sport, newCandidateEvent) || !areDatesSimilar(date, newCandidateEvent)) continue;
-
-      int newCandidateEventSimilarity = calculateSidesSimilarity(side1, side2, newCandidateEvent);
-
-      if (newCandidateEventSimilarity > candidateEventSimilarity) {
-        candidateEvent = newCandidateEvent;
-        candidateEventSimilarity = newCandidateEventSimilarity;
-      }
-    }
-
-    return 0 == candidateEventSimilarity ? null : candidateEvent;
   }
 
   private boolean areDatesSimilar(DateTime date, Event event) {
@@ -93,6 +75,24 @@ public class EventStoreFinder {
     int side1similarity = calculateSideSimilarity(side1, event.side1);
     int side2similarity = calculateSideSimilarity(side2, event.side2);
     return (0 == side1similarity || 0 == side2similarity) ? 0 : side1similarity + side2similarity;
+  }
+
+  private Event doFindEvent(String externalId, EventType type, EventSport sport, DateTime date, List<String> side1, List<String> side2) {
+    Event candidateEvent = null;
+    int candidateEventSimilarity = 0;
+
+    for (Event newCandidateEvent : events) {
+      if (!areTypeAndSportEqual(type, sport, newCandidateEvent) || !areDatesSimilar(date, newCandidateEvent)) continue;
+
+      int newCandidateEventSimilarity = calculateSidesSimilarity(side1, side2, newCandidateEvent);
+
+      if (newCandidateEventSimilarity > candidateEventSimilarity) {
+        candidateEvent = newCandidateEvent;
+        candidateEventSimilarity = newCandidateEventSimilarity;
+      }
+    }
+
+    return 0 == candidateEventSimilarity ? null : candidateEvent;
   }
 
   private boolean isPlayerPartSimilar(String eventPlayerPart, String playerPart) {

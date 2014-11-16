@@ -4,7 +4,9 @@ name := """betty"""
 version := "3.3.0-snapshot"
 
 libraryDependencies ++= Seq(
+  "com.yahoo.platform.yui" % "yuicompressor" % "2.4.8",
   "com.codahale.metrics" % "metrics-core" % "3.0.2",
+  "com.codahale.metrics" % "metrics-jvm" % "3.0.2",
   "com.google.inject" % "guice" % "3.0",
   "org.twitter4j" % "twitter4j-core" % "3.0.5",
   "org.powermock" % "powermock-module-junit4" % "1.5.1",

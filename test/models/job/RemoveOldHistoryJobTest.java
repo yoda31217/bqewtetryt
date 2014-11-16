@@ -1,5 +1,6 @@
 package models.job;
 
+import com.codahale.metrics.MetricRegistry;
 import models.calc.Calculator;
 import models.event.Event;
 import models.event.EventHistoryRecord;
@@ -18,9 +19,9 @@ import static org.mockito.Mockito.mock;
 
 public class RemoveOldHistoryJobTest {
 
-  private EventStore          eventStore = new EventStore(mock(Calculator.class));
-  private RemoveOldHistoryJob job        = new RemoveOldHistoryJob(2, eventStore);
-  private Event               event      = eventStore.createOrFindEvent(REGULAR, TENNIS, new DateTime(UTC), newArrayList("SIDE1"), newArrayList("SIDE2"));
+  private EventStore          eventStore = new EventStore(mock(Calculator.class), mock(MetricRegistry.class));
+  private RemoveOldHistoryJob job        = new RemoveOldHistoryJob(2, eventStore, mock(MetricRegistry.class));
+  private Event               event      = eventStore.createOrFindEvent(null, REGULAR, TENNIS, new DateTime(UTC), newArrayList("SIDE1"), newArrayList("SIDE2"));
 
   @Test
   public void run_1record_remains1record() {

@@ -1,10 +1,12 @@
 package models.util;
 
+import com.codahale.metrics.MetricRegistry;
 import org.junit.Test;
 
 import static models.util.Runnables.LogExRunnable;
 import static models.util.Runnables.wrapLogExRunnable;
 import static models.util.Tests.callPrivateConstructor;
+import static org.mockito.Mockito.mock;
 
 public class RunnablesTest {
 
@@ -21,7 +23,7 @@ public class RunnablesTest {
       @Override
       public void run() {
       }
-    });
+    }, mock(MetricRegistry.class));
     ((LogExRunnable) runnable).log = logMock;
     runnable.run();
 
@@ -37,7 +39,7 @@ public class RunnablesTest {
       public void run() {
         throw exception;
       }
-    });
+    }, mock(MetricRegistry.class));
     ((LogExRunnable) runnable).log = logMock;
     runnable.run();
 

@@ -1,5 +1,6 @@
 package models.job;
 
+import com.codahale.metrics.MetricRegistry;
 import com.google.common.base.Predicate;
 import models.data.adapter.AdaptedEvent;
 import models.data.adapter.BAdapter;
@@ -13,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static models.event.EventOrganisation.UNKNOWN;
 import static models.event.EventOrganisation.VOLVO;
 import static models.event.EventSport.TENNIS;
 import static models.event.EventType.LIVE;
@@ -36,7 +38,8 @@ public class EventJobTest {
   private BAdapter                adapterMock     = mock(BAdapter.class);
   private Predicate<AdaptedEvent> eventFilterMock = mock(Predicate.class);
   private EventStore              eventStoreMock  = mock(EventStore.class);
-  private EventJob                job             = new EventJob(eventStoreMock, parserMock, adapterMock, eventFilterMock);
+  private EventJob                job             = new EventJob(eventStoreMock, parserMock, adapterMock, eventFilterMock, mock(MetricRegistry.class), LIVE,
+                                                                 UNKNOWN);
   private LoggerMock              logMock         = new LoggerMock();
 
   @Before
@@ -44,7 +47,7 @@ public class EventJobTest {
     when(parserMock.parse()).thenReturn(newArrayList(parsedEvent));
     when(adapterMock.adapt(parsedEvent)).thenReturn(adaptedEvent);
     when(eventFilterMock.apply(same(adaptedEvent))).thenReturn(true);
-    when(eventStoreMock.createOrFindEvent(same(LIVE), same(TENNIS), eq(eventDate), eq(newArrayList("SIDE1")), eq(newArrayList("SIDE2")))).thenReturn(event);
+    when(eventStoreMock.createOrFindEvent(null, same(LIVE), same(TENNIS), eq(eventDate), eq(newArrayList("SIDE1")), eq(newArrayList("SIDE2")))).thenReturn(event);
     job.log = logMock;
   }
 

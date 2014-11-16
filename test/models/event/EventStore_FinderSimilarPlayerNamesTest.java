@@ -1,5 +1,6 @@
 package models.event;
 
+import com.codahale.metrics.MetricRegistry;
 import models.calc.Calculator;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -32,7 +33,7 @@ public class EventStore_FinderSimilarPlayerNamesTest {
   @Before
   public void before() throws Exception {
     eventDate = new DateTime(UTC);
-    eventStore = new EventStore(mock(Calculator.class));
+    eventStore = new EventStore(mock(Calculator.class), mock(MetricRegistry.class));
   }
 
   @Parameterized.Parameters
@@ -86,8 +87,8 @@ public class EventStore_FinderSimilarPlayerNamesTest {
 
   @Test
   public void createOrFindEvent_2eventsWithSimilarPlayers_create1event() {
-    Event originalEvent = eventStore.createOrFindEvent(REGULAR, TENNIS, eventDate, newArrayList(originalPlayer), newArrayList("SideTwo"));
-    Event similarEvent = eventStore.createOrFindEvent(REGULAR, TENNIS, eventDate, newArrayList(similarPlayer), newArrayList("SideTwo"));
+    Event originalEvent = eventStore.createOrFindEvent(null, REGULAR, TENNIS, eventDate, newArrayList(originalPlayer), newArrayList("SideTwo"));
+    Event similarEvent = eventStore.createOrFindEvent(null, REGULAR, TENNIS, eventDate, newArrayList(similarPlayer), newArrayList("SideTwo"));
 
     assertThat(similarEvent).isSameAs(originalEvent);
   }

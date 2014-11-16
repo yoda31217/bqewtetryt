@@ -1,5 +1,6 @@
 package models.calc;
 
+import com.codahale.metrics.MetricRegistry;
 import models.event.Event;
 import models.event.EventHistoryRecord;
 import org.junit.Test;
@@ -12,11 +13,12 @@ import static models.event.EventType.LIVE;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.joda.time.DateTime.now;
 import static org.joda.time.DateTimeZone.UTC;
+import static org.mockito.Mockito.mock;
 
 public class CalculatorTest {
 
   private final Event      event      = new Event(LIVE, UNKNOWN, now(UTC), newArrayList("player1"), newArrayList("player2"));
-  private final Calculator calculator = new Calculator();
+  private final Calculator calculator = new Calculator(mock(MetricRegistry.class));
 
   @Test
   public void calculations_always_returnCopy() {

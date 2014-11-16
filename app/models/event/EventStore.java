@@ -15,7 +15,7 @@ import static play.Logger.of;
 public class EventStore {
 
   Logger.ALogger log = of(EventStore.class);
-  final         List<Event>      events           = new CopyOnWriteArrayList<Event>();
+  final List<Event> events = new CopyOnWriteArrayList<Event>();
   private final EventStoreFinder eventStoreFinder;
   private final Calculator       calculator;
 
@@ -30,11 +30,11 @@ public class EventStore {
     calculator.notifyEventHistoryAdded(event, historyRecord);
   }
 
-  public Event createOrFindEvent(EventType type, EventSport sport, DateTime date, List<String> side1, List<String> side2) {
+  public Event createOrFindEvent(String externalId, EventType type, EventSport sport, DateTime date, List<String> side1, List<String> side2) {
     checkArgument(!side1.isEmpty() && side1.size() <= 2, "Side 1 of size 1 or 2 is required: %s.", side1);
     checkArgument(!side2.isEmpty() && side2.size() <= 2, "Side 2 of size 1 or 2 is required: %s.", side2);
 
-    Event oldEvent = eventStoreFinder.findEvent(type, sport, date, side1, side2);
+    Event oldEvent = eventStoreFinder.findEvent(externalId, type, sport, date, side1, side2);
 
     if (null != oldEvent) return oldEvent;
 
