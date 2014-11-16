@@ -31,10 +31,10 @@ public class EventStoreFinder {
     timerMetric = metricRegistry.timer(name(this.getClass(), "timer"));
   }
 
-  Event findEvent(String externalId, EventType type, EventSport sport, DateTime date, List<String> side1, List<String> side2) {
+  Event findEvent(EventType type, EventSport sport, DateTime date, List<String> side1, List<String> side2) {
     Timer.Context context = timerMetric.time();
     try {
-      return doFindEvent(externalId, type, sport, date, side1, side2);
+      return doFindEvent(type, sport, date, side1, side2);
 
     } finally {
       context.stop();
@@ -77,7 +77,7 @@ public class EventStoreFinder {
     return (0 == side1similarity || 0 == side2similarity) ? 0 : side1similarity + side2similarity;
   }
 
-  private Event doFindEvent(String externalId, EventType type, EventSport sport, DateTime date, List<String> side1, List<String> side2) {
+  private Event doFindEvent(EventType type, EventSport sport, DateTime date, List<String> side1, List<String> side2) {
     Event candidateEvent = null;
     int candidateEventSimilarity = 0;
 

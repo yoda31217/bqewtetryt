@@ -3,8 +3,8 @@
 
   "version": "1.0",
 
-  "name": "Betty Helper Toolbar",
-  "description": "Betty Helper Toolbar",
+  "name": "lucky",
+  "description": "Lucky",
 
   "background": {
     "scripts": ["background/background.js"],
@@ -24,22 +24,42 @@
 
   "content_scripts": [
     {
+      "matches": ["http://bmbets.ru/*"],
+      "js": [
+        "external/jquery-1.9.0/jquery-1.9.0.min.js",
+        "bmbets/bmbets_normalize_odds.js",
+        "bmbets/bmbets_open_events.js"
+      ]
+    },
+    {
       "matches": ["https://www.favbet.com/*"],
-      "js": ["kamaz/kamaz.js", "external/jquery-1.9.0/jquery-1.9.0.min.js"]
+      "js": [
+        "kamaz/kamaz.js",
+        "external/jquery-1.9.0/jquery-1.9.0.min.js"
+      ]
     },
     {
       "matches": ["http://sports.williamhill.com/*"],
-      "js": ["ford/ford.js", "external/jquery-1.9.0/jquery-1.9.0.min.js"]
+      "js": [
+        "ford/ford.js",
+        "external/jquery-1.9.0/jquery-1.9.0.min.js"
+      ]
     },
     {
       "matches": ["http://www.bet365.com/lite/*"],
-      "js": ["volvo/volvo.js", "external/jquery-1.9.0/jquery-1.9.0.min.js"],
+      "js": [
+        "volvo/volvo.js",
+        "external/jquery-1.9.0/jquery-1.9.0.min.js"
+      ],
       "css": ["volvo/volvo.css"]
     },
     {
       //      "matches": ["file:///Users/yoda31217/*"],
       "matches": ["http://messy-app.appspot.com/*"],
-      "js": ["external/jquery-1.9.0/jquery-1.9.0.min.js", "messy/messy.js"]
+      "js": [
+        "external/jquery-1.9.0/jquery-1.9.0.min.js",
+        "messy/messy.js"
+      ]
     }
   ]
 }
