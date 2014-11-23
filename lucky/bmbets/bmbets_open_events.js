@@ -9,11 +9,12 @@ $("body").keydown(function (event) {
 
   var openWindowsChain = function () {
     if (linkIdx >= linkEls.length) {
-      window.alert('Opened.')
+      chrome.runtime.sendMessage({type: 'info', text: 'Events opened!'});
       return;
     }
 
-    window.open(linkEls[linkIdx].href);
+    var openedWindow = window.open(linkEls[linkIdx].href);
+    openedWindow.window.openedByLucky = true;
 
     linkIdx++;
     window.setTimeout(openWindowsChain, interval);
@@ -22,3 +23,11 @@ $("body").keydown(function (event) {
   window.setTimeout(openWindowsChain, interval);
 
 });
+
+window.setTimeout(function () {
+
+  if (!window.openedByLucky) return;
+
+  if (0 === $('#eventValueBets > div > table > tbody > tr > td.count > div > a > span.BK.b17').length) window.close();
+
+}, 30000);

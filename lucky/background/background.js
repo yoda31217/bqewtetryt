@@ -33,11 +33,11 @@ function sendUserNotification(title, text) {
 }
 
 function onErrorHandler(text) {
-  sendUserNotification('ERROR!', text);
+  sendUserNotification('LUCKY. ERROR!', text);
 }
 
 function onInfoHandler(text) {
-  sendUserNotification('INFO!', text);
+  sendUserNotification('LUCKY. INFO!', text);
 }
 
 function onTabIdentifyHandler(tab) {

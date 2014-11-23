@@ -16,6 +16,24 @@ var normalizeOddRow = function (row, rightIndex) {
   //console.log(row);
 };
 
+var accumulateExtremumOdds = function (row, rightIndex, maxs, mins) {
+  var cells = row.children;
+
+  var percentCell = cells[cells.length - rightIndex];
+  var percent = percentCell.innerText;
+  percent = Number(percent.substring(0, percent.length - 1)) / 100.0;
+
+  var factor = 1.0 / percent;
+
+  for (var i = 1; i < cells.length - rightIndex; i++) {
+    var oddCell = cells[i];
+    var odd = Number(oddCell.innerText);
+    oddCell.innerHTML += '<div style="color: green">' + (odd * factor).toFixed(3) + '</div>'
+  }
+
+  //console.log(row);
+};
+
 var normalizeOdds = function () {
   //console.log('Norm');
 
