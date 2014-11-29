@@ -21,19 +21,21 @@ function processOddRow(row, minOdds, maxOdds, preMaxOdds) {
   for (var i = 1; i < cells.length - 2; i++) {
 
     var normalOdd = calculateNormalOdd(cells[i], factor);
+    cells[i].innerHTML += '<div style="color: green">' + normalOdd.toFixed(3) + '</div>';
+
+    if (Infinity === normalOdd) continue;
 
     if (minOdds[i] > normalOdd) {
       minOdds[i] = normalOdd;
     }
-    else if (maxOdds[i] < normalOdd) {
+
+    if (maxOdds[i] < normalOdd) {
       preMaxOdds[i] = maxOdds[i];
       maxOdds[i] = normalOdd;
     }
     else if (preMaxOdds[i] < normalOdd) {
       preMaxOdds[i] = normalOdd;
     }
-
-    cells[i].innerHTML += '<div style="color: green">' + normalOdd.toFixed(3) + '</div>';
   }
 }
 

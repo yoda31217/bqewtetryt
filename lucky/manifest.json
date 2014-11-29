@@ -27,7 +27,7 @@
       "matches": ["http://bmbets.ru/*"],
       "js": [
         "external/jquery-1.9.0/jquery-1.9.0.min.js",
-        "bmbets/bmbets_normalize_odds.js",
+        "bmbets/bmbets_process_odds.js",
         "bmbets/bmbets_open_events.js"
       ]
     },
